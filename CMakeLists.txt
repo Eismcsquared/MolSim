@@ -19,6 +19,7 @@ file(GLOB_RECURSE MY_SRC
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
 )
 
+
 # create make target
 add_executable(MolSim ${MY_SRC})
 
@@ -33,6 +34,7 @@ target_include_directories(MolSim
             ${CMAKE_CURRENT_SOURCE_DIR}/libs/libxsd
         PRIVATE
             ${CMAKE_CURRENT_SOURCE_DIR}/src
+            ${CMAKE_CURRENT_SOURCE_DIR}/tests
 )
 
 target_link_libraries(MolSim
@@ -55,3 +57,15 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 include(doxygen)
 include(gtest)
 include(xcerces)
+
+#GTEST 
+
+#testfiles 
+file(GLOB_RECURSE MY_TESTS
+    "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp"
+)
+
+enable_testing()
+add_executable(tests ${MY_TESTS})
+target_link_libraries(tests PRIVATE GTest::gtest_main)
+add_test(NAME tests COMMAND tests)
