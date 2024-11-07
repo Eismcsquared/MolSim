@@ -54,3 +54,4 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 
 include(doxygen)
 include(gtest)
+include(xcerces)
