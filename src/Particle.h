@@ -9,7 +9,9 @@
 
 #include <array>
 #include <string>
-
+/**
+ * @brief Class that represents a particle. A particle object contains information about its current position, velocity and mass. Moreover, it stores the force acting on it in the current and the previous time step, which is necessary for update via Velocity-Störmer-Verlet.
+ */
 class Particle {
 
 private:
@@ -68,6 +70,17 @@ public:
   double getM() const;
 
   int getType() const;
+
+
+  /////////////////
+  void setX(std::array<double, 3> x_arg);
+  void setV(std::array<double,3> v_arg);
+  void setF(std::array<double,3> f_arg);
+  void setOldF(std::array<double,3> oldf_arg);
+  void setM(double m_arg);
+  void setType(int type);
+ ////////////////////////
+
 
   bool operator==(Particle &other);
 
