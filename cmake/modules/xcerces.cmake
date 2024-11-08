@@ -9,4 +9,6 @@ if (NOT TARGET xerces-c)
     )
     FetchContent_MakeAvailable(xerces-c)
 
+    set(buildSamples OFF CACHE BOOL "Disable Xerces sample builds")
+    set(buildTests OFF CACHE BOOL "Disable Xerces test builds")
 endif()

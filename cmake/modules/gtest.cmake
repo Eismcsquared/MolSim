@@ -1,8 +1,8 @@
-# gtest.cmake
+set(GTEST_VERSION 1.15.2)
 
 #check if gtest is already included
 if (NOT TARGET gtest)
-    
+    message("Fetching gtest : version 1.15.2 ")
     include(FetchContent)
     FetchContent_Declare(
         googletest

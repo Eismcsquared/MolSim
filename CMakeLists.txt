@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # define project name, version
-project(PSEMolDyn VERSION 0.0.1)
+project(PSEMolDyn_GroupD VERSION 0.0.1)
 
 # let ccmake and cmake-gui offer the default build type options
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug;Release;RelWithDebInfo;MinSizeRel")
@@ -19,14 +19,13 @@ file(GLOB_RECURSE MY_SRC
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
 )
 
-
 # create make target
 add_executable(MolSim ${MY_SRC})
 
-# set cxx standard. You may raise this if you want.
-target_compile_features(MolSim
-        PRIVATE
-            cxx_std_17
+# set c++ standard to c++20
+set_target_properties(MolSim PROPERTIES
+        CXX_STANDARD 20
+        CXX_STANDARD_REQUIRED ON
 )
 
 target_include_directories(MolSim
@@ -34,38 +33,48 @@ target_include_directories(MolSim
             ${CMAKE_CURRENT_SOURCE_DIR}/libs/libxsd
         PRIVATE
             ${CMAKE_CURRENT_SOURCE_DIR}/src
-            ${CMAKE_CURRENT_SOURCE_DIR}/tests
+           # ${CMAKE_CURRENT_SOURCE_DIR}/tests
 )
 
 target_link_libraries(MolSim
         # stuff that is used in headers and source files
         PUBLIC
             xerces-c
+        PRIVATE
+            $<$<CXX_COMPILER_ID:GNU>:-fsanitize=address>
+            $<$<CXX_COMPILER_ID:Clang>:-fsanitize=address>
 )
 
 # activate all compiler warnings. Clean up your code :P
 # depending on the compiler different flags are used
 target_compile_options(MolSim
         PRIVATE
-            $<$<CXX_COMPILER_ID:GNU>:-Wall>
+            $<$<CXX_COMPILER_ID:GNU>:-Wall -fsanitize=address>
+            $<$<CXX_COMPILER_ID:Clang>:-Wall -fsanitize=address>
             # disable some spam warnings for icpc...
             $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
+
 )
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 
 include(doxygen)
+include(spdlog)
+#include(xcerces)
 include(gtest)
-include(xcerces)
-
-#GTEST 
 
 #testfiles 
 file(GLOB_RECURSE MY_TESTS
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.h"
+)
+add_executable(tests ${MY_TESTS})
+
+target_include_directories(tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-enable_testing()
-add_executable(tests ${MY_TESTS})
-target_link_libraries(tests PRIVATE GTest::gtest_main)
+target_link_libraries(tests PRIVATE GTest::gtest_main spdlog::spdlog)
+set_property(TARGET tests PROPERTY ENVIRONMENT "GTEST_COLOR=1")
 add_test(NAME tests COMMAND tests)
+enable_testing()
