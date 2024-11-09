@@ -2,7 +2,7 @@
 #include "utils/vectorOperations.h"
 
 LennardJonesForce::LennardJonesForce(double epsilon, double sigma): epsilon(epsilon), sigma(sigma) {}
-LennardJonesForce::LennardJonesForce(): epsilon(5), sigma(1.1225) {}
+LennardJonesForce::LennardJonesForce(): epsilon(5), sigma(1) {}
 
 std::array<double, 3> LennardJonesForce::force(Particle particle1, Particle particle2) {
     std::array<double, 3> result{};
