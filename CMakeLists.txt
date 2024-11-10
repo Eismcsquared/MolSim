@@ -26,6 +26,7 @@ add_executable(MolSim ${MY_SRC})
 set_target_properties(MolSim PROPERTIES
         CXX_STANDARD 20
         CXX_STANDARD_REQUIRED ON
+        ENABLE_EXPORTS ON
 )
 
 target_include_directories(MolSim
@@ -67,6 +68,8 @@ include(gtest)
 file(GLOB_RECURSE MY_TESTS
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
 )
 add_executable(tests ${MY_TESTS})
 
@@ -74,7 +77,7 @@ target_include_directories(tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-target_link_libraries(tests PRIVATE GTest::gtest_main spdlog::spdlog)
+target_link_libraries(tests PRIVATE GTest::gtest_main spdlog::spdlog MolSim)
 set_property(TARGET tests PROPERTY ENVIRONMENT "GTEST_COLOR=1")
 add_test(NAME tests COMMAND tests)
 enable_testing()

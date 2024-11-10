@@ -4,6 +4,7 @@
 if (NOT TARGET spdlog)
 
     include(FetchContent)
+    set(FETCHCONTENT_BASE_DIR ${CMAKE_BINARY_DIR}/_deps)
     FetchContent_Declare(
         spdlog
         GIT_REPOSITORY https://github.com/gabime/spdlog.git

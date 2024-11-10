@@ -4,6 +4,7 @@ set(GTEST_VERSION 1.15.2)
 if (NOT TARGET gtest)
     message("Fetching gtest : version 1.15.2 ")
     include(FetchContent)
+    set(FETCHCONTENT_BASE_DIR ${CMAKE_BINARY_DIR}/_deps)
     FetchContent_Declare(
         googletest
         GIT_REPOSITORY https://github.com/google/googletest.git
