@@ -7,168 +7,116 @@
 #include "Particle.h"
 #include "ParticleContainer.h"
 
-
 /**
- * @brief Constructor, which initializes the particle container with a vector of particles , start time, end time, delta_t and outputformat
- * outputformat can be either .vtu or .xyz
+ * @brief Constructor, which initializes the particle container with a vector of particles , start time, end time, delta_t and outputFormat
+ * outputFormat can be either .vtu or .xyz
  */
-ParticleContainer::ParticleContainer(std::vector<Particle> particles, double start_time,
-                                     double end_time, double delta_t, std::string outputformat)
-    : particles(std::move(particles)),  // Using std::move to avoid copying
+ParticleContainer::ParticleContainer(std::vector<Particle>& particles, double start_time,
+                                     double end_time, double delta_t, Force& f, std::string outputFormat)
+    : particles(particles),
       start_time(start_time),
       end_time(end_time),
       delta_t(delta_t),
-      outputformat(std::move(outputformat)) { // std::move if outputformat is temporary
-
-  positions.reserve(this->particles.size());
-  for (const auto& particle : this->particles) {
-    positions.push_back(particle.getX());
-  }
-
-  std::cout << "ParticleContainer generated!\n";
+      f(f),
+      outputFormat(std::move(outputFormat)) { // std::move if outputFormat is temporary
+    // compute initial forces
+    updateF();
+    std::cout << "ParticleContainer generated!\n";
 }
 
 
 
 ParticleContainer::~ParticleContainer(){
-  std::cout << "ParticleContainer destructed!\n";
+    std::cout << "ParticleContainer destructed!\n";
 }
 
 
-void ParticleContainer::addParticle(Particle particle){
-  this->particles.push_back(particle);
-  this->positions.push_back(particle.getX());
+void ParticleContainer::addParticle(const Particle& particle){
+    this->particles.push_back(particle);
+}
+
+void ParticleContainer::addCuboid(const Cuboid& cuboid) {
+    std::vector<Particle> newParticles = cuboid.createParticles();
+    particles.insert(std::end(particles), std::begin(newParticles), std::end(newParticles));
+
 }
 
 
-void ParticleContainer :: calculateF_v1() {
-  std::vector<Particle>::iterator iterator;
-  iterator = particles.begin();
-  for (auto &p1 : particles) {
-    p1.setOldF(p1.getF()); // update old force
-    std::array<double, 3> cal_f = {0,0,0};
-    for (auto &p2 : particles) {
-      if(&p1 != &p2) {
-        std::array<double, 3> vec = p2.getX() - p1.getX();
-        double tmp = 0.0;
-        for(int i = 0; i < 3; i++) {
-          tmp += vec[i] * vec[i];
+void ParticleContainer::updateF(bool newton3) {
+    if (newton3) {
+        std::vector<std::array<double, 3>> newForces(particles.size(), {0, 0, 0});
+        for (unsigned long i = 0; i < particles.size(); ++i) {
+            for (unsigned long j = i + 1; j < particles.size(); ++j) {
+                std::array<double, 3> forceIJ = f.force(particles[i], particles[j]);
+                // update forces using the third Newton axiom
+                newForces[i] = newForces[i] - forceIJ;
+                newForces[j] = newForces[j] + forceIJ;
+            }
         }
-        tmp = pow(sqrt(tmp), 3);
-        if (tmp == 0 ) continue;// avoid division by zero
-        double val = p1.getM() * p2.getM();
-        val /= tmp;
-        for(int i=0 ; i< 3; i++) {
-          cal_f[i] += (vec[i]* val);
+        for (unsigned long i = 0; i < particles.size(); ++i) {
+            particles[i].setOldF(particles[i].getF());
+            particles[i].setF(newForces[i]);
         }
-       
-      }
-      p1.setF(cal_f);
+    } else {
+        for (auto &p1 : particles) {
+            p1.setOldF(p1.getF());
+            std::array<double, 3> cal_f = {0,0,0};
+            for (auto &p2 : particles) {
+                if(&p1 != &p2) {
+                    std::array<double, 3> forceIJ = f.force(p2, p1);
+                    cal_f = cal_f + forceIJ;
+                }
+                p1.setF(cal_f);
+            }
+        }
     }
+}
+
+
+void ParticleContainer::updateX(){
+    for (auto & particle : particles) {
+        std::array<double, 3> vec = particle.getX() + delta_t * (particle.getV() + (delta_t / (2 * particle.getM())) * particle.getF());
+        particle.setX(vec);
   }
 }
 
 
+void ParticleContainer::updateV(){
+    for (auto &p : particles) {
+        std::array<double, 3> vec = p.getV() + (delta_t / (2 * p.getM())) * (p.getF() + p.getOldF());
+        p.setV(vec);
+    }
+}
 
-void ParticleContainer :: calculateF_v2() {
+void ParticleContainer::simulate() {
 
-  for (long unsigned int i = 0; i < particles.size(); i++) {
-    particles[i].setOldF(particles[i].getF()); // update old force
-
-    std::array<double, 3> cal_f = {0,0,0};
-
-    for (long unsigned int j =0 ; j < particles.size(); j++) {
-
-      if(i != j) { // avoid self interaction as in the formula
-        std::array<double, 3> vec;
-
-        double tmp = 0.0;
-
-        for(int k = 0; k < 3; k++) {
-          vec[k] = positions[j][k] - positions[i][k];
-          tmp += vec[k] * vec[k];
+    int max_iteration = (int) ((end_time - start_time) / delta_t);
+    for (int iteration  = 0; iteration <= max_iteration; iteration++) {
+        // Calculate the position
+        updateX();
+        // Calculate the force
+        updateF();
+        // Calculate the velocity
+        updateV();
+        // Plot every 10th iteration
+        if (iteration % 10 == 0) {
+            plotParticles(iteration);
         }
-        tmp = pow(sqrt(tmp), 3);
-
-        if (tmp == 0 ) continue;// avoid division by zero
-
-        double val = particles[i].getM() * particles[j].getM() / tmp;
-
-        for(int k=0 ; k< 3; k++) {
-          cal_f[k] += (vec[k]* val);
-        }
-      }
-    }
-    particles[i].setF(cal_f);
-  }
-}
-
-void ParticleContainer:: calculateX(){
-   for (long unsigned int i = 0; i < particles.size(); i++) {
-    std::array<double, 3> vec = particles[i].getX();
-
-    for(int j =0 ; j< 3; j++) {
-      vec[j] += delta_t * particles[i].getV()[j];
-      vec[j] += (delta_t * delta_t * particles[i].getOldF()[j]) / (2 * particles[i].getM());
-    }
-    particles[i].setX(vec);
-    positions[i] = vec;
-  }
-  
-}
-
-
-void ParticleContainer:: calculateV(){
-  for (auto &p : particles) {
-    std::array<double, 3> vec = p.getV();
-    for(int i =0 ; i< 3; i++) {
-      vec[i] += delta_t * (p.getF()[i] + p.getOldF()[i]) / (2 * p.getM());
-    }
-    p.setV(vec);
-  }
-  
-}
-
-void ParticleContainer:: calculate(int version) {
-   int iteration  = 0;
-   double current_time = start_time;
-
-   while (current_time < end_time) {
-    // Calculate the position
-    calculateX();
-
-    // Calculate the force
-
-    if(version == 1) calculateF_v1();
-    else calculateF_v2();
-
-    // Calculate the velocity
-    calculateV();
-
-    iteration++;
-    // Plot every 10th iteration
-    if (iteration % 10 == 0) {
-      plotParticles(iteration); 
-    }
-
-    std::cout << "Iteration " << iteration << " finished." << "\n";
-    current_time += delta_t;
+        std::cout << "Iteration " << iteration << " finished." << "\n";
     }
     std::cout << "output written. Terminating..." << "\n";
-    return;
 }
 
-void ParticleContainer :: plotParticles(int iteration) {
-  std::cout << "Plotting Particles..." << "\n";
+void ParticleContainer::plotParticles(int iteration) {
+    std::cout << "Plotting Particles..." << "\n";
 
-  std::string out_name("MD_vtk");
-  if(outputformat.compare(".vtu") == 0) {
-    outputWriter::VTKWriter writer2;
-    writer2.writeFile(out_name, iteration,particles);
-  }
-  else if(outputformat.compare(".xyz") == 0) {
-    outputWriter::XYZWriter writer;
-    writer.plotParticles(particles, out_name, iteration);
-  }
-
+    std::string out_name("MD_vtk");
+    if(outputFormat.compare(".vtu") == 0) {
+        outputWriter::VTKWriter writer2;
+        writer2.writeFile(out_name, iteration,particles);
+    }
+    else if(outputFormat.compare(".xyz") == 0) {
+        outputWriter::XYZWriter writer;
+        writer.plotParticles(particles, out_name, iteration);
+    }
 }

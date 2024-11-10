@@ -1,10 +1,8 @@
-
-#ifndef PARTICLECONTAINER_H
-#define PARTICLECONTAINER_H
-
 #include "Particle.h"
 #include <vector>
 #include <array>
+#include "Cuboid.h"
+#include "Force.h"
 
 #pragma once
 
@@ -16,10 +14,20 @@ class ParticleContainer {
 
   public:
 
-   ParticleContainer(std::vector<Particle> particles, double start_time, double end_time, double delta_t,
-    std::string outputformat);
+    /**
+    * @brief Construct a particle container.
+    * @param particles: The particles to store.
+    * @param start_time: The start time of the simulation. Default: 0.
+    * @param end_time: The end time of the simulation.
+    * @param delta_t: The time step of the simulation.
+    * @param f: The force object that defines the force between two particles.
+    * @param outputFormat: The output format of data, either .vtu or .xyz.
+    */
+   ParticleContainer(std::vector<Particle>& particles, double start_time, double end_time, double delta_t, Force& f,
+    std::string outputFormat);
 
-  /**
+
+/**
    * @brief Destructor
    */
    ~ParticleContainer();
@@ -29,33 +37,35 @@ class ParticleContainer {
      * @brief Add a particle to the container
      * @param particle: The particle to add to the container
      */
-    void addParticle(Particle particle);
+    void addParticle(const Particle& particle);
+
+    /**
+     * @brief Add the particles in a cuboid to the container
+     * @param cuboid: The cuboid to add to the container
+     */
+    void addCuboid(const Cuboid &cuboid);
 
     /**
      * @brief Calculate the force between all particles version1
      */
-    void calculateF_v1();
+    void updateF(bool newton3 = true);
 
-    /**
-     * @brief Calculate the force between all particles version2 , optimized version by memory access
-     */
-    void calculateF_v2();
 
      /**
       * @brief Update the position for all particles
       */
-    void calculateX();
+    void updateX();
 
     /**
      * @brief Update the velocity for all particles
      */
-    void calculateV();
+    void updateV();
 
     /**
      * @brief Calculate the position, force and velocity for all particles
      * @param version: 1 = without optimization or 2 = optimized for cache efficiency
      */
-    void calculate(int version);
+    void simulate();
 
     /**
     * @brief Save the current state of the particles in the container to the output.
@@ -70,11 +80,7 @@ class ParticleContainer {
     /**
      * Particles stored in the container
      */
-    std::vector<Particle> particles;
-    /**
-     * Positions of the particles stored separately for more efficient access
-     */
-    std::vector<std::array<double,3>> positions;
+    std::vector<Particle>& particles;
     /**
      * Start time of the simulation
      */
@@ -88,11 +94,14 @@ class ParticleContainer {
      */
     double delta_t;
     /**
+     * The functional interface which computes the force between two particles (gravitational force, Lennard Jones force...)
+     */
+    Force& f;
+    /**
      * Output format of the data, either .vtu or .xyz
      */
-    std::string outputformat;
+    std::string outputFormat;
+
 
 
 };
-
-#endif //PARTICLECONTAINER_H

@@ -8,6 +8,7 @@
 #include "FileReader.h"
 #include "outputWriter/XYZWriter.h"
 #include "utils/ArrayUtils.h"
+#include "GravitationalForce.h"
 
 #include <iostream>
 #include <list>
@@ -32,16 +33,16 @@ void plotParticles(int iteration);
  * @brief Function to print the help message
  */
 void printHelp();
-double start_time = 0;
-double end_time = 1000;
-double delta_t = 0.014;
-std::string outputformat = ".vtu";
 
-std::vector<Particle> particles;
 
 
 int main(int argc, char *argsv[]) {
+    double start_time = 0;
+    double end_time = 1000;
+    double delta_t = 0.014;
+    std::string outputFormat = ".vtu";
 
+    std::vector<Particle> particles;
   std::cout << "Hello from MolSim for PSE!" << "\n"
   << "To run this program, please provide the file name as an argument, like this: `./Molsim abc.txt " << "\n"
   << "To see more options, type ./Molsim help or ./Molsim --help" << "\n\n";
@@ -67,8 +68,8 @@ int main(int argc, char *argsv[]) {
   if (argc >= 3) delta_t = std::atof(argsv[2]);
   if (argc >= 4) end_time = std::atof(argsv[3]);
   if (argc >= 5) {
-    outputformat = argsv[4];
-    if (outputformat != ".xyz" && outputformat != ".vtu") {
+      outputFormat = argsv[4];
+    if (outputFormat != ".xyz" && outputFormat != ".vtu") {
       std::cout << "Invalid output format! Choose either 'xyz' or 'vtu'." << "\n\n";
       return 1; // exit with error
     }
@@ -76,20 +77,20 @@ int main(int argc, char *argsv[]) {
 
   // Start the timer
   auto start = std::chrono::high_resolution_clock::now();
-
-  // Create a particle container for forwarding the particles, start time, end time, delta_t and outputformat
-  ParticleContainer particle_container = ParticleContainer(particles, start_time, end_time,delta_t, outputformat);
+  // Create a particle container for forwarding the particles, start time, end time, delta_t and outputFormat
+  GravitationalForce f;
+  ParticleContainer particle_container = ParticleContainer(particles, start_time, end_time, delta_t, f, outputFormat);
 
   // Inform the user about the input parameters
   std::cout << "Testfilename: " << argsv[1] << "\n";
   std::cout << "Start Time: " << start_time << "\n";
   std::cout << "Time End: " << end_time << "\n" ;
   std::cout << "Delta Time: " << delta_t << "\n";
-  std::cout << "Output format: " << outputformat << "\n\n";
+  std::cout << "Output format: " << outputFormat << "\n\n";
 
 
   // Calculate the position, force and velocity for all particles
-  particle_container.calculate(2);
+    particle_container.simulate();
 
   std::cout << "output written. Terminating..." << "\n";
    

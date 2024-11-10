@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "Particle.h"
 #include "ParticleContainer.h"
+#include "GravitationalForce.h"
 #include <vector>
 #include <iostream>
 #include "FileReader.h"
@@ -20,7 +21,8 @@ protected:
     void SetUp() override {
         FileReader fileReader;
         ASSERT_NO_THROW(fileReader.readFile(particles, testfile)) << "Error reading file";
-        particle_container = new ParticleContainer(particles, 0, 1000, 0.014, ".vtu");
+        GravitationalForce f;
+        particle_container = new ParticleContainer(particles, 0, 1000, 0.014, f, ".vtu");
     }
 
     void TearDown() override {

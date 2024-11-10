@@ -28,9 +28,16 @@ private:
      * The average velocity of the Brownian motion.
      */
     double avgVelocityBrownian;
+public:
+    Cuboid(const std::array<double, 3> &x, const std::array<double, 3> &v, const std::array<unsigned int, 3> &n,
+           double m, double distance, double avgVelocityBrownian);
 
 public:
-    std::vector<Particle> createParticles();
+    /**
+     * @brief Create particles that belong to the cuboid.
+     * @return A vector of particles that the cuboid consists of.
+     */
+    [[nodiscard]] std::vector<Particle> createParticles() const;
 };
 
 
