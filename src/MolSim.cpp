@@ -50,10 +50,6 @@ int main(int argc, char *argsv[]) {
     std::string outputFile("MD_vtk");
 
     std::vector<Particle> particles;
-    std::cout << "Hello from MolSim for PSE!" << "\n"
-    << "To run this program, please provide the input file name as an argument, like this: `./Molsim abc.txt " << "\n"
-    << "To see more options, type ./Molsim help or ./Molsim --help" << "\n\n";
-
 
     int opt;
     static struct option long_options[] = {
@@ -149,12 +145,15 @@ int main(int argc, char *argsv[]) {
 
 
 void printHelp() {
-    std::cout << "MolSim for PSE - Usage:" << "\n";
-    std::cout << "./MolSim filename [delta_t] [end_time] [output_format]" << "\n";
+    std::cout << "MolSim for PSE" << "\n";
+    std::cout << "Usage:" << "\n";
+    std::cout << "  ./MolSim <input-file> [-d <time-step>] [-e <duration>] [-f <output-format>] [-o <output-file>] [-l|-g]" << "\n";
     std::cout << "Options:" << "\n";
-    std::cout << "  1.  Specify the input file name (required)" << "\n";
-    std::cout << "  2.  Set the delta time (optional, default is 0.014)" << "\n";
-    std::cout << "  3.  Set the end time (optional, default is 1000)" << "\n";
-    std::cout << R"(  4.  Specify output format: either ".xyz" or ".vtu" (optional, default is ".vtu "))" << "\n";
-    std::cout << "  --help, help message" << "\n\n";
+    std::cout << "  -d or --delta_t <time-step>    = The length of each time step of the simulation (Default: 0.0002)." << "\n";
+    std::cout << "  -e or --end_time <duration>    = The total duration of the simulation (Default = 5)." << "\n";
+    std::cout << "  -f or --format <output-format> = The format of the output, must be either vtu or xyz (Default: vtu)." << "\n";
+    std::cout << "  -o or --output <output-file>   = The name of files that data should be written to (Default: MD_vtk)." << "\n";
+    std::cout << "  -g or --gravitation            = The simulation of gravitational force (with G = 1) between objects (Default)." << "\n";
+    std::cout << "  -l or --Lennard_Jones          = If specified, the Lennard Jones potential (with epsilon = 5 and sigma = 1) is simulated." << "\n";
+    std::cout << "  -h or --help                   = Print help message." << "\n";
 }
