@@ -23,7 +23,7 @@ class ParticleContainer {
     * @param f: The force object that defines the force between two particles.
     * @param outputFormat: The output format of data, either .vtu or .xyz.
     */
-   ParticleContainer(std::vector<Particle>& particles, double start_time, double end_time, double delta_t, Force& f,
+   ParticleContainer(std::vector<Particle>& particles, double start_time, double end_time, double delta_t, Force* f,
     std::string outputFormat);
 
 
@@ -65,13 +65,13 @@ class ParticleContainer {
      * @brief Calculate the position, force and velocity for all particles
      * @param version: 1 = without optimization or 2 = optimized for cache efficiency
      */
-    void simulate();
+    void simulate(const std::string& out_name);
 
     /**
     * @brief Save the current state of the particles in the container to the output.
     * @param iteration: The current iteration number.
     */
-    void plotParticles(int iterations);
+    void plotParticles(int iterations, const std::string& out_name);
 
   
   private:

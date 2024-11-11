@@ -18,6 +18,8 @@ public:
      * @return the gravitational force of the first particle acting on the second particle
      */
     std::array<double, 3> force(Particle& particle1, Particle& particle2) override;
+
+    ~GravitationalForce() override;
 };
 
 

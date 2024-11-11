@@ -21,8 +21,7 @@ protected:
     void SetUp() override {
         FileReader fileReader;
         ASSERT_NO_THROW(fileReader.readFile(particles, testfile)) << "Error reading file";
-        GravitationalForce f;
-        particle_container = new ParticleContainer(particles, 0, 1000, 0.014, f, ".vtu");
+        particle_container = new ParticleContainer(particles, 0, 1000, 0.014, new GravitationalForce(), ".vtu");
     }
 
     void TearDown() override {

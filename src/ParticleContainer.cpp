@@ -12,12 +12,12 @@
  * outputFormat can be either .vtu or .xyz
  */
 ParticleContainer::ParticleContainer(std::vector<Particle>& particles, double start_time,
-                                     double end_time, double delta_t, Force& f, std::string outputFormat)
+                                     double end_time, double delta_t, Force* f, std::string outputFormat)
     : particles(particles),
       start_time(start_time),
       end_time(end_time),
       delta_t(delta_t),
-      f(f),
+      f(*f),
       outputFormat(std::move(outputFormat)) { // std::move if outputFormat is temporary
     // compute initial forces
     updateF();
@@ -28,6 +28,7 @@ ParticleContainer::ParticleContainer(std::vector<Particle>& particles, double st
 
 ParticleContainer::~ParticleContainer(){
     std::cout << "ParticleContainer destructed!\n";
+    delete &f;
 }
 
 
@@ -86,10 +87,13 @@ void ParticleContainer::updateV(){
     }
 }
 
-void ParticleContainer::simulate() {
+void ParticleContainer::simulate(const std::string& out_name) {
 
     int max_iteration = (int) ((end_time - start_time) / delta_t);
-    for (int iteration  = 0; iteration <= max_iteration; iteration++) {
+    for (int iteration = 0; iteration < max_iteration; iteration++) {
+        if (iteration % 10 == 0) {
+            plotParticles(iteration, out_name);
+        }
         // Calculate the position
         updateX();
         // Calculate the force
@@ -97,23 +101,19 @@ void ParticleContainer::simulate() {
         // Calculate the velocity
         updateV();
         // Plot every 10th iteration
-        if (iteration % 10 == 0) {
-            plotParticles(iteration);
-        }
-        std::cout << "Iteration " << iteration << " finished." << "\n";
+        std::cout << "Iteration " << (iteration + 1) << " finished." << "\n";
     }
     std::cout << "output written. Terminating..." << "\n";
 }
 
-void ParticleContainer::plotParticles(int iteration) {
+void ParticleContainer::plotParticles(int iteration, const std::string& out_name) {
     std::cout << "Plotting Particles..." << "\n";
 
-    std::string out_name("MD_vtk");
-    if(outputFormat.compare(".vtu") == 0) {
-        outputWriter::VTKWriter writer2;
-        writer2.writeFile(out_name, iteration,particles);
+    if(outputFormat == "vtu") {
+        outputWriter::VTKWriter writer;
+        writer.writeFile(out_name, iteration,particles);
     }
-    else if(outputFormat.compare(".xyz") == 0) {
+    else if(outputFormat == "xyz") {
         outputWriter::XYZWriter writer;
         writer.plotParticles(particles, out_name, iteration);
     }

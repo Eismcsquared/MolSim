@@ -38,10 +38,11 @@ void FileReader::readFile(std::vector<Particle> &particles, char *filename) {
         std::istringstream numstream(tmp_string);
         numstream >> num_particles;
         std::cout << "Reading " << num_particles << "." << std::endl;
-        getline(input_file, tmp_string);
-        std::cout << "Read line: " << tmp_string << std::endl;
 
         for (int i = 0; i < num_particles; i++) {
+            getline(input_file, tmp_string);
+            std::cout << "Read line: " << tmp_string << std::endl;
+            tmp_string.erase(tmp_string.find_last_not_of(" \t\n\r\f\v") + 1);
             std::istringstream datastream(tmp_string);
             for (auto &xj : x) {
                 datastream >> xj;
@@ -69,8 +70,6 @@ void FileReader::readFile(std::vector<Particle> &particles, char *filename) {
                 Cuboid cuboid(x, v, n, m, distance, avgV);
                 cuboid.createParticles(particles);
             }
-            getline(input_file, tmp_string);
-            std::cout << "Read line: " << tmp_string << std::endl;
         }
     } else {
         std::cout << "Error: could not open file " << filename << std::endl;

@@ -13,3 +13,5 @@ std::array<double, 3> GravitationalForce::force(Particle& particle1, Particle& p
     return factor * (particle1.getX() - particle2.getX());
 }
 
+GravitationalForce::~GravitationalForce() = default;
+
