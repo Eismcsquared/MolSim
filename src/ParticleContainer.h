@@ -17,14 +17,9 @@ class ParticleContainer {
     /**
     * @brief Construct a particle container.
     * @param particles: The particles to store.
-    * @param start_time: The start time of the simulation. Default: 0.
-    * @param end_time: The end time of the simulation.
-    * @param delta_t: The time step of the simulation.
     * @param f: The force object that defines the force between two particles.
-    * @param outputFormat: The output format of data, either .vtu or .xyz.
     */
-   ParticleContainer(std::vector<Particle>& particles, double start_time, double end_time, double delta_t, Force* f,
-    std::string outputFormat);
+   ParticleContainer(std::vector<Particle>& particles, Force* f);
 
 
 /**
@@ -46,32 +41,40 @@ class ParticleContainer {
     void addCuboid(const Cuboid &cuboid);
 
     /**
-     * @brief Calculate the force between all particles version1
+     * @brief Calculate the force between all particles
+     * @param newton3: Specifies whether the Newton's third law should be applied in the force calculation.
      */
     void updateF(bool newton3 = true);
 
 
      /**
       * @brief Update the position for all particles
+      * @param delta_t: The duration that the positions should be updated for.
       */
-    void updateX();
+    void updateX(double delta_t);
 
     /**
      * @brief Update the velocity for all particles
+     * @param delta_t: The duration that the velocities should be updated for.
      */
-    void updateV();
+    void updateV(double delta_t);
 
     /**
-     * @brief Calculate the position, force and velocity for all particles
-     * @param version: 1 = without optimization or 2 = optimized for cache efficiency
+     * @brief Simulate the system.
+     * @param delta_t: The length of each time step.
+     * @param end_time: The duration of the simulation.
+     * @param out_name: The name of the files that data should be written to.
+     * @param output_format: The format of the output, should be either vtu or xyz.
      */
-    void simulate(const std::string& out_name);
+    void simulate(double delta_t, double end_time, const std::string& out_name, const std::string& output_format);
 
     /**
-    * @brief Save the current state of the particles in the container to the output.
-    * @param iteration: The current iteration number.
+     * @brief Save the current state of the particles in the container to the output.
+     * @param iteration: The current iteration number.
+     * @param out_name: The name of the files that data should be written to.
+     * @param output_format: The format of the output, should be either vtu or xyz.
     */
-    void plotParticles(int iterations, const std::string& out_name);
+    void plotParticles(int iterations, const std::string& out_name, const std::string& output_format);
 
   
   private:
@@ -81,27 +84,10 @@ class ParticleContainer {
      * Particles stored in the container
      */
     std::vector<Particle>& particles;
-    /**
-     * Start time of the simulation
-     */
-    double start_time = 0;
-    /**
-     * End time of the simulation
-     */
-    double end_time = 1000;
-    /**
-     * Time step of the simulation
-     */
-    double delta_t;
+
     /**
      * The functional interface which computes the force between two particles (gravitational force, Lennard Jones force...)
      */
     Force& f;
-    /**
-     * Output format of the data, either .vtu or .xyz
-     */
-    std::string outputFormat;
-
-
 
 };

@@ -97,10 +97,6 @@ int main(int argc, char *argsv[]) {
         }
     }
 
-    for(int i = 0; i < argc; i++) {
-        std::cout << argsv[i] << "\n";
-    }
-
     FileReader fileReader;
     fileReader.readFile(particles, inputFile);
 
@@ -115,7 +111,7 @@ int main(int argc, char *argsv[]) {
         case LENNARD_JONES:
             force = new LennardJonesForce();
     }
-    ParticleContainer particle_container = ParticleContainer(particles, start_time, end_time, delta_t, force, outputFormat);
+    ParticleContainer particle_container = ParticleContainer(particles, force);
 
   // Inform the user about the input parameters
     std::cout << "Testfilename: " << inputFile << "\n";
@@ -126,7 +122,7 @@ int main(int argc, char *argsv[]) {
 
 
     // Calculate the position, force and velocity for all particles
-    particle_container.simulate(outputFile);
+    particle_container.simulate(delta_t, end_time, outputFile, outputFormat);
 
     std::cout << "output written. Terminating..." << "\n";
    

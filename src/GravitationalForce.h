@@ -1,6 +1,8 @@
 
 #include "Force.h"
-
+/**
+ * @brief Class for calculation of the gravitational force between two objects.
+ */
 class GravitationalForce: public Force {
 private:
     /**
