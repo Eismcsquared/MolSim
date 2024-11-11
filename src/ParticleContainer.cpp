@@ -36,9 +36,7 @@ void ParticleContainer::addParticle(const Particle& particle){
 }
 
 void ParticleContainer::addCuboid(const Cuboid& cuboid) {
-    std::vector<Particle> newParticles = cuboid.createParticles();
-    particles.insert(std::end(particles), std::begin(newParticles), std::end(newParticles));
-
+    cuboid.createParticles(particles);
 }
 
 

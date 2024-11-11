@@ -2,8 +2,7 @@
 #include "Cuboid.h"
 #include "utils/MaxwellBoltzmannDistribution.h"
 
-std::vector<Particle> Cuboid::createParticles() const {
-    std::vector<Particle> particles = std::vector<Particle>();
+void Cuboid::createParticles(std::vector<Particle>& particles) const {;
     for (unsigned int i = 0; i < N[0]; ++i) {
         for (unsigned int j = 0; j < N[1]; ++j) {
             for (unsigned int k = 0; k < N[2]; ++k) {
@@ -14,7 +13,6 @@ std::vector<Particle> Cuboid::createParticles() const {
             }
         }
     }
-    return particles;
 }
 
 Cuboid::Cuboid(const std::array<double, 3> &x, const std::array<double, 3> &v, const std::array<unsigned int, 3> &n,
