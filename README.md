@@ -25,7 +25,14 @@ cmake version 3.28.3, g++ 13.2.0, doxygen 1.12.0, clang version 18.1.3
 
 Options:
 
-`-d | --delta_t <time-step>`    = The length of each time step of the simulation (Default: 0.0002).<br>`-e | --end_time <duration>`   = The total duration of the simulation (Default = 5).<br>`-f | --format <output-format>`= The format of the output, must be either vtu or xyz (Default: vtu).<br>`-o | --output <output-file>`  = The name of files that data should be written to (Default: MD_vtk).<br>`-g | --gravitation`                            = The simulation of gravitational force (with G = 1) between objects.<br>`-l | --Lennard_Jones`                            = If specified, the Lennard Jones potential (with epsilon = 5 and sigma = 1) is simulated.<br>`-h | --help`                   = Print help message.<br>
+`-d | --delta_t <time-step>` = The length of each time step of the simulation (Default: 0.0002).<br>
+`-e | --end_time <duration>` = The total duration of the simulation (Default = 5).<br>
+`-f | --format <output-format>` = The format of the output, must be either vtu or xyz (Default: vtu).<br>
+`-o | --output <output-file>` = The name of files that data should be written to (Default: MD_vtk).<br>
+`-g | --gravitation` = The simulation of gravitational force (with G = 1) between objects.<br>
+`-l | --Lennard_Jones` = If specified, the Lennard Jones potential (with epsilon = 5 and sigma = 1) is simulated.<br>
+`-h | --help` = Print help message.<br>
+
 
 Input file format:<br>
 
@@ -56,7 +63,6 @@ For simulations required in the individuell work sheets, run the following comma
 
 - Assignment 1:
   `./MolSim ../input/eingabe-sonne.txt -d 0.014 -e 1000 -g`<br>
-  
 - Assignment 2:
   `./MolSim ../input/assignment2.txt -d 0.0002 -e 5 -l`<br>
 
