@@ -120,3 +120,7 @@ void ParticleContainer::plotParticles(int iteration) {
         writer.plotParticles(particles, out_name, iteration);
     }
 }
+
+int ParticleContainer::getParticleSize() const {
+    return particles.size();
+}

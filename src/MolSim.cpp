@@ -35,7 +35,6 @@ void plotParticles(int iteration);
 void printHelp();
 
 
-
 int main(int argc, char *argsv[]) {
     double start_time = 0;
     double end_time = 1000;
@@ -54,13 +53,18 @@ int main(int argc, char *argsv[]) {
       return 0;
     }
   }
+  // default file name 
+  
 
   if (argc < 2) {
-    std::cout << "Error: Filename is required." << "\n";
+    std::cout << "Set file to default file ../input/eingabe-sonne.txt" << "\n";
     printHelp();
-    return 1;
+    //temporarily set the filename to a default value
+    char* filename = "../input/eingabe-sonne.txt";
+    argsv[1] = filename;
   }
-
+  
+  
   FileReader fileReader;
   fileReader.readFile(particles, argsv[1]);
 
@@ -98,7 +102,7 @@ int main(int argc, char *argsv[]) {
   // Stop the timer
   auto end = std::chrono::high_resolution_clock::now();
 
-  
+
   // Calculate the duration
   std::chrono::duration<double> duration = end - start;
   std::cout << "Duration: " << duration.count() << "s" << "\n";

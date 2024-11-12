@@ -73,6 +73,8 @@ class ParticleContainer {
     */
     void plotParticles(int iterations);
 
+    int getParticleSize() const;
+
   
   private:
 

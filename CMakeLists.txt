@@ -69,8 +69,11 @@ file(GLOB_RECURSE MY_TESTS
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h" 
 )
+
+list(FILTER MY_TESTS EXCLUDE REGEX "MolSim.cpp") # exclude main file from tests
+
 add_executable(tests ${MY_TESTS})
 
 target_include_directories(tests PRIVATE
