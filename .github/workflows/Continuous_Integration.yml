@@ -4,9 +4,8 @@ name : CI Pipeline
 on : 
     push :
         branches: ["master", "Assignment2", "Assignment2_tmp"]
-    pull_request :
-        
-        branches: ["Assignment2", "Assignment2_tmp"]
+    pull_request : 
+        branches: ["master", "Assignment2", "Assignment2_tmp"]
 
 jobs :
     build :
