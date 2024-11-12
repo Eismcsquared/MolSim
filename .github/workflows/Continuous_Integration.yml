@@ -1,0 +1,41 @@
+
+name : CI Pipeline
+
+on : 
+    push :
+        branches: ["master", "Assignment2", "Assignment2_tmp"]
+    pull_request :
+        
+        branches: ["Assignment2", "Assignment2_tmp"]
+
+jobs :
+    build :
+        runs-on : ubuntu-latest
+
+        steps :
+            - name : Checkout code
+              uses : actions/checkout@v4
+
+            - name : Set up Cmake
+              uses : actions/setup-cmake@v3
+              with :
+                  cmake-version : 3.28.3
+
+            - name : Install xcerces-c
+              run :  sudo apt-get install libxerces-c-dev
+
+            - name : Create build directory
+              run : mkdir build
+            
+            - name : Configure Cmake with AdressSanitizer
+              run : cmake -B build -DCMAKE_CXX_FLAGS="-fsanitize=address" -DCMAKE_BUILD_TYPE=Debug
+            
+            - name : Build project 
+              run : cmake --build ${{github.workspace}}/build
+            
+            - name : Compiler check
+              run : g++ --version
+              
+            - name : Run tests
+              run : cd ${{github.workspace}}/build 
+                    ctest

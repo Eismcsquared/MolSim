@@ -48,3 +48,4 @@ TEST_F(PartilceTest, Addparticle_2) {
     int size_after = pc->getParticleSize();
     ASSERT_EQ(size_before + 10, size_after) ;
 }
+
