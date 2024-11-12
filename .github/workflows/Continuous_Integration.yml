@@ -36,5 +36,5 @@ jobs :
               run : g++ --version
               
             - name : Run tests
-              run : cd ${{github.workspace}}/build 
+              run : cd build 
                     ctest
