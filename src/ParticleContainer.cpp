@@ -80,11 +80,11 @@ void ParticleContainer::updateV(double delta_t){
     }
 }
 
-void ParticleContainer::simulate(double delta_t, double end_time, const std::string& out_name, const std::string& output_format) {
+void ParticleContainer::simulate(double delta_t, double end_time, const std::string& out_name, const std::string& output_format, bool save_output) {
 
     int max_iteration = (int) (end_time / delta_t);
     for (int iteration = 0; iteration < max_iteration; iteration++) {
-        if (iteration % 10 == 0) {
+        if (iteration % 10 == 0 && save_output) {
             plotParticles(iteration, out_name, output_format);
         }
         // Calculate the position

@@ -66,7 +66,7 @@ class ParticleContainer {
      * @param out_name: The name of the files that data should be written to.
      * @param output_format: The format of the output, should be either vtu or xyz.
      */
-    void simulate(double delta_t, double end_time, const std::string& out_name, const std::string& output_format);
+    void simulate(double delta_t, double end_time, const std::string& out_name, const std::string& output_format, bool save_output = true);
 
     /**
      * @brief Save the current state of the particles in the container to the output.

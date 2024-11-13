@@ -24,8 +24,8 @@ public:
      * @param particle2 the second particle.
      * @return the Lennard-Jones force of the first particle acting on the second particle
      */
-    std::array<double, 3> force(Particle& particle1, Particle& particle2) override;
+    virtual std::array<double, 3> force(Particle& particle1, Particle& particle2) override;
 
-    ~LennardJonesForce() override;
+    virtual ~LennardJonesForce() override;
 };
 

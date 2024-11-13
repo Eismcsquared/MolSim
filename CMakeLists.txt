@@ -34,7 +34,7 @@ target_include_directories(MolSim
             ${CMAKE_CURRENT_SOURCE_DIR}/libs/libxsd
         PRIVATE
             ${CMAKE_CURRENT_SOURCE_DIR}/src
-           # ${CMAKE_CURRENT_SOURCE_DIR}/tests
+
 )
 
 target_link_libraries(MolSim
@@ -80,7 +80,7 @@ target_include_directories(tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-target_link_libraries(tests PRIVATE GTest::gtest_main spdlog::spdlog MolSim)
+target_link_libraries(tests PRIVATE GTest::gtest_main spdlog::spdlog gmock MolSim)
 set_property(TARGET tests PROPERTY ENVIRONMENT "GTEST_COLOR=1")
 add_test(NAME tests COMMAND tests)
 enable_testing()

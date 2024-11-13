@@ -10,13 +10,24 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/fmt/ostr.h>
+#include <gmock/gmock.h>
+#include "LennardJonesForce.h"
+#include "Force.h"
 
-TEST(Test3, Test3) {
-    std::cout << "Test1" << std::endl;
-    ASSERT_TRUE(true);
+char* testfile = const_cast<char*>("../input/eingabe-sonne.txt");
+std::shared_ptr<spdlog::logger> test_logger = spdlog::basic_logger_mt("test_logger", "logs/test.txt");
+
+TEST(LennardJonesForceTest, LennardJonesForce) {
+    std::cout << "Test2" << std::endl;
+    EXPECT_FALSE(false);
 }
 
-TEST(Test4, Test4) {
-    std::cout << "Test2" << std::endl;
+TEST(GravitationalForceTest, GravitationalForce) {
+    std::cout << "Test1" << std::endl;
+    EXPECT_FALSE(false);
+}
+
+TEST(ParticleContainerTest, ParticleContainer) {
+    std::cout << "Test3" << std::endl;
     EXPECT_FALSE(false);
 }
