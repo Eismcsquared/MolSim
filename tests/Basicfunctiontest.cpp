@@ -9,12 +9,11 @@
 #include <string>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
-//#include "outputWriter/XYZWriter.h"
-//#include "outputWriter/VTKWriter.h"
+#include <spdlog/fmt/ostr.h>
 
-char* testfile = "../input/simpletest.txt";
+
+char* testfile = "../input/eingabe-sonne.txt";
 std::shared_ptr<spdlog::logger> test_logger = spdlog::basic_logger_mt("test_logger", "logs/test.txt");
-
 class ParticleTest : public ::testing::Test {
 protected:
     std::vector<Particle> particles;
@@ -71,6 +70,29 @@ TEST_F(ParticleTest, Addparticle_2) {
     if(flag){
         test_logger->info("Add particle test2 passed");
     }
-
 }
 
+TEST_F(ParticleTest, Update_F_simple) {
+    test_logger->info("Calculate simple force test");
+    pc->updateF();
+
+    test_logger->info("Calculate simple force test passed");
+}
+
+TEST_F(ParticleTest, Update_X_test) {
+    test_logger->info("Update X test");
+    pc->updateX();
+    test_logger->info("Update X test passed");
+}
+
+TEST_F(ParticleTest, Update_V_test) {
+    test_logger->info("Update V test");
+    pc->updateV();
+    test_logger->info("Update V test passed");
+}
+
+TEST_F(ParticleTest, Complex_test) {
+    test_logger->info("complex test"); // result
+    pc->simulate();
+    test_logger->info("complex test passed");
+}

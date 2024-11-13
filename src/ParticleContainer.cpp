@@ -124,3 +124,7 @@ void ParticleContainer::plotParticles(int iteration) {
 int ParticleContainer::getParticleSize() const {
     return particles.size();
 }
+
+std::vector<Particle>& ParticleContainer::getParticles() const {
+    return particles;
+}

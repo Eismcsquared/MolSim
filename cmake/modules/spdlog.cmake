@@ -1,4 +1,6 @@
 # spdlog.cmake
+set(SPDLOG_VERSION 1.14.1)
+find_package(spdlog ${SPDLOG_VERSION} QUIET)
 
 #check if spdlog is already included
 if (NOT TARGET spdlog)

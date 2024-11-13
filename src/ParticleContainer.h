@@ -50,7 +50,6 @@ class ParticleContainer {
      */
     void updateF(bool newton3 = true);
 
-
      /**
       * @brief Update the position for all particles
       */
@@ -75,7 +74,9 @@ class ParticleContainer {
 
     int getParticleSize() const;
 
-  
+    std::vector<Particle>& getParticles() const;
+
+    
   private:
 
 

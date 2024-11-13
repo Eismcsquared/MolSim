@@ -1,5 +1,5 @@
 set(GTEST_VERSION 1.15.2)
-
+find_package(GTest ${GTEST_VERSION} QUIET)
 #check if gtest is already included
 if (NOT TARGET gtest)
     message("Fetching gtest : version 1.15.2 ")
@@ -11,5 +11,4 @@ if (NOT TARGET gtest)
         GIT_TAG        v1.15.2 # v1.15.2 is the latest version at 07.11.2021
     )
     FetchContent_MakeAvailable(googletest)
-
 endif()

@@ -1,4 +1,6 @@
 # Check if xerces-c is already included
+set(XERCES_VERSION 3.3.0)
+find_package(xerces-c QUIET)
 if (NOT TARGET xerces-c)
     
     include(FetchContent)
