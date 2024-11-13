@@ -12,7 +12,6 @@ if(NOT CMAKE_BUILD_TYPE)
             "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
 
-find_package(fmt REQUIRED)
 
 # collect all cpp files
 file(GLOB_RECURSE MY_SRC
@@ -36,7 +35,6 @@ target_include_directories(MolSim
             ${CMAKE_CURRENT_SOURCE_DIR}/libs/libxsd
         PRIVATE
             ${CMAKE_CURRENT_SOURCE_DIR}/src
-           # ${CMAKE_CURRENT_SOURCE_DIR}/tests
 )
 
 target_link_libraries(MolSim
@@ -46,7 +44,7 @@ target_link_libraries(MolSim
         PRIVATE
             $<$<CXX_COMPILER_ID:GNU>:-fsanitize=address>
             $<$<CXX_COMPILER_ID:Clang>:-fsanitize=address>
-            fmt::fmt
+            fmt::fmt           
 )
 
 # activate all compiler warnings. Clean up your code :P
@@ -66,6 +64,7 @@ include(doxygen)
 include(spdlog)
 #include(xcerces)
 include(gtest)
+include(fmt)
 
 #testfiles 
 file(GLOB_RECURSE MY_TESTS
@@ -83,7 +82,7 @@ target_include_directories(tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-target_link_libraries(tests PRIVATE GTest::gtest_main spdlog::spdlog MolSim)
+target_link_libraries(tests PRIVATE GTest::gtest_main spdlog::spdlog fmt::fmt MolSim)
 set_property(TARGET tests PROPERTY ENVIRONMENT "GTEST_COLOR=1")
 add_test(NAME tests COMMAND tests)
 enable_testing()
