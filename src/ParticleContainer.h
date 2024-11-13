@@ -76,6 +76,8 @@ class ParticleContainer {
 
     std::vector<Particle>& getParticles() const;
 
+    std::string writeoutput(const std::string& filename);
+
     
   private:
 

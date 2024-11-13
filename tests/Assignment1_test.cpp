@@ -10,24 +10,32 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/fmt/ostr.h>
+#include <fstream>
+#include <sstream>
 
 
-char* testfile = "../input/eingabe-sonne.txt";
+char* testfile = const_cast<char*>("../input/eingabe-sonne.txt");
 std::shared_ptr<spdlog::logger> test_logger = spdlog::basic_logger_mt("test_logger", "logs/test.txt");
+
+std::string TxttoString(const std::string& filePath) {
+    std::ifstream file(filePath);
+    std::stringstream buf;
+    buf << file.rdbuf();
+    return buf.str();
+}
+
 class ParticleTest : public ::testing::Test {
 protected:
     std::vector<Particle> particles;
     ParticleContainer *pc;
+    GravitationalForce f;
 
     void SetUp() override {
-
         FileReader fileReader;
         fileReader.readFile(particles, testfile);
-        GravitationalForce f;
         pc = new ParticleContainer(particles, 0, 1000, 0.014, f, ".vtu");
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("Particle Container created");
-
     }
 
     void TearDown() override {
@@ -74,22 +82,60 @@ TEST_F(ParticleTest, Addparticle_2) {
 
 TEST_F(ParticleTest, Update_F_simple) {
     test_logger->info("Calculate simple force test");
-    test_logger->info("Calculate simple force test passed");
+    bool flag = true;
+    pc->updateF();
+    pc->writeoutput("updateF_simple.txt");
+
+    std::string actual = TxttoString("updateF_simple.txt");
+    std::string expected = TxttoString("../tests/Answer_Ref/updateF_simple.txt");
+
+    if(expected != actual) {
+        test_logger->error("Calculate simple force test failed");
+    }
+    ASSERT_EQ(expected, actual) << "Calculate simple force test failed";
+    if(flag){
+        test_logger->info("Calculate simple force test passed");
+    }
 }
 
-TEST_F(ParticleTest, Update_X_test) {
-    test_logger->info("Update X test");
-    pc->updateX();
-    test_logger->info("Update X test passed");
+TEST_F(ParticleTest, Simulation_simple) {
+    test_logger->info("Simulation simple test");
+    bool flag = true;
+    for(int iteration = 0 ; iteration <= 3; ++iteration) {
+        pc->updateX();
+        pc->updateF();
+        pc->updateV();
+    }
+    std :: string actual = pc->writeoutput("simulation_simple.txt");
+    std::string expected = TxttoString("../tests/Answer_Ref/Ans_simulation_simple.txt");
+
+    if(expected != actual) {
+        test_logger->error("Simulation simple test failed");
+    }
+    ASSERT_EQ(expected, actual) << "Simulation simple test failed";
+    if(flag){
+        test_logger->info("Simulation simple test passed");
+    }
 }
 
-TEST_F(ParticleTest, Update_V_test) {
-    test_logger->info("Update V test");
-    pc->updateV();
-    test_logger->info("Update V test passed");
-}
 
-TEST_F(ParticleTest, Complex_test) {
-    test_logger->info("complex test"); // result
-    test_logger->info("complex test passed");
+TEST_F(ParticleTest, Complex_simulation) {
+    test_logger->info("Complex simulation test");
+    bool flag = true;
+    int max_iteration = (int) ((1000 - 0) / 0.014);
+    for(int iteration = 0 ; iteration <= max_iteration; ++iteration) {
+        pc->updateX();
+        pc->updateF();
+        pc->updateV();
+    }
+    std::string actual = pc->writeoutput("simulation_complex.txt");
+    std::string expected = TxttoString("../tests/Answer_Ref/Ans_simulation_complex.txt");
+
+    if(expected != actual) {
+        test_logger->error("Complex simulation test failed");
+    }
+    ASSERT_EQ(expected, actual) << "Complex simulation test failed";
+    if(flag){
+        test_logger->info("Complex simulation test passed");
+    }
 }

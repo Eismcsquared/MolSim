@@ -45,7 +45,7 @@ target_link_libraries(MolSim
             $<$<CXX_COMPILER_ID:GNU>:-fsanitize=address>
             $<$<CXX_COMPILER_ID:Clang>:-fsanitize=address>
             fmt::fmt
-            spdlog::spdlog          
+            #spdlog::spdlog          
 )
 
 # activate all compiler warnings. Clean up your code :P

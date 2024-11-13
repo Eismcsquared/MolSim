@@ -60,7 +60,7 @@ int main(int argc, char *argsv[]) {
     std::cout << "Set file to default file ../input/eingabe-sonne.txt" << "\n";
     printHelp();
     //temporarily set the filename to a default value
-    char* filename = "../input/eingabe-sonne.txt";
+    char* filename = const_cast<char*>("../input/eingabe-sonne.txt");
     argsv[1] = filename;
   }
   

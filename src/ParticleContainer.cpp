@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
+#include <filesystem>
 #include "outputWriter/XYZWriter.h"
 #include "outputWriter/VTKWriter.h"
 #include "utils/ArrayUtils.h"
@@ -127,4 +128,32 @@ int ParticleContainer::getParticleSize() const {
 
 std::vector<Particle>& ParticleContainer::getParticles() const {
     return particles;
+}
+
+std::string ParticleContainer::writeoutput(const std::string& filename) {
+
+    std::filesystem::create_directories("output");
+
+    std::ofstream outFile("output/" + filename);
+    if (!outFile.is_open()) {
+        std::cerr << "Error: Could not open file" << std::endl;
+        exit(1);
+    }
+
+    std::stringstream buf;
+    buf << particles.size() << std::endl;
+    for (auto &p : particles) {
+        buf << p.getX()[0] << " " << p.getX()[1] << " " << p.getX()[2] << "|";
+        buf << p.getV()[0] << " " << p.getV()[1] << " " << p.getV()[2] << "|";
+        buf << p.getF()[0] << " " << p.getF()[1] << " " << p.getF()[2] << "|";
+        buf << p.getOldF()[0] << " " << p.getOldF()[1] << " " << p.getOldF()[2] << "|";
+        buf << p.getM() << std::endl;
+    }
+
+    outFile << buf.str();
+    outFile.close();
+
+    std::cout << "Output successfully written to output/" << filename << std::endl;
+
+    return buf.str();
 }
