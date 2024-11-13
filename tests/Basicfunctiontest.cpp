@@ -74,7 +74,7 @@ TEST_F(ParticleTest, Addparticle_2) {
 
 TEST_F(ParticleTest, Update_F_simple) {
     test_logger->info("Calculate simple force test");
-   // pc->updateF();
+    pc->updateF();
     test_logger->info("Calculate simple force test passed");
 }
 
