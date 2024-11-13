@@ -76,6 +76,12 @@ class ParticleContainer {
     */
     void plotParticles(int iterations, const std::string& out_name, const std::string& output_format);
 
+    int getParticleSize() const;
+
+    std::vector<Particle>& getParticles() const;
+
+    std::string writeoutput(const std::string& filename);
+
   
   private:
 
