@@ -14,8 +14,6 @@
 #include "LennardJonesForce.h"
 #include "Force.h"
 
-char* testfile = const_cast<char*>("../input/eingabe-sonne.txt");
-
 TEST(LennardJonesForceTest, LennardJonesForce) {
     std::cout << "Test2" << std::endl;
     EXPECT_FALSE(false);
