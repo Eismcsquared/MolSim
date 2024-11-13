@@ -15,7 +15,6 @@
 #include "Force.h"
 
 char* testfile = const_cast<char*>("../input/eingabe-sonne.txt");
-std::shared_ptr<spdlog::logger> test_logger = spdlog::basic_logger_mt("test_logger", "logs/test.txt");
 
 TEST(LennardJonesForceTest, LennardJonesForce) {
     std::cout << "Test2" << std::endl;
