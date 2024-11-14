@@ -43,17 +43,12 @@ target_link_libraries(MolSim
             xerces-c
             spdlog::spdlog
             fmt::fmt
-        PRIVATE
-           # $<$<CXX_COMPILER_ID:GNU>:-fsanitize=address>
-            #$<$<CXX_COMPILER_ID:Clang>:-fsanitize=address>
 )
 
 # activate all compiler warnings. Clean up your code :P
 # depending on the compiler different flags are used
 target_compile_options(MolSim
         PRIVATE
-            #$<$<CXX_COMPILER_ID:GNU>:-Wall -fsanitize=address>
-            #$<$<CXX_COMPILER_ID:Clang>:-Wall -fsanitize=address>
             # disable some spam warnings for icpc...
             $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
 
@@ -63,7 +58,6 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 
 include(doxygen)
 include(spdlog)
-#include(xcerces)
 include(gtest)
 include (fmt)
 
