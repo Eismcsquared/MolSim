@@ -12,6 +12,7 @@
 #include <spdlog/fmt/ostr.h>
 #include <fstream>
 #include <sstream>
+#include "Logger.h"
 
 
 
@@ -22,15 +23,16 @@ std::string TxttoString(const std::string& filePath) {
     buf << file.rdbuf();
     return buf.str();
 }
-
-class ParticleTest : public ::testing::Test {
+// Test whether the simulations in assignment 1 still work as before, reference data originates from previous simulations
+class Assignment1Test : public ::testing::Test {
 protected:
     std::vector<Particle> particles;
     ParticleContainer *pc;
+    char* testfile = const_cast<char*>("../tests/test_cases/assignment1.txt");
+    FileReader fileReader;
 
     void SetUp() override {
-        FileReader fileReader;
-        fileReader.readFile(particles, testfile1);
+        fileReader.readFile(particles, testfile);
         pc = new ParticleContainer(particles, new GravitationalForce());
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("Particle Container created");
@@ -42,98 +44,70 @@ protected:
     }
 };
 
-TEST_F(ParticleTest, Addparticle) {
-    test_logger->info("Add particle test1");
-    Particle p = Particle({1,0,0}, {0,0,0}, 1, 0);
-    int size_before = pc->getParticleSize();
-    pc->addParticle(p);
-    int size_after = pc->getParticleSize();
-    ASSERT_EQ(size_before + 1, size_after);
-    if(size_before + 1 == size_after) {
-        test_logger->info("Add particle test1 passed");
+// Test the calculation of the gravitational forces
+TEST_F(Assignment1Test, Assignment1_updateF) {
+    test_logger->info("Assignment 1 - update force test");
+    Particle ref_p1({0, 0, 0}, {0, 0, 0}, 1);
+    ref_p1.setF({8.28114e-18, 3.6241e-05, 0}); // expected force of the sun
+    Particle ref_p2({0, 1, 0}, {-1, 0, 0}, 3e-06);
+    ref_p2.setF({2.48126e-23, -2.99985e-06, 0}); // expected force of the earth
+    Particle ref_p3({0, 5.36, 0}, {-0.425, 0, 0}, 0.000955);
+    ref_p3.setF({7.63443e-21, -3.32411e-05, 0}); // expected force of the jupiter
+    Particle ref_p4({34.75, 0, 0}, {0, 0.0296, 0}, 1e-14);
+    ref_p4.setF({-8.2888e-18, 1.17828e-21, 0}); // expected force of the Halley comet
+    if (pc->getParticles()[0] == ref_p1 && pc->getParticles()[1] == ref_p2 &&
+    pc->getParticles()[2] == ref_p3 && pc->getParticles()[3] == ref_p4) {
+        test_logger->info("Assignment 1 - update force test passed");
     } else {
-        test_logger->error("Add particle test1 failed");
+        test_logger->error("Assignment 1 - update force test failed");
     }
+    ASSERT_EQ(ref_p1, pc->getParticles()[0]);
+    ASSERT_EQ(ref_p2, pc->getParticles()[1]);
+    ASSERT_EQ(ref_p3, pc->getParticles()[2]);
+    ASSERT_EQ(ref_p4, pc->getParticles()[3]);
 }
 
-TEST_F(ParticleTest, Addparticle_2) {
-    test_logger -> info("Add particle test2");
-    int size_before = pc->getParticleSize();
-
-    bool flag = true;
-    for(int i = 1 ; i <= 10; i++) {
-        Particle p = Particle({(double)i +1,0,0}, {0,0,0}, 1, 0);
-        pc->addParticle(p);
-        int size_after = pc->getParticleSize();
-        ASSERT_EQ(size_before + i, size_after) ;  
-        if(size_before + i == size_after) {
-        } else {
-            test_logger->error("Add particle test2 at iteration {} failed", i);
-            flag = false;
-            break;
-        }
-    }
-    if(flag){
-        test_logger->info("Add particle test2 passed");
-    }
-}
-
-TEST_F(ParticleTest, Update_F_simple) {
-    test_logger->info("Calculate simple force test");
-    bool flag = true;
-    pc->updateF();
-    pc->writeoutput("updateF_simple.txt");
-
-    std::string actual = TxttoString("updateF_simple.txt");
-    std::string expected = TxttoString("../tests/Answer_Ref/updateF_simple.txt");
-
-    if(expected != actual) {
-        test_logger->error("Calculate simple force test failed");
-    }
-    ASSERT_EQ(expected, actual) << "Calculate simple force test failed";
-    if(flag){
-        test_logger->info("Calculate simple force test passed");
-    }
-}
-
-TEST_F(ParticleTest, Simulation_simple) {
-    test_logger->info("Simulation simple test");
-    bool flag = true;
+// Test the state of the particles after several iterations
+TEST_F(Assignment1Test, Simulation_simple) {
+    test_logger->info("Assignment 1 - simple simulation test");
     for(int iteration = 0 ; iteration <= 3; ++iteration) {
         pc->updateX(0.014);
         pc->updateF();
         pc->updateV(0.014);
     }
-    std :: string actual = pc->writeoutput("simulation_simple.txt");
-    std::string expected = TxttoString("../tests/Answer_Ref/Ans_simulation_simple.txt");
+    std::vector<Particle> ref_p;
+    char *ref_file = const_cast<char*>("../tests/Answer_Ref/Ans_simulation_simple.txt");
+    fileReader.readFile(ref_p, ref_file);
+    ParticleContainer reference(ref_p, new GravitationalForce());
 
-    if(expected != actual) {
-        test_logger->error("Simulation simple test failed");
+    if(!(reference == *pc)) {
+        test_logger->error("Assignment 1 - simple simulation test failed");
+        std::cout << reference.toString() << std::endl;
+        std::cout << pc->toString() << std::endl;
     }
-    ASSERT_EQ(expected, actual) << "Simulation simple test failed";
-    if(flag){
-        test_logger->info("Simulation simple test passed");
-    }
+    ASSERT_EQ(reference, *pc) << "Assignment 1 - simple simulation test failed";
+    test_logger->info("Assignment 1 - simple simulation test passed");
 }
 
-
-TEST_F(ParticleTest, Complex_simulation) {
-    test_logger->info("Complex simulation test");
-    bool flag = true;
+// Test the state of the particles after the entire simulation
+TEST_F(Assignment1Test, Complex_simulation) {
+    test_logger->info("Assignment 1 - complex simulation test");
     int max_iteration = (int) ((1000 - 0) / 0.014);
     for(int iteration = 0 ; iteration <= max_iteration; ++iteration) {
         pc->updateX(0.014);
         pc->updateF();
         pc->updateV(0.014);
     }
-    std::string actual = pc->writeoutput("simulation_complex.txt");
-    std::string expected = TxttoString("../tests/Answer_Ref/Ans_simulation_complex.txt");
+    std::vector<Particle> ref_p;
+    char *ref_file = const_cast<char*>("../tests/Answer_Ref/Ans_simulation_complex.txt");
+    fileReader.readFile(ref_p, ref_file);
+    ParticleContainer reference(ref_p, new GravitationalForce());
 
-    if(expected != actual) {
-        test_logger->error("Complex simulation test failed");
+    if(!(reference == *pc)) {
+        test_logger->error("Assignment 1 - complex simulation test failed");
+        std::cout << reference.toString() << std::endl;
+        std::cout << pc->toString() << std::endl;
     }
-    ASSERT_EQ(expected, actual) << "Complex simulation test failed";
-    if(flag){
-        test_logger->info("Complex simulation test passed");
-    }
+    ASSERT_EQ(reference, *pc) << "Assignment 1 - complex simulation test failed";
+    test_logger->info("Assignment 1 - complex simulation test passed");
 }

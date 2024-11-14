@@ -59,24 +59,25 @@ std::string Particle::toString() const {
 }
 
 
-bool Particle::operator==(Particle &other) {
-    double delta = 1e-6
+bool Particle::operator==(const Particle &other) const {
+    double delta_abs = 1e-12;
+    double delta_rel = 1e-5;
     for (int i = 0; i < 3; ++i) {
-        if (std::abs(x[i] - other.x[i]) > delta) {
+        if (std::abs(x[i] - other.x[i]) > delta_rel * std::max(std::abs(x[i]), std::abs(other.x[i])) + delta_abs) {
             return false;
         }
     }
     for (int i = 0; i < 3; ++i) {
-        if (std::abs(v[i] - other.v[i]) > delta) {
+        if (std::abs(v[i] - other.v[i]) > delta_rel * std::max(std::abs(v[i]), std::abs(other.v[i])) + delta_abs) {
             return false;
         }
     }
     for (int i = 0; i < 3; ++i) {
-        if (std::abs(f[i] - other.f[i]) > delta) {
+        if (std::abs(f[i] - other.f[i]) > delta_rel * std::max(std::abs(f[i]), std::abs(other.f[i])) + delta_abs) {
             return false;
         }
     }
-    if (std::abs(m - other.m) > delta) {
+    if (std::abs(m - other.m) > delta_rel * std::max(std::abs(m), std::abs(other.m)) + delta_abs) {
         return false;
     }
     return type == other.type;
