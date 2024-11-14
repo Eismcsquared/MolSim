@@ -29,6 +29,7 @@ Options:
 `-e | --end_time <duration>` = The total duration of the simulation (Default = 5).<br>
 `-f | --format <output-format>` = The format of the output, must be either vtu or xyz (Default: vtu).<br>
 `-o | --output <output-file>` = The name of files that data should be written to (Default: MD_vtk).<br>
+`-s | --spdlog_level <level>` = Set spdlog level (trace -1, debug -2, info -3, warn -4, error -5, critical -6).<br>
 `-g | --gravitation` = The simulation of gravitational force (with G = 1) between objects.<br>
 `-l | --Lennard_Jones` = If specified, the Lennard Jones potential (with epsilon = 5 and sigma = 1) is simulated.<br>
 `-h | --help` = Print help message.<br>

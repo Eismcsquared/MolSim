@@ -114,7 +114,6 @@ TEST_F(CuboidTest, BrownianMotion) {
         averageSpeedSquare += pow(ArrayUtils::L2Norm(p.getV()), 2);
     }
     averageSpeedSquare /= 1000000;
-    std::cout << averageSpeedSquare;
     ASSERT_FALSE(std::abs(averageSpeedSquare - 3) > 0.01) << "Cuboid - Brownian motion test failed";
     test_logger->info("Cuboid - Brownian motion test passed");
 }

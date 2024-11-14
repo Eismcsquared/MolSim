@@ -66,7 +66,7 @@ int main(int argc, char *argsv[]) {
             {"end_time", required_argument, nullptr, 'e'},
             {"delta_t", required_argument, nullptr, 'd'},
             {"output", required_argument, nullptr, 'o'},
-            {"spdlog level", required_argument, nullptr, 's'},
+            {"spdlog_level", required_argument, nullptr, 's'},
             {"gravitation", no_argument, nullptr, 'g'},
             {"Lennard_Jones", no_argument, nullptr, 'l'}
     };
@@ -182,7 +182,7 @@ void printHelp() {
     std::cout << "  -e or --end_time <duration>    = The total duration of the simulation (Default = 5)." << "\n";
     std::cout << "  -f or --format <output-format> = The format of the output, must be either vtu or xyz (Default: vtu)." << "\n";
     std::cout << "  -o or --output <output-file>   = The name of files that data should be written to (Default: MD_vtk)." << "\n";
-    std::cout << "  -s or --spdlog level <level>   = Set spdlog level (trace -1, debug -2, info -3, warn -4, error -5, critical -6).\n";
+    std::cout << "  -s or --spdlog_level <level>   = Set spdlog level (trace -1, debug -2, info -3, warn -4, error -5, critical -6).\n";
     std::cout << "  -g or --gravitation            = The simulation of gravitational force (with G = 1) between objects (Default)." << "\n";
     std::cout << "  -l or --Lennard_Jones          = If specified, the Lennard Jones potential (with epsilon = 5 and sigma = 1) is simulated." << "\n";
     std::cout << "  -h or --help                   = Print help message." << "\n";
