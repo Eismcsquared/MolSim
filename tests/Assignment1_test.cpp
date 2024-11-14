@@ -27,12 +27,10 @@ class ParticleTest : public ::testing::Test {
 protected:
     std::vector<Particle> particles;
     ParticleContainer *pc;
-    char* testfile = const_cast<char*>("../input/eingabe-sonne.txt");
-    std::shared_ptr<spdlog::logger> test_logger = spdlog::basic_logger_mt("test_logger", "logs/test.txt");
 
     void SetUp() override {
         FileReader fileReader;
-        fileReader.readFile(particles, testfile);
+        fileReader.readFile(particles, testfile1);
         pc = new ParticleContainer(particles, new GravitationalForce());
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("Particle Container created");
