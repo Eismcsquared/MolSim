@@ -25,7 +25,7 @@ protected:
     void SetUp() override {
         FileReader fileReader;
         fileReader.readFile(particles, testfile);
-        pc = new ParticleContainer(particles, new LennardJonesForce());
+        pc = new ParticleContainer(particles, new LennardJonesForce(),true);
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("Particle Container created");
     }

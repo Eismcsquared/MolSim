@@ -19,7 +19,7 @@ class ParticleContainer {
     * @param particles: The particles to store.
     * @param f: The force object that defines the force between two particles.
     */
-   ParticleContainer(std::vector<Particle>& particles, Force* f);
+   ParticleContainer(std::vector<Particle>& particles, Force* f, bool netwon3);
 
 
 /**
@@ -42,9 +42,8 @@ class ParticleContainer {
 
     /**
      * @brief Calculate the force between all particles
-     * @param newton3: Specifies whether the Newton's third law should be applied in the force calculation.
      */
-    void updateF(bool newton3 = true);
+    void updateF();
 
 
      /**
@@ -98,4 +97,8 @@ class ParticleContainer {
      */
     Force& f;
 
+    /**
+     * Optional parameter to specify whether Newton's third law should be applied in the force calculation.
+     */
+    bool newton3;
 };

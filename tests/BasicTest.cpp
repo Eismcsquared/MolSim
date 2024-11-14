@@ -19,7 +19,7 @@ protected:
     void SetUp() override {
         FileReader fileReader;
         fileReader.readFile(particles, testfile);
-        pc = new ParticleContainer(particles, new GravitationalForce());
+        pc = new ParticleContainer(particles, new GravitationalForce(),true);
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("Particle Container created");
     }
@@ -40,7 +40,7 @@ TEST_F(BasicTest, ReadFile) {
         std::array<double, 3> v = {0, 0, 0};
         ref_vec.emplace_back(x, v, 1);
     }
-    ParticleContainer reference(ref_vec, new GravitationalForce());
+    ParticleContainer reference(ref_vec, new GravitationalForce(),true);
     if(*pc == reference) {
         test_logger->info("Read file test passed");
     } else {
@@ -78,7 +78,7 @@ TEST_F(BasicTest, AddParticle1) {
         std::array<double, 3> v = {0, 0, 0};
         ref_vec.emplace_back(x, v, 1);
     }
-    ParticleContainer reference(ref_vec, new GravitationalForce());
+    ParticleContainer reference(ref_vec, new GravitationalForce(),true);
     if(*pc == reference) {
         test_logger->info("Add particle test 1 passed");
     } else {
@@ -102,7 +102,7 @@ TEST_F(BasicTest, AddParticle2) {
         std::array<double, 3> v = {0, 0, 0};
         ref_vec.emplace_back(x, v, 1);
     }
-    ParticleContainer reference(ref_vec, new GravitationalForce());
+    ParticleContainer reference(ref_vec, new GravitationalForce(),true);
     if(*pc == reference) {
         test_logger->info("Add particle test 2 passed");
     } else {
@@ -132,7 +132,7 @@ TEST_F(BasicTest, Analytic) {
     std::array<double, 3> v_2 = {-1, 0, 0}; // expected velocity of particle 2
     ref_vec.emplace_back(x_1, v_1, 1);
     ref_vec.emplace_back(x_2, v_2, 1);
-    ParticleContainer reference(ref_vec, new GravitationalForce());
+    ParticleContainer reference(ref_vec, new GravitationalForce(),true);
     if (!(*pc == reference)) {
         test_logger->error("Analytic solution test failed");
         test_logger->error("Expected: " + reference.toString());

@@ -20,7 +20,7 @@ protected:
     void SetUp() override {
         FileReader fileReader;
         fileReader.readFile(particles, testfile);
-        pc = new ParticleContainer(particles, new LennardJonesForce());
+        pc = new ParticleContainer(particles, new LennardJonesForce(),true);
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("Particle Container created");
     }
@@ -63,7 +63,7 @@ TEST_F(CuboidTest, ReadCuboids) {
             }
         }
     }
-    ParticleContainer reference(ps, new LennardJonesForce());
+    ParticleContainer reference(ps, new LennardJonesForce(),true);
     ASSERT_EQ(reference, *pc) << "Cuboid - read file test failed";
     test_logger->info("Cuboid - read file test passed");
 }
@@ -94,7 +94,7 @@ TEST_F(CuboidTest, AddCuboid) {
             }
         }
     }
-    ParticleContainer reference(ps, new LennardJonesForce());
+    ParticleContainer reference(ps, new LennardJonesForce(),true);
     ASSERT_EQ(reference, *pc) << "Cuboid - read file test failed";
     test_logger->info("Cuboid - read file test filed");
 }

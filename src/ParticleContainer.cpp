@@ -10,14 +10,14 @@
 #include <spdlog/spdlog.h>
 
 
-ParticleContainer::ParticleContainer(std::vector<Particle>& particles, Force* f)
+ParticleContainer::ParticleContainer(std::vector<Particle>& particles, Force* f, bool newton3)
     : particles(particles),
       f(*f) { // std::move if outputFormat is temporary
     // compute initial forces
+    this->newton3 = newton3;
     updateF();
     spdlog::trace("ParticleContainer generated!");
 }
-
 
 
 ParticleContainer::~ParticleContainer(){
@@ -37,7 +37,7 @@ void ParticleContainer::addCuboid(const Cuboid& cuboid) {
 }
 
 
-void ParticleContainer::updateF(bool newton3) {
+void ParticleContainer::updateF() {
     if (newton3) {
         std::vector<std::array<double, 3>> newForces(particles.size(), {0, 0, 0});
         for (unsigned long i = 0; i < particles.size(); ++i) {

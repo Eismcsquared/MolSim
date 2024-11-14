@@ -4,7 +4,6 @@
  * @date 31.10.2024
  * 
  */
-
 #include "FileReader.h"
 #include "GravitationalForce.h"
 #include "LennardJonesForce.h"
@@ -46,6 +45,9 @@ int main(int argc, char *argsv[]) {
     std::string outputFormat = "vtu";
     ForceType mode = GRAVITATION;
 
+    bool benchmark = false;
+    bool newton3 = true;
+
     spdlog::trace("MolSim started");
 
     if (argc < 2) {
@@ -67,10 +69,13 @@ int main(int argc, char *argsv[]) {
             {"delta_t", required_argument, nullptr, 'd'},
             {"output", required_argument, nullptr, 'o'},
             {"spdlog_level", required_argument, nullptr, 's'},
+            {"benchmark", no_argument, nullptr, 'b'},
+            {"newton3 ", no_argument, nullptr, 'n'},
             {"gravitation", no_argument, nullptr, 'g'},
-            {"Lennard_Jones", no_argument, nullptr, 'l'}
+            {"Lennard_Jones", no_argument, nullptr, 'l'},
+            {nullptr, 0, nullptr, 0} 
     };
-    while ((opt = getopt_long(argc, argsv, "hd:e:f:o:s:gl", long_options, nullptr)) != -1) {
+    while ((opt = getopt_long(argc, argsv, "hd:e:f:o:s:glbn", long_options, nullptr)) != -1) {
         switch (opt) {
             case 'd':
                 delta_t = std::atof(optarg);
@@ -111,6 +116,12 @@ int main(int argc, char *argsv[]) {
                     return 1;
                 }
                 break;
+            case 'b':
+                benchmark = true;
+                break;
+            case 'n':
+                newton3 = false;
+                break;
             case 'g':
                 mode = GRAVITATION;
                 break;
@@ -127,14 +138,13 @@ int main(int argc, char *argsv[]) {
                 return 0;
         }
     }
+    
     // Set the log level
     spdlog::set_level(logLevel);
 
     FileReader fileReader;
     fileReader.readFile(particles, inputFile);
 
-    // Start the timer
-    auto start = std::chrono::high_resolution_clock::now();
     // Create a particle container for forwarding the particles, start time, end time, delta_t and outputFormat
     Force* force;
     switch (mode) {
@@ -144,7 +154,21 @@ int main(int argc, char *argsv[]) {
         case LENNARD_JONES:
             force = new LennardJonesForce();
     }
-    ParticleContainer particle_container = ParticleContainer(particles, force);
+    ParticleContainer particle_container = ParticleContainer(particles, force, newton3);
+
+
+    if(benchmark){
+        spdlog::set_level(spdlog::level::off);
+
+        auto start = std::chrono::high_resolution_clock::now();
+        particle_container.simulate(delta_t, end_time, outputFile, outputFormat,false);
+        // Stop the timer
+        auto end = std::chrono::high_resolution_clock::now();
+
+        // Calculate the duration
+        std::chrono::duration<double> duration = end - start;
+        return 0;
+    }
 
   // Inform the user about the input parameters
     spdlog::info("Testfilename: {}", inputFile);
@@ -154,19 +178,12 @@ int main(int argc, char *argsv[]) {
     spdlog::info("Output format: {}", outputFormat);
     
 
+
     // Calculate the position, force and velocity for all particles
     particle_container.simulate(delta_t, end_time, outputFile, outputFormat);
 
     spdlog::info("output written. Terminating...");
-   
-  
-    // Stop the timer
-    auto end = std::chrono::high_resolution_clock::now();
 
-  
-    // Calculate the duration
-    std::chrono::duration<double> duration = end - start;
-    spdlog::info("Duration: {}s", duration.count());
 
 
     return 0;
@@ -183,6 +200,8 @@ void printHelp() {
     std::cout << "  -f or --format <output-format> = The format of the output, must be either vtu or xyz (Default: vtu)." << "\n";
     std::cout << "  -o or --output <output-file>   = The name of files that data should be written to (Default: MD_vtk)." << "\n";
     std::cout << "  -s or --spdlog_level <level>   = Set spdlog level (trace -1, debug -2, info -3, warn -4, error -5, critical -6).\n";
+    std::cout << "  -b or --benchmark              = If specified, the benchmark mode is activated." << "\n";
+    std::cout << "  -n or --newton3                = If specified, the Newton's third law is not applied." << "\n";
     std::cout << "  -g or --gravitation            = The simulation of gravitational force (with G = 1) between objects (Default)." << "\n";
     std::cout << "  -l or --Lennard_Jones          = If specified, the Lennard Jones potential (with epsilon = 5 and sigma = 1) is simulated." << "\n";
     std::cout << "  -h or --help                   = Print help message." << "\n";

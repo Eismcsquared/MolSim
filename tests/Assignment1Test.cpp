@@ -22,7 +22,7 @@ protected:
 
     void SetUp() override {
         fileReader.readFile(particles, testfile);
-        pc = new ParticleContainer(particles, new GravitationalForce());
+        pc = new ParticleContainer(particles, new GravitationalForce(), true);
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("Particle Container created");
     }
@@ -67,7 +67,7 @@ TEST_F(Assignment1Test, Simulation_simple) {
     std::vector<Particle> ref_p;
     char *ref_file = const_cast<char*>("../tests/Answer_Ref/Ans_simulation_simple.txt");
     fileReader.readFile(ref_p, ref_file);
-    ParticleContainer reference(ref_p, new GravitationalForce());
+    ParticleContainer reference(ref_p, new GravitationalForce(), true);
 
     if(!(reference == *pc)) {
         test_logger->error("Assignment 1 - simple simulation test failed");
@@ -90,7 +90,7 @@ TEST_F(Assignment1Test, Complex_simulation) {
     std::vector<Particle> ref_p;
     char *ref_file = const_cast<char*>("../tests/Answer_Ref/Ans_simulation_complex.txt");
     fileReader.readFile(ref_p, ref_file);
-    ParticleContainer reference(ref_p, new GravitationalForce());
+    ParticleContainer reference(ref_p, new GravitationalForce(),true);
 
     if(!(reference == *pc)) {
         test_logger->error("Assignment 1 - complex simulation test failed");
