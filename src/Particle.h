@@ -85,7 +85,7 @@ public:
  /**
   * @brief Compare two particles based on their position, velocity, current force and type, under consideration of a
   * relative error up to 1e-5 and an absolute error up to 1e-12.
-  * @param other
+  * @param other: The Particle to be compared with this.
   * @return
   */
   bool operator==(const Particle &other) const;
