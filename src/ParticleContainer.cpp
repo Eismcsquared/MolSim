@@ -7,6 +7,7 @@
 #include "Particle.h"
 #include "ParticleContainer.h"
 #include <filesystem>
+#include <spdlog/spdlog.h>
 
 
 ParticleContainer::ParticleContainer(std::vector<Particle>& particles, Force* f)
@@ -14,13 +15,13 @@ ParticleContainer::ParticleContainer(std::vector<Particle>& particles, Force* f)
       f(*f) { // std::move if outputFormat is temporary
     // compute initial forces
     updateF();
-    std::cout << "ParticleContainer generated!\n";
+    spdlog::trace("ParticleContainer generated!");
 }
 
 
 
 ParticleContainer::~ParticleContainer(){
-    std::cout << "ParticleContainer destructed!\n";
+    spdlog::trace("ParticleContainer destructed!");
     delete &f;
 }
 
@@ -94,13 +95,13 @@ void ParticleContainer::simulate(double delta_t, double end_time, const std::str
         // Calculate the velocity
         updateV(delta_t);
         // Plot every 10th iteration
-        std::cout << "Iteration " << (iteration + 1) << " finished." << "\n";
+        spdlog::trace("Iteration {} finished.", iteration + 1);
     }
-    std::cout << "output written. Terminating..." << "\n";
+    spdlog::trace("output written. Terminating...");
 }
 
 void ParticleContainer::plotParticles(int iteration, const std::string& out_name, const std::string& output_format) {
-    std::cout << "Plotting Particles..." << "\n";
+    spdlog::trace("Plotting Particles...");
 
     if(output_format == "vtu") {
         outputWriter::VTKWriter writer;
@@ -126,7 +127,7 @@ std::string ParticleContainer::writeoutput(const std::string& filename) {
 
     std::ofstream outFile("output/" + filename);
     if (!outFile.is_open()) {
-        std::cerr << "Error: Could not open file" << std::endl;
+        spdlog::error("Error: Could not open file");
         exit(1);
     }
 
@@ -142,8 +143,7 @@ std::string ParticleContainer::writeoutput(const std::string& filename) {
 
     outFile << buf.str();
     outFile.close();
-
-    std::cout << "Output successfully written to output/" << filename << std::endl;
+    spdlog::trace("Output successfully written to output/{}", filename);
 
     return buf.str();
 }

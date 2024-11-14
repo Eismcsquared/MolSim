@@ -10,9 +10,13 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/fmt/ostr.h>
-#include <gmock/gmock.h>
 #include "LennardJonesForce.h"
 #include "Force.h"
+
+
+char* testfile2 = const_cast<char*>("../input/eingabe-sonne.txt");
+std::shared_ptr<spdlog::logger> test_logger2 = spdlog::basic_logger_mt("test2_logger", "logs/test.txt");
+
 
 TEST(LennardJonesForceTest, LennardJonesForce) {
     std::cout << "Test2" << std::endl;

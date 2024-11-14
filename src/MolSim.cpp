@@ -18,6 +18,8 @@
 #include <vector>
 #include <chrono>
 
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 /**
  * @brief Function to plot the particles
@@ -41,12 +43,21 @@ int main(int argc, char *argsv[]) {
     double delta_t = 0.0002;
     std::string outputFormat = "vtu";
     ForceType mode = GRAVITATION;
+
+    auto logger = spdlog::stdout_color_mt("console");
+    logger->set_level(spdlog::level::trace);
+    spdlog::trace("MolSim started");
+    char* filename = const_cast<char*>("../input/assignment2.txt");
+
+
     if (argc < 2) {
-        std::cout << "Error: Filename is required." << "\n";
+        spdlog::error("Error: Filename is required.");
         printHelp();
         return 1;
     }
-    char* inputFile = argsv[1];
+
+    char* inputFile = filename;
+    inputFile= argsv[1];
     std::string outputFile("MD_vtk");
 
     std::vector<Particle> particles;
@@ -73,7 +84,7 @@ int main(int argc, char *argsv[]) {
             case 'f':
                 outputFormat = optarg;
                 if (outputFormat != "xyz" && outputFormat != "vtu") {
-                    std::cout << "Invalid output format! Choose either 'xyz' or 'vtu'." << "\n\n";
+                    spdlog::error("Invalid output format! Choose either 'xyz' or 'vtu'.");
                     return 1; // exit with error
                 }
                 break;
@@ -87,7 +98,7 @@ int main(int argc, char *argsv[]) {
                 mode = LENNARD_JONES;
                 break;
             case '?':
-                std::cout << "Invalid option!" << "\n";
+                spdlog::error("Invalid option!");
                 printHelp();
                 return 1;
             case 'h':
@@ -114,17 +125,17 @@ int main(int argc, char *argsv[]) {
     ParticleContainer particle_container = ParticleContainer(particles, force);
 
   // Inform the user about the input parameters
-    std::cout << "Testfilename: " << inputFile << "\n";
-    std::cout << "Start Time: " << start_time << "\n";
-    std::cout << "Time End: " << end_time << "\n" ;
-    std::cout << "Delta Time: " << delta_t << "\n";
-    std::cout << "Output format: " << outputFormat << "\n\n";
-
+    spdlog::info("Testfilename: {}", inputFile);
+    spdlog::info("Start Time: {}", start_time);
+    spdlog::info("Time End: {}", end_time);
+    spdlog::info("Delta Time: {}", delta_t);
+    spdlog::info("Output format: {}", outputFormat);
+    
 
     // Calculate the position, force and velocity for all particles
     particle_container.simulate(delta_t, end_time, outputFile, outputFormat);
 
-    std::cout << "output written. Terminating..." << "\n";
+    spdlog::info("output written. Terminating...");
    
   
     // Stop the timer
@@ -133,7 +144,7 @@ int main(int argc, char *argsv[]) {
   
     // Calculate the duration
     std::chrono::duration<double> duration = end - start;
-    std::cout << "Duration: " << duration.count() << "s" << "\n";
+    spdlog::info("Duration: {}s", duration.count());
 
 
     return 0;

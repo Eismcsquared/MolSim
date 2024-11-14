@@ -14,8 +14,8 @@
 #include <sstream>
 
 
-char* testfile = const_cast<char*>("../input/eingabe-sonne.txt");
-std::shared_ptr<spdlog::logger> test_logger = spdlog::basic_logger_mt("test_logger", "logs/test.txt");
+char* testfile1 = const_cast<char*>("../input/eingabe-sonne.txt");
+std::shared_ptr<spdlog::logger> test_logger = spdlog::basic_logger_mt("test1_logger", "logs/test.txt");
 
 std::string TxttoString(const std::string& filePath) {
     std::ifstream file(filePath);
@@ -31,7 +31,7 @@ protected:
 
     void SetUp() override {
         FileReader fileReader;
-        fileReader.readFile(particles, testfile);
+        fileReader.readFile(particles, testfile1);
         pc = new ParticleContainer(particles, new GravitationalForce());
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("Particle Container created");

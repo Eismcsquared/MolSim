@@ -11,6 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <spdlog/spdlog.h>
 
 FileReader::FileReader() = default;
 
@@ -28,20 +29,21 @@ void FileReader::readFile(std::vector<Particle> &particles, char *filename) {
     if (input_file.is_open()) {
 
         getline(input_file, tmp_string);
-        std::cout << "Read line: " << tmp_string << std::endl;
+
+        spdlog::trace("Read line: {}", tmp_string);
 
         while (tmp_string.empty() or tmp_string[0] == '#') {
             getline(input_file, tmp_string);
-            std::cout << "Read line: " << tmp_string << std::endl;
+            spdlog::trace("Read line: {}", tmp_string);
         }
 
         std::istringstream numstream(tmp_string);
         numstream >> num_particles;
-        std::cout << "Reading " << num_particles << "." << std::endl;
+        spdlog::trace("Reading {}.", num_particles);
 
         for (int i = 0; i < num_particles; i++) {
             getline(input_file, tmp_string);
-            std::cout << "Read line: " << tmp_string << std::endl;
+            spdlog::trace("Read line: {}", tmp_string);
             tmp_string.erase(tmp_string.find_last_not_of(" \t\n\r\f\v") + 1);
             std::istringstream datastream(tmp_string);
             for (auto &xj : x) {
@@ -51,9 +53,7 @@ void FileReader::readFile(std::vector<Particle> &particles, char *filename) {
                 datastream >> vj;
             }
             if (datastream.eof()) {
-                std::cout
-                    << "Error reading file: eof reached unexpectedly reading from line "
-                    << i << std::endl;
+                spdlog::error("Error reading file: eof reached unexpectedly reading from line {}", i);
                 exit(-1);
             }
             datastream >> m;
@@ -72,7 +72,7 @@ void FileReader::readFile(std::vector<Particle> &particles, char *filename) {
             }
         }
     } else {
-        std::cout << "Error: could not open file " << filename << std::endl;
+        spdlog::error("Error: could not open file {}", filename);
         exit(-1);
     }
 }
