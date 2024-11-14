@@ -54,14 +54,32 @@ void Particle::setType(int type_arg) { type = type_arg; }
 std::string Particle::toString() const {
   std::stringstream stream;
   stream << "Particle: X:" << x << " v: " << v << " f: " << f
-         << " old_f: " << old_f << " type: " << type;
+         << " type: " << type;
   return stream.str();
 }
 
 
 bool Particle::operator==(Particle &other) {
-  return (x == other.x) and (v == other.v) and (f == other.f) and
-         (type == other.type) and (m == other.m) and (old_f == other.old_f);
+    double delta = 1e-6
+    for (int i = 0; i < 3; ++i) {
+        if (std::abs(x[i] - other.x[i]) > delta) {
+            return false;
+        }
+    }
+    for (int i = 0; i < 3; ++i) {
+        if (std::abs(v[i] - other.v[i]) > delta) {
+            return false;
+        }
+    }
+    for (int i = 0; i < 3; ++i) {
+        if (std::abs(f[i] - other.f[i]) > delta) {
+            return false;
+        }
+    }
+    if (std::abs(m - other.m) > delta) {
+        return false;
+    }
+    return type == other.type;
 }
 
 std::ostream &operator<<(std::ostream &stream, Particle &p) {

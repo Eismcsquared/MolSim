@@ -27,10 +27,12 @@ ParticleContainer::~ParticleContainer(){
 
 void ParticleContainer::addParticle(const Particle& particle){
     this->particles.push_back(particle);
+    this->updateF();
 }
 
 void ParticleContainer::addCuboid(const Cuboid& cuboid) {
     cuboid.createParticles(particles);
+    this->updateF();
 }
 
 
@@ -112,7 +114,7 @@ void ParticleContainer::plotParticles(int iteration, const std::string& out_name
     }
 }
 
-int ParticleContainer::getParticleSize() const {
+int ParticleContainer::getParticleNumber() const {
     return particles.size();
 }
 
@@ -120,30 +122,23 @@ std::vector<Particle>& ParticleContainer::getParticles() const {
     return particles;
 }
 
-std::string ParticleContainer::writeoutput(const std::string& filename) {
-
-    std::filesystem::create_directories("output");
-
-    std::ofstream outFile("output/" + filename);
-    if (!outFile.is_open()) {
-        std::cerr << "Error: Could not open file" << std::endl;
-        exit(1);
-    }
-
+std::string ParticleContainer::toString() {
     std::stringstream buf;
-    buf << particles.size() << std::endl;
+    buf << "Number of particles: " << particles.size() << std::endl;
     for (auto &p : particles) {
-        buf << p.getX()[0] << " " << p.getX()[1] << " " << p.getX()[2] << "|";
-        buf << p.getV()[0] << " " << p.getV()[1] << " " << p.getV()[2] << "|";
-        buf << p.getF()[0] << " " << p.getF()[1] << " " << p.getF()[2] << "|";
-        buf << p.getOldF()[0] << " " << p.getOldF()[1] << " " << p.getOldF()[2] << "|";
-        buf << p.getM() << std::endl;
+        buf << p.toString() << std::endl;
     }
-
-    outFile << buf.str();
-    outFile.close();
-
-    std::cout << "Output successfully written to output/" << filename << std::endl;
-
     return buf.str();
+}
+
+bool ParticleContainer::operator==(const ParticleContainer& other) const {
+    if (getParticleNumber() != other.getParticleNumber()) {
+        return false;
+    }
+    for (int i = 0; i < getParticleNumber(); ++i) {
+        if (!(getParticles()[i] == other.getParticles()[i])) {
+            return false;
+        }
+    }
+    return true;
 }

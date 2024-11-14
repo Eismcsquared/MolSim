@@ -14,8 +14,7 @@
 #include <sstream>
 
 
-char* testfile = const_cast<char*>("../input/eingabe-sonne.txt");
-std::shared_ptr<spdlog::logger> test_logger = spdlog::basic_logger_mt("test_logger", "logs/test.txt");
+
 
 std::string TxttoString(const std::string& filePath) {
     std::ifstream file(filePath);
@@ -28,6 +27,8 @@ class ParticleTest : public ::testing::Test {
 protected:
     std::vector<Particle> particles;
     ParticleContainer *pc;
+    char* testfile = const_cast<char*>("../input/eingabe-sonne.txt");
+    std::shared_ptr<spdlog::logger> test_logger = spdlog::basic_logger_mt("test_logger", "logs/test.txt");
 
     void SetUp() override {
         FileReader fileReader;
