@@ -29,11 +29,11 @@ void plotParticles(int iteration);
  * @brief Function to print the help message
  */
 void printHelp();
-spdlog::level::level_enum logLevel = spdlog::level::info; // Default log level
 
 
 int main(int argc, char *argsv[]) {
-    spdlog::stdout_color_mt("console"); // Create color multi threaded logger
+    spdlog::level::level_enum logLevel = spdlog::level::info; // Default log level
+    spdlog::stdout_color_mt("console"); // Create color multithreaded logger
 
     enum ForceType {
         GRAVITATION,
