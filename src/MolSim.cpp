@@ -33,7 +33,12 @@ void printHelp();
 
 
 
+
+
 int main(int argc, char *argsv[]) {
+    spdlog::stdout_color_mt("console");
+
+    spdlog::set_level(spdlog::level::info);
     enum ForceType {
         GRAVITATION,
         LENNARD_JONES
@@ -44,9 +49,8 @@ int main(int argc, char *argsv[]) {
     std::string outputFormat = "vtu";
     ForceType mode = GRAVITATION;
 
-    auto logger = spdlog::stdout_color_mt("console");
-    logger->set_level(spdlog::level::trace);
     spdlog::trace("MolSim started");
+
     char* filename = const_cast<char*>("../input/assignment2.txt");
 
 
@@ -71,6 +75,7 @@ int main(int argc, char *argsv[]) {
             {"output", required_argument, nullptr, 'o'},
             {"gravitation", no_argument, nullptr, 'g'},
             {"Lennard_Jones", no_argument, nullptr, 'l'}
+            
 
     };
     while ((opt = getopt_long(argc, argsv, "hd:e:f:o:gl", long_options, nullptr)) != -1) {
