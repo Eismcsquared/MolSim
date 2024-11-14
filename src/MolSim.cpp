@@ -161,7 +161,7 @@ int main(int argc, char *argsv[]) {
         spdlog::set_level(spdlog::level::off);
 
         auto start = std::chrono::high_resolution_clock::now();
-        particle_container.simulate(delta_t, end_time, outputFile, outputFormat,false);
+        particle_container.simulate(delta_t, end_time, outputFile, outputFormat, false);
         // Stop the timer
         auto end = std::chrono::high_resolution_clock::now();
 
