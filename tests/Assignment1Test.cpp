@@ -5,24 +5,13 @@
 #include <vector>
 #include <iostream>
 #include "FileReader.h"
-#include "utils/ArrayUtils.h"
 #include <string>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
-#include <spdlog/fmt/ostr.h>
-#include <fstream>
-#include <sstream>
 #include "Logger.h"
 
 
 
-
-std::string TxttoString(const std::string& filePath) {
-    std::ifstream file(filePath);
-    std::stringstream buf;
-    buf << file.rdbuf();
-    return buf.str();
-}
 // Test whether the simulations in assignment 1 still work as before, reference data originates from previous simulations
 class Assignment1Test : public ::testing::Test {
 protected:
@@ -39,7 +28,7 @@ protected:
     }
 
     void TearDown() override {
-        test_logger->info("delete Particle Container\n\n");
+        test_logger->info("Particle Container deleted\n\n");
         delete pc;
     }
 };
