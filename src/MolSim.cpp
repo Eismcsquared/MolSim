@@ -30,15 +30,12 @@ void plotParticles(int iteration);
  * @brief Function to print the help message
  */
 void printHelp();
-
-
-
+spdlog::level::level_enum logLevel = spdlog::level::info; // Default log level
 
 
 int main(int argc, char *argsv[]) {
-    spdlog::stdout_color_mt("console");
+    spdlog::stdout_color_mt("console"); // Create color multi threaded logger
 
-    spdlog::set_level(spdlog::level::info);
     enum ForceType {
         GRAVITATION,
         LENNARD_JONES
@@ -51,17 +48,13 @@ int main(int argc, char *argsv[]) {
 
     spdlog::trace("MolSim started");
 
-    char* filename = const_cast<char*>("../input/assignment2.txt");
-
-
     if (argc < 2) {
         spdlog::error("Error: Filename is required.");
         printHelp();
         return 1;
     }
 
-    char* inputFile = filename;
-    inputFile= argsv[1];
+    char* inputFile= argsv[1];
     std::string outputFile("MD_vtk");
 
     std::vector<Particle> particles;
@@ -73,12 +66,11 @@ int main(int argc, char *argsv[]) {
             {"end_time", required_argument, nullptr, 'e'},
             {"delta_t", required_argument, nullptr, 'd'},
             {"output", required_argument, nullptr, 'o'},
+            {"spdlog level", required_argument, nullptr, 's'},
             {"gravitation", no_argument, nullptr, 'g'},
             {"Lennard_Jones", no_argument, nullptr, 'l'}
-            
-
     };
-    while ((opt = getopt_long(argc, argsv, "hd:e:f:o:gl", long_options, nullptr)) != -1) {
+    while ((opt = getopt_long(argc, argsv, "hd:e:f:o:s:gl", long_options, nullptr)) != -1) {
         switch (opt) {
             case 'd':
                 delta_t = std::atof(optarg);
@@ -96,6 +88,29 @@ int main(int argc, char *argsv[]) {
             case 'o':
                 outputFile = optarg;
                 break;
+            case 's':
+                if (optarg) {
+                    int lv = std::atoi(optarg);  
+                    switch (lv) {
+                        case 1: logLevel = spdlog::level::trace; break;
+                        case 2: logLevel = spdlog::level::debug; break;
+                        case 3: logLevel = spdlog::level::info; break;
+                        case 4: logLevel = spdlog::level::warn; break;
+                        case 5: logLevel = spdlog::level::err; break;
+                        case 6: logLevel = spdlog::level::critical; break;
+                        default:
+                            spdlog::error("Invalid spdlog level! Choose a number from 1 to 6.");
+                            return 1;
+                    }
+                } else {  
+                    if(optarg == nullptr){
+                        spdlog::error("No log levasel specified for -s option.");
+                        return 1;
+                    }
+                    spdlog::error("No log level specified for -s option.");
+                    return 1;
+                }
+                break;
             case 'g':
                 mode = GRAVITATION;
                 break;
@@ -112,6 +127,8 @@ int main(int argc, char *argsv[]) {
                 return 0;
         }
     }
+    // Set the log level
+    spdlog::set_level(logLevel);
 
     FileReader fileReader;
     fileReader.readFile(particles, inputFile);
@@ -159,12 +176,13 @@ int main(int argc, char *argsv[]) {
 void printHelp() {
     std::cout << "MolSim for PSE" << "\n";
     std::cout << "Usage:" << "\n";
-    std::cout << "  ./MolSim <input-file> [-d <time-step>] [-e <duration>] [-f <output-format>] [-o <output-file>] [-l|-g]" << "\n";
+    std::cout << "  ./MolSim <input-file> [-d <time-step>] [-e <duration>] [-f <output-format>] [-o <output-file>] [-l|-g] [-s <log-level>]" << "\n";
     std::cout << "Options:" << "\n";
     std::cout << "  -d or --delta_t <time-step>    = The length of each time step of the simulation (Default: 0.0002)." << "\n";
     std::cout << "  -e or --end_time <duration>    = The total duration of the simulation (Default = 5)." << "\n";
     std::cout << "  -f or --format <output-format> = The format of the output, must be either vtu or xyz (Default: vtu)." << "\n";
     std::cout << "  -o or --output <output-file>   = The name of files that data should be written to (Default: MD_vtk)." << "\n";
+    std::cout << "  -s or --spdlog level <level>   = Set spdlog level (trace -1, debug -2, info -3, warn -4, error -5, critical -6).\n";
     std::cout << "  -g or --gravitation            = The simulation of gravitational force (with G = 1) between objects (Default)." << "\n";
     std::cout << "  -l or --Lennard_Jones          = If specified, the Lennard Jones potential (with epsilon = 5 and sigma = 1) is simulated." << "\n";
     std::cout << "  -h or --help                   = Print help message." << "\n";

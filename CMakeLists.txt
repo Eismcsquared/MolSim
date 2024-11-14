@@ -77,13 +77,16 @@ file(GLOB_RECURSE MY_TESTS
 
 
 list(FILTER MY_TESTS EXCLUDE REGEX "MolSim.cpp") # exclude main file from tests
-add_executable(tests ${MY_TESTS})
+add_executable(tests ${MY_TESTS}) # make tests file executable
 
 target_include_directories(tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
 target_link_libraries(tests PRIVATE GTest::gtest_main spdlog::spdlog gmock MolSim)
+
 set_property(TARGET tests PROPERTY ENVIRONMENT "GTEST_COLOR=1")
+
 add_test(NAME tests COMMAND tests)
+
 enable_testing()
