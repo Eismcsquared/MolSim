@@ -100,6 +100,10 @@ TEST_F(CuboidTest, AddCuboid) {
 }
 
 // Test whether the method createParticle of Cuboid generate particles with Brownian motion with the specified average speed
+// Note that since the average speed is not easy to compute, we compute the average of squared speed instead.
+// This can be computed as the integral over (v_x^2 + v_y^2 + v_z^2) * exp(-(v_x^2 + v_y^2 + v_z^2) / 2) / sqrt(2 * pi)^3,
+// assuming passing 1 as the last parameter to Cuboid. This integral is just a sum of Gaussian integrals and can be evaluated
+// analytically. The result is 3.
 TEST_F(CuboidTest, BrownianMotion) {
     test_logger->info("Cuboid - Brownian motion test");
     Cuboid c = Cuboid({0, 0, 0}, {0, 0, 0}, {100, 100, 100}, 1, 1, 1); // 1000000 particles should produce statistically significant results
