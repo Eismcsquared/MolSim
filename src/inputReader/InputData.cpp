@@ -40,7 +40,7 @@
 
 #include "InputData.h"
 
-// PositiveInt
+// Dimension
 // 
 
 
@@ -133,12 +133,6 @@ x (const x_type& x)
   this->x_.set (x);
 }
 
-void PositiveIntVector3::
-x (::std::auto_ptr< x_type > x)
-{
-  this->x_.set (x);
-}
-
 const PositiveIntVector3::y_type& PositiveIntVector3::
 y () const
 {
@@ -153,12 +147,6 @@ y ()
 
 void PositiveIntVector3::
 y (const y_type& x)
-{
-  this->y_.set (x);
-}
-
-void PositiveIntVector3::
-y (::std::auto_ptr< y_type > x)
 {
   this->y_.set (x);
 }
@@ -181,16 +169,10 @@ z (const z_type& x)
   this->z_.set (x);
 }
 
-void PositiveIntVector3::
-z (::std::auto_ptr< z_type > x)
-{
-  this->z_.set (x);
-}
-
 PositiveIntVector3::z_type PositiveIntVector3::
 z_default_value ()
 {
-  return z_type (1);
+  return z_type (1ULL);
 }
 
 
@@ -545,6 +527,12 @@ void CuboidType::
 brownDimension (::std::auto_ptr< brownDimension_type > x)
 {
   this->brownDimension_.set (x);
+}
+
+CuboidType::brownDimension_type CuboidType::
+brownDimension_default_value ()
+{
+  return brownDimension_type (3ULL);
 }
 
 
@@ -1064,16 +1052,10 @@ frequency (const frequency_type& x)
   this->frequency_.set (x);
 }
 
-void SimulationParameters::
-frequency (::std::auto_ptr< frequency_type > x)
-{
-  this->frequency_.set (x);
-}
-
 SimulationParameters::frequency_type SimulationParameters::
 frequency_default_value ()
 {
-  return frequency_type (10);
+  return frequency_type (10ULL);
 }
 
 const SimulationParameters::output_type& SimulationParameters::
@@ -1197,63 +1179,59 @@ linked_cell (::std::auto_ptr< linked_cell_type > x)
 }
 
 
-// brownDimension
-// 
-
-
 #include <xsd/cxx/xml/dom/parsing-source.hxx>
 
-// PositiveInt
+// Dimension
 //
 
-PositiveInt::
-PositiveInt (const ::xml_schema::int_& _xsd_int__base)
-: ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type > (_xsd_int__base)
+Dimension::
+Dimension (const ::xml_schema::positive_integer& _xsd_positive_integer_base)
+: ::xsd::cxx::tree::fundamental_base< ::xml_schema::positive_integer, char, ::xml_schema::simple_type > (_xsd_positive_integer_base)
 {
 }
 
-PositiveInt::
-PositiveInt (const PositiveInt& x,
-             ::xml_schema::flags f,
-             ::xml_schema::container* c)
-: ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type > (x, f, c)
+Dimension::
+Dimension (const Dimension& x,
+           ::xml_schema::flags f,
+           ::xml_schema::container* c)
+: ::xsd::cxx::tree::fundamental_base< ::xml_schema::positive_integer, char, ::xml_schema::simple_type > (x, f, c)
 {
 }
 
-PositiveInt::
-PositiveInt (const ::xercesc::DOMElement& e,
-             ::xml_schema::flags f,
-             ::xml_schema::container* c)
-: ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type > (e, f, c)
+Dimension::
+Dimension (const ::xercesc::DOMElement& e,
+           ::xml_schema::flags f,
+           ::xml_schema::container* c)
+: ::xsd::cxx::tree::fundamental_base< ::xml_schema::positive_integer, char, ::xml_schema::simple_type > (e, f, c)
 {
 }
 
-PositiveInt::
-PositiveInt (const ::xercesc::DOMAttr& a,
-             ::xml_schema::flags f,
-             ::xml_schema::container* c)
-: ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type > (a, f, c)
+Dimension::
+Dimension (const ::xercesc::DOMAttr& a,
+           ::xml_schema::flags f,
+           ::xml_schema::container* c)
+: ::xsd::cxx::tree::fundamental_base< ::xml_schema::positive_integer, char, ::xml_schema::simple_type > (a, f, c)
 {
 }
 
-PositiveInt::
-PositiveInt (const ::std::string& s,
-             const ::xercesc::DOMElement* e,
-             ::xml_schema::flags f,
-             ::xml_schema::container* c)
-: ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type > (s, e, f, c)
+Dimension::
+Dimension (const ::std::string& s,
+           const ::xercesc::DOMElement* e,
+           ::xml_schema::flags f,
+           ::xml_schema::container* c)
+: ::xsd::cxx::tree::fundamental_base< ::xml_schema::positive_integer, char, ::xml_schema::simple_type > (s, e, f, c)
 {
 }
 
-PositiveInt* PositiveInt::
+Dimension* Dimension::
 _clone (::xml_schema::flags f,
         ::xml_schema::container* c) const
 {
-  return new class PositiveInt (*this, f, c);
+  return new class Dimension (*this, f, c);
 }
 
-PositiveInt::
-~PositiveInt ()
+Dimension::
+~Dimension ()
 {
 }
 
@@ -1501,12 +1479,9 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     //
     if (n.name () == "x" && n.namespace_ ().empty ())
     {
-      ::std::auto_ptr< x_type > r (
-        x_traits::create (i, f, this));
-
       if (!x_.present ())
       {
-        this->x_.set (r);
+        this->x_.set (x_traits::create (i, f, this));
         continue;
       }
     }
@@ -1515,12 +1490,9 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     //
     if (n.name () == "y" && n.namespace_ ().empty ())
     {
-      ::std::auto_ptr< y_type > r (
-        y_traits::create (i, f, this));
-
       if (!y_.present ())
       {
-        this->y_.set (r);
+        this->y_.set (y_traits::create (i, f, this));
         continue;
       }
     }
@@ -1529,12 +1501,9 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     //
     if (n.name () == "z" && n.namespace_ ().empty ())
     {
-      ::std::auto_ptr< z_type > r (
-        z_traits::create (i, f, this));
-
       if (!z_.present ())
       {
-        this->z_.set (r);
+        this->z_.set (z_traits::create (i, f, this));
         continue;
       }
     }
@@ -2992,12 +2961,9 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     //
     if (n.name () == "frequency" && n.namespace_ ().empty ())
     {
-      ::std::auto_ptr< frequency_type > r (
-        frequency_traits::create (i, f, this));
-
       if (!frequency_.present ())
       {
-        this->frequency_.set (r);
+        this->frequency_.set (frequency_traits::create (i, f, this));
         continue;
       }
     }
@@ -3131,60 +3097,6 @@ operator= (const SimulationParameters& x)
 
 SimulationParameters::
 ~SimulationParameters ()
-{
-}
-
-// brownDimension
-//
-
-brownDimension::
-brownDimension (const ::xml_schema::int_& _xsd_int__base)
-: ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type > (_xsd_int__base)
-{
-}
-
-brownDimension::
-brownDimension (const brownDimension& x,
-                ::xml_schema::flags f,
-                ::xml_schema::container* c)
-: ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type > (x, f, c)
-{
-}
-
-brownDimension::
-brownDimension (const ::xercesc::DOMElement& e,
-                ::xml_schema::flags f,
-                ::xml_schema::container* c)
-: ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type > (e, f, c)
-{
-}
-
-brownDimension::
-brownDimension (const ::xercesc::DOMAttr& a,
-                ::xml_schema::flags f,
-                ::xml_schema::container* c)
-: ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type > (a, f, c)
-{
-}
-
-brownDimension::
-brownDimension (const ::std::string& s,
-                const ::xercesc::DOMElement* e,
-                ::xml_schema::flags f,
-                ::xml_schema::container* c)
-: ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type > (s, e, f, c)
-{
-}
-
-brownDimension* brownDimension::
-_clone (::xml_schema::flags f,
-        ::xml_schema::container* c) const
-{
-  return new class brownDimension (*this, f, c);
-}
-
-brownDimension::
-~brownDimension ()
 {
 }
 
@@ -3729,22 +3641,22 @@ parameters (::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument > d,
 #include <xsd/cxx/xml/dom/serialization-source.hxx>
 
 void
-operator<< (::xercesc::DOMElement& e, const PositiveInt& i)
+operator<< (::xercesc::DOMElement& e, const Dimension& i)
 {
-  e << static_cast< const ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type >& > (i);
+  e << static_cast< const ::xsd::cxx::tree::fundamental_base< ::xml_schema::positive_integer, char, ::xml_schema::simple_type >& > (i);
 }
 
 void
-operator<< (::xercesc::DOMAttr& a, const PositiveInt& i)
+operator<< (::xercesc::DOMAttr& a, const Dimension& i)
 {
-  a << static_cast< const ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type >& > (i);
+  a << static_cast< const ::xsd::cxx::tree::fundamental_base< ::xml_schema::positive_integer, char, ::xml_schema::simple_type >& > (i);
 }
 
 void
 operator<< (::xml_schema::list_stream& l,
-            const PositiveInt& i)
+            const Dimension& i)
 {
-  l << static_cast< const ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type >& > (i);
+  l << static_cast< const ::xsd::cxx::tree::fundamental_base< ::xml_schema::positive_integer, char, ::xml_schema::simple_type >& > (i);
 }
 
 void
@@ -4596,25 +4508,6 @@ parameters (const ::SimulationParameters& s,
 
   ::parameters (*d, s, f);
   return d;
-}
-
-void
-operator<< (::xercesc::DOMElement& e, const brownDimension& i)
-{
-  e << static_cast< const ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type >& > (i);
-}
-
-void
-operator<< (::xercesc::DOMAttr& a, const brownDimension& i)
-{
-  a << static_cast< const ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type >& > (i);
-}
-
-void
-operator<< (::xml_schema::list_stream& l,
-            const brownDimension& i)
-{
-  l << static_cast< const ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type >& > (i);
 }
 
 #include <xsd/cxx/post.hxx>

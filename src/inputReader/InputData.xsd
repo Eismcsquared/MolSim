@@ -1,8 +1,8 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sx="http://www.w3.org/2001/XMLSchema">
 
-    <xs:simpleType name="PositiveInt">
-        <xs:restriction base="xs:int">
-            <xs:minInclusive value="1"/>
+    <xs:simpleType name="Dimension">
+        <xs:restriction base="xs:positiveInteger">
+            <xs:maxInclusive value="3"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -22,9 +22,9 @@
 
     <xs:complexType name="PositiveIntVector3">
         <xs:sequence>
-            <xs:element name="x" type="PositiveInt"/>
-            <xs:element name="y" type="PositiveInt"/>
-            <xs:element name="z" type="PositiveInt" default="1"/>
+            <xs:element name="x" type="xs:positiveInteger"/>
+            <xs:element name="y" type="xs:positiveInteger"/>
+            <xs:element name="z" type="xs:positiveInteger" default="1"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -53,14 +53,7 @@
             <xs:element name="size" type="PositiveIntVector3"/>
             <xs:element name="distance" type="PositiveDouble"/>
             <xs:element name="brownVelocity" type="PositiveDouble"/>
-            <xs:element name="brownDimension">
-                <xs:simpleType>
-                    <xs:restriction base="xs:int">
-                        <xs:minInclusive value="1"/>
-                        <xs:maxInclusive value="3"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
+            <xs:element name="brownDimension" type="Dimension" default="3"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -152,7 +145,7 @@
         <xs:sequence>
             <xs:element name="end_time" type="PositiveDouble" default="5"/>
             <xs:element name="delta_t" type="PositiveDouble" default="0.0002"/>
-            <xs:element name="frequency" type="PositiveInt" default="10">
+            <xs:element name="frequency" type="xs:positiveInteger" default="10">
                 <xs:annotation>
                     <xs:documentation>
                         The output frequency of the simulation data.
@@ -180,7 +173,13 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="linked_cell" type="LinkedCellType" minOccurs="0"/>
+            <xs:element name="linked_cell" type="LinkedCellType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Optional. If provided, the linked cell algorithm is applied.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
         </xs:sequence>
     </xs:complexType>
 

@@ -612,7 +612,7 @@ namespace xml_schema
 
 // Forward declarations.
 //
-class PositiveInt;
+class Dimension;
 class PositiveDouble;
 class DoubleVector3;
 class PositiveIntVector3;
@@ -626,7 +626,6 @@ class ForceType;
 class OutputFormatType;
 class LinkedCellType;
 class SimulationParameters;
-class brownDimension;
 
 #include <memory>    // ::std::auto_ptr
 #include <limits>    // std::numeric_limits
@@ -642,11 +641,11 @@ class brownDimension;
 #include <xsd/cxx/xml/dom/parsing-header.hxx>
 
 /**
- * @brief Class corresponding to the %PositiveInt schema type.
+ * @brief Class corresponding to the %Dimension schema type.
  *
  * @nosubgrouping
  */
-class PositiveInt: public ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type >
+class Dimension: public ::xsd::cxx::tree::fundamental_base< ::xml_schema::positive_integer, char, ::xml_schema::simple_type >
 {
   public:
   /**
@@ -658,7 +657,7 @@ class PositiveInt: public ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_
    * @brief Create an instance from the ultimate base and
    * initializers for required elements and attributes.
    */
-  PositiveInt (const ::xml_schema::int_&);
+  Dimension (const ::xml_schema::positive_integer&);
 
   /**
    * @brief Create an instance from a DOM element.
@@ -668,9 +667,9 @@ class PositiveInt: public ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_
    * @param c A pointer to the object that will contain the new
    * instance.
    */
-  PositiveInt (const ::xercesc::DOMElement& e,
-               ::xml_schema::flags f = 0,
-               ::xml_schema::container* c = 0);
+  Dimension (const ::xercesc::DOMElement& e,
+             ::xml_schema::flags f = 0,
+             ::xml_schema::container* c = 0);
 
   /**
    * @brief Create an instance from a DOM attribute.
@@ -680,9 +679,9 @@ class PositiveInt: public ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_
    * @param c A pointer to the object that will contain the new
    * instance.
    */
-  PositiveInt (const ::xercesc::DOMAttr& a,
-               ::xml_schema::flags f = 0,
-               ::xml_schema::container* c = 0);
+  Dimension (const ::xercesc::DOMAttr& a,
+             ::xml_schema::flags f = 0,
+             ::xml_schema::container* c = 0);
 
   /**
    * @brief Create an instance from a string fragment.
@@ -693,10 +692,10 @@ class PositiveInt: public ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_
    * @param c A pointer to the object that will contain the new
    * instance.
    */
-  PositiveInt (const ::std::string& s,
-               const ::xercesc::DOMElement* e,
-               ::xml_schema::flags f = 0,
-               ::xml_schema::container* c = 0);
+  Dimension (const ::std::string& s,
+             const ::xercesc::DOMElement* e,
+             ::xml_schema::flags f = 0,
+             ::xml_schema::container* c = 0);
 
   /**
    * @brief Copy constructor.
@@ -707,9 +706,9 @@ class PositiveInt: public ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_
    *
    * For polymorphic object models use the @c _clone function instead.
    */
-  PositiveInt (const PositiveInt& x,
-               ::xml_schema::flags f = 0,
-               ::xml_schema::container* c = 0);
+  Dimension (const Dimension& x,
+             ::xml_schema::flags f = 0,
+             ::xml_schema::container* c = 0);
 
   /**
    * @brief Copy the instance polymorphically.
@@ -722,7 +721,7 @@ class PositiveInt: public ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_
    * used for copying and should be used for polymorphic object
    * models instead of the copy constructor.
    */
-  virtual PositiveInt*
+  virtual Dimension*
   _clone (::xml_schema::flags f = 0,
           ::xml_schema::container* c = 0) const;
 
@@ -732,7 +731,7 @@ class PositiveInt: public ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_
    * @brief Destructor.
    */
   virtual 
-  ~PositiveInt ();
+  ~Dimension ();
 };
 
 /**
@@ -1095,7 +1094,7 @@ class PositiveIntVector3: public ::xml_schema::type
   /**
    * @brief Element type.
    */
-  typedef ::PositiveInt x_type;
+  typedef ::xml_schema::positive_integer x_type;
 
   /**
    * @brief Element traits type.
@@ -1129,17 +1128,6 @@ class PositiveIntVector3: public ::xml_schema::type
   void
   x (const x_type& x);
 
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  x (::std::auto_ptr< x_type > p);
-
   //@}
 
   /**
@@ -1153,7 +1141,7 @@ class PositiveIntVector3: public ::xml_schema::type
   /**
    * @brief Element type.
    */
-  typedef ::PositiveInt y_type;
+  typedef ::xml_schema::positive_integer y_type;
 
   /**
    * @brief Element traits type.
@@ -1187,17 +1175,6 @@ class PositiveIntVector3: public ::xml_schema::type
   void
   y (const y_type& x);
 
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  y (::std::auto_ptr< y_type > p);
-
   //@}
 
   /**
@@ -1211,7 +1188,7 @@ class PositiveIntVector3: public ::xml_schema::type
   /**
    * @brief Element type.
    */
-  typedef ::PositiveInt z_type;
+  typedef ::xml_schema::positive_integer z_type;
 
   /**
    * @brief Element traits type.
@@ -1244,17 +1221,6 @@ class PositiveIntVector3: public ::xml_schema::type
    */
   void
   z (const z_type& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  z (::std::auto_ptr< z_type > p);
 
   /**
    * @brief Return the default value for the element.
@@ -2345,7 +2311,7 @@ class CuboidType: public ::xml_schema::type
   /**
    * @brief Element type.
    */
-  typedef ::brownDimension brownDimension_type;
+  typedef ::Dimension brownDimension_type;
 
   /**
    * @brief Element traits type.
@@ -2389,6 +2355,14 @@ class CuboidType: public ::xml_schema::type
    */
   void
   brownDimension (::std::auto_ptr< brownDimension_type > p);
+
+  /**
+   * @brief Return the default value for the element.
+   *
+   * @return The element's default value.
+   */
+  static brownDimension_type
+  brownDimension_default_value ();
 
   //@}
 
@@ -4126,7 +4100,7 @@ class SimulationParameters: public ::xml_schema::type
   /**
    * @brief Element type.
    */
-  typedef ::PositiveInt frequency_type;
+  typedef ::xml_schema::positive_integer frequency_type;
 
   /**
    * @brief Element traits type.
@@ -4159,17 +4133,6 @@ class SimulationParameters: public ::xml_schema::type
    */
   void
   frequency (const frequency_type& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  frequency (::std::auto_ptr< frequency_type > p);
 
   /**
    * @brief Return the default value for the element.
@@ -4393,6 +4356,8 @@ class SimulationParameters: public ::xml_schema::type
    *
    * @brief Accessor and modifier functions for the %linked_cell
    * optional element.
+   *
+   * Optional. If provided, the linked cell algorithm is applied.
    */
   //@{
 
@@ -4562,100 +4527,6 @@ class SimulationParameters: public ::xml_schema::type
   linked_cell_optional linked_cell_;
 
   //@endcond
-};
-
-/**
- * @brief Class corresponding to the %brownDimension schema type.
- *
- * @nosubgrouping
- */
-class brownDimension: public ::xsd::cxx::tree::fundamental_base< ::xml_schema::int_, char, ::xml_schema::simple_type >
-{
-  public:
-  /**
-   * @name Constructors
-   */
-  //@{
-
-  /**
-   * @brief Create an instance from the ultimate base and
-   * initializers for required elements and attributes.
-   */
-  brownDimension (const ::xml_schema::int_&);
-
-  /**
-   * @brief Create an instance from a DOM element.
-   *
-   * @param e A DOM element to extract the data from.
-   * @param f Flags to create the new instance with.
-   * @param c A pointer to the object that will contain the new
-   * instance.
-   */
-  brownDimension (const ::xercesc::DOMElement& e,
-                  ::xml_schema::flags f = 0,
-                  ::xml_schema::container* c = 0);
-
-  /**
-   * @brief Create an instance from a DOM attribute.
-   *
-   * @param a A DOM attribute to extract the data from.
-   * @param f Flags to create the new instance with.
-   * @param c A pointer to the object that will contain the new
-   * instance.
-   */
-  brownDimension (const ::xercesc::DOMAttr& a,
-                  ::xml_schema::flags f = 0,
-                  ::xml_schema::container* c = 0);
-
-  /**
-   * @brief Create an instance from a string fragment.
-   *
-   * @param s A string fragment to extract the data from.
-   * @param e A pointer to DOM element containing the string fragment.
-   * @param f Flags to create the new instance with.
-   * @param c A pointer to the object that will contain the new
-   * instance.
-   */
-  brownDimension (const ::std::string& s,
-                  const ::xercesc::DOMElement* e,
-                  ::xml_schema::flags f = 0,
-                  ::xml_schema::container* c = 0);
-
-  /**
-   * @brief Copy constructor.
-   *
-   * @param x An instance to make a copy of.
-   * @param f Flags to create the copy with.
-   * @param c A pointer to the object that will contain the copy.
-   *
-   * For polymorphic object models use the @c _clone function instead.
-   */
-  brownDimension (const brownDimension& x,
-                  ::xml_schema::flags f = 0,
-                  ::xml_schema::container* c = 0);
-
-  /**
-   * @brief Copy the instance polymorphically.
-   *
-   * @param f Flags to create the copy with.
-   * @param c A pointer to the object that will contain the copy.
-   * @return A pointer to the dynamically allocated copy.
-   *
-   * This function ensures that the dynamic type of the instance is
-   * used for copying and should be used for polymorphic object
-   * models instead of the copy constructor.
-   */
-  virtual brownDimension*
-  _clone (::xml_schema::flags f = 0,
-          ::xml_schema::container* c = 0) const;
-
-  //@}
-
-  /**
-   * @brief Destructor.
-   */
-  virtual 
-  ~brownDimension ();
 };
 
 #include <iosfwd>
@@ -5179,14 +5050,14 @@ parameters (::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument > d,
 #include <xsd/cxx/xml/dom/auto-ptr.hxx>
 
 void
-operator<< (::xercesc::DOMElement&, const PositiveInt&);
+operator<< (::xercesc::DOMElement&, const Dimension&);
 
 void
-operator<< (::xercesc::DOMAttr&, const PositiveInt&);
+operator<< (::xercesc::DOMAttr&, const Dimension&);
 
 void
 operator<< (::xml_schema::list_stream&,
-            const PositiveInt&);
+            const Dimension&);
 
 void
 operator<< (::xercesc::DOMElement&, const PositiveDouble&);
@@ -5572,16 +5443,6 @@ parameters (const ::SimulationParameters& x,
             ::xml_schema::flags f = 0);
 
 //@}
-
-void
-operator<< (::xercesc::DOMElement&, const brownDimension&);
-
-void
-operator<< (::xercesc::DOMAttr&, const brownDimension&);
-
-void
-operator<< (::xml_schema::list_stream&,
-            const brownDimension&);
 
 #include <xsd/cxx/post.hxx>
 
