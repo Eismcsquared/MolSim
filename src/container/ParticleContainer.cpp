@@ -12,9 +12,9 @@
 
 ParticleContainer::ParticleContainer(std::vector<Particle>& particles, std::unique_ptr<Force>& f, bool newton3)
     : particles(particles),
-      f(*f) { // std::move if outputFormat is temporary
+      f(*f),
+      newton3(newton3){
     // compute initial forces
-    this->newton3 = newton3;
     updateF();
     spdlog::trace("ParticleContainer generated!");
 }

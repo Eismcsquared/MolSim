@@ -14,7 +14,7 @@ protected:
     std::vector<Particle> particles;
     std::unique_ptr<ParticleContainer> pc;
     std::unique_ptr<Force> f;
-    Cuboid cuboid = Cuboid({0, 10, 0}, {0, 0, 0}, {2, 4, 3}, 1, 1, 0);
+    Cuboid cuboid = Cuboid({0, 10, 0}, {0, 0, 0}, {2, 4, 3}, 1, 1, 0, 3);
     char* testfile = const_cast<char*>("../tests/test_cases/two_cuboid.txt");
 
 
@@ -107,7 +107,7 @@ TEST_F(CuboidTest, AddCuboid) {
 // analytically. The result is 3.
 TEST_F(CuboidTest, BrownianMotion) {
     test_logger->info("Cuboid - Brownian motion test");
-    Cuboid c = Cuboid({0, 0, 0}, {0, 0, 0}, {100, 100, 100}, 1, 1, 1); // 1000000 particles should produce statistically significant results
+    Cuboid c = Cuboid({0, 0, 0}, {0, 0, 0}, {100, 100, 100}, 1, 1, 1, 3); // 1000000 particles should produce statistically significant results
     std::vector<Particle> ps;
     c.createParticles(ps);
     double averageSpeedSquare = 0;

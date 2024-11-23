@@ -9,9 +9,11 @@
 
 #include "body/Particle.h"
 
-//#include <list>
 #include <vector>
 
+/**
+ * @brief This class provides a function to read input data from plain .txt files.
+ */
 class FileReader {
 
 public:

@@ -54,7 +54,7 @@ void FileReader::readFile(std::vector<Particle> &particles, char *filename) {
             }
             if (datastream.eof()) {
                 spdlog::error("Error reading file: eof reached unexpectedly reading from line {}", i);
-                exit(-1);
+                std::exit(-1);
             }
             datastream >> m;
             if (datastream.eof()) {
@@ -67,7 +67,7 @@ void FileReader::readFile(std::vector<Particle> &particles, char *filename) {
                 }
                 datastream >> distance;
                 datastream >> avgV;
-                Cuboid cuboid(x, v, n, m, distance, avgV);
+                Cuboid cuboid(x, v, n, m, distance, avgV, 3);
                 cuboid.createParticles(particles);
             }
         }

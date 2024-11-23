@@ -2,6 +2,9 @@
 #include <vector>
 #include "Particle.h"
 
+/**
+ * @brief This class represents a cuboid consisting of particles.
+ */
 class Cuboid {
 private:
     /**
@@ -28,11 +31,14 @@ private:
      * The average velocity of the Brownian motion.
      */
     double avgVelocityBrownian;
+    /**
+     * The dimension of the Brownian motion
+     */
+     int dimensionBrownian;
 public:
     Cuboid(const std::array<double, 3> &x, const std::array<double, 3> &v, const std::array<unsigned int, 3> &n,
-           double m, double distance, double avgVelocityBrownian);
+           double m, double distance, double avgVelocityBrownia, int dimensionBrownian);
 
-public:
     /**
      * @brief Create particles that belong to the cuboid and insert them into the given vector.
      * @param particles: The vector that particles of the cuboid should be added to.
