@@ -1,6 +1,7 @@
-#include "body/Particle.h"
 #include <vector>
 #include <array>
+#include <memory>
+#include "body/Particle.h"
 #include "body/Cuboid.h"
 #include "force/Force.h"
 
@@ -19,7 +20,7 @@ class ParticleContainer {
     * @param particles: The particles to store.
     * @param f: The force object that defines the force between two particles.
     */
-   ParticleContainer(std::vector<Particle>& particles, Force* f, bool netwon3);
+   ParticleContainer(std::vector<Particle>& particles, std::unique_ptr<Force>& f, bool netwon3);
 
 
 /**

@@ -146,13 +146,13 @@ int main(int argc, char *argsv[]) {
     fileReader.readFile(particles, inputFile);
 
     // Create a particle container for forwarding the particles, start time, end time, delta_t and outputFormat
-    Force* force;
+    std::unique_ptr<Force> force;
     switch (mode) {
         case GRAVITATION:
-            force = new GravitationalForce();
+            force = std::make_unique<GravitationalForce>(GravitationalForce());
             break;
         case LENNARD_JONES:
-            force = new LennardJonesForce();
+            force = std::make_unique<LennardJonesForce>(LennardJonesForce());
     }
     ParticleContainer particle_container = ParticleContainer(particles, force, newton3);
 

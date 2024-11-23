@@ -12,7 +12,8 @@
 class CuboidTest : public ::testing::Test {
 protected:
     std::vector<Particle> particles;
-    ParticleContainer *pc;
+    std::unique_ptr<ParticleContainer> pc;
+    std::unique_ptr<Force> f;
     Cuboid cuboid = Cuboid({0, 10, 0}, {0, 0, 0}, {2, 4, 3}, 1, 1, 0);
     char* testfile = const_cast<char*>("../tests/test_cases/two_cuboid.txt");
 
@@ -20,14 +21,14 @@ protected:
     void SetUp() override {
         FileReader fileReader;
         fileReader.readFile(particles, testfile);
-        pc = new ParticleContainer(particles, new LennardJonesForce(),true);
+        f = std::make_unique<LennardJonesForce>();
+        pc = std::make_unique<ParticleContainer>(particles, f, true);
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("Particle Container created");
     }
 
     void TearDown() override {
         test_logger->info("Particle Container deleted\n\n");
-        delete pc;
     }
 };
 
@@ -63,7 +64,7 @@ TEST_F(CuboidTest, ReadCuboids) {
             }
         }
     }
-    ParticleContainer reference(ps, new LennardJonesForce(),true);
+    ParticleContainer reference(ps, f,true);
     ASSERT_EQ(reference, *pc) << "Cuboid - read file test failed";
     test_logger->info("Cuboid - read file test passed");
 }
@@ -94,7 +95,7 @@ TEST_F(CuboidTest, AddCuboid) {
             }
         }
     }
-    ParticleContainer reference(ps, new LennardJonesForce(),true);
+    ParticleContainer reference(ps, f,true);
     ASSERT_EQ(reference, *pc) << "Cuboid - read file test failed";
     test_logger->info("Cuboid - read file test filed");
 }

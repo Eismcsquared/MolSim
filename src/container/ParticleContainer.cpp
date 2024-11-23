@@ -1,16 +1,16 @@
 #include <iostream>
 #include <vector>
 #include <array>
+#include <filesystem>
 #include "outputWriter/XYZWriter.h"
 #include "outputWriter/VTKWriter.h"
 #include "utils/ArrayUtils.h"
 #include "body/Particle.h"
 #include "ParticleContainer.h"
-#include <filesystem>
 #include "spdlog/spdlog.h"
 
 
-ParticleContainer::ParticleContainer(std::vector<Particle>& particles, Force* f, bool newton3)
+ParticleContainer::ParticleContainer(std::vector<Particle>& particles, std::unique_ptr<Force>& f, bool newton3)
     : particles(particles),
       f(*f) { // std::move if outputFormat is temporary
     // compute initial forces
@@ -22,7 +22,6 @@ ParticleContainer::ParticleContainer(std::vector<Particle>& particles, Force* f,
 
 ParticleContainer::~ParticleContainer(){
     spdlog::trace("ParticleContainer destructed!");
-    delete &f;
 }
 
 

@@ -18,21 +18,22 @@
 class LennardJonesForceTest : public ::testing::Test {
 protected:
     std::vector<Particle> particles;
-    ParticleContainer *pc;
+    std::unique_ptr<ParticleContainer> pc;
+    std::unique_ptr<Force> f;
     char* testfile = const_cast<char*>("../tests/test_cases/two_body.txt");
 
 
     void SetUp() override {
         FileReader fileReader;
         fileReader.readFile(particles, testfile);
-        pc = new ParticleContainer(particles, new LennardJonesForce(),true);
+        f = std::make_unique<LennardJonesForce>();
+        pc = std::make_unique<ParticleContainer>(particles, f, true);
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("Particle Container created");
     }
 
     void TearDown() override {
         test_logger->info("Particle Container deleted\n\n");
-        delete pc;
     }
 };
 
