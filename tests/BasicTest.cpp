@@ -4,10 +4,10 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include "Logger.h"
-#include "FileReader.h"
-#include "Particle.h"
-#include "ParticleContainer.h"
-#include "GravitationalForce.h"
+#include "inputReader/FileReader.h"
+#include "body/Particle.h"
+#include "container/ParticleContainer.h"
+#include "force/GravitationalForce.h"
 
 class BasicTest : public ::testing::Test {
 protected:

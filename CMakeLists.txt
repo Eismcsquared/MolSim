@@ -60,6 +60,7 @@ include(doxygen)
 include(spdlog)
 include(gtest)
 include (fmt)
+include(xsd)
 
 #testfiles 
 file(GLOB_RECURSE MY_TESTS

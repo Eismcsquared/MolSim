@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
-#include "Particle.h"
-#include "ParticleContainer.h"
-#include "GravitationalForce.h"
+#include "body/Particle.h"
+#include "container/ParticleContainer.h"
+#include "force/GravitationalForce.h"
 #include <vector>
 #include <iostream>
-#include "FileReader.h"
+#include "inputReader/FileReader.h"
 #include <string>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>

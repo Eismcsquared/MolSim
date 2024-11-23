@@ -1,6 +1,6 @@
 #include <cmath>
 #include "GravitationalForce.h"
-#include "Particle.h"
+#include "body/Particle.h"
 #include "utils/ArrayUtils.h"
 
 GravitationalForce::GravitationalForce(double g): g(g) {}

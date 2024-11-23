@@ -1,5 +1,5 @@
 
-#include "Force.h"
+#include "force/Force.h"
 
 /**
  * @brief Class for calculation of the force between two particles assuming a Lennard-Jones potential.

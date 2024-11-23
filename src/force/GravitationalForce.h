@@ -1,5 +1,5 @@
 
-#include "Force.h"
+#include "force/Force.h"
 /**
  * @brief Class for calculation of the gravitational force between two objects.
  */

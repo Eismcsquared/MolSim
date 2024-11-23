@@ -1,8 +1,8 @@
-#include "Particle.h"
+#include "body/Particle.h"
 #include <vector>
 #include <array>
-#include "Cuboid.h"
-#include "Force.h"
+#include "body/Cuboid.h"
+#include "force/Force.h"
 
 #pragma once
 

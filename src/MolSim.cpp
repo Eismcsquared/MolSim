@@ -4,14 +4,14 @@
  * @date 31.10.2024
  * 
  */
-#include "FileReader.h"
-#include "GravitationalForce.h"
-#include "LennardJonesForce.h"
+#include "inputReader/FileReader.h"
+#include "force/GravitationalForce.h"
+#include "force/LennardJonesForce.h"
 
 #include <iostream>
 #include <list>
 
-#include "ParticleContainer.h"
+#include "container/ParticleContainer.h"
 #include <getopt.h>
 #include <cstdlib>
 #include <vector>

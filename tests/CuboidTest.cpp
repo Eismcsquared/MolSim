@@ -3,11 +3,11 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include "Logger.h"
-#include "FileReader.h"
+#include "inputReader/FileReader.h"
 #include "utils/ArrayUtils.h"
-#include "Particle.h"
-#include "ParticleContainer.h"
-#include "LennardJonesForce.h"
+#include "body/Particle.h"
+#include "container/ParticleContainer.h"
+#include "force/LennardJonesForce.h"
 
 class CuboidTest : public ::testing::Test {
 protected:

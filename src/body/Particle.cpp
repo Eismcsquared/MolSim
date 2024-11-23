@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include "utils/ArrayUtils.h"
-#include <spdlog/spdlog.h>
+#include "spdlog/spdlog.h"
 
 Particle::Particle(int type_arg) {
   type = type_arg;

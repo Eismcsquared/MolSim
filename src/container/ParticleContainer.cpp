@@ -4,10 +4,10 @@
 #include "outputWriter/XYZWriter.h"
 #include "outputWriter/VTKWriter.h"
 #include "utils/ArrayUtils.h"
-#include "Particle.h"
+#include "body/Particle.h"
 #include "ParticleContainer.h"
 #include <filesystem>
-#include <spdlog/spdlog.h>
+#include "spdlog/spdlog.h"
 
 
 ParticleContainer::ParticleContainer(std::vector<Particle>& particles, Force* f, bool newton3)
