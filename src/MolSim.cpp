@@ -149,10 +149,10 @@ int main(int argc, char *argsv[]) {
     std::unique_ptr<Force> force;
     switch (mode) {
         case GRAVITATION:
-            force = std::make_unique<GravitationalForce>(GravitationalForce());
+            force = std::make_unique<GravitationalForce>();
             break;
         case LENNARD_JONES:
-            force = std::make_unique<LennardJonesForce>(LennardJonesForce());
+            force = std::make_unique<LennardJonesForce>();
     }
     ParticleContainer particle_container = ParticleContainer(particles, force, newton3);
 

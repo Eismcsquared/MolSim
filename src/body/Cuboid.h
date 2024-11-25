@@ -8,7 +8,7 @@
 class Cuboid {
 private:
     /**
-     * the lower, left, front corner (i.e. the corner with least coordinates) of the cuboid.
+     * the left (negative x-direction) lower (negative y-direction) back-side (negative z-direction) corner of the cuboid.
      */
     std::array<double, 3> x;
     /**

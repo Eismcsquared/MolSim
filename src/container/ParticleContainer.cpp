@@ -114,7 +114,7 @@ void ParticleContainer::plotParticles(int iteration, const std::string& out_name
     }
 }
 
-int ParticleContainer::getParticleNumber() const {
+unsigned long ParticleContainer::getParticleNumber() const {
     return particles.size();
 }
 
@@ -143,3 +143,22 @@ bool ParticleContainer::operator==(const ParticleContainer& other) const {
     }
     return true;
 }
+
+std::unique_ptr<Iterator> ParticleContainer::iterator() const {
+    return std::make_unique<ParticleContainerIterator>(particles.begin(), particles.end());
+}
+
+ParticleContainerIterator::ParticleContainerIterator(std::vector<Particle>::iterator current,
+                                                     std::vector<Particle>::iterator end): current(current), end(end) {}
+
+Particle &ParticleContainerIterator::next() {
+    Particle& p = *current;
+    ++current;
+    return p;
+}
+
+bool ParticleContainerIterator::hasNext() {
+    return current != end;
+}
+
+

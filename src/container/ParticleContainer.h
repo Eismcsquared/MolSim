@@ -4,18 +4,53 @@
 #include "body/Particle.h"
 #include "body/Cuboid.h"
 #include "force/Force.h"
+#include "container/Container.h"
 
 #pragma once
 
+/**
+ * @brief The Iterator for iteration over particles in a particle container.
+ */
+class ParticleContainerIterator: public Iterator {
+    /**
+     * The current particle.
+     */
+    std::vector<Particle>::iterator current;
+    /**
+     * The end of the iteration.
+     */
+    std::vector<Particle>::iterator end;
+public:
+    /**
+     * Destructor.
+     */
+    ~ParticleContainerIterator() override = default;
+    /**
+     * Constructor.
+     * @param current
+     * @param end
+     */
+    ParticleContainerIterator(std::vector<Particle>::iterator current, std::vector<Particle>::iterator end);
+    /**
+     * Update the iterator and return the current particle.
+     * @return The current particle.
+     */
+    Particle& next() override;
+    /**
+     * Determine whether there are further particles.
+     * @return True if the end of iteration is not yet reached.
+     */
+    bool hasNext() override;
+};
 
 /**
- * @brief Class that manages a system of particles. It stores particles in a vector, which allows efficient random access. Moreover, the positions of the particles are (redundantly) stored in an extra vector. This should increase cache efficiency when calculating gravitational forces. This class provides functionality to update parameters of the particles using Velocity-Störmer-Verlet.
+ * @brief The class that implements the direct sum method. The parameters of the particles are updated using Velocity-Störmer-Verlet.
  */
-class ParticleContainer {
+class ParticleContainer: Container{
 
   public:
 
-    /**
+   /**
     * @brief Construct a particle container.
     * @param particles: The particles to store.
     * @param f: The force object that defines the force between two particles.
@@ -23,9 +58,9 @@ class ParticleContainer {
    ParticleContainer(std::vector<Particle>& particles, std::unique_ptr<Force>& f, bool netwon3);
 
 
-/**
-   * @brief Destructor
-   */
+   /**
+    * @brief Destructor
+    */
    ~ParticleContainer();
 
   
@@ -42,22 +77,22 @@ class ParticleContainer {
     void addCuboid(const Cuboid &cuboid);
 
     /**
-     * @brief Calculate the force between all particles
+     * @brief Update the force between all particles.
      */
-    void updateF();
+    void updateF() override;
 
-
-     /**
-      * @brief Update the position for all particles
-      * @param delta_t: The duration that the positions should be updated for.
-      */
-    void updateX(double delta_t);
 
     /**
-     * @brief Update the velocity for all particles
+     * @brief Update the position for all particles.
+     * @param delta_t: The duration that the positions should be updated for.
+     */
+    void updateX(double delta_t) override;
+
+    /**
+     * @brief Update the velocity for all particles.
      * @param delta_t: The duration that the velocities should be updated for.
      */
-    void updateV(double delta_t);
+    void updateV(double delta_t) override;
 
     /**
      * @brief Simulate the system.
@@ -73,19 +108,42 @@ class ParticleContainer {
      * @param iteration: The current iteration number.
      * @param out_name: The name of the files that data should be written to.
      * @param output_format: The format of the output, should be either vtu or xyz.
-    */
+     */
     void plotParticles(int iterations, const std::string& out_name, const std::string& output_format);
 
-    int getParticleNumber() const;
+    /**
+     * Determine the number of particles in a container.
+     * @return The number of particles contained in the container.
+     */
+    unsigned long getParticleNumber() const override;
 
+    /**
+     * The getter for the particles in a particle container.
+     * @return The particles in the container as a vector.
+     */
     std::vector<Particle>& getParticles() const;
 
+    /**
+     * Provide a string representation of a container.
+     * @return A string representation of the container.
+     */
     std::string toString();
 
+    /**
+     * Compare the current container with another container based on the positions, velocities and forces of particles in the container.
+     * @param other The other particle container that should be compared with.
+     * @return True if both particle containers contain the same particles.
+     */
     bool operator==(const ParticleContainer& other) const;
 
-  
-  private:
+    /**
+     * Return a new iterator for the particle container.
+     * @return A new iterator for the particle container.
+     */
+    std::unique_ptr<Iterator> iterator() const override;
+
+
+private:
 
 
     /**
