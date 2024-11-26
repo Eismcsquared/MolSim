@@ -1,5 +1,5 @@
 #include "LennardJonesForce.h"
-#include "utils/ArrayUtils.h"
+
 
 LennardJonesForce::LennardJonesForce(double epsilon, double sigma): epsilon(epsilon), sigma(sigma) {}
 LennardJonesForce::LennardJonesForce(): epsilon(5), sigma(1) {}

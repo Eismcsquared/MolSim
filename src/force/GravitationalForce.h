@@ -1,4 +1,6 @@
-
+#include <cmath>
+#include "body/Particle.h"
+#include "utils/ArrayUtils.h"
 #include "force/Force.h"
 /**
  * @brief Class for calculation of the gravitational force between two objects.
