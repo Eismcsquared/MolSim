@@ -7,6 +7,8 @@
 #include "outputWriter/XYZWriter.h"
 #include "body/Cuboid.h"
 
+#pragma once
+
 /**
  * @brief Define an interface for iteration over particles in a container.
  */

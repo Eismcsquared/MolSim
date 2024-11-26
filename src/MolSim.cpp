@@ -4,21 +4,20 @@
  * @date 31.10.2024
  * 
  */
-#include "inputReader/FileReader.h"
-#include "force/GravitationalForce.h"
-#include "force/LennardJonesForce.h"
 
 #include <iostream>
-
-#include "container/ParticleContainer.h"
 #include <getopt.h>
 #include <cstdlib>
 #include <vector>
 #include <chrono>
-
+#include <memory>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
-
+#include "inputReader/FileReader.h"
+#include "force/GravitationalForce.h"
+#include "force/LennardJonesForce.h"
+#include "container/ParticleContainer.h"
+#include "Simulation.h"
 /**
  * @brief Function to plot the particles
  */
@@ -153,14 +152,14 @@ int main(int argc, char *argsv[]) {
         case LENNARD_JONES:
             force = std::make_unique<LennardJonesForce>();
     }
-    ParticleContainer particle_container = ParticleContainer(particles, force);
-
-
+    std::unique_ptr<Container> particle_container = std::make_unique<ParticleContainer>(particles, force);
+    Simulation simulation(particle_container, end_time, delta_t, outputFile, outputFormat, 10);
     if(benchmark){
         spdlog::set_level(spdlog::level::off);
 
         auto start = std::chrono::high_resolution_clock::now();
-        particle_container.simulate(end_time, delta_t, outputFile, outputFormat, 10, false, newton3);
+        simulation.setSaveOutput(false);
+        simulation.run();
         // Stop the timer
         auto end = std::chrono::high_resolution_clock::now();
 
@@ -179,7 +178,7 @@ int main(int argc, char *argsv[]) {
 
 
     // Calculate the position, force and velocity for all particles
-    particle_container.simulate(end_time, delta_t, outputFile, outputFormat, 10, true, newton3);
+    simulation.run();
 
     spdlog::info("output written. Terminating...");
 
