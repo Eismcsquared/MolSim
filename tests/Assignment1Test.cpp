@@ -24,7 +24,7 @@ protected:
     void SetUp() override {
         fileReader.readFile(particles, testfile);
         f = std::make_unique<GravitationalForce>();
-        pc = std::make_unique<ParticleContainer>(particles, f, true);
+        pc = std::make_unique<ParticleContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("Particle Container created");
     }
@@ -62,13 +62,13 @@ TEST_F(Assignment1Test, Simulation_simple) {
     test_logger->info("Assignment 1 - simple simulation test");
     for(int iteration = 0 ; iteration <= 3; ++iteration) {
         pc->updateX(0.014);
-        pc->updateF();
+        pc->updateF(true);
         pc->updateV(0.014);
     }
     std::vector<Particle> ref_p;
     char *ref_file = const_cast<char*>("../tests/Answer_Ref/Ans_simulation_simple.txt");
     fileReader.readFile(ref_p, ref_file);
-    ParticleContainer reference(ref_p, f, true);
+    ParticleContainer reference(ref_p, f);
 
     if(!(reference == *pc)) {
         test_logger->error("Assignment 1 - simple simulation test failed");
@@ -85,13 +85,13 @@ TEST_F(Assignment1Test, Complex_simulation) {
     int max_iteration = (int) ((1000 - 0) / 0.014);
     for(int iteration = 0 ; iteration <= max_iteration; ++iteration) {
         pc->updateX(0.014);
-        pc->updateF();
+        pc->updateF(true);
         pc->updateV(0.014);
     }
     std::vector<Particle> ref_p;
     char *ref_file = const_cast<char*>("../tests/Answer_Ref/Ans_simulation_complex.txt");
     fileReader.readFile(ref_p, ref_file);
-    ParticleContainer reference(ref_p, f,true);
+    ParticleContainer reference(ref_p, f);
 
     if(!(reference == *pc)) {
         test_logger->error("Assignment 1 - complex simulation test failed");

@@ -3,8 +3,8 @@
 
 Cell::Cell(std::array<double, 3> position, std::array<double, 3> size): position(position), size(size) {}
 
-const std::vector<Particle> Cell::getParticles() {
-    return particles;
+const std::vector<unsigned int> Cell::getParticleIndices() {
+    return particleIndices;
 }
 
 const std::array<double, 3> Cell::getPosition() {
@@ -24,13 +24,11 @@ bool Cell::contains(std::array<double, 3> pos) {
     return true;
 }
 
-void Cell::addParticle(Particle &particle) {
-    if (contains(particle.getX())) {
-        particles.insert(particles.end(), particle);
-    }
+void Cell::addIndex(unsigned int index) {
+    particleIndices.insert(particleIndices.end(), index);
 }
 
-void Cell::removeParticle(Particle &particle) {
-    auto newEnd = std::remove(particles.begin(), particles.end(), particle);
-    particles.erase(newEnd, particles.end());
+void Cell::removeIndex(unsigned int index) {
+    auto newEnd = std::remove(particleIndices.begin(), particleIndices.end(), index);
+    particleIndices.erase(newEnd, particleIndices.end());
 }

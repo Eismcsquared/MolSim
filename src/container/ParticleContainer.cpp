@@ -10,12 +10,9 @@
 #include "spdlog/spdlog.h"
 
 
-ParticleContainer::ParticleContainer(std::vector<Particle>& particles, std::unique_ptr<Force>& f, bool newton3)
-    : particles(particles),
-      f(*f),
-      newton3(newton3){
+ParticleContainer::ParticleContainer(std::vector<Particle> &particles, std::unique_ptr<Force> &f_ptr) : Container(particles, f_ptr) {
     // compute initial forces
-    updateF();
+    Container::updateF();
     spdlog::trace("ParticleContainer generated!");
 }
 
@@ -25,18 +22,7 @@ ParticleContainer::~ParticleContainer(){
 }
 
 
-void ParticleContainer::addParticle(const Particle& particle){
-    this->particles.push_back(particle);
-    this->updateF();
-}
-
-void ParticleContainer::addCuboid(const Cuboid& cuboid) {
-    cuboid.createParticles(particles);
-    this->updateF();
-}
-
-
-void ParticleContainer::updateF() {
+void ParticleContainer::updateF(bool newton3) {
     if (newton3) {
         std::vector<std::array<double, 3>> newForces(particles.size(), {0, 0, 0});
         for (unsigned long i = 0; i < particles.size(); ++i) {
@@ -82,83 +68,7 @@ void ParticleContainer::updateV(double delta_t){
     }
 }
 
-void ParticleContainer::simulate(double delta_t, double end_time, const std::string& out_name, const std::string& output_format, bool save_output) {
 
-    int max_iteration = (int) (end_time / delta_t);
-    for (int iteration = 0; iteration < max_iteration; iteration++) {
-        if (iteration % 10 == 0 && save_output) {
-            plotParticles(iteration, out_name, output_format);
-        }
-        // Calculate the position
-        updateX(delta_t);
-        // Calculate the force
-        updateF();
-        // Calculate the velocity
-        updateV(delta_t);
-        // Plot every 10th iteration
-        spdlog::trace("Iteration {} finished.", iteration + 1);
-    }
-    spdlog::trace("output written. Terminating...");
-}
 
-void ParticleContainer::plotParticles(int iteration, const std::string& out_name, const std::string& output_format) {
-    spdlog::trace("Plotting Particles...");
-
-    if(output_format == "vtu") {
-        outputWriter::VTKWriter writer;
-        writer.writeFile(out_name, iteration,particles);
-    }
-    else if(output_format == "xyz") {
-        outputWriter::XYZWriter writer;
-        writer.plotParticles(particles, out_name, iteration);
-    }
-}
-
-unsigned long ParticleContainer::getParticleNumber() const {
-    return particles.size();
-}
-
-std::vector<Particle>& ParticleContainer::getParticles() const {
-    return particles;
-}
-
-std::string ParticleContainer::toString() {
-    std::stringstream buf;
-    buf << "Number of particles: " << particles.size() << std::endl;
-    for (auto &p : particles) {
-        buf << p.toString() << std::endl;
-    }
-
-    return buf.str();
-}
-
-bool ParticleContainer::operator==(const ParticleContainer& other) const {
-    if (getParticleNumber() != other.getParticleNumber()) {
-        return false;
-    }
-    for (int i = 0; i < getParticleNumber(); ++i) {
-        if (!(getParticles()[i] == other.getParticles()[i])) {
-            return false;
-        }
-    }
-    return true;
-}
-
-std::unique_ptr<Iterator> ParticleContainer::iterator() const {
-    return std::make_unique<ParticleContainerIterator>(particles.begin(), particles.end());
-}
-
-ParticleContainerIterator::ParticleContainerIterator(std::vector<Particle>::iterator current,
-                                                     std::vector<Particle>::iterator end): current(current), end(end) {}
-
-Particle &ParticleContainerIterator::next() {
-    Particle& p = *current;
-    ++current;
-    return p;
-}
-
-bool ParticleContainerIterator::hasNext() {
-    return current != end;
-}
 
 

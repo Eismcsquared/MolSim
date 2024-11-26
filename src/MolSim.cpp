@@ -9,7 +9,6 @@
 #include "force/LennardJonesForce.h"
 
 #include <iostream>
-#include <list>
 
 #include "container/ParticleContainer.h"
 #include <getopt.h>
@@ -154,14 +153,14 @@ int main(int argc, char *argsv[]) {
         case LENNARD_JONES:
             force = std::make_unique<LennardJonesForce>();
     }
-    ParticleContainer particle_container = ParticleContainer(particles, force, newton3);
+    ParticleContainer particle_container = ParticleContainer(particles, force);
 
 
     if(benchmark){
         spdlog::set_level(spdlog::level::off);
 
         auto start = std::chrono::high_resolution_clock::now();
-        particle_container.simulate(delta_t, end_time, outputFile, outputFormat, false);
+        particle_container.simulate(end_time, delta_t, outputFile, outputFormat, 10, false, newton3);
         // Stop the timer
         auto end = std::chrono::high_resolution_clock::now();
 
@@ -180,7 +179,7 @@ int main(int argc, char *argsv[]) {
 
 
     // Calculate the position, force and velocity for all particles
-    particle_container.simulate(delta_t, end_time, outputFile, outputFormat);
+    particle_container.simulate(end_time, delta_t, outputFile, outputFormat, 10, true, newton3);
 
     spdlog::info("output written. Terminating...");
 

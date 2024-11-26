@@ -27,7 +27,7 @@ protected:
         FileReader fileReader;
         fileReader.readFile(particles, testfile);
         f = std::make_unique<LennardJonesForce>();
-        pc = std::make_unique<ParticleContainer>(particles, f, true);
+        pc = std::make_unique<ParticleContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("Particle Container created");
     }

@@ -1,6 +1,10 @@
 #include <array>
 #include <vector>
 #include "body/Particle.h"
+
+/**
+ * @brief This class represents a cell in the simulation domain that is used in the linked cell algorithm.
+ */
 class Cell {
 private:
 
@@ -15,9 +19,9 @@ private:
     std::array<double, 3> size;
 
    /**
-    * The particles contained in a cell.
+    * The indices of particles contained in a cell.
     */
-    std::vector<Particle> particles;
+    std::vector<unsigned int> particleIndices;
 
 public:
    /**
@@ -37,10 +41,10 @@ public:
     */
     const std::array<double, 3> getSize();
    /**
-    * The getter for the particles in a cell.
-    * @return The particles in the cell as a vector.
+    * The getter for the particles' indices in a cell.
+    * @return The particles' indices in the cell as a vector.
     */
-    const std::vector<Particle> getParticles();
+    const std::vector<unsigned int> getParticleIndices();
    /**
     * Test whether a given position belongs to the cell.
     * @param position The position that should be tested.
@@ -48,15 +52,15 @@ public:
     */
     bool contains(std::array<double, 3> pos);
    /**
-    * Add a particle to the cell. Nothing happens if the position of the particle does not belong to the cell.
-    * @param particle The particle to be added into the cell.
+    * Add a index to the cell.
+    * @param index The index to be added into the cell.
     */
-    void addParticle(Particle& particle);
+    void addIndex(unsigned int index);
    /**
-    * Remove a particle to the cell.
-    * @param particle The particle to be removed from the cell.
+    * Remove a index to the cell.
+    * @param index The index to be removed from the cell.
     */
-    void removeParticle(Particle& particle);
+    void removeIndex(unsigned int index);
 
 };
 

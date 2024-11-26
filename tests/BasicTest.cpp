@@ -21,7 +21,7 @@ protected:
         FileReader fileReader;
         fileReader.readFile(particles, testfile);
         f = std::make_unique<GravitationalForce>();
-        pc = std::make_unique<ParticleContainer>(particles, f, true);
+        pc = std::make_unique<ParticleContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("Particle Container created");
     }
@@ -41,7 +41,7 @@ TEST_F(BasicTest, ReadFile) {
         std::array<double, 3> v = {0, 0, 0};
         ref_vec.emplace_back(x, v, 1);
     }
-    ParticleContainer reference(ref_vec, f, true);
+    ParticleContainer reference(ref_vec, f);
     if(*pc == reference) {
         test_logger->info("Read file test passed");
     } else {
@@ -79,7 +79,7 @@ TEST_F(BasicTest, AddParticle1) {
         std::array<double, 3> v = {0, 0, 0};
         ref_vec.emplace_back(x, v, 1);
     }
-    ParticleContainer reference(ref_vec, f,true);
+    ParticleContainer reference(ref_vec, f);
     if(*pc == reference) {
         test_logger->info("Add particle test 1 passed");
     } else {
@@ -103,7 +103,7 @@ TEST_F(BasicTest, AddParticle2) {
         std::array<double, 3> v = {0, 0, 0};
         ref_vec.emplace_back(x, v, 1);
     }
-    ParticleContainer reference(ref_vec, f, true);
+    ParticleContainer reference(ref_vec, f);
     if(*pc == reference) {
         test_logger->info("Add particle test 2 passed");
     } else {
@@ -123,7 +123,7 @@ TEST_F(BasicTest, Analytic) {
     double delta_t = 1e-6;
     for (int i = 0; i < (int) (end_t / delta_t); ++i) {
         pc->updateX(delta_t);
-        pc->updateF();
+        pc->updateF(true);
         pc->updateV(delta_t);
     }
     std::vector<Particle> ref_vec;
@@ -133,7 +133,7 @@ TEST_F(BasicTest, Analytic) {
     std::array<double, 3> v_2 = {-1, 0, 0}; // expected velocity of particle 2
     ref_vec.emplace_back(x_1, v_1, 1);
     ref_vec.emplace_back(x_2, v_2, 1);
-    ParticleContainer reference(ref_vec, f,true);
+    ParticleContainer reference(ref_vec, f);
     if (!(*pc == reference)) {
         test_logger->error("Analytic solution test failed");
         test_logger->error("Expected: " + reference.toString());

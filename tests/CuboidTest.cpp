@@ -22,7 +22,7 @@ protected:
         FileReader fileReader;
         fileReader.readFile(particles, testfile);
         f = std::make_unique<LennardJonesForce>();
-        pc = std::make_unique<ParticleContainer>(particles, f, true);
+        pc = std::make_unique<ParticleContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("Particle Container created");
     }
@@ -64,7 +64,7 @@ TEST_F(CuboidTest, ReadCuboids) {
             }
         }
     }
-    ParticleContainer reference(ps, f,true);
+    ParticleContainer reference(ps, f);
     ASSERT_EQ(reference, *pc) << "Cuboid - read file test failed";
     test_logger->info("Cuboid - read file test passed");
 }
@@ -95,7 +95,7 @@ TEST_F(CuboidTest, AddCuboid) {
             }
         }
     }
-    ParticleContainer reference(ps, f,true);
+    ParticleContainer reference(ps, f);
     ASSERT_EQ(reference, *pc) << "Cuboid - read file test failed";
     test_logger->info("Cuboid - read file test filed");
 }
