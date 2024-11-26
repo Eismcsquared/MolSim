@@ -17,8 +17,13 @@
 class FileReader {
 
 public:
-  FileReader();
-  virtual ~FileReader();
+    FileReader();
+    virtual ~FileReader();
 
-  void readFile(std::vector<Particle> &particles, char *filename);
+    /**
+     * Read input from plain .txt files.
+     * @param particles The vector that particles should be read into.
+     * @param filename The name of the input file.
+     */
+    void readFile(std::vector<Particle> &particles, char *filename);
 };
