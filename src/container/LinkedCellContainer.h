@@ -13,6 +13,23 @@ private:
      */
     std::vector<Cell> cells = std::vector<Cell>();
 
+    /**
+     * The cutoff distance for the linked cell algorithm.
+     */
+    double cutoff;
+
+    /**
+     * The domain size of the simulation.
+     */
+    std::array<double, 3> domainSize;
+
+    /**
+     * The number of cells in each dimension.
+     */
+    std::array<int, 3> nCells;
+
+    
+
 public:
 
     /**
@@ -20,7 +37,7 @@ public:
     * @param particles: The particles to store.
     * @param f: The force object that defines the force between two particles.
     */
-    LinkedCellContainer(std::vector<Particle> &particles, std::unique_ptr<Force> &f_ptr);
+    LinkedCellContainer(std::vector<Particle> &particles, std::unique_ptr<Force> &f_ptr, std::array<double, 3> domainSize,double cutoff);
     /**
      * @brief Update the force between all particles.
      * @param newton3 The Newton's third law is applied if this flag is set.
@@ -38,6 +55,20 @@ public:
      * @param delta_t: The duration that the velocities should be updated for.
      */
     void updateV(double delta_t) override;
+    
+    /**
+     * @brief Get the neighbor cells of a cell.
+     * @param cellIndex The index of the cell.
+     * @return The indices of the neighbor cells.
+     */
+    std::vector<int> getNeighborCells(int cellIndex);
+
+    /**
+     * @brief Get the index of a cell that contains a given position.
+     * @param positions The position that should be tested.
+     * @return The index of the cell that contains the given position.
+     */
+    int getCellIndex(std::array<double, 3> positions);
 
 
 };
