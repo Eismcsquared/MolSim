@@ -29,14 +29,14 @@ void ParticleContainer::simulate(double end_time, double delta_t, const std::str
     int max_iteration = (int) (end_time / delta_t);
     for (int iteration = 0; iteration < max_iteration; iteration++) {
         if (iteration % output_frequency == 0 && save_output) {
-            plotParticles(iteration, out_name, output_format);
+           // plotParticles(iteration, out_name, output_format);
         }
         // Calculate the position
         updateX(delta_t);
         // Calculate the force
         updateF(newton3);
         // Calculate the velocity
-        //updateV(delta_t);
+        updateV(delta_t);
         // Plot every 10th iteration
         spdlog::trace("Iteration {} finished.", iteration + 1);
     }

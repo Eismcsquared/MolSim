@@ -155,7 +155,7 @@ int main(int argc, char *argsv[]) {
     }
     std::array<double, 3> domainSize = {180.0, 90.0, 0.0};
     std::unique_ptr<ParticleContainer> linked_cell_container = std::make_unique<LinkedCellContainer>(particles, force, domainSize, 3.0);
-    Simulation simulation(linked_cell_container, 1, delta_t, outputFile, outputFormat, 10);
+    Simulation simulation(linked_cell_container, end_time, delta_t, outputFile, outputFormat, 10);
     //std::unique_ptr<ParticleContainer> particle_container = std::make_unique<DirectSumContainer>(particles, force);
     //Simulation simulation(particle_container, end_time, delta_t, outputFile, outputFormat, 10);
     if(benchmark){

@@ -10,8 +10,7 @@
 LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f, std::array<double, 3> domainSize, double cutoff) :
         ParticleContainer(particles, f) {
 
-    this->cutoff = cutoff;
-    this->domainSize = domainSize;
+
 
     //TODO: Initialize the cells
     // compute cell indicies size
@@ -23,7 +22,13 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
     nX = std::max(nX, 1);
     nY = std::max(nY, 1);
     nZ = std::max(nZ, 1);
+
+    /////////////////////////////
+    // Initialize the variables
     this->nCells = {nX, nY, nZ};
+    this->cutoff = cutoff;
+    this->domainSize = domainSize;
+    /////////////////////////////
 
     // create cells
     for (int i = 0; i < nZ; i++) {
@@ -31,7 +36,7 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
             for (int k = 0; k < nX; k++) {
                 // compute the position of the cell
                 std::array<double, 3> position = {  k * cutoff,   j * cutoff, i * cutoff };
-                std::array<double, 3> size = {cutoff, cutoff, cutoff}; //!!!!
+                std::array<double, 3> size = {cutoff, cutoff, cutoff}; 
                 // push the cell into the cells vector
                 cells.emplace_back(Cell(position, size));
             }
@@ -74,8 +79,17 @@ void LinkedCellContainer::updateF(bool newton3) {
         for(unsigned long j = 0; j< pointCellparticles.size(); ++j){
             for(unsigned long k = j+1; k< pointCellparticles.size(); ++k){
                 std::array<double, 3> forceIJ = f->force((*particles)[pointCellparticles[j]], (*particles)[pointCellparticles[k]]);
-                (*particles)[pointCellparticles[j]].setF((*particles)[pointCellparticles[j]].getF() - forceIJ);
-                (*particles)[pointCellparticles[k]].setF((*particles)[pointCellparticles[k]].getF() + forceIJ);
+                
+                std::array<double, 3> v1_force ;
+                std::array<double, 3> v2_force ;
+                
+                for(int l = 0; l < 3; l++){
+                    v1_force[l] = (*particles)[pointCellparticles[j]].getF()[l] - forceIJ[l];
+                    v2_force[l] = (*particles)[pointCellparticles[k]].getF()[l] + forceIJ[l];
+                }
+
+                (*particles)[pointCellparticles[j]].setF(v1_force);
+                (*particles)[pointCellparticles[k]].setF(v2_force);
             }
         }
 
@@ -87,7 +101,7 @@ void LinkedCellContainer::updateF(bool newton3) {
 
 }
 
-void LinkedCellContainer::updateX(double delta_t){ // pop out and push in..
+void LinkedCellContainer::updateX(double delta_t){
 
     for (auto & particle : *particles) {
         int cellidx_before = getCellIndex(particle.getX());
@@ -97,12 +111,13 @@ void LinkedCellContainer::updateX(double delta_t){ // pop out and push in..
 
         int cellidx_after = getCellIndex(particle.getX());
 
-        if(cellidx_before != cellidx_after && cellidx_after >= 0 && cellidx_after < cells.size()){
+        if(cellidx_before != cellidx_after){
             cells[cellidx_before].removeIndex(cellidx_before);
-            cells[cellidx_after].addIndex(cellidx_after);
+            if(cellidx_after >= 0 && cellidx_after < cells.size()){
+                cells[cellidx_after].addIndex(cellidx_after);
+            }
         }
-        
-  }
+    }
 }
 
 
@@ -112,22 +127,18 @@ std::vector<int> LinkedCellContainer::getNeighborCells(int cellIndex, bool newto
     int idxX = cellIndex - idxZ * nCells[0] * nCells[1] - idxY * nCells[0];
     std::vector<int> neighbors;
 
-    if(newton){
-        for (int i = idxZ; i <= std::min(idxZ + 1, nCells[2] - 1); i++) {
-            for (int j =  idxY ; j <= std::min(idxY + 1, nCells[1] - 1); j++) {
-                for (int k = idxX ; k <= std::min(idxX + 1, nCells[0] - 1); k++) {
-                    if(i == idxZ && j == idxY && k == idxX) continue;
-                    neighbors.push_back(i * nCells[0] * nCells[1] + j * nCells[0] + k);
-                }
-            }
-        }
-    }
-    else{
-        for (int i = std::max(0, idxZ - 1); i <= std::min(idxZ + 1, nCells[2] - 1); i++) {
-            for (int j = std::max(0, idxY - 1); j <= std::min(idxY + 1, nCells[1] - 1); j++) {
-                for (int k = std::max(0, idxX - 1); k <= std::min(idxX + 1, nCells[0] - 1); k++) {
-                    if(i == idxZ && j == idxY && k == idxX) continue;
-                    neighbors.push_back(i * nCells[0] * nCells[1] + j * nCells[0] + k);
+    // start index considering newton's third law
+    int zStart = newton ? idxZ : std::max(0, idxZ - 1);
+    int yStart = newton ? idxY : std::max(0, idxY - 1);
+    int xStart = newton ? idxX : std::max(0, idxX - 1);
+
+    // get all neighbors
+    for (int z = zStart; z <= std::min(idxZ + 1, nCells[2] - 1); ++z) {
+        for (int y = yStart; y <= std::min(idxY + 1, nCells[1] - 1); ++y) {
+            for (int x = xStart; x <= std::min(idxX + 1, nCells[0] - 1); ++x) {
+                int neighborIndex = z * nCells[0] * nCells[1] + y * nCells[0] + x;
+                if (neighborIndex != cellIndex) {
+                    neighbors.push_back(neighborIndex);
                 }
             }
         }
@@ -140,20 +151,19 @@ std::vector<int> LinkedCellContainer::getNeighborCells(int cellIndex, bool newto
 int LinkedCellContainer::getCellIndex(std::array<double, 3> positions) {
 
     // Check if the position is within the domain
-    if(positions[0] < 0 || positions[0] > domainSize[0] || positions[1] < 0 || positions[1] > domainSize[1] || positions[2] < 0 || positions[2] > domainSize[2]){
+    if(positions[0] < 0 || positions[0] > domainSize[0] || positions[1] < 0 ||
+    positions[1] > domainSize[1] || positions[2] < 0 || positions[2] > domainSize[2]){
         return -1;
     }
 
-
-    // Calculate cell positions for each dimension
-    int idxX = static_cast<int>(std::floor(positions[0]  / cutoff));
-    int idxY = static_cast<int>(std::floor(positions[1] / cutoff));
-    int idxZ = static_cast<int>(std::floor(positions[2]  / cutoff));
+    int idxX = static_cast<int>(positions[0] / cutoff);
+    int idxY = static_cast<int>(positions[1] / cutoff);
+    int idxZ = static_cast<int>(positions[2] / cutoff);
 
     // Check if the position is exactly divisible by cutoff and adjust positions
-    if (std::fmod(positions[0], cutoff) == 0 && idxX > 0) idxX -= 1;
-    if (std::fmod(positions[1] , cutoff) == 0 && idxY > 0) idxY -= 1;
-    if (std::fmod(positions[2] , cutoff) == 0 && idxZ > 0) idxZ -= 1;
+    if (positions[0] == idxX * cutoff && idxX > 0) idxX -= 1;
+    if (positions[1] == idxY * cutoff && idxY > 0) idxY -= 1;
+    if (positions[2] == idxZ * cutoff && idxZ > 0) idxZ -= 1;
 
     // Calculate the linear cell index
     int cellIndex = idxZ * nCells[0] * nCells[1] + idxY * nCells[0] + idxX;
@@ -173,10 +183,9 @@ void LinkedCellContainer::updateCellF(const std::vector<unsigned int> &v1, const
     for (unsigned long i = 0; i < v1.size(); ++i) {
         for (unsigned long j = 0; j < v2.size(); ++j) {
             std::array<double, 3> forceIJ = f->force((*particles)[v1[i]], (*particles)[v2[j]]);
-           // std::array<double, 3> forceIJ = {0,0,0};
-            spdlog::warn("v1 : {} v2 : {} , {}", v1[i], v2[j], particles->size());
-            spdlog::warn("getF : {}, {},  {}", (*particles)[v1[i]].getF()[0], (*particles)[v1[i]].getF()[1], (*particles)[v1[i]].getF()[2]);
-            spdlog::warn("getF : {}, {},  {}", (*particles)[v2[j]].getF()[0], (*particles)[v2[j]].getF()[1], (*particles)[v2[j]].getF()[2]);
+            // spdlog::warn("v1 : {} v2 : {} , {}", v1[i], v2[j], particles->size());
+            // spdlog::warn("getF : {}, {},  {}", (*particles)[v1[i]].getF()[0], (*particles)[v1[i]].getF()[1], (*particles)[v1[i]].getF()[2]);
+            // spdlog::warn("getF : {}, {},  {}", (*particles)[v2[j]].getF()[0], (*particles)[v2[j]].getF()[1], (*particles)[v2[j]].getF()[2]);
 
             std::array<double, 3> v1_force ;
             std::array<double, 3> v2_force ;
