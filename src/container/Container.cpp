@@ -36,7 +36,7 @@ void Container::simulate(double end_time, double delta_t, const std::string &out
         // Calculate the force
         updateF(newton3);
         // Calculate the velocity
-        updateV(delta_t);
+        //updateV(delta_t);
         // Plot every 10th iteration
         spdlog::trace("Iteration {} finished.", iteration + 1);
     }

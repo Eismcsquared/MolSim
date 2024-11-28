@@ -17,6 +17,7 @@
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
 #include "container/ParticleContainer.h"
+#include "container/LinkedCellContainer.h"
 #include "Simulation.h"
 /**
  * @brief Function to plot the particles
@@ -152,8 +153,11 @@ int main(int argc, char *argsv[]) {
         case LENNARD_JONES:
             force = std::make_unique<LennardJonesForce>();
     }
-    std::unique_ptr<Container> particle_container = std::make_unique<ParticleContainer>(particles, force);
-    Simulation simulation(particle_container, end_time, delta_t, outputFile, outputFormat, 10);
+    std::array<double, 3> domainSize = {180.0, 90.0, 0.0};
+    std::unique_ptr<Container> linked_cell_container = std::make_unique<LinkedCellContainer>(particles, force, domainSize, 3.0);
+    Simulation simulation(linked_cell_container, 1, delta_t, outputFile, outputFormat, 10);
+    //std::unique_ptr<Container> particle_container = std::make_unique<ParticleContainer>(particles, force);
+    //Simulation simulation(particle_container, end_time, delta_t, outputFile, outputFormat, 10);
     if(benchmark){
         spdlog::set_level(spdlog::level::off);
 

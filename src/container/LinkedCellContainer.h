@@ -61,7 +61,7 @@ public:
      * @param cellIndex The index of the cell.
      * @return The indices of the neighbor cells.
      */
-    std::vector<int> getNeighborCells(int cellIndex);
+    std::vector<int> getNeighborCells(int cellIndex, bool newton );
 
     /**
      * @brief Get the index of a cell that contains a given position.
@@ -70,6 +70,19 @@ public:
      */
     int getCellIndex(std::array<double, 3> positions);
 
+    /**
+     * @brief Convert a 1D cell index to a 3D cell index.
+     * @param cellIndex The 1D cell index.
+     * @return The 3D cell index.
+     */
+    std::array<int, 3> get3DIndex(int cellIndex);
 
+
+    /**
+     * @brief Update the forces between particles in two cells.
+     * @param v1 The indices of particles in the first cell.
+     * @param v2 The indices of particles in the second cell.
+     */
+    void updateCellF(const std::vector<unsigned int> &v1, const std::vector<unsigned int> &v2);
 };
 
