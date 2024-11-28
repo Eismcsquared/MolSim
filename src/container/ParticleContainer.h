@@ -19,7 +19,7 @@ class ParticleContainer: public Container{
     * @param particles: The particles to store.
     * @param f: The force object that defines the force between two particles.
     */
-   ParticleContainer(std::vector<Particle> &particles, std::unique_ptr<Force> &f_ptr);
+   ParticleContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f);
 
 
    /**

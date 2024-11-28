@@ -183,6 +183,12 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:element name="objects" type="SimulationObjects"/>
-    <xs:element name="parameters" type="SimulationParameters"/>
+    <xs:complexType name="InputData">
+        <xs:sequence>
+            <xs:element name="objects" type="SimulationObjects"/>
+            <xs:element name="parameters" type="SimulationParameters"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="simulation" type="InputData"/>
 </xs:schema>

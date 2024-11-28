@@ -1,22 +1,22 @@
 #include "Container.h"
 
-Container::Container(std::vector<Particle> &particles, std::unique_ptr<Force>& f_ptr): particles(particles), f(*f_ptr){}
+Container::Container(std::unique_ptr<std::vector<Particle>> &particles, std::unique_ptr<Force>& f_ptr): particles(particles), f(f_ptr){}
 
 unsigned long Container::getParticleNumber() const {
-    return particles.size();
+    return particles->size();
 }
 
 std::vector<Particle> &Container::getParticles() const {
-    return particles;
+    return *particles;
 }
 
 void Container::addParticle(const Particle &particle) {
-    this->particles.push_back(particle);
+    this->particles->push_back(particle);
     this->Container::updateF();
 }
 
 void Container::addCuboid(const Cuboid &cuboid) {
-    cuboid.createParticles(particles);
+    cuboid.createParticles(*particles);
     this->Container::updateF();
 }
 
@@ -48,19 +48,19 @@ void Container::plotParticles(int iteration, const std::string &out_name, const 
 
     if(output_format == "vtu") {
         outputWriter::VTKWriter writer;
-        writer.writeFile(out_name, iteration,particles);
+        writer.writeFile(out_name, iteration, *particles);
     }
     else if(output_format == "xyz") {
         outputWriter::XYZWriter writer;
-        writer.plotParticles(particles, out_name, iteration);
+        writer.plotParticles(*particles, out_name, iteration);
     }
 }
 
 
 std::string Container::toString() {
     std::stringstream buf;
-    buf << "Number of particles: " << particles.size() << std::endl;
-    for (auto &p : particles) {
+    buf << "Number of particles: " << particles->size() << std::endl;
+    for (auto &p : *particles) {
         buf << p.toString() << std::endl;
     }
     return buf.str();
@@ -79,7 +79,7 @@ bool Container::operator==(const Container &other) const {
 }
 
 std::unique_ptr<Iterator> Container::iterator() const {
-    return std::make_unique<Iterator>(particles.begin(), particles.end());
+    return std::make_unique<Iterator>(particles->begin(), particles->end());
 }
 
 Iterator::Iterator(std::vector<Particle>::iterator begin, std::vector<Particle>::iterator end): current(begin), end(end){}

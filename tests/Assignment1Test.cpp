@@ -15,14 +15,15 @@
 // Test whether the simulations in assignment 1 still work as before, reference data originates from previous simulations
 class Assignment1Test : public ::testing::Test {
 protected:
-    std::vector<Particle> particles;
+    std::unique_ptr<std::vector<Particle>> particles;
     std::unique_ptr<Force> f;
     std::unique_ptr<ParticleContainer> pc;
     char* testfile = const_cast<char*>("../tests/test_cases/assignment1.txt");
     FileReader fileReader;
 
     void SetUp() override {
-        fileReader.readFile(particles, testfile);
+        particles = std::make_unique<std::vector<Particle>>();
+        fileReader.readFile(*particles, testfile);
         f = std::make_unique<GravitationalForce>();
         pc = std::make_unique<ParticleContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
@@ -65,9 +66,9 @@ TEST_F(Assignment1Test, Simulation_simple) {
         pc->updateF(true);
         pc->updateV(0.014);
     }
-    std::vector<Particle> ref_p;
+    std::unique_ptr<std::vector<Particle>> ref_p = std::make_unique<std::vector<Particle>>();
     char *ref_file = const_cast<char*>("../tests/Answer_Ref/Ans_simulation_simple.txt");
-    fileReader.readFile(ref_p, ref_file);
+    fileReader.readFile(*ref_p, ref_file);
     ParticleContainer reference(ref_p, f);
 
     if(!(reference == *pc)) {
@@ -88,9 +89,9 @@ TEST_F(Assignment1Test, Complex_simulation) {
         pc->updateF(true);
         pc->updateV(0.014);
     }
-    std::vector<Particle> ref_p;
+    std::unique_ptr<std::vector<Particle>> ref_p = std::make_unique<std::vector<Particle>>();
     char *ref_file = const_cast<char*>("../tests/Answer_Ref/Ans_simulation_complex.txt");
-    fileReader.readFile(ref_p, ref_file);
+    fileReader.readFile(*ref_p, ref_file);
     ParticleContainer reference(ref_p, f);
 
     if(!(reference == *pc)) {

@@ -53,18 +53,18 @@ protected:
 /**
  * Particles stored in the container
  */
-std::vector<Particle>& particles;
+std::unique_ptr<std::vector<Particle>> &particles;
 /**
  * The functional interface which computes the force between two particles (gravitational force, Lennard Jones force...)
  */
-Force& f;
+std::unique_ptr<Force> &f;
 public:
     /**
     * Construct a particle container.
     * @param particles: The particles to store.
     * @param f: The force object that defines the force between two particles.
     */
-    Container(std::vector<Particle>& particles, std::unique_ptr<Force>& f);
+    Container(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f);
 
     /**
      * The getter for the particles in a particle container.

@@ -58,7 +58,7 @@ int main(int argc, char *argsv[]) {
     char* inputFile= argsv[1];
     std::string outputFile("MD_vtk");
 
-    std::vector<Particle> particles;
+    std::unique_ptr<std::vector<Particle>> particles = std::make_unique<std::vector<Particle>>();
 
     int opt;
     static struct option long_options[] = {
@@ -142,7 +142,7 @@ int main(int argc, char *argsv[]) {
     spdlog::set_level(logLevel);
 
     FileReader fileReader;
-    fileReader.readFile(particles, inputFile);
+    fileReader.readFile(*particles, inputFile);
 
     // Create a particle container for forwarding the particles, start time, end time, delta_t and outputFormat
     std::unique_ptr<Force> force;

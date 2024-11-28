@@ -7,8 +7,8 @@
 #include "utils/ArrayUtils.h"
 
 
-LinkedCellContainer::LinkedCellContainer(std::vector<Particle> &particles, std::unique_ptr<Force> &f_ptr, std::array<double, 3> domainSize, double cutoff) :
-        Container(particles, f_ptr) {
+LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f, std::array<double, 3> domainSize, double cutoff) :
+        Container(particles, f) {
 
     this->cutoff = cutoff;
     this->domainSize = domainSize;
@@ -42,9 +42,9 @@ LinkedCellContainer::LinkedCellContainer(std::vector<Particle> &particles, std::
         }
     }
     // assign particles to cells    
-    for(int i = 0; i< particles.size(); i++){
+    for(int i = 0; i< particles->size(); i++){
 
-        const auto& pos = particles[i].getX(); // Get particle position
+        const auto& pos = (*particles)[i].getX(); // Get particle position
         
         // Add particle index to the corresponding cell
         int idx = getCellIndex(pos);
@@ -59,7 +59,7 @@ LinkedCellContainer::LinkedCellContainer(std::vector<Particle> &particles, std::
 
 //TODO: Implement the function to update the velocities
 void LinkedCellContainer::updateV(double delta_t) {
-        for (auto &p : particles) {
+        for (auto &p : *particles) {
         std::array<double, 3> vec = p.getV() + (delta_t / (2 * p.getM())) * (p.getF() + p.getOldF());
         p.setV(vec);
     }
@@ -67,7 +67,7 @@ void LinkedCellContainer::updateV(double delta_t) {
 
 //TODO: Implement the function to update the forces
 void LinkedCellContainer::updateF(bool newton3) {
-    for(auto & p1 : particles){
+    for(auto & p1 : *particles){
         p1.setOldF(p1.getF());
         p1.setF({0,0,0});
     }
@@ -78,9 +78,9 @@ void LinkedCellContainer::updateF(bool newton3) {
         
         for(unsigned long j = 0; j< pointCellparticles.size(); ++j){
             for(unsigned long k = j+1; k< pointCellparticles.size(); ++k){
-                std::array<double, 3> forceIJ = f.force(particles[pointCellparticles[j]], particles[pointCellparticles[k]]);
-                particles[pointCellparticles[j]].setF(particles[pointCellparticles[j]].getF() - forceIJ);
-                particles[pointCellparticles[k]].setF(particles[pointCellparticles[k]].getF() + forceIJ);
+                std::array<double, 3> forceIJ = f->force((*particles)[pointCellparticles[j]], (*particles)[pointCellparticles[k]]);
+                (*particles)[pointCellparticles[j]].setF((*particles)[pointCellparticles[j]].getF() - forceIJ);
+                (*particles)[pointCellparticles[k]].setF((*particles)[pointCellparticles[k]].getF() + forceIJ);
             }
         }
 
@@ -94,7 +94,7 @@ void LinkedCellContainer::updateF(bool newton3) {
 
 void LinkedCellContainer::updateX(double delta_t){ // pop out and push in..
 
-    for (auto & particle : particles) {
+    for (auto & particle : *particles) {
         int cellidx_before = getCellIndex(particle.getX());
 
         std::array<double, 3> vec = particle.getX() + delta_t * (particle.getV() + (delta_t / (2 * particle.getM())) * particle.getF());
@@ -181,10 +181,10 @@ std::array<int, 3> LinkedCellContainer:: get3DIndex (int cellIndex) {
 void LinkedCellContainer::updateCellF(const std::vector<unsigned int> &v1, const std::vector<unsigned int> &v2){
     for (unsigned long i = 0; i < v1.size(); ++i) {
         for (unsigned long j = 0; j < v2.size(); ++j) {
-            std::array<double, 3> forceIJ = f.force(particles[v1[i]], particles[v2[j]]);
+            std::array<double, 3> forceIJ = f->force((*particles)[v1[i]], (*particles)[v2[j]]);
             // update forces using the third Newton axiom
-            particles[v1[i]].setF(particles[v1[j]].getF() - forceIJ);
-            particles[v2[j]].setF(particles[v2[j]].getF() + forceIJ);
+            (*particles)[v1[i]].setF((*particles)[v1[j]].getF() - forceIJ);
+            (*particles)[v2[j]].setF((*particles)[v2[j]].getF() + forceIJ);
         }
     }
 }

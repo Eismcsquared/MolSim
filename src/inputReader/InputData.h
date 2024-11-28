@@ -626,6 +626,7 @@ class ForceType;
 class OutputFormatType;
 class LinkedCellType;
 class SimulationParameters;
+class InputData;
 
 #include <memory>    // ::std::auto_ptr
 #include <limits>    // std::numeric_limits
@@ -4529,6 +4530,229 @@ class SimulationParameters: public ::xml_schema::type
   //@endcond
 };
 
+/**
+ * @brief Class corresponding to the %InputData schema type.
+ *
+ * @nosubgrouping
+ */
+class InputData: public ::xml_schema::type
+{
+  public:
+  /**
+   * @name objects
+   *
+   * @brief Accessor and modifier functions for the %objects
+   * required element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::SimulationObjects objects_type;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< objects_type, char > objects_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element.
+   *
+   * @return A constant reference to the element.
+   */
+  const objects_type&
+  objects () const;
+
+  /**
+   * @brief Return a read-write reference to the element.
+   *
+   * @return A reference to the element.
+   */
+  objects_type&
+  objects ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  objects (const objects_type& x);
+
+  /**
+   * @brief Set the element value without copying.
+   *
+   * @param p A new value to use.
+   *
+   * This function will try to use the passed value directly
+   * instead of making a copy.
+   */
+  void
+  objects (::std::auto_ptr< objects_type > p);
+
+  //@}
+
+  /**
+   * @name parameters
+   *
+   * @brief Accessor and modifier functions for the %parameters
+   * required element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::SimulationParameters parameters_type;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< parameters_type, char > parameters_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element.
+   *
+   * @return A constant reference to the element.
+   */
+  const parameters_type&
+  parameters () const;
+
+  /**
+   * @brief Return a read-write reference to the element.
+   *
+   * @return A reference to the element.
+   */
+  parameters_type&
+  parameters ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  parameters (const parameters_type& x);
+
+  /**
+   * @brief Set the element value without copying.
+   *
+   * @param p A new value to use.
+   *
+   * This function will try to use the passed value directly
+   * instead of making a copy.
+   */
+  void
+  parameters (::std::auto_ptr< parameters_type > p);
+
+  //@}
+
+  /**
+   * @name Constructors
+   */
+  //@{
+
+  /**
+   * @brief Create an instance from the ultimate base and
+   * initializers for required elements and attributes.
+   */
+  InputData (const objects_type&,
+             const parameters_type&);
+
+  /**
+   * @brief Create an instance from the ultimate base and
+   * initializers for required elements and attributes
+   * (::std::auto_ptr version).
+   *
+   * This constructor will try to use the passed values directly
+   * instead of making copies.
+   */
+  InputData (::std::auto_ptr< objects_type >,
+             ::std::auto_ptr< parameters_type >);
+
+  /**
+   * @brief Create an instance from a DOM element.
+   *
+   * @param e A DOM element to extract the data from.
+   * @param f Flags to create the new instance with.
+   * @param c A pointer to the object that will contain the new
+   * instance.
+   */
+  InputData (const ::xercesc::DOMElement& e,
+             ::xml_schema::flags f = 0,
+             ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Copy constructor.
+   *
+   * @param x An instance to make a copy of.
+   * @param f Flags to create the copy with.
+   * @param c A pointer to the object that will contain the copy.
+   *
+   * For polymorphic object models use the @c _clone function instead.
+   */
+  InputData (const InputData& x,
+             ::xml_schema::flags f = 0,
+             ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Copy the instance polymorphically.
+   *
+   * @param f Flags to create the copy with.
+   * @param c A pointer to the object that will contain the copy.
+   * @return A pointer to the dynamically allocated copy.
+   *
+   * This function ensures that the dynamic type of the instance is
+   * used for copying and should be used for polymorphic object
+   * models instead of the copy constructor.
+   */
+  virtual InputData*
+  _clone (::xml_schema::flags f = 0,
+          ::xml_schema::container* c = 0) const;
+
+  /**
+   * @brief Copy assignment operator.
+   *
+   * @param x An instance to make a copy of.
+   * @return A reference to itself.
+   *
+   * For polymorphic object models use the @c _clone function instead.
+   */
+  InputData&
+  operator= (const InputData& x);
+
+  //@}
+
+  /**
+   * @brief Destructor.
+   */
+  virtual 
+  ~InputData ();
+
+  // Implementation.
+  //
+
+  //@cond
+
+  protected:
+  void
+  parse (::xsd::cxx::xml::dom::parser< char >&,
+         ::xml_schema::flags);
+
+  protected:
+  ::xsd::cxx::tree::one< objects_type > objects_;
+  ::xsd::cxx::tree::one< parameters_type > parameters_;
+
+  //@endcond
+};
+
 #include <iosfwd>
 
 #include <xercesc/sax/InputSource.hpp>
@@ -4536,7 +4760,7 @@ class SimulationParameters: public ::xml_schema::type
 #include <xercesc/dom/DOMErrorHandler.hpp>
 
 /**
- * @name Parsing functions for the %objects document root.
+ * @name Parsing functions for the %simulation document root.
  */
 //@{
 
@@ -4550,261 +4774,8 @@ class SimulationParameters: public ::xml_schema::type
  *
  * This function uses exceptions to report parsing errors.
  */
-::std::auto_ptr< ::SimulationObjects >
-objects (const ::std::string& uri,
-         ::xml_schema::flags f = 0,
-         const ::xml_schema::properties& p = ::xml_schema::properties ());
-
-/**
- * @brief Parse a URI or a local file with an error handler.
- *
- * @param uri A URI or a local file name.
- * @param eh An error handler.
- * @param f Parsing flags.
- * @param p Parsing properties. 
- * @return A pointer to the root of the object model.
- *
- * This function reports parsing errors by calling the error handler.
- */
-::std::auto_ptr< ::SimulationObjects >
-objects (const ::std::string& uri,
-         ::xml_schema::error_handler& eh,
-         ::xml_schema::flags f = 0,
-         const ::xml_schema::properties& p = ::xml_schema::properties ());
-
-/**
- * @brief Parse a URI or a local file with a Xerces-C++ DOM error
- * handler.
- *
- * @param uri A URI or a local file name.
- * @param eh A Xerces-C++ DOM error handler.
- * @param f Parsing flags.
- * @param p Parsing properties. 
- * @return A pointer to the root of the object model.
- *
- * This function reports parsing errors by calling the error handler.
- */
-::std::auto_ptr< ::SimulationObjects >
-objects (const ::std::string& uri,
-         ::xercesc::DOMErrorHandler& eh,
-         ::xml_schema::flags f = 0,
-         const ::xml_schema::properties& p = ::xml_schema::properties ());
-
-/**
- * @brief Parse a standard input stream.
- *
- * @param is A standrad input stream.
- * @param f Parsing flags.
- * @param p Parsing properties. 
- * @return A pointer to the root of the object model.
- *
- * This function uses exceptions to report parsing errors.
- */
-::std::auto_ptr< ::SimulationObjects >
-objects (::std::istream& is,
-         ::xml_schema::flags f = 0,
-         const ::xml_schema::properties& p = ::xml_schema::properties ());
-
-/**
- * @brief Parse a standard input stream with an error handler.
- *
- * @param is A standrad input stream.
- * @param eh An error handler.
- * @param f Parsing flags.
- * @param p Parsing properties. 
- * @return A pointer to the root of the object model.
- *
- * This function reports parsing errors by calling the error handler.
- */
-::std::auto_ptr< ::SimulationObjects >
-objects (::std::istream& is,
-         ::xml_schema::error_handler& eh,
-         ::xml_schema::flags f = 0,
-         const ::xml_schema::properties& p = ::xml_schema::properties ());
-
-/**
- * @brief Parse a standard input stream with a Xerces-C++ DOM error
- * handler.
- *
- * @param is A standrad input stream.
- * @param eh A Xerces-C++ DOM error handler.
- * @param f Parsing flags.
- * @param p Parsing properties. 
- * @return A pointer to the root of the object model.
- *
- * This function reports parsing errors by calling the error handler.
- */
-::std::auto_ptr< ::SimulationObjects >
-objects (::std::istream& is,
-         ::xercesc::DOMErrorHandler& eh,
-         ::xml_schema::flags f = 0,
-         const ::xml_schema::properties& p = ::xml_schema::properties ());
-
-/**
- * @brief Parse a standard input stream with a resource id.
- *
- * @param is A standrad input stream.
- * @param id A resource id.
- * @param f Parsing flags.
- * @param p Parsing properties. 
- * @return A pointer to the root of the object model.
- *
- * The resource id is used to identify the document being parsed in
- * diagnostics as well as to resolve relative paths.
- *
- * This function uses exceptions to report parsing errors.
- */
-::std::auto_ptr< ::SimulationObjects >
-objects (::std::istream& is,
-         const ::std::string& id,
-         ::xml_schema::flags f = 0,
-         const ::xml_schema::properties& p = ::xml_schema::properties ());
-
-/**
- * @brief Parse a standard input stream with a resource id and an
- * error handler.
- *
- * @param is A standrad input stream.
- * @param id A resource id.
- * @param eh An error handler.
- * @param f Parsing flags.
- * @param p Parsing properties. 
- * @return A pointer to the root of the object model.
- *
- * The resource id is used to identify the document being parsed in
- * diagnostics as well as to resolve relative paths.
- *
- * This function reports parsing errors by calling the error handler.
- */
-::std::auto_ptr< ::SimulationObjects >
-objects (::std::istream& is,
-         const ::std::string& id,
-         ::xml_schema::error_handler& eh,
-         ::xml_schema::flags f = 0,
-         const ::xml_schema::properties& p = ::xml_schema::properties ());
-
-/**
- * @brief Parse a standard input stream with a resource id and a
- * Xerces-C++ DOM error handler.
- *
- * @param is A standrad input stream.
- * @param id A resource id.
- * @param eh A Xerces-C++ DOM error handler.
- * @param f Parsing flags.
- * @param p Parsing properties. 
- * @return A pointer to the root of the object model.
- *
- * The resource id is used to identify the document being parsed in
- * diagnostics as well as to resolve relative paths.
- *
- * This function reports parsing errors by calling the error handler.
- */
-::std::auto_ptr< ::SimulationObjects >
-objects (::std::istream& is,
-         const ::std::string& id,
-         ::xercesc::DOMErrorHandler& eh,
-         ::xml_schema::flags f = 0,
-         const ::xml_schema::properties& p = ::xml_schema::properties ());
-
-/**
- * @brief Parse a Xerces-C++ input source.
- *
- * @param is A Xerces-C++ input source.
- * @param f Parsing flags.
- * @param p Parsing properties. 
- * @return A pointer to the root of the object model.
- *
- * This function uses exceptions to report parsing errors.
- */
-::std::auto_ptr< ::SimulationObjects >
-objects (::xercesc::InputSource& is,
-         ::xml_schema::flags f = 0,
-         const ::xml_schema::properties& p = ::xml_schema::properties ());
-
-/**
- * @brief Parse a Xerces-C++ input source with an error handler.
- *
- * @param is A Xerces-C++ input source.
- * @param eh An error handler.
- * @param f Parsing flags.
- * @param p Parsing properties. 
- * @return A pointer to the root of the object model.
- *
- * This function reports parsing errors by calling the error handler.
- */
-::std::auto_ptr< ::SimulationObjects >
-objects (::xercesc::InputSource& is,
-         ::xml_schema::error_handler& eh,
-         ::xml_schema::flags f = 0,
-         const ::xml_schema::properties& p = ::xml_schema::properties ());
-
-/**
- * @brief Parse a Xerces-C++ input source with a Xerces-C++ DOM
- * error handler.
- *
- * @param is A Xerces-C++ input source.
- * @param eh A Xerces-C++ DOM error handler.
- * @param f Parsing flags.
- * @param p Parsing properties. 
- * @return A pointer to the root of the object model.
- *
- * This function reports parsing errors by calling the error handler.
- */
-::std::auto_ptr< ::SimulationObjects >
-objects (::xercesc::InputSource& is,
-         ::xercesc::DOMErrorHandler& eh,
-         ::xml_schema::flags f = 0,
-         const ::xml_schema::properties& p = ::xml_schema::properties ());
-
-/**
- * @brief Parse a Xerces-C++ DOM document.
- *
- * @param d A Xerces-C++ DOM document.
- * @param f Parsing flags.
- * @param p Parsing properties. 
- * @return A pointer to the root of the object model.
- */
-::std::auto_ptr< ::SimulationObjects >
-objects (const ::xercesc::DOMDocument& d,
-         ::xml_schema::flags f = 0,
-         const ::xml_schema::properties& p = ::xml_schema::properties ());
-
-/**
- * @brief Parse a Xerces-C++ DOM document.
- *
- * @param d A pointer to the Xerces-C++ DOM document.
- * @param f Parsing flags.
- * @param p Parsing properties. 
- * @return A pointer to the root of the object model.
- *
- * This function is normally used together with the keep_dom and
- * own_dom parsing flags to assign ownership of the DOM document
- * to the object model.
- */
-::std::auto_ptr< ::SimulationObjects >
-objects (::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument > d,
-         ::xml_schema::flags f = 0,
-         const ::xml_schema::properties& p = ::xml_schema::properties ());
-
-//@}
-
-/**
- * @name Parsing functions for the %parameters document root.
- */
-//@{
-
-/**
- * @brief Parse a URI or a local file.
- *
- * @param uri A URI or a local file name.
- * @param f Parsing flags.
- * @param p Parsing properties. 
- * @return A pointer to the root of the object model.
- *
- * This function uses exceptions to report parsing errors.
- */
-::std::auto_ptr< ::SimulationParameters >
-parameters (const ::std::string& uri,
+::std::auto_ptr< ::InputData >
+simulation (const ::std::string& uri,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
 
@@ -4819,8 +4790,8 @@ parameters (const ::std::string& uri,
  *
  * This function reports parsing errors by calling the error handler.
  */
-::std::auto_ptr< ::SimulationParameters >
-parameters (const ::std::string& uri,
+::std::auto_ptr< ::InputData >
+simulation (const ::std::string& uri,
             ::xml_schema::error_handler& eh,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
@@ -4837,8 +4808,8 @@ parameters (const ::std::string& uri,
  *
  * This function reports parsing errors by calling the error handler.
  */
-::std::auto_ptr< ::SimulationParameters >
-parameters (const ::std::string& uri,
+::std::auto_ptr< ::InputData >
+simulation (const ::std::string& uri,
             ::xercesc::DOMErrorHandler& eh,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
@@ -4853,8 +4824,8 @@ parameters (const ::std::string& uri,
  *
  * This function uses exceptions to report parsing errors.
  */
-::std::auto_ptr< ::SimulationParameters >
-parameters (::std::istream& is,
+::std::auto_ptr< ::InputData >
+simulation (::std::istream& is,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
 
@@ -4869,8 +4840,8 @@ parameters (::std::istream& is,
  *
  * This function reports parsing errors by calling the error handler.
  */
-::std::auto_ptr< ::SimulationParameters >
-parameters (::std::istream& is,
+::std::auto_ptr< ::InputData >
+simulation (::std::istream& is,
             ::xml_schema::error_handler& eh,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
@@ -4887,8 +4858,8 @@ parameters (::std::istream& is,
  *
  * This function reports parsing errors by calling the error handler.
  */
-::std::auto_ptr< ::SimulationParameters >
-parameters (::std::istream& is,
+::std::auto_ptr< ::InputData >
+simulation (::std::istream& is,
             ::xercesc::DOMErrorHandler& eh,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
@@ -4907,8 +4878,8 @@ parameters (::std::istream& is,
  *
  * This function uses exceptions to report parsing errors.
  */
-::std::auto_ptr< ::SimulationParameters >
-parameters (::std::istream& is,
+::std::auto_ptr< ::InputData >
+simulation (::std::istream& is,
             const ::std::string& id,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
@@ -4929,8 +4900,8 @@ parameters (::std::istream& is,
  *
  * This function reports parsing errors by calling the error handler.
  */
-::std::auto_ptr< ::SimulationParameters >
-parameters (::std::istream& is,
+::std::auto_ptr< ::InputData >
+simulation (::std::istream& is,
             const ::std::string& id,
             ::xml_schema::error_handler& eh,
             ::xml_schema::flags f = 0,
@@ -4952,8 +4923,8 @@ parameters (::std::istream& is,
  *
  * This function reports parsing errors by calling the error handler.
  */
-::std::auto_ptr< ::SimulationParameters >
-parameters (::std::istream& is,
+::std::auto_ptr< ::InputData >
+simulation (::std::istream& is,
             const ::std::string& id,
             ::xercesc::DOMErrorHandler& eh,
             ::xml_schema::flags f = 0,
@@ -4969,8 +4940,8 @@ parameters (::std::istream& is,
  *
  * This function uses exceptions to report parsing errors.
  */
-::std::auto_ptr< ::SimulationParameters >
-parameters (::xercesc::InputSource& is,
+::std::auto_ptr< ::InputData >
+simulation (::xercesc::InputSource& is,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
 
@@ -4985,8 +4956,8 @@ parameters (::xercesc::InputSource& is,
  *
  * This function reports parsing errors by calling the error handler.
  */
-::std::auto_ptr< ::SimulationParameters >
-parameters (::xercesc::InputSource& is,
+::std::auto_ptr< ::InputData >
+simulation (::xercesc::InputSource& is,
             ::xml_schema::error_handler& eh,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
@@ -5003,8 +4974,8 @@ parameters (::xercesc::InputSource& is,
  *
  * This function reports parsing errors by calling the error handler.
  */
-::std::auto_ptr< ::SimulationParameters >
-parameters (::xercesc::InputSource& is,
+::std::auto_ptr< ::InputData >
+simulation (::xercesc::InputSource& is,
             ::xercesc::DOMErrorHandler& eh,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
@@ -5017,8 +4988,8 @@ parameters (::xercesc::InputSource& is,
  * @param p Parsing properties. 
  * @return A pointer to the root of the object model.
  */
-::std::auto_ptr< ::SimulationParameters >
-parameters (const ::xercesc::DOMDocument& d,
+::std::auto_ptr< ::InputData >
+simulation (const ::xercesc::DOMDocument& d,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
 
@@ -5034,8 +5005,8 @@ parameters (const ::xercesc::DOMDocument& d,
  * own_dom parsing flags to assign ownership of the DOM document
  * to the object model.
  */
-::std::auto_ptr< ::SimulationParameters >
-parameters (::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument > d,
+::std::auto_ptr< ::InputData >
+simulation (::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument > d,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
 
@@ -5126,8 +5097,11 @@ operator<< (::xercesc::DOMElement&, const LinkedCellType&);
 void
 operator<< (::xercesc::DOMElement&, const SimulationParameters&);
 
+void
+operator<< (::xercesc::DOMElement&, const InputData&);
+
 /**
- * @name Serialization functions for the %objects document root.
+ * @name Serialization functions for the %simulation document root.
  */
 //@{
 
@@ -5143,167 +5117,8 @@ operator<< (::xercesc::DOMElement&, const SimulationParameters&);
  * This function uses exceptions to report serialization errors.
  */
 void
-objects (::std::ostream& os,
-         const ::SimulationObjects& x, 
-         const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
-         const ::std::string& e = "UTF-8",
-         ::xml_schema::flags f = 0);
-
-/**
- * @brief Serialize to a standard output stream with an error handler.
- *
- * @param os A standrad output stream.
- * @param x An object model to serialize.
- * @param eh An error handler.
- * @param m A namespace information map.
- * @param e A character encoding to produce XML in.
- * @param f Serialization flags.
- *
- * This function reports serialization errors by calling the error
- * handler.
- */
-void
-objects (::std::ostream& os,
-         const ::SimulationObjects& x, 
-         ::xml_schema::error_handler& eh,
-         const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
-         const ::std::string& e = "UTF-8",
-         ::xml_schema::flags f = 0);
-
-/**
- * @brief Serialize to a standard output stream with a Xerces-C++ DOM
- * error handler.
- *
- * @param os A standrad output stream.
- * @param x An object model to serialize.
- * @param eh A Xerces-C++ DOM error handler.
- * @param m A namespace information map.
- * @param e A character encoding to produce XML in.
- * @param f Serialization flags.
- *
- * This function reports serialization errors by calling the error
- * handler.
- */
-void
-objects (::std::ostream& os,
-         const ::SimulationObjects& x, 
-         ::xercesc::DOMErrorHandler& eh,
-         const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
-         const ::std::string& e = "UTF-8",
-         ::xml_schema::flags f = 0);
-
-/**
- * @brief Serialize to a Xerces-C++ XML format target.
- *
- * @param ft A Xerces-C++ XML format target.
- * @param x An object model to serialize.
- * @param m A namespace information map.
- * @param e A character encoding to produce XML in.
- * @param f Serialization flags.
- *
- * This function uses exceptions to report serialization errors.
- */
-void
-objects (::xercesc::XMLFormatTarget& ft,
-         const ::SimulationObjects& x, 
-         const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
-         const ::std::string& e = "UTF-8",
-         ::xml_schema::flags f = 0);
-
-/**
- * @brief Serialize to a Xerces-C++ XML format target with an error
- * handler.
- *
- * @param ft A Xerces-C++ XML format target.
- * @param x An object model to serialize.
- * @param eh An error handler.
- * @param m A namespace information map.
- * @param e A character encoding to produce XML in.
- * @param f Serialization flags.
- *
- * This function reports serialization errors by calling the error
- * handler.
- */
-void
-objects (::xercesc::XMLFormatTarget& ft,
-         const ::SimulationObjects& x, 
-         ::xml_schema::error_handler& eh,
-         const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
-         const ::std::string& e = "UTF-8",
-         ::xml_schema::flags f = 0);
-
-/**
- * @brief Serialize to a Xerces-C++ XML format target with a
- * Xerces-C++ DOM error handler.
- *
- * @param ft A Xerces-C++ XML format target.
- * @param x An object model to serialize.
- * @param eh A Xerces-C++ DOM error handler.
- * @param m A namespace information map.
- * @param e A character encoding to produce XML in.
- * @param f Serialization flags.
- *
- * This function reports serialization errors by calling the error
- * handler.
- */
-void
-objects (::xercesc::XMLFormatTarget& ft,
-         const ::SimulationObjects& x, 
-         ::xercesc::DOMErrorHandler& eh,
-         const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
-         const ::std::string& e = "UTF-8",
-         ::xml_schema::flags f = 0);
-
-/**
- * @brief Serialize to an existing Xerces-C++ DOM document.
- *
- * @param d A Xerces-C++ DOM document.
- * @param x An object model to serialize.
- * @param f Serialization flags.
- *
- * Note that it is your responsibility to create the DOM document
- * with the correct root element as well as set the necessary
- * namespace mapping attributes.
- */
-void
-objects (::xercesc::DOMDocument& d,
-         const ::SimulationObjects& x,
-         ::xml_schema::flags f = 0);
-
-/**
- * @brief Serialize to a new Xerces-C++ DOM document.
- *
- * @param x An object model to serialize.
- * @param m A namespace information map.
- * @param f Serialization flags.
- * @return A pointer to the new Xerces-C++ DOM document.
- */
-::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument >
-objects (const ::SimulationObjects& x, 
-         const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
-         ::xml_schema::flags f = 0);
-
-//@}
-
-/**
- * @name Serialization functions for the %parameters document root.
- */
-//@{
-
-/**
- * @brief Serialize to a standard output stream.
- *
- * @param os A standrad output stream.
- * @param x An object model to serialize.
- * @param m A namespace information map.
- * @param e A character encoding to produce XML in.
- * @param f Serialization flags.
- *
- * This function uses exceptions to report serialization errors.
- */
-void
-parameters (::std::ostream& os,
-            const ::SimulationParameters& x, 
+simulation (::std::ostream& os,
+            const ::InputData& x, 
             const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
             const ::std::string& e = "UTF-8",
             ::xml_schema::flags f = 0);
@@ -5322,8 +5137,8 @@ parameters (::std::ostream& os,
  * handler.
  */
 void
-parameters (::std::ostream& os,
-            const ::SimulationParameters& x, 
+simulation (::std::ostream& os,
+            const ::InputData& x, 
             ::xml_schema::error_handler& eh,
             const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
             const ::std::string& e = "UTF-8",
@@ -5344,8 +5159,8 @@ parameters (::std::ostream& os,
  * handler.
  */
 void
-parameters (::std::ostream& os,
-            const ::SimulationParameters& x, 
+simulation (::std::ostream& os,
+            const ::InputData& x, 
             ::xercesc::DOMErrorHandler& eh,
             const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
             const ::std::string& e = "UTF-8",
@@ -5363,8 +5178,8 @@ parameters (::std::ostream& os,
  * This function uses exceptions to report serialization errors.
  */
 void
-parameters (::xercesc::XMLFormatTarget& ft,
-            const ::SimulationParameters& x, 
+simulation (::xercesc::XMLFormatTarget& ft,
+            const ::InputData& x, 
             const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
             const ::std::string& e = "UTF-8",
             ::xml_schema::flags f = 0);
@@ -5384,8 +5199,8 @@ parameters (::xercesc::XMLFormatTarget& ft,
  * handler.
  */
 void
-parameters (::xercesc::XMLFormatTarget& ft,
-            const ::SimulationParameters& x, 
+simulation (::xercesc::XMLFormatTarget& ft,
+            const ::InputData& x, 
             ::xml_schema::error_handler& eh,
             const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
             const ::std::string& e = "UTF-8",
@@ -5406,8 +5221,8 @@ parameters (::xercesc::XMLFormatTarget& ft,
  * handler.
  */
 void
-parameters (::xercesc::XMLFormatTarget& ft,
-            const ::SimulationParameters& x, 
+simulation (::xercesc::XMLFormatTarget& ft,
+            const ::InputData& x, 
             ::xercesc::DOMErrorHandler& eh,
             const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
             const ::std::string& e = "UTF-8",
@@ -5425,8 +5240,8 @@ parameters (::xercesc::XMLFormatTarget& ft,
  * namespace mapping attributes.
  */
 void
-parameters (::xercesc::DOMDocument& d,
-            const ::SimulationParameters& x,
+simulation (::xercesc::DOMDocument& d,
+            const ::InputData& x,
             ::xml_schema::flags f = 0);
 
 /**
@@ -5438,7 +5253,7 @@ parameters (::xercesc::DOMDocument& d,
  * @return A pointer to the new Xerces-C++ DOM document.
  */
 ::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument >
-parameters (const ::SimulationParameters& x, 
+simulation (const ::InputData& x, 
             const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
             ::xml_schema::flags f = 0);
 

@@ -37,7 +37,7 @@ public:
     * @param particles: The particles to store.
     * @param f: The force object that defines the force between two particles.
     */
-    LinkedCellContainer(std::vector<Particle> &particles, std::unique_ptr<Force> &f_ptr, std::array<double, 3> domainSize,double cutoff);
+    LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f, std::array<double, 3> domainSize,double cutoff);
     /**
      * @brief Update the force between all particles.
      * @param newton3 The Newton's third law is applied if this flag is set.
