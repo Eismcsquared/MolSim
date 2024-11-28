@@ -1,4 +1,4 @@
-#include "LinkedCellContainer.h"
+#include "container/LinkedCellContainer.h"
 #include "spdlog/spdlog.h"
 #include <vector>
 #include <array>
@@ -15,9 +15,9 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
 
     //TODO: Initialize the cells
     // compute cell indicies size
-    int nX = static_cast<int>(ceil(std::abs(domainSize[0]) / cutoff));
-    int nY = static_cast<int>(ceil(std::abs(domainSize[1]) / cutoff));
-    int nZ = static_cast<int>(ceil(std::abs(domainSize[2]) / cutoff));
+    int nX = static_cast<int>(ceil(domainSize[0] / cutoff));
+    int nY = static_cast<int>(ceil(domainSize[1] / cutoff));
+    int nZ = static_cast<int>(ceil(domainSize[2] / cutoff));
 
     // minimum number of cells is 1
     nX = std::max(nX, 1);
@@ -25,23 +25,19 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
     nZ = std::max(nZ, 1);
     this->nCells = {nX, nY, nZ};
 
-    // calculate the start position of the domain
-    double startX = domainSize[0] < 0 ? domainSize[0] : 0;
-    double startY = domainSize[1] < 0 ? domainSize[1] : 0;
-    double startZ = domainSize[2] < 0 ? domainSize[2] : 0;
     // create cells
     for (int i = 0; i < nZ; i++) {
         for (int j = 0; j < nY; j++) {
             for (int k = 0; k < nX; k++) {
                 // compute the position of the cell
-                std::array<double, 3> position = { startX + k * cutoff,  startY + j * cutoff, startZ + i * cutoff };
-                std::array<double, 3> size = {cutoff, cutoff, cutoff};
+                std::array<double, 3> position = {  k * cutoff,   j * cutoff, i * cutoff };
+                std::array<double, 3> size = {cutoff, cutoff, cutoff}; //!!!!
                 // push the cell into the cells vector
                 cells.emplace_back(Cell(position, size));
             }
         }
     }
-    // assign particles to cells    
+    // assign particles to cells
     for(int i = 0; i< particles->size(); i++){
 
         const auto& pos = (*particles)[i].getX(); // Get particle position
@@ -52,7 +48,7 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
         {
             cells[idx].addIndex(i);
         }
-    } 
+    }
     spdlog::trace("LinkedCellContainer generated!");
 }
 
@@ -73,7 +69,6 @@ void LinkedCellContainer::updateF(bool newton3) {
     }
 
     for(int i =0 ; i< cells.size(); ++i){
-
         std::vector<unsigned int> pointCellparticles = cells[i].getParticleIndices();
         
         for(unsigned long j = 0; j< pointCellparticles.size(); ++j){
@@ -149,20 +144,16 @@ int LinkedCellContainer::getCellIndex(std::array<double, 3> positions) {
         return -1;
     }
 
-    // calculate the start position of the domain
-    double startX = domainSize[0] < 0 ? domainSize[0] : 0;
-    double startY = domainSize[1] < 0 ? domainSize[1] : 0;
-    double startZ = domainSize[2] < 0 ? domainSize[2] : 0;
 
     // Calculate cell positions for each dimension
-    int idxX = static_cast<int>(std::floor((positions[0] - startX) / cutoff));
-    int idxY = static_cast<int>(std::floor((positions[1]- startY) / cutoff));
-    int idxZ = static_cast<int>(std::floor((positions[2] - startZ) / cutoff));
+    int idxX = static_cast<int>(std::floor(positions[0]  / cutoff));
+    int idxY = static_cast<int>(std::floor(positions[1] / cutoff));
+    int idxZ = static_cast<int>(std::floor(positions[2]  / cutoff));
 
     // Check if the position is exactly divisible by cutoff and adjust positions
-    if (std::fmod(positions[0] - startX, cutoff) == 0 && idxX > 0) idxX -= 1;
-    if (std::fmod(positions[1] - startY, cutoff) == 0 && idxY > 0) idxY -= 1;
-    if (std::fmod(positions[2] - startZ, cutoff) == 0 && idxZ > 0) idxZ -= 1;
+    if (std::fmod(positions[0], cutoff) == 0 && idxX > 0) idxX -= 1;
+    if (std::fmod(positions[1] , cutoff) == 0 && idxY > 0) idxY -= 1;
+    if (std::fmod(positions[2] , cutoff) == 0 && idxZ > 0) idxZ -= 1;
 
     // Calculate the linear cell index
     int cellIndex = idxZ * nCells[0] * nCells[1] + idxY * nCells[0] + idxX;
@@ -182,9 +173,22 @@ void LinkedCellContainer::updateCellF(const std::vector<unsigned int> &v1, const
     for (unsigned long i = 0; i < v1.size(); ++i) {
         for (unsigned long j = 0; j < v2.size(); ++j) {
             std::array<double, 3> forceIJ = f->force((*particles)[v1[i]], (*particles)[v2[j]]);
-            // update forces using the third Newton axiom
-            (*particles)[v1[i]].setF((*particles)[v1[j]].getF() - forceIJ);
-            (*particles)[v2[j]].setF((*particles)[v2[j]].getF() + forceIJ);
+           // std::array<double, 3> forceIJ = {0,0,0};
+            spdlog::warn("v1 : {} v2 : {} , {}", v1[i], v2[j], particles->size());
+            spdlog::warn("getF : {}, {},  {}", (*particles)[v1[i]].getF()[0], (*particles)[v1[i]].getF()[1], (*particles)[v1[i]].getF()[2]);
+            spdlog::warn("getF : {}, {},  {}", (*particles)[v2[j]].getF()[0], (*particles)[v2[j]].getF()[1], (*particles)[v2[j]].getF()[2]);
+
+            std::array<double, 3> v1_force ;
+            std::array<double, 3> v2_force ;
+
+            for(int k = 0; k < 3; k++){
+                v1_force[k] = (*particles)[v1[i]].getF()[k] - forceIJ[k];
+                v2_force[k] = (*particles)[v2[j]].getF()[k] + forceIJ[k];
+            }
+
+            (*particles)[v1[i]].setF(v1_force);
+            (*particles)[v2[j]].setF(v2_force);
+            // update forces using the third Newton axiom=
         }
     }
 }
