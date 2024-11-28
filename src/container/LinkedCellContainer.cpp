@@ -183,9 +183,6 @@ void LinkedCellContainer::updateCellF(const std::vector<unsigned int> &v1, const
     for (unsigned long i = 0; i < v1.size(); ++i) {
         for (unsigned long j = 0; j < v2.size(); ++j) {
             std::array<double, 3> forceIJ = f->force((*particles)[v1[i]], (*particles)[v2[j]]);
-            // spdlog::warn("v1 : {} v2 : {} , {}", v1[i], v2[j], particles->size());
-            // spdlog::warn("getF : {}, {},  {}", (*particles)[v1[i]].getF()[0], (*particles)[v1[i]].getF()[1], (*particles)[v1[i]].getF()[2]);
-            // spdlog::warn("getF : {}, {},  {}", (*particles)[v2[j]].getF()[0], (*particles)[v2[j]].getF()[1], (*particles)[v2[j]].getF()[2]);
 
             std::array<double, 3> v1_force ;
             std::array<double, 3> v2_force ;
