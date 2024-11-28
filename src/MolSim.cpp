@@ -16,7 +16,7 @@
 #include "inputReader/FileReader.h"
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
-#include "container/ParticleContainer.h"
+#include "container/DirectSumContainer.h"
 #include "container/LinkedCellContainer.h"
 #include "Simulation.h"
 /**
@@ -154,9 +154,9 @@ int main(int argc, char *argsv[]) {
             force = std::make_unique<LennardJonesForce>();
     }
     std::array<double, 3> domainSize = {180.0, 90.0, 0.0};
-    std::unique_ptr<Container> linked_cell_container = std::make_unique<LinkedCellContainer>(particles, force, domainSize, 3.0);
+    std::unique_ptr<ParticleContainer> linked_cell_container = std::make_unique<LinkedCellContainer>(particles, force, domainSize, 3.0);
     Simulation simulation(linked_cell_container, 1, delta_t, outputFile, outputFormat, 10);
-    //std::unique_ptr<Container> particle_container = std::make_unique<ParticleContainer>(particles, force);
+    //std::unique_ptr<ParticleContainer> particle_container = std::make_unique<DirectSumContainer>(particles, force);
     //Simulation simulation(particle_container, end_time, delta_t, outputFile, outputFormat, 10);
     if(benchmark){
         spdlog::set_level(spdlog::level::off);

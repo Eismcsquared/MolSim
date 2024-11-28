@@ -29,7 +29,7 @@ void Simulation::setNewton3(bool newton3) {
     Simulation::newton3 = newton3;
 }
 
-Simulation::Simulation(std::unique_ptr<Container> &container, double endTime, double deltaT,
+Simulation::Simulation(std::unique_ptr<ParticleContainer> &container, double endTime, double deltaT,
                        std::string outputFile, std::string outputFormat, unsigned int outputFrequency)
         : container(std::move(container)), endTime(endTime), deltaT(deltaT), outputFormat(std::move(outputFormat)), outputFile(std::move(outputFile)),
           outputFrequency(outputFrequency), saveOutput(true), newton3(true) {}

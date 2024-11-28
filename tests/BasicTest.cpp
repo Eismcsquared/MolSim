@@ -6,14 +6,14 @@
 #include "Logger.h"
 #include "inputReader/FileReader.h"
 #include "body/Particle.h"
-#include "container/ParticleContainer.h"
+#include "container/DirectSumContainer.h"
 #include "force/GravitationalForce.h"
 
 class BasicTest : public ::testing::Test {
 protected:
     std::unique_ptr<std::vector<Particle>> particles;
     std::unique_ptr<Force> f;
-    std::unique_ptr<ParticleContainer> pc;
+    std::unique_ptr<DirectSumContainer> pc;
     char* testfile = const_cast<char*>("../tests/test_cases/two_body.txt");
 
 
@@ -22,13 +22,13 @@ protected:
         FileReader fileReader;
         fileReader.readFile(*particles, testfile);
         f = std::make_unique<GravitationalForce>();
-        pc = std::make_unique<ParticleContainer>(particles, f);
+        pc = std::make_unique<DirectSumContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
-        test_logger -> info("Particle Container created");
+        test_logger -> info("Particle ParticleContainer created");
     }
 
     void TearDown() override {
-        test_logger->info("Particle Container deleted\n\n");
+        test_logger->info("Particle ParticleContainer deleted\n\n");
     }
 };
 
@@ -42,7 +42,7 @@ TEST_F(BasicTest, ReadFile) {
         std::array<double, 3> v = {0, 0, 0};
         ref_vec->emplace_back(x, v, 1);
     }
-    ParticleContainer reference(ref_vec, f);
+    DirectSumContainer reference(ref_vec, f);
     if(*pc == reference) {
         test_logger->info("Read file test passed");
     } else {
@@ -53,7 +53,7 @@ TEST_F(BasicTest, ReadFile) {
     ASSERT_EQ(*pc, reference);
 }
 
-// Test whether the calculation of gravitational forces for a simple example works (which is done in the constructor of ParticleContainer)
+// Test whether the calculation of gravitational forces for a simple example works (which is done in the constructor of DirectSumContainer)
 TEST_F(BasicTest, Gravitation) {
     test_logger->info("Gravitation test");
     Particle ref_p1({0, 0, 0}, {0, 0, 0}, 1);
@@ -69,7 +69,7 @@ TEST_F(BasicTest, Gravitation) {
     ASSERT_EQ(ref_p2, pc->getParticles()[1]);
 }
 
-// Test whether the method addParticle of ParticleContainer works when adding a single particle
+// Test whether the method addParticle of DirectSumContainer works when adding a single particle
 TEST_F(BasicTest, AddParticle1) {
     test_logger->info("Add particle test 1");
     Particle p = Particle({2,0,0}, {0,0,0}, 1, 0);
@@ -80,7 +80,7 @@ TEST_F(BasicTest, AddParticle1) {
         std::array<double, 3> v = {0, 0, 0};
         ref_vec->emplace_back(x, v, 1);
     }
-    ParticleContainer reference(ref_vec, f);
+    DirectSumContainer reference(ref_vec, f);
     if(*pc == reference) {
         test_logger->info("Add particle test 1 passed");
     } else {
@@ -91,7 +91,7 @@ TEST_F(BasicTest, AddParticle1) {
     ASSERT_EQ(*pc, reference);
 }
 
-// Test whether the method addParticle of ParticleContainer works when adding multiple particles
+// Test whether the method addParticle of DirectSumContainer works when adding multiple particles
 TEST_F(BasicTest, AddParticle2) {
     test_logger->info("Add particle test 2");
     for(int i = 1 ; i <= 10; i++) {
@@ -104,7 +104,7 @@ TEST_F(BasicTest, AddParticle2) {
         std::array<double, 3> v = {0, 0, 0};
         ref_vec->emplace_back(x, v, 1);
     }
-    ParticleContainer reference(ref_vec, f);
+    DirectSumContainer reference(ref_vec, f);
     if(*pc == reference) {
         test_logger->info("Add particle test 2 passed");
     } else {
@@ -134,7 +134,7 @@ TEST_F(BasicTest, Analytic) {
     std::array<double, 3> v_2 = {-1, 0, 0}; // expected velocity of particle 2
     ref_vec->emplace_back(x_1, v_1, 1);
     ref_vec->emplace_back(x_2, v_2, 1);
-    ParticleContainer reference(ref_vec, f);
+    DirectSumContainer reference(ref_vec, f);
     if (!(*pc == reference)) {
         test_logger->error("Analytic solution test failed");
         test_logger->error("Expected: " + reference.toString());

@@ -8,7 +8,7 @@
 
 
 LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f, std::array<double, 3> domainSize, double cutoff) :
-        Container(particles, f) {
+        ParticleContainer(particles, f) {
 
     this->cutoff = cutoff;
     this->domainSize = domainSize;

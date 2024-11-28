@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "body/Particle.h"
-#include "container/ParticleContainer.h"
+#include "container/DirectSumContainer.h"
 #include "force/GravitationalForce.h"
 #include <vector>
 #include <iostream>
@@ -17,7 +17,7 @@ class Assignment1Test : public ::testing::Test {
 protected:
     std::unique_ptr<std::vector<Particle>> particles;
     std::unique_ptr<Force> f;
-    std::unique_ptr<ParticleContainer> pc;
+    std::unique_ptr<DirectSumContainer> pc;
     char* testfile = const_cast<char*>("../tests/test_cases/assignment1.txt");
     FileReader fileReader;
 
@@ -25,13 +25,13 @@ protected:
         particles = std::make_unique<std::vector<Particle>>();
         fileReader.readFile(*particles, testfile);
         f = std::make_unique<GravitationalForce>();
-        pc = std::make_unique<ParticleContainer>(particles, f);
+        pc = std::make_unique<DirectSumContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
-        test_logger -> info("Particle Container created");
+        test_logger -> info("Particle ParticleContainer created");
     }
 
     void TearDown() override {
-        test_logger->info("Particle Container deleted\n\n");
+        test_logger->info("Particle ParticleContainer deleted\n\n");
     }
 };
 
@@ -69,7 +69,7 @@ TEST_F(Assignment1Test, Simulation_simple) {
     std::unique_ptr<std::vector<Particle>> ref_p = std::make_unique<std::vector<Particle>>();
     char *ref_file = const_cast<char*>("../tests/Answer_Ref/Ans_simulation_simple.txt");
     fileReader.readFile(*ref_p, ref_file);
-    ParticleContainer reference(ref_p, f);
+    DirectSumContainer reference(ref_p, f);
 
     if(!(reference == *pc)) {
         test_logger->error("Assignment 1 - simple simulation test failed");
@@ -92,7 +92,7 @@ TEST_F(Assignment1Test, Complex_simulation) {
     std::unique_ptr<std::vector<Particle>> ref_p = std::make_unique<std::vector<Particle>>();
     char *ref_file = const_cast<char*>("../tests/Answer_Ref/Ans_simulation_complex.txt");
     fileReader.readFile(*ref_p, ref_file);
-    ParticleContainer reference(ref_p, f);
+    DirectSumContainer reference(ref_p, f);
 
     if(!(reference == *pc)) {
         test_logger->error("Assignment 1 - complex simulation test failed");

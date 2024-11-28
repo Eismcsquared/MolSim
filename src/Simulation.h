@@ -1,5 +1,5 @@
 #include <memory>
-#include "container/Container.h"
+#include "container/ParticleContainer.h"
 
 /**
  * @brief The class that manages a container of particles and stores the entire parameters for a simulation.
@@ -8,7 +8,7 @@ class Simulation {
     /**
      * The objects in the simulation
      */
-    std::unique_ptr<Container> container;
+    std::unique_ptr<ParticleContainer> container;
     /**
      * The end time of the simulation.
      */
@@ -51,7 +51,7 @@ public:
      * @param outputFile The name of the output file.
      * @param outputFrequency The frequency of output.
      */
-    Simulation(std::unique_ptr<Container> &container, double endTime, double deltaT,
+    Simulation(std::unique_ptr<ParticleContainer> &container, double endTime, double deltaT,
                std::string outputFile, std::string outputFormat, unsigned int outputFrequency);
 
     /**

@@ -1,11 +1,11 @@
 #include <vector>
-#include "container/Container.h"
+#include "container/ParticleContainer.h"
 #include "container/Cell.h"
 
 /**
  * @brief This class represents a particle container that implements the linked cell algorithm.
  */
-class LinkedCellContainer: public Container {
+class LinkedCellContainer: public ParticleContainer {
 private:
 
     /**

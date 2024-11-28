@@ -302,7 +302,7 @@ namespace xsd
       typedef _type type;
 
       /**
-       * @brief Container type.
+       * @brief ParticleContainer type.
        *
        */
       typedef _type container;
@@ -584,7 +584,7 @@ namespace xsd
         friend bool
         operator!= (const type& x, const type& y) {return !(x == y);}
 
-        // Container API.
+        // ParticleContainer API.
         //
       public:
         /**

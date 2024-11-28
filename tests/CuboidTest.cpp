@@ -6,13 +6,13 @@
 #include "inputReader/FileReader.h"
 #include "utils/ArrayUtils.h"
 #include "body/Particle.h"
-#include "container/ParticleContainer.h"
+#include "container/DirectSumContainer.h"
 #include "force/LennardJonesForce.h"
 
 class CuboidTest : public ::testing::Test {
 protected:
     std::unique_ptr<std::vector<Particle>> particles;
-    std::unique_ptr<ParticleContainer> pc;
+    std::unique_ptr<DirectSumContainer> pc;
     std::unique_ptr<Force> f;
     Cuboid cuboid = Cuboid({0, 10, 0}, {0, 0, 0}, {2, 4, 3}, 1, 1, 0, 3);
     char* testfile = const_cast<char*>("../tests/test_cases/two_cuboid.txt");
@@ -23,13 +23,13 @@ protected:
         FileReader fileReader;
         fileReader.readFile(*particles, testfile);
         f = std::make_unique<LennardJonesForce>();
-        pc = std::make_unique<ParticleContainer>(particles, f);
+        pc = std::make_unique<DirectSumContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
-        test_logger -> info("Particle Container created");
+        test_logger -> info("Particle ParticleContainer created");
     }
 
     void TearDown() override {
-        test_logger->info("Particle Container deleted\n\n");
+        test_logger->info("Particle ParticleContainer deleted\n\n");
     }
 };
 
@@ -65,7 +65,7 @@ TEST_F(CuboidTest, ReadCuboids) {
             }
         }
     }
-    ParticleContainer reference(ps, f);
+    DirectSumContainer reference(ps, f);
     ASSERT_EQ(reference, *pc) << "Cuboid - read file test failed";
     test_logger->info("Cuboid - read file test passed");
 }
@@ -96,7 +96,7 @@ TEST_F(CuboidTest, AddCuboid) {
             }
         }
     }
-    ParticleContainer reference(ps, f);
+    DirectSumContainer reference(ps, f);
     ASSERT_EQ(reference, *pc) << "Cuboid - read file test failed";
     test_logger->info("Cuboid - read file test filed");
 }

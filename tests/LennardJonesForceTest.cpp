@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "body/Particle.h"
-#include "container/ParticleContainer.h"
+#include "container/DirectSumContainer.h"
 #include "force/GravitationalForce.h"
 #include <vector>
 #include <iostream>
@@ -18,7 +18,7 @@
 class LennardJonesForceTest : public ::testing::Test {
 protected:
     std::unique_ptr<std::vector<Particle>> particles;
-    std::unique_ptr<ParticleContainer> pc;
+    std::unique_ptr<DirectSumContainer> pc;
     std::unique_ptr<Force> f;
     char* testfile = const_cast<char*>("../tests/test_cases/two_body.txt");
 
@@ -28,13 +28,13 @@ protected:
         particles = std::make_unique<std::vector<Particle>>();
         fileReader.readFile(*particles, testfile);
         f = std::make_unique<LennardJonesForce>();
-        pc = std::make_unique<ParticleContainer>(particles, f);
+        pc = std::make_unique<DirectSumContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
-        test_logger -> info("Particle Container created");
+        test_logger -> info("Particle ParticleContainer created");
     }
 
     void TearDown() override {
-        test_logger->info("Particle Container deleted\n\n");
+        test_logger->info("Particle ParticleContainer deleted\n\n");
     }
 };
 
