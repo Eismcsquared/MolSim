@@ -39,6 +39,10 @@
 #ifndef CXX_HOME_HUANGSIYUAN_PSE_MOLECULAR_DYNAMICS_MOL_SIM_SRC_INPUT_READER_INPUT_DATA_H
 #define CXX_HOME_HUANGSIYUAN_PSE_MOLECULAR_DYNAMICS_MOL_SIM_SRC_INPUT_READER_INPUT_DATA_H
 
+#ifndef XSD_CXX11
+#define XSD_CXX11
+#endif
+
 #ifndef XSD_USE_CHAR
 #define XSD_USE_CHAR
 #endif
@@ -598,7 +602,7 @@ namespace xml_schema
     /**
      * @brief Automatic pointer for DOMDocument.
      */
-    using ::xsd::cxx::xml::dom::auto_ptr;
+    using ::xsd::cxx::xml::dom::unique_ptr;
 
 #ifndef XSD_CXX_TREE_TREE_NODE_KEY__XML_SCHEMA
 #define XSD_CXX_TREE_TREE_NODE_KEY__XML_SCHEMA
@@ -628,9 +632,10 @@ class LinkedCellType;
 class SimulationParameters;
 class InputData;
 
-#include <memory>    // ::std::auto_ptr
+#include <memory>    // ::std::unique_ptr
 #include <limits>    // std::numeric_limits
 #include <algorithm> // std::binary_search
+#include <utility>   // std::move
 
 #include <xsd/cxx/xml/char-utf8.hxx>
 
@@ -1385,7 +1390,7 @@ class PositiveDoubleVector3: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  x (::std::auto_ptr< x_type > p);
+  x (::std::unique_ptr< x_type > p);
 
   //@}
 
@@ -1443,7 +1448,7 @@ class PositiveDoubleVector3: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  y (::std::auto_ptr< y_type > p);
+  y (::std::unique_ptr< y_type > p);
 
   //@}
 
@@ -1501,7 +1506,7 @@ class PositiveDoubleVector3: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  z (::std::auto_ptr< z_type > p);
+  z (::std::unique_ptr< z_type > p);
 
   /**
    * @brief Return the default value for the element.
@@ -1665,7 +1670,7 @@ class ParticleType: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  position (::std::auto_ptr< position_type > p);
+  position (::std::unique_ptr< position_type > p);
 
   //@}
 
@@ -1723,7 +1728,7 @@ class ParticleType: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  velocity (::std::auto_ptr< velocity_type > p);
+  velocity (::std::unique_ptr< velocity_type > p);
 
   //@}
 
@@ -1781,7 +1786,7 @@ class ParticleType: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  mass (::std::auto_ptr< mass_type > p);
+  mass (::std::unique_ptr< mass_type > p);
 
   //@}
 
@@ -1857,13 +1862,13 @@ class ParticleType: public ::xml_schema::type
   /**
    * @brief Create an instance from the ultimate base and
    * initializers for required elements and attributes
-   * (::std::auto_ptr version).
+   * (::std::unique_ptr version).
    *
    * This constructor will try to use the passed values directly
    * instead of making copies.
    */
-  ParticleType (::std::auto_ptr< position_type >,
-                ::std::auto_ptr< velocity_type >,
+  ParticleType (::std::unique_ptr< position_type >,
+                ::std::unique_ptr< velocity_type >,
                 const mass_type&,
                 const type_type&);
 
@@ -2007,7 +2012,7 @@ class CuboidType: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  position (::std::auto_ptr< position_type > p);
+  position (::std::unique_ptr< position_type > p);
 
   //@}
 
@@ -2065,7 +2070,7 @@ class CuboidType: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  velocity (::std::auto_ptr< velocity_type > p);
+  velocity (::std::unique_ptr< velocity_type > p);
 
   //@}
 
@@ -2123,7 +2128,7 @@ class CuboidType: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  mass (::std::auto_ptr< mass_type > p);
+  mass (::std::unique_ptr< mass_type > p);
 
   //@}
 
@@ -2181,7 +2186,7 @@ class CuboidType: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  size (::std::auto_ptr< size_type > p);
+  size (::std::unique_ptr< size_type > p);
 
   //@}
 
@@ -2239,7 +2244,7 @@ class CuboidType: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  distance (::std::auto_ptr< distance_type > p);
+  distance (::std::unique_ptr< distance_type > p);
 
   //@}
 
@@ -2297,7 +2302,7 @@ class CuboidType: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  brownVelocity (::std::auto_ptr< brownVelocity_type > p);
+  brownVelocity (::std::unique_ptr< brownVelocity_type > p);
 
   //@}
 
@@ -2355,7 +2360,7 @@ class CuboidType: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  brownDimension (::std::auto_ptr< brownDimension_type > p);
+  brownDimension (::std::unique_ptr< brownDimension_type > p);
 
   /**
    * @brief Return the default value for the element.
@@ -2387,15 +2392,15 @@ class CuboidType: public ::xml_schema::type
   /**
    * @brief Create an instance from the ultimate base and
    * initializers for required elements and attributes
-   * (::std::auto_ptr version).
+   * (::std::unique_ptr version).
    *
    * This constructor will try to use the passed values directly
    * instead of making copies.
    */
-  CuboidType (::std::auto_ptr< position_type >,
-              ::std::auto_ptr< velocity_type >,
+  CuboidType (::std::unique_ptr< position_type >,
+              ::std::unique_ptr< velocity_type >,
               const mass_type&,
-              ::std::auto_ptr< size_type >,
+              ::std::unique_ptr< size_type >,
               const distance_type&,
               const brownVelocity_type&,
               const brownDimension_type&);
@@ -2914,7 +2919,7 @@ class BoundaryCondition3: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  left (::std::auto_ptr< left_type > p);
+  left (::std::unique_ptr< left_type > p);
 
   /**
    * @brief Return the default value for the element.
@@ -2983,7 +2988,7 @@ class BoundaryCondition3: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  right (::std::auto_ptr< right_type > p);
+  right (::std::unique_ptr< right_type > p);
 
   /**
    * @brief Return the default value for the element.
@@ -3052,7 +3057,7 @@ class BoundaryCondition3: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  down (::std::auto_ptr< down_type > p);
+  down (::std::unique_ptr< down_type > p);
 
   /**
    * @brief Return the default value for the element.
@@ -3121,7 +3126,7 @@ class BoundaryCondition3: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  up (::std::auto_ptr< up_type > p);
+  up (::std::unique_ptr< up_type > p);
 
   /**
    * @brief Return the default value for the element.
@@ -3190,7 +3195,7 @@ class BoundaryCondition3: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  back (::std::auto_ptr< back_type > p);
+  back (::std::unique_ptr< back_type > p);
 
   /**
    * @brief Return the default value for the element.
@@ -3259,7 +3264,7 @@ class BoundaryCondition3: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  front (::std::auto_ptr< front_type > p);
+  front (::std::unique_ptr< front_type > p);
 
   /**
    * @brief Return the default value for the element.
@@ -3726,7 +3731,7 @@ class LinkedCellType: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  domain_size (::std::auto_ptr< domain_size_type > p);
+  domain_size (::std::unique_ptr< domain_size_type > p);
 
   //@}
 
@@ -3784,7 +3789,7 @@ class LinkedCellType: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  cutoff_radius (::std::auto_ptr< cutoff_radius_type > p);
+  cutoff_radius (::std::unique_ptr< cutoff_radius_type > p);
 
   //@}
 
@@ -3842,7 +3847,7 @@ class LinkedCellType: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  boundary_condition (::std::auto_ptr< boundary_condition_type > p);
+  boundary_condition (::std::unique_ptr< boundary_condition_type > p);
 
   //@}
 
@@ -3862,14 +3867,14 @@ class LinkedCellType: public ::xml_schema::type
   /**
    * @brief Create an instance from the ultimate base and
    * initializers for required elements and attributes
-   * (::std::auto_ptr version).
+   * (::std::unique_ptr version).
    *
    * This constructor will try to use the passed values directly
    * instead of making copies.
    */
-  LinkedCellType (::std::auto_ptr< domain_size_type >,
+  LinkedCellType (::std::unique_ptr< domain_size_type >,
                   const cutoff_radius_type&,
-                  ::std::auto_ptr< boundary_condition_type >);
+                  ::std::unique_ptr< boundary_condition_type >);
 
   /**
    * @brief Create an instance from a DOM element.
@@ -4010,7 +4015,7 @@ class SimulationParameters: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  end_time (::std::auto_ptr< end_time_type > p);
+  end_time (::std::unique_ptr< end_time_type > p);
 
   /**
    * @brief Return the default value for the element.
@@ -4076,7 +4081,7 @@ class SimulationParameters: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  delta_t (::std::auto_ptr< delta_t_type > p);
+  delta_t (::std::unique_ptr< delta_t_type > p);
 
   /**
    * @brief Return the default value for the element.
@@ -4201,7 +4206,7 @@ class SimulationParameters: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  output (::std::auto_ptr< output_type > p);
+  output (::std::unique_ptr< output_type > p);
 
   /**
    * @brief Return the default value for the element.
@@ -4270,7 +4275,7 @@ class SimulationParameters: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  format (::std::auto_ptr< format_type > p);
+  format (::std::unique_ptr< format_type > p);
 
   /**
    * @brief Return the default value for the element.
@@ -4339,7 +4344,7 @@ class SimulationParameters: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  force (::std::auto_ptr< force_type > p);
+  force (::std::unique_ptr< force_type > p);
 
   /**
    * @brief Return the default value for the element.
@@ -4426,7 +4431,7 @@ class SimulationParameters: public ::xml_schema::type
    * of making a copy.
    */
   void
-  linked_cell (::std::auto_ptr< linked_cell_type > p);
+  linked_cell (::std::unique_ptr< linked_cell_type > p);
 
   //@}
 
@@ -4592,7 +4597,7 @@ class InputData: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  objects (::std::auto_ptr< objects_type > p);
+  objects (::std::unique_ptr< objects_type > p);
 
   //@}
 
@@ -4650,7 +4655,7 @@ class InputData: public ::xml_schema::type
    * instead of making a copy.
    */
   void
-  parameters (::std::auto_ptr< parameters_type > p);
+  parameters (::std::unique_ptr< parameters_type > p);
 
   //@}
 
@@ -4669,13 +4674,13 @@ class InputData: public ::xml_schema::type
   /**
    * @brief Create an instance from the ultimate base and
    * initializers for required elements and attributes
-   * (::std::auto_ptr version).
+   * (::std::unique_ptr version).
    *
    * This constructor will try to use the passed values directly
    * instead of making copies.
    */
-  InputData (::std::auto_ptr< objects_type >,
-             ::std::auto_ptr< parameters_type >);
+  InputData (::std::unique_ptr< objects_type >,
+             ::std::unique_ptr< parameters_type >);
 
   /**
    * @brief Create an instance from a DOM element.
@@ -4774,7 +4779,7 @@ class InputData: public ::xml_schema::type
  *
  * This function uses exceptions to report parsing errors.
  */
-::std::auto_ptr< ::InputData >
+::std::unique_ptr< ::InputData >
 simulation (const ::std::string& uri,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
@@ -4790,7 +4795,7 @@ simulation (const ::std::string& uri,
  *
  * This function reports parsing errors by calling the error handler.
  */
-::std::auto_ptr< ::InputData >
+::std::unique_ptr< ::InputData >
 simulation (const ::std::string& uri,
             ::xml_schema::error_handler& eh,
             ::xml_schema::flags f = 0,
@@ -4808,7 +4813,7 @@ simulation (const ::std::string& uri,
  *
  * This function reports parsing errors by calling the error handler.
  */
-::std::auto_ptr< ::InputData >
+::std::unique_ptr< ::InputData >
 simulation (const ::std::string& uri,
             ::xercesc::DOMErrorHandler& eh,
             ::xml_schema::flags f = 0,
@@ -4824,7 +4829,7 @@ simulation (const ::std::string& uri,
  *
  * This function uses exceptions to report parsing errors.
  */
-::std::auto_ptr< ::InputData >
+::std::unique_ptr< ::InputData >
 simulation (::std::istream& is,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
@@ -4840,7 +4845,7 @@ simulation (::std::istream& is,
  *
  * This function reports parsing errors by calling the error handler.
  */
-::std::auto_ptr< ::InputData >
+::std::unique_ptr< ::InputData >
 simulation (::std::istream& is,
             ::xml_schema::error_handler& eh,
             ::xml_schema::flags f = 0,
@@ -4858,7 +4863,7 @@ simulation (::std::istream& is,
  *
  * This function reports parsing errors by calling the error handler.
  */
-::std::auto_ptr< ::InputData >
+::std::unique_ptr< ::InputData >
 simulation (::std::istream& is,
             ::xercesc::DOMErrorHandler& eh,
             ::xml_schema::flags f = 0,
@@ -4878,7 +4883,7 @@ simulation (::std::istream& is,
  *
  * This function uses exceptions to report parsing errors.
  */
-::std::auto_ptr< ::InputData >
+::std::unique_ptr< ::InputData >
 simulation (::std::istream& is,
             const ::std::string& id,
             ::xml_schema::flags f = 0,
@@ -4900,7 +4905,7 @@ simulation (::std::istream& is,
  *
  * This function reports parsing errors by calling the error handler.
  */
-::std::auto_ptr< ::InputData >
+::std::unique_ptr< ::InputData >
 simulation (::std::istream& is,
             const ::std::string& id,
             ::xml_schema::error_handler& eh,
@@ -4923,7 +4928,7 @@ simulation (::std::istream& is,
  *
  * This function reports parsing errors by calling the error handler.
  */
-::std::auto_ptr< ::InputData >
+::std::unique_ptr< ::InputData >
 simulation (::std::istream& is,
             const ::std::string& id,
             ::xercesc::DOMErrorHandler& eh,
@@ -4940,7 +4945,7 @@ simulation (::std::istream& is,
  *
  * This function uses exceptions to report parsing errors.
  */
-::std::auto_ptr< ::InputData >
+::std::unique_ptr< ::InputData >
 simulation (::xercesc::InputSource& is,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
@@ -4956,7 +4961,7 @@ simulation (::xercesc::InputSource& is,
  *
  * This function reports parsing errors by calling the error handler.
  */
-::std::auto_ptr< ::InputData >
+::std::unique_ptr< ::InputData >
 simulation (::xercesc::InputSource& is,
             ::xml_schema::error_handler& eh,
             ::xml_schema::flags f = 0,
@@ -4974,7 +4979,7 @@ simulation (::xercesc::InputSource& is,
  *
  * This function reports parsing errors by calling the error handler.
  */
-::std::auto_ptr< ::InputData >
+::std::unique_ptr< ::InputData >
 simulation (::xercesc::InputSource& is,
             ::xercesc::DOMErrorHandler& eh,
             ::xml_schema::flags f = 0,
@@ -4988,7 +4993,7 @@ simulation (::xercesc::InputSource& is,
  * @param p Parsing properties. 
  * @return A pointer to the root of the object model.
  */
-::std::auto_ptr< ::InputData >
+::std::unique_ptr< ::InputData >
 simulation (const ::xercesc::DOMDocument& d,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
@@ -5005,8 +5010,8 @@ simulation (const ::xercesc::DOMDocument& d,
  * own_dom parsing flags to assign ownership of the DOM document
  * to the object model.
  */
-::std::auto_ptr< ::InputData >
-simulation (::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument > d,
+::std::unique_ptr< ::InputData >
+simulation (::xml_schema::dom::unique_ptr< ::xercesc::DOMDocument > d,
             ::xml_schema::flags f = 0,
             const ::xml_schema::properties& p = ::xml_schema::properties ());
 
@@ -5252,7 +5257,7 @@ simulation (::xercesc::DOMDocument& d,
  * @param f Serialization flags.
  * @return A pointer to the new Xerces-C++ DOM document.
  */
-::xml_schema::dom::auto_ptr< ::xercesc::DOMDocument >
+::xml_schema::dom::unique_ptr< ::xercesc::DOMDocument >
 simulation (const ::InputData& x, 
             const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
             ::xml_schema::flags f = 0);
