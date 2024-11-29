@@ -2,6 +2,11 @@
 #include "container/ParticleContainer.h"
 #include "container/Cell.h"
 
+enum BoundaryCondition{
+    OUTFLOW,
+    REFLECTING
+};
+
 /**
  * @brief This class represents a particle container that implements the linked cell algorithm.
  */
@@ -29,9 +34,10 @@ private:
     std::array<int, 3> nCells;
 
     /**
-     * The flag to determine if the domain should be reflected.
+     * The boundary condition of the domain, stored in the order: left, right, down, up, back, front
+     * where: left->right is the x-direction, down->up is the y-direction, back->front is the z-direction.
      */
-    bool reflect = true;
+    std::array<BoundaryCondition, 6> boundaryConditions;
 
     /**
      * The flag to determine if the particle should affected by ghost particles.
@@ -47,7 +53,8 @@ public:
     * @param particles: The particles to store.
     * @param f: The force object that defines the force between two particles.
     */
-    LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f, std::array<double, 3> domainSize,double cutoff, bool reflect);
+    LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f,
+                        std::array<double, 3> domainSize,double cutoff, std::array<BoundaryCondition, 6> boundaryConditions);
     /**
      * @brief Update the force between all particles.
      * @param newton3 The Newton's third law is applied if this flag is set.

@@ -52,11 +52,30 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
         if (input->parameters().linked_cell().present()) {
             PositiveDoubleVector3 domainSize = input->parameters().linked_cell()->domain_size();
             PositiveDouble cutoffRadius = input->parameters().linked_cell()->cutoff_radius();
+            BoundaryCondition3 b = input->parameters().linked_cell()->boundary_condition();
+            auto boundaryConditionMap = [](const BoundaryConditionType& t) {
+                switch (t) {
+                    case BoundaryConditionType::value::reflection:
+                        return REFLECTING;
+                    case BoundaryConditionType::value::outflow:
+                        return OUTFLOW;
+                }
+            };
+            std::array<BoundaryCondition, 6> boundaryCondition = {
+                    boundaryConditionMap(b.left()),
+                    boundaryConditionMap(b.right()),
+                    boundaryConditionMap(b.down()),
+                    boundaryConditionMap(b.up()),
+                    boundaryConditionMap(b.back()),
+                    boundaryConditionMap(b.front())
+            };
             container = std::make_unique<LinkedCellContainer>(
                     particles,
                     force,
                     std::array<double, 3>{domainSize.x(), domainSize.y(), domainSize.z()},
-                    cutoffRadius);
+                    cutoffRadius,
+                    boundaryCondition
+            );
         } else {
             container = std::make_unique<DirectSumContainer>(particles, force);
         }

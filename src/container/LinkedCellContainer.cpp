@@ -7,8 +7,9 @@
 #include "utils/ArrayUtils.h"
 
 
-LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f, std::array<double, 3> domainSize, double cutoff, bool reflect) :
-        ParticleContainer(particles, f) {
+LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f,
+                                         std::array<double, 3> domainSize, double cutoff, std::array<BoundaryCondition, 6> boundaryConditions) :
+        ParticleContainer(particles, f), cutoff(cutoff), domainSize(domainSize), boundaryConditions(boundaryConditions){
 
 
 
@@ -26,15 +27,12 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
     /////////////////////////////
     // Initialize the variables
     this->nCells = {nX, nY, nZ};
-    this->cutoff = cutoff;
-    this->domainSize = domainSize;
 
-    this->reflect = reflect;
-
-    if(reflect){
-        near_boundary.resize(particles->size(), false);
-        spdlog::warn("Near boundary size: {}", near_boundary.size());
-    }
+    //TODO
+//    if(reflect){
+//        near_boundary.resize(particles->size(), false);
+//        spdlog::warn("Near boundary size: {}", near_boundary.size());
+//    }
     /////////////////////////////
 
     double size_x = this->domainSize[0] / nX;
