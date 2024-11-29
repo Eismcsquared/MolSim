@@ -28,6 +28,16 @@ private:
      */
     std::array<int, 3> nCells;
 
+    /**
+     * The flag to determine if the domain should be reflected.
+     */
+    bool reflect = true;
+
+    /**
+     * The flag to determine if the particle should affected by ghost particles.
+     */
+    std::vector<bool> near_boundary;
+
     
 
 public:
@@ -37,7 +47,7 @@ public:
     * @param particles: The particles to store.
     * @param f: The force object that defines the force between two particles.
     */
-    LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f, std::array<double, 3> domainSize,double cutoff);
+    LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f, std::array<double, 3> domainSize,double cutoff, bool reflect);
     /**
      * @brief Update the force between all particles.
      * @param newton3 The Newton's third law is applied if this flag is set.

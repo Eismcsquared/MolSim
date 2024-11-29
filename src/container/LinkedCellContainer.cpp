@@ -7,7 +7,7 @@
 #include "utils/ArrayUtils.h"
 
 
-LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f, std::array<double, 3> domainSize, double cutoff) :
+LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f, std::array<double, 3> domainSize, double cutoff, bool reflect) :
         ParticleContainer(particles, f) {
 
 
@@ -29,10 +29,17 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
     this->cutoff = cutoff;
     this->domainSize = domainSize;
 
+    this->reflect = reflect;
+
+    if(reflect){
+        near_boundary.resize(particles->size(), false);
+        spdlog::warn("Near boundary size: {}", near_boundary.size());
+    }
+    /////////////////////////////
+
     double size_x = this->domainSize[0] / nX;
     double size_y = this->domainSize[1] / nY;
     double size_z = this->domainSize[2] / nZ;
-    /////////////////////////////
 
     // create cells
     for (int i = 0; i < nZ; i++) {
@@ -133,7 +140,6 @@ std::vector<int> LinkedCellContainer::getNeighborCells(int cellIndex) {
     int idxY = (cellIndex - idxZ * nCells[0] * nCells[1]) / nCells[0];
     int idxX = cellIndex - idxZ * nCells[0] * nCells[1] - idxY * nCells[0];
     std::vector<int> neighbors;
-
 
     // get all neighbors
     for (int z = std::max(0, idxZ - 1); z <= std::min(idxZ + 1, nCells[2] - 1); ++z) {
