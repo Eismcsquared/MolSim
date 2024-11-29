@@ -61,14 +61,14 @@ public:
      * @param cellIndex The index of the cell.
      * @return The indices of the neighbor cells.
      */
-    std::vector<int> getNeighborCells(int cellIndex, bool newton );
+    std::vector<int> getNeighborCells(int cellIndex);
 
     /**
      * @brief Get the index of a cell that contains a given position.
      * @param positions The position that should be tested.
      * @return The index of the cell that contains the given position.
      */
-    int getCellIndex(std::array<double, 3> positions);
+    unsigned int getCellIndex(std::array<double, 3> positions);
 
     /**
      * @brief Convert a 1D cell index to a 3D cell index.
@@ -83,6 +83,6 @@ public:
      * @param v1 The indices of particles in the first cell.
      * @param v2 The indices of particles in the second cell.
      */
-    void updateCellF(const std::vector<unsigned int> &v1, const std::vector<unsigned int> &v2);
+    void updateCellF(const std::vector<unsigned int> &v1, const std::vector<unsigned int> &v2, bool newton3);
 };
 
