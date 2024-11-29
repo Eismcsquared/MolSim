@@ -27,10 +27,11 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
     // Initialize the variables
     this->nCells = {nX, nY, nZ};
     this->cutoff = cutoff;
+    this->domainSize = domainSize;
+
     double size_x = this->domainSize[0] / nX;
     double size_y = this->domainSize[1] / nY;
     double size_z = this->domainSize[2] / nZ;
-    this->domainSize = domainSize;
     /////////////////////////////
 
     // create cells
@@ -116,6 +117,7 @@ void LinkedCellContainer::updateX(double delta_t){
 
         unsigned int cellidx_after = getCellIndex(particle.getX());
 
+
         if(cellidx_before != cellidx_after){
             cells[cellidx_before].removeIndex(cellidx_before);
             if(cellidx_after >= 0 && cellidx_after < cells.size()){
@@ -165,6 +167,7 @@ unsigned int LinkedCellContainer::getCellIndex(std::array<double, 3> positions) 
     if (positions[0] == idxX * cells[0].getSize()[0] && idxX > 0) idxX -= 1;
     if (positions[1] == idxY * cells[0].getSize()[1] && idxY > 0) idxY -= 1;
     if (positions[2] == idxZ * cells[0].getSize()[2] && idxZ > 0) idxZ -= 1;
+
 
     // Calculate the linear cell index
     int cellIndex = idxZ * nCells[0] * nCells[1] + idxY * nCells[0] + idxX;
