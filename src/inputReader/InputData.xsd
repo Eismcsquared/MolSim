@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sx="http://www.w3.org/2001/XMLSchema">
 
     <xs:simpleType name="Dimension">
@@ -16,7 +17,7 @@
         <xs:sequence>
             <xs:element name="x" type="xs:double"/>
             <xs:element name="y" type="xs:double"/>
-            <xs:element name="z" type="xs:double" default="0"/>
+            <xs:element name="z" type="xs:double" minOccurs="0" default="0"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -24,7 +25,7 @@
         <xs:sequence>
             <xs:element name="x" type="xs:positiveInteger"/>
             <xs:element name="y" type="xs:positiveInteger"/>
-            <xs:element name="z" type="xs:positiveInteger" default="1"/>
+            <xs:element name="z" type="xs:positiveInteger" minOccurs="0" default="1"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -32,7 +33,7 @@
         <xs:sequence>
             <xs:element name="x" type="PositiveDouble"/>
             <xs:element name="y" type="PositiveDouble"/>
-            <xs:element name="z" type="PositiveDouble" default="1"/>
+            <xs:element name="z" type="PositiveDouble" minOccurs="0" default="1"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -41,7 +42,7 @@
             <xs:element name="position" type="DoubleVector3"/>
             <xs:element name="velocity" type="DoubleVector3"/>
             <xs:element name="mass" type="PositiveDouble"/>
-            <xs:element name="type" type="xs:int" default="0"/>
+            <xs:element name="type" type="xs:int" minOccurs="0" default="0"/>
         </xs:sequence>
     </xs:complexType>
     
@@ -53,14 +54,14 @@
             <xs:element name="size" type="PositiveIntVector3"/>
             <xs:element name="distance" type="PositiveDouble"/>
             <xs:element name="brownVelocity" type="PositiveDouble"/>
-            <xs:element name="brownDimension" type="Dimension" default="3"/>
+            <xs:element name="brownDimension" type="Dimension" minOccurs="0" default="3"/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="SimulationObjects">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-            <xs:element name="particles" type="ParticleType"/>
-            <xs:element name="cuboids" type="CuboidType"/>
+            <xs:element name="particle" type="ParticleType"/>
+            <xs:element name="cuboid" type="CuboidType"/>
         </xs:choice>
     </xs:complexType>
 
@@ -74,42 +75,42 @@
 
     <xs:complexType name="BoundaryCondition3">
         <xs:sequence>
-            <xs:element name="left" type="BoundaryConditionType" default="outflow">
+            <xs:element name="left" type="BoundaryConditionType" minOccurs="0" default="outflow">
                 <xs:annotation>
                     <xs:documentation>
                         The boundary condition at the boundary to the negative x-direction.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="right" type="BoundaryConditionType" default="outflow">
+            <xs:element name="right" type="BoundaryConditionType" minOccurs="0" default="outflow">
                 <xs:annotation>
                     <xs:documentation>
                         The boundary condition at the boundary to the positive x-direction.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="down" type="BoundaryConditionType" default="outflow">
+            <xs:element name="down" type="BoundaryConditionType" minOccurs="0" default="outflow">
                 <xs:annotation>
                     <xs:documentation>
                         The boundary condition at the boundary in the negative y-direction.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="up" type="BoundaryConditionType" default="outflow">
+            <xs:element name="up" type="BoundaryConditionType" minOccurs="0" default="outflow">
                 <xs:annotation>
                     <xs:documentation>
                         The boundary condition at the boundary in the positive y-direction.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="back" type="BoundaryConditionType" default="outflow">
+            <xs:element name="back" type="BoundaryConditionType" minOccurs="0" default="outflow">
                 <xs:annotation>
                     <xs:documentation>
                         The boundary condition at the boundary in the negative z-direction.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="front" type="BoundaryConditionType" default="outflow">
+            <xs:element name="front" type="BoundaryConditionType" minOccurs="0" default="outflow">
                 <xs:annotation>
                     <xs:documentation>
                         The boundary condition at the boundary in the positive z-direction.
@@ -143,30 +144,30 @@
 
     <xs:complexType name="SimulationParameters">
         <xs:sequence>
-            <xs:element name="end_time" type="PositiveDouble" default="5"/>
-            <xs:element name="delta_t" type="PositiveDouble" default="0.0002"/>
-            <xs:element name="frequency" type="xs:positiveInteger" default="10">
+            <xs:element name="end_time" type="PositiveDouble" minOccurs="0" default="5"/>
+            <xs:element name="delta_t" type="PositiveDouble" minOccurs="0" default="0.0002"/>
+            <xs:element name="frequency" type="xs:positiveInteger" minOccurs="0" default="10">
                 <xs:annotation>
                     <xs:documentation>
                         The output frequency of the simulation data.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="output" type="xs:string" default="MD_vtk">
+            <xs:element name="output" type="xs:string" minOccurs="0" default="MD_vtk">
                 <xs:annotation>
                     <xs:documentation>
                         The name of the output file.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="format" type="OutputFormatType" default="vtu">
+            <xs:element name="format" type="OutputFormatType" minOccurs="0" default="vtu">
                 <xs:annotation>
                     <xs:documentation>
                         The format of the output file.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="force" type="ForceType" default="Lennard-Jones">
+            <xs:element name="force" type="ForceType" minOccurs="0" default="Lennard-Jones">
                 <xs:annotation>
                     <xs:documentation>
                         The type of the force between particles.

@@ -65,7 +65,8 @@ TEST_F(CuboidTest, ReadCuboids) {
             }
         }
     }
-    DirectSumContainer reference(ps, f);
+    std::unique_ptr<Force> ref_f = std::make_unique<LennardJonesForce>();
+    DirectSumContainer reference(ps, ref_f);
     ASSERT_EQ(reference, *pc) << "Cuboid - read file test failed";
     test_logger->info("Cuboid - read file test passed");
 }
@@ -96,7 +97,8 @@ TEST_F(CuboidTest, AddCuboid) {
             }
         }
     }
-    DirectSumContainer reference(ps, f);
+    std::unique_ptr<Force> ref_f = std::make_unique<LennardJonesForce>();
+    DirectSumContainer reference(ps, ref_f);
     ASSERT_EQ(reference, *pc) << "Cuboid - read file test failed";
     test_logger->info("Cuboid - read file test filed");
 }

@@ -69,7 +69,8 @@ TEST_F(Assignment1Test, Simulation_simple) {
     std::unique_ptr<std::vector<Particle>> ref_p = std::make_unique<std::vector<Particle>>();
     char *ref_file = const_cast<char*>("../tests/Answer_Ref/Ans_simulation_simple.txt");
     fileReader.readFile(*ref_p, ref_file);
-    DirectSumContainer reference(ref_p, f);
+    std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
+    DirectSumContainer reference(ref_p, ref_f);
 
     if(!(reference == *pc)) {
         test_logger->error("Assignment 1 - simple simulation test failed");
@@ -92,7 +93,8 @@ TEST_F(Assignment1Test, Complex_simulation) {
     std::unique_ptr<std::vector<Particle>> ref_p = std::make_unique<std::vector<Particle>>();
     char *ref_file = const_cast<char*>("../tests/Answer_Ref/Ans_simulation_complex.txt");
     fileReader.readFile(*ref_p, ref_file);
-    DirectSumContainer reference(ref_p, f);
+    std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
+    DirectSumContainer reference(ref_p, ref_f);
 
     if(!(reference == *pc)) {
         test_logger->error("Assignment 1 - complex simulation test failed");

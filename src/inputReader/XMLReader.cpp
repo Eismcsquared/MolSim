@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include <spdlog/spdlog.h>
+#include <iostream>
 #include "XMLReader.h"
 #include "inputReader/InputData.h"
 #include "container/LinkedCellContainer.h"
@@ -18,29 +19,29 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
     }
 
     try {
-        std::unique_ptr<InputData> input(simulation(file));
+        std::unique_ptr<InputData> input(simulation(file, xsd::cxx::tree::flags::dont_validate));
         std::unique_ptr<std::vector<Particle>> particles = std::make_unique<std::vector<Particle>>();
-        for (auto p: input->objects().particles()) {
+        for (auto p: input->objects().particle()) {
             particles->emplace_back(
-                        std::array<double, 3>{p.position().x(), p.position().y(), p.position().z()},
-                        std::array<double, 3>{p.velocity().x(), p.velocity().y(), p.velocity().z()},
+                        std::array<double, 3>{p.position().x(), p.position().y(), p.position().z().get()},
+                        std::array<double, 3>{p.velocity().x(), p.velocity().y(), p.velocity().z().get()},
                         p.mass()
                     );
         }
-        for (auto c : input->objects().cuboids()) {
+        for (auto c : input->objects().cuboid()) {
             Cuboid cuboid(
-                        std::array<double, 3>{c.position().x(), c.position().y(), c.position().z()},
-                        std::array<double, 3>{c.velocity().x(), c.velocity().y(), c.velocity().z()},
-                        std::array<unsigned int, 3>{(unsigned int) c.size().x(), (unsigned int) c.size().y(), (unsigned int) c.size().z()},
+                        std::array<double, 3>{c.position().x(), c.position().y(), c.position().z().get()},
+                        std::array<double, 3>{c.velocity().x(), c.velocity().y(), c.velocity().z().get()},
+                        std::array<unsigned int, 3>{(unsigned int) c.size().x(), (unsigned int) c.size().y(), (unsigned int) c.size().z().get()},
                         c.mass(),
                         c.distance(),
                         c.brownVelocity(),
-                        (int) c.brownDimension()
+                        (int) c.brownDimension().get()
                     );
             cuboid.createParticles(*particles);
         }
         std::unique_ptr<Force> force;
-        switch (input->parameters().force()) {
+        switch (input->parameters().force().get()) {
             case ForceType::value::gravitation:
                 force = std::make_unique<GravitationalForce>();
                 break;
@@ -59,33 +60,36 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
                         return REFLECTING;
                     case BoundaryConditionType::value::outflow:
                         return OUTFLOW;
+                    case BoundaryConditionType::value::periodic:
+                        return PERIODIC;
                 }
             };
             std::array<BoundaryCondition, 6> boundaryCondition = {
-                    boundaryConditionMap(b.left()),
-                    boundaryConditionMap(b.right()),
-                    boundaryConditionMap(b.down()),
-                    boundaryConditionMap(b.up()),
-                    boundaryConditionMap(b.back()),
-                    boundaryConditionMap(b.front())
+                    boundaryConditionMap(b.left().get()),
+                    boundaryConditionMap(b.right().get()),
+                    boundaryConditionMap(b.down().get()),
+                    boundaryConditionMap(b.up().get()),
+                    boundaryConditionMap(b.back().get()),
+                    boundaryConditionMap(b.front().get())
             };
             container = std::make_unique<LinkedCellContainer>(
                     particles,
                     force,
-                    std::array<double, 3>{domainSize.x(), domainSize.y(), domainSize.z()},
+                    std::array<double, 3>{domainSize.x(), domainSize.y(), domainSize.z().get()},
                     cutoffRadius,
                     boundaryCondition
             );
         } else {
             container = std::make_unique<DirectSumContainer>(particles, force);
         }
+
         return std::make_unique<Simulation>(
                     container,
-                    input->parameters().end_time(),
-                    input->parameters().delta_t(),
-                    input->parameters().output(),
-                    input->parameters().format(),
-                    input->parameters().frequency()
+                    input->parameters().end_time().get(),
+                    input->parameters().delta_t().get(),
+                    input->parameters().output().get(),
+                    input->parameters().format().get(),
+                    input->parameters().frequency().get()
                 );
 
     } catch (const xml_schema::exception& e) {

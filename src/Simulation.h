@@ -96,9 +96,57 @@ public:
      */
     void setNewton3(bool newton3);
 
-     /**
-      * Run the simulation.
-      */
+    /**
+     * Getter for the particle container.
+     * @return The particle container.
+     */
+    const std::unique_ptr<ParticleContainer> &getContainer() const;
+
+    /**
+     * Getter for the simulation duration.
+     * @return The end time of the simulation.
+     */
+    double getEndTime() const;
+
+    /**
+     * Getter for the time step of the simulation.
+     * @return The time step of the simulaiton.
+     */
+    double getDeltaT() const;
+
+    /**
+     * Getter for the name of the output file.
+     * @return The name of the output file.
+     */
+    const std::string &getOutputFile() const;
+
+    /**
+     * Getter for the output format.
+     * @return The output format.
+     */
+    const std::string &getOutputFormat() const;
+
+    /**
+     * Getter for the output frequency.
+     * @return The output frequency.
+     */
+    unsigned int getOutputFrequency() const;
+
+    /**
+     * Getter for the flag for saving output.
+     * @return The flag whether output is activated.
+     */
+    bool isSaveOutput() const;
+
+    /**
+     * Getter for the flag for applying the Newton's third law.
+     * @return The flag whether the Newton's third law is applied.
+     */
+    bool isNewton3() const;
+
+    /**
+     * Run the simulation.
+     */
     void run();
 
 };

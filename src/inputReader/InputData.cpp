@@ -87,22 +87,28 @@ y (const y_type& x)
   this->y_.set (x);
 }
 
-const DoubleVector3::z_type& DoubleVector3::
+const DoubleVector3::z_optional& DoubleVector3::
 z () const
 {
-  return this->z_.get ();
+  return this->z_;
 }
 
-DoubleVector3::z_type& DoubleVector3::
+DoubleVector3::z_optional& DoubleVector3::
 z ()
 {
-  return this->z_.get ();
+  return this->z_;
 }
 
 void DoubleVector3::
 z (const z_type& x)
 {
   this->z_.set (x);
+}
+
+void DoubleVector3::
+z (const z_optional& x)
+{
+  this->z_ = x;
 }
 
 DoubleVector3::z_type DoubleVector3::
@@ -151,22 +157,28 @@ y (const y_type& x)
   this->y_.set (x);
 }
 
-const PositiveIntVector3::z_type& PositiveIntVector3::
+const PositiveIntVector3::z_optional& PositiveIntVector3::
 z () const
 {
-  return this->z_.get ();
+  return this->z_;
 }
 
-PositiveIntVector3::z_type& PositiveIntVector3::
+PositiveIntVector3::z_optional& PositiveIntVector3::
 z ()
 {
-  return this->z_.get ();
+  return this->z_;
 }
 
 void PositiveIntVector3::
 z (const z_type& x)
 {
   this->z_.set (x);
+}
+
+void PositiveIntVector3::
+z (const z_optional& x)
+{
+  this->z_ = x;
 }
 
 PositiveIntVector3::z_type PositiveIntVector3::
@@ -227,22 +239,28 @@ y (::std::unique_ptr< y_type > x)
   this->y_.set (std::move (x));
 }
 
-const PositiveDoubleVector3::z_type& PositiveDoubleVector3::
+const PositiveDoubleVector3::z_optional& PositiveDoubleVector3::
 z () const
 {
-  return this->z_.get ();
+  return this->z_;
 }
 
-PositiveDoubleVector3::z_type& PositiveDoubleVector3::
+PositiveDoubleVector3::z_optional& PositiveDoubleVector3::
 z ()
 {
-  return this->z_.get ();
+  return this->z_;
 }
 
 void PositiveDoubleVector3::
 z (const z_type& x)
 {
   this->z_.set (x);
+}
+
+void PositiveDoubleVector3::
+z (const z_optional& x)
+{
+  this->z_ = x;
 }
 
 void PositiveDoubleVector3::
@@ -333,22 +351,28 @@ mass (::std::unique_ptr< mass_type > x)
   this->mass_.set (std::move (x));
 }
 
-const ParticleType::type_type& ParticleType::
+const ParticleType::type_optional& ParticleType::
 type () const
 {
-  return this->type_.get ();
+  return this->type_;
 }
 
-ParticleType::type_type& ParticleType::
+ParticleType::type_optional& ParticleType::
 type ()
 {
-  return this->type_.get ();
+  return this->type_;
 }
 
 void ParticleType::
 type (const type_type& x)
 {
   this->type_.set (x);
+}
+
+void ParticleType::
+type (const type_optional& x)
+{
+  this->type_ = x;
 }
 
 ParticleType::type_type ParticleType::
@@ -505,22 +529,28 @@ brownVelocity (::std::unique_ptr< brownVelocity_type > x)
   this->brownVelocity_.set (std::move (x));
 }
 
-const CuboidType::brownDimension_type& CuboidType::
+const CuboidType::brownDimension_optional& CuboidType::
 brownDimension () const
 {
-  return this->brownDimension_.get ();
+  return this->brownDimension_;
 }
 
-CuboidType::brownDimension_type& CuboidType::
+CuboidType::brownDimension_optional& CuboidType::
 brownDimension ()
 {
-  return this->brownDimension_.get ();
+  return this->brownDimension_;
 }
 
 void CuboidType::
 brownDimension (const brownDimension_type& x)
 {
   this->brownDimension_.set (x);
+}
+
+void CuboidType::
+brownDimension (const brownDimension_optional& x)
+{
+  this->brownDimension_ = x;
 }
 
 void CuboidType::
@@ -539,40 +569,40 @@ brownDimension_default_value ()
 // SimulationObjects
 // 
 
-const SimulationObjects::particles_sequence& SimulationObjects::
-particles () const
+const SimulationObjects::particle_sequence& SimulationObjects::
+particle () const
 {
-  return this->particles_;
+  return this->particle_;
 }
 
-SimulationObjects::particles_sequence& SimulationObjects::
-particles ()
+SimulationObjects::particle_sequence& SimulationObjects::
+particle ()
 {
-  return this->particles_;
-}
-
-void SimulationObjects::
-particles (const particles_sequence& s)
-{
-  this->particles_ = s;
-}
-
-const SimulationObjects::cuboids_sequence& SimulationObjects::
-cuboids () const
-{
-  return this->cuboids_;
-}
-
-SimulationObjects::cuboids_sequence& SimulationObjects::
-cuboids ()
-{
-  return this->cuboids_;
+  return this->particle_;
 }
 
 void SimulationObjects::
-cuboids (const cuboids_sequence& s)
+particle (const particle_sequence& s)
 {
-  this->cuboids_ = s;
+  this->particle_ = s;
+}
+
+const SimulationObjects::cuboid_sequence& SimulationObjects::
+cuboid () const
+{
+  return this->cuboid_;
+}
+
+SimulationObjects::cuboid_sequence& SimulationObjects::
+cuboid ()
+{
+  return this->cuboid_;
+}
+
+void SimulationObjects::
+cuboid (const cuboid_sequence& s)
+{
+  this->cuboid_ = s;
 }
 
 
@@ -624,22 +654,28 @@ operator= (value v)
 // BoundaryCondition3
 // 
 
-const BoundaryCondition3::left_type& BoundaryCondition3::
+const BoundaryCondition3::left_optional& BoundaryCondition3::
 left () const
 {
-  return this->left_.get ();
+  return this->left_;
 }
 
-BoundaryCondition3::left_type& BoundaryCondition3::
+BoundaryCondition3::left_optional& BoundaryCondition3::
 left ()
 {
-  return this->left_.get ();
+  return this->left_;
 }
 
 void BoundaryCondition3::
 left (const left_type& x)
 {
   this->left_.set (x);
+}
+
+void BoundaryCondition3::
+left (const left_optional& x)
+{
+  this->left_ = x;
 }
 
 void BoundaryCondition3::
@@ -654,22 +690,28 @@ left_default_value ()
   return left_default_value_;
 }
 
-const BoundaryCondition3::right_type& BoundaryCondition3::
+const BoundaryCondition3::right_optional& BoundaryCondition3::
 right () const
 {
-  return this->right_.get ();
+  return this->right_;
 }
 
-BoundaryCondition3::right_type& BoundaryCondition3::
+BoundaryCondition3::right_optional& BoundaryCondition3::
 right ()
 {
-  return this->right_.get ();
+  return this->right_;
 }
 
 void BoundaryCondition3::
 right (const right_type& x)
 {
   this->right_.set (x);
+}
+
+void BoundaryCondition3::
+right (const right_optional& x)
+{
+  this->right_ = x;
 }
 
 void BoundaryCondition3::
@@ -684,22 +726,28 @@ right_default_value ()
   return right_default_value_;
 }
 
-const BoundaryCondition3::down_type& BoundaryCondition3::
+const BoundaryCondition3::down_optional& BoundaryCondition3::
 down () const
 {
-  return this->down_.get ();
+  return this->down_;
 }
 
-BoundaryCondition3::down_type& BoundaryCondition3::
+BoundaryCondition3::down_optional& BoundaryCondition3::
 down ()
 {
-  return this->down_.get ();
+  return this->down_;
 }
 
 void BoundaryCondition3::
 down (const down_type& x)
 {
   this->down_.set (x);
+}
+
+void BoundaryCondition3::
+down (const down_optional& x)
+{
+  this->down_ = x;
 }
 
 void BoundaryCondition3::
@@ -714,22 +762,28 @@ down_default_value ()
   return down_default_value_;
 }
 
-const BoundaryCondition3::up_type& BoundaryCondition3::
+const BoundaryCondition3::up_optional& BoundaryCondition3::
 up () const
 {
-  return this->up_.get ();
+  return this->up_;
 }
 
-BoundaryCondition3::up_type& BoundaryCondition3::
+BoundaryCondition3::up_optional& BoundaryCondition3::
 up ()
 {
-  return this->up_.get ();
+  return this->up_;
 }
 
 void BoundaryCondition3::
 up (const up_type& x)
 {
   this->up_.set (x);
+}
+
+void BoundaryCondition3::
+up (const up_optional& x)
+{
+  this->up_ = x;
 }
 
 void BoundaryCondition3::
@@ -744,22 +798,28 @@ up_default_value ()
   return up_default_value_;
 }
 
-const BoundaryCondition3::back_type& BoundaryCondition3::
+const BoundaryCondition3::back_optional& BoundaryCondition3::
 back () const
 {
-  return this->back_.get ();
+  return this->back_;
 }
 
-BoundaryCondition3::back_type& BoundaryCondition3::
+BoundaryCondition3::back_optional& BoundaryCondition3::
 back ()
 {
-  return this->back_.get ();
+  return this->back_;
 }
 
 void BoundaryCondition3::
 back (const back_type& x)
 {
   this->back_.set (x);
+}
+
+void BoundaryCondition3::
+back (const back_optional& x)
+{
+  this->back_ = x;
 }
 
 void BoundaryCondition3::
@@ -774,22 +834,28 @@ back_default_value ()
   return back_default_value_;
 }
 
-const BoundaryCondition3::front_type& BoundaryCondition3::
+const BoundaryCondition3::front_optional& BoundaryCondition3::
 front () const
 {
-  return this->front_.get ();
+  return this->front_;
 }
 
-BoundaryCondition3::front_type& BoundaryCondition3::
+BoundaryCondition3::front_optional& BoundaryCondition3::
 front ()
 {
-  return this->front_.get ();
+  return this->front_;
 }
 
 void BoundaryCondition3::
 front (const front_type& x)
 {
   this->front_.set (x);
+}
+
+void BoundaryCondition3::
+front (const front_optional& x)
+{
+  this->front_ = x;
 }
 
 void BoundaryCondition3::
@@ -974,22 +1040,28 @@ boundary_condition (::std::unique_ptr< boundary_condition_type > x)
 // SimulationParameters
 // 
 
-const SimulationParameters::end_time_type& SimulationParameters::
+const SimulationParameters::end_time_optional& SimulationParameters::
 end_time () const
 {
-  return this->end_time_.get ();
+  return this->end_time_;
 }
 
-SimulationParameters::end_time_type& SimulationParameters::
+SimulationParameters::end_time_optional& SimulationParameters::
 end_time ()
 {
-  return this->end_time_.get ();
+  return this->end_time_;
 }
 
 void SimulationParameters::
 end_time (const end_time_type& x)
 {
   this->end_time_.set (x);
+}
+
+void SimulationParameters::
+end_time (const end_time_optional& x)
+{
+  this->end_time_ = x;
 }
 
 void SimulationParameters::
@@ -1004,22 +1076,28 @@ end_time_default_value ()
   return end_time_type (5.0);
 }
 
-const SimulationParameters::delta_t_type& SimulationParameters::
+const SimulationParameters::delta_t_optional& SimulationParameters::
 delta_t () const
 {
-  return this->delta_t_.get ();
+  return this->delta_t_;
 }
 
-SimulationParameters::delta_t_type& SimulationParameters::
+SimulationParameters::delta_t_optional& SimulationParameters::
 delta_t ()
 {
-  return this->delta_t_.get ();
+  return this->delta_t_;
 }
 
 void SimulationParameters::
 delta_t (const delta_t_type& x)
 {
   this->delta_t_.set (x);
+}
+
+void SimulationParameters::
+delta_t (const delta_t_optional& x)
+{
+  this->delta_t_ = x;
 }
 
 void SimulationParameters::
@@ -1034,16 +1112,16 @@ delta_t_default_value ()
   return delta_t_type (.0002);
 }
 
-const SimulationParameters::frequency_type& SimulationParameters::
+const SimulationParameters::frequency_optional& SimulationParameters::
 frequency () const
 {
-  return this->frequency_.get ();
+  return this->frequency_;
 }
 
-SimulationParameters::frequency_type& SimulationParameters::
+SimulationParameters::frequency_optional& SimulationParameters::
 frequency ()
 {
-  return this->frequency_.get ();
+  return this->frequency_;
 }
 
 void SimulationParameters::
@@ -1052,28 +1130,40 @@ frequency (const frequency_type& x)
   this->frequency_.set (x);
 }
 
+void SimulationParameters::
+frequency (const frequency_optional& x)
+{
+  this->frequency_ = x;
+}
+
 SimulationParameters::frequency_type SimulationParameters::
 frequency_default_value ()
 {
   return frequency_type (10ULL);
 }
 
-const SimulationParameters::output_type& SimulationParameters::
+const SimulationParameters::output_optional& SimulationParameters::
 output () const
 {
-  return this->output_.get ();
+  return this->output_;
 }
 
-SimulationParameters::output_type& SimulationParameters::
+SimulationParameters::output_optional& SimulationParameters::
 output ()
 {
-  return this->output_.get ();
+  return this->output_;
 }
 
 void SimulationParameters::
 output (const output_type& x)
 {
   this->output_.set (x);
+}
+
+void SimulationParameters::
+output (const output_optional& x)
+{
+  this->output_ = x;
 }
 
 void SimulationParameters::
@@ -1088,22 +1178,28 @@ output_default_value ()
   return output_default_value_;
 }
 
-const SimulationParameters::format_type& SimulationParameters::
+const SimulationParameters::format_optional& SimulationParameters::
 format () const
 {
-  return this->format_.get ();
+  return this->format_;
 }
 
-SimulationParameters::format_type& SimulationParameters::
+SimulationParameters::format_optional& SimulationParameters::
 format ()
 {
-  return this->format_.get ();
+  return this->format_;
 }
 
 void SimulationParameters::
 format (const format_type& x)
 {
   this->format_.set (x);
+}
+
+void SimulationParameters::
+format (const format_optional& x)
+{
+  this->format_ = x;
 }
 
 void SimulationParameters::
@@ -1118,22 +1214,28 @@ format_default_value ()
   return format_default_value_;
 }
 
-const SimulationParameters::force_type& SimulationParameters::
+const SimulationParameters::force_optional& SimulationParameters::
 force () const
 {
-  return this->force_.get ();
+  return this->force_;
 }
 
-SimulationParameters::force_type& SimulationParameters::
+SimulationParameters::force_optional& SimulationParameters::
 force ()
 {
-  return this->force_.get ();
+  return this->force_;
 }
 
 void SimulationParameters::
 force (const force_type& x)
 {
   this->force_.set (x);
+}
+
+void SimulationParameters::
+force (const force_optional& x)
+{
+  this->force_ = x;
 }
 
 void SimulationParameters::
@@ -1346,12 +1448,11 @@ PositiveDouble::
 
 DoubleVector3::
 DoubleVector3 (const x_type& x,
-               const y_type& y,
-               const z_type& z)
+               const y_type& y)
 : ::xml_schema::type (),
   x_ (x, this),
   y_ (y, this),
-  z_ (z, this)
+  z_ (this)
 {
 }
 
@@ -1418,7 +1519,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     //
     if (n.name () == "z" && n.namespace_ ().empty ())
     {
-      if (!z_.present ())
+      if (!this->z_)
       {
         this->z_.set (z_traits::create (i, f, this));
         continue;
@@ -1439,13 +1540,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
   {
     throw ::xsd::cxx::tree::expected_element< char > (
       "y",
-      "");
-  }
-
-  if (!z_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "z",
       "");
   }
 }
@@ -1481,12 +1575,11 @@ DoubleVector3::
 
 PositiveIntVector3::
 PositiveIntVector3 (const x_type& x,
-                    const y_type& y,
-                    const z_type& z)
+                    const y_type& y)
 : ::xml_schema::type (),
   x_ (x, this),
   y_ (y, this),
-  z_ (z, this)
+  z_ (this)
 {
 }
 
@@ -1553,7 +1646,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     //
     if (n.name () == "z" && n.namespace_ ().empty ())
     {
-      if (!z_.present ())
+      if (!this->z_)
       {
         this->z_.set (z_traits::create (i, f, this));
         continue;
@@ -1574,13 +1667,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
   {
     throw ::xsd::cxx::tree::expected_element< char > (
       "y",
-      "");
-  }
-
-  if (!z_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "z",
       "");
   }
 }
@@ -1616,12 +1702,11 @@ PositiveIntVector3::
 
 PositiveDoubleVector3::
 PositiveDoubleVector3 (const x_type& x,
-                       const y_type& y,
-                       const z_type& z)
+                       const y_type& y)
 : ::xml_schema::type (),
   x_ (x, this),
   y_ (y, this),
-  z_ (z, this)
+  z_ (this)
 {
 }
 
@@ -1697,7 +1782,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       ::std::unique_ptr< z_type > r (
         z_traits::create (i, f, this));
 
-      if (!z_.present ())
+      if (!this->z_)
       {
         this->z_.set (::std::move (r));
         continue;
@@ -1718,13 +1803,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
   {
     throw ::xsd::cxx::tree::expected_element< char > (
       "y",
-      "");
-  }
-
-  if (!z_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "z",
       "");
   }
 }
@@ -1761,26 +1839,24 @@ PositiveDoubleVector3::
 ParticleType::
 ParticleType (const position_type& position,
               const velocity_type& velocity,
-              const mass_type& mass,
-              const type_type& type)
+              const mass_type& mass)
 : ::xml_schema::type (),
   position_ (position, this),
   velocity_ (velocity, this),
   mass_ (mass, this),
-  type_ (type, this)
+  type_ (this)
 {
 }
 
 ParticleType::
 ParticleType (::std::unique_ptr< position_type > position,
               ::std::unique_ptr< velocity_type > velocity,
-              const mass_type& mass,
-              const type_type& type)
+              const mass_type& mass)
 : ::xml_schema::type (),
   position_ (std::move (position), this),
   velocity_ (std::move (velocity), this),
   mass_ (mass, this),
-  type_ (type, this)
+  type_ (this)
 {
 }
 
@@ -1869,7 +1945,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     //
     if (n.name () == "type" && n.namespace_ ().empty ())
     {
-      if (!type_.present ())
+      if (!this->type_)
       {
         this->type_.set (type_traits::create (i, f, this));
         continue;
@@ -1897,13 +1973,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
   {
     throw ::xsd::cxx::tree::expected_element< char > (
       "mass",
-      "");
-  }
-
-  if (!type_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "type",
       "");
   }
 }
@@ -1944,8 +2013,7 @@ CuboidType (const position_type& position,
             const mass_type& mass,
             const size_type& size,
             const distance_type& distance,
-            const brownVelocity_type& brownVelocity,
-            const brownDimension_type& brownDimension)
+            const brownVelocity_type& brownVelocity)
 : ::xml_schema::type (),
   position_ (position, this),
   velocity_ (velocity, this),
@@ -1953,7 +2021,7 @@ CuboidType (const position_type& position,
   size_ (size, this),
   distance_ (distance, this),
   brownVelocity_ (brownVelocity, this),
-  brownDimension_ (brownDimension, this)
+  brownDimension_ (this)
 {
 }
 
@@ -1963,8 +2031,7 @@ CuboidType (::std::unique_ptr< position_type > position,
             const mass_type& mass,
             ::std::unique_ptr< size_type > size,
             const distance_type& distance,
-            const brownVelocity_type& brownVelocity,
-            const brownDimension_type& brownDimension)
+            const brownVelocity_type& brownVelocity)
 : ::xml_schema::type (),
   position_ (std::move (position), this),
   velocity_ (std::move (velocity), this),
@@ -1972,7 +2039,7 @@ CuboidType (::std::unique_ptr< position_type > position,
   size_ (std::move (size), this),
   distance_ (distance, this),
   brownVelocity_ (brownVelocity, this),
-  brownDimension_ (brownDimension, this)
+  brownDimension_ (this)
 {
 }
 
@@ -2112,7 +2179,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       ::std::unique_ptr< brownDimension_type > r (
         brownDimension_traits::create (i, f, this));
 
-      if (!brownDimension_.present ())
+      if (!this->brownDimension_)
       {
         this->brownDimension_.set (::std::move (r));
         continue;
@@ -2163,13 +2230,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "brownVelocity",
       "");
   }
-
-  if (!brownDimension_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "brownDimension",
-      "");
-  }
 }
 
 CuboidType* CuboidType::
@@ -2208,8 +2268,8 @@ CuboidType::
 SimulationObjects::
 SimulationObjects ()
 : ::xml_schema::type (),
-  particles_ (this),
-  cuboids_ (this)
+  particle_ (this),
+  cuboid_ (this)
 {
 }
 
@@ -2218,8 +2278,8 @@ SimulationObjects (const SimulationObjects& x,
                    ::xml_schema::flags f,
                    ::xml_schema::container* c)
 : ::xml_schema::type (x, f, c),
-  particles_ (x.particles_, f, this),
-  cuboids_ (x.cuboids_, f, this)
+  particle_ (x.particle_, f, this),
+  cuboid_ (x.cuboid_, f, this)
 {
 }
 
@@ -2228,8 +2288,8 @@ SimulationObjects (const ::xercesc::DOMElement& e,
                    ::xml_schema::flags f,
                    ::xml_schema::container* c)
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
-  particles_ (this),
-  cuboids_ (this)
+  particle_ (this),
+  cuboid_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -2248,25 +2308,25 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     const ::xsd::cxx::xml::qualified_name< char > n (
       ::xsd::cxx::xml::dom::name< char > (i));
 
-    // particles
+    // particle
     //
-    if (n.name () == "particles" && n.namespace_ ().empty ())
+    if (n.name () == "particle" && n.namespace_ ().empty ())
     {
-      ::std::unique_ptr< particles_type > r (
-        particles_traits::create (i, f, this));
+      ::std::unique_ptr< particle_type > r (
+        particle_traits::create (i, f, this));
 
-      this->particles_.push_back (::std::move (r));
+      this->particle_.push_back (::std::move (r));
       continue;
     }
 
-    // cuboids
+    // cuboid
     //
-    if (n.name () == "cuboids" && n.namespace_ ().empty ())
+    if (n.name () == "cuboid" && n.namespace_ ().empty ())
     {
-      ::std::unique_ptr< cuboids_type > r (
-        cuboids_traits::create (i, f, this));
+      ::std::unique_ptr< cuboid_type > r (
+        cuboid_traits::create (i, f, this));
 
-      this->cuboids_.push_back (::std::move (r));
+      this->cuboid_.push_back (::std::move (r));
       continue;
     }
 
@@ -2287,8 +2347,8 @@ operator= (const SimulationObjects& x)
   if (this != &x)
   {
     static_cast< ::xml_schema::type& > (*this) = x;
-    this->particles_ = x.particles_;
-    this->cuboids_ = x.cuboids_;
+    this->particle_ = x.particle_;
+    this->cuboid_ = x.cuboid_;
   }
 
   return *this;
@@ -2393,19 +2453,14 @@ const BoundaryCondition3::front_type BoundaryCondition3::front_default_value_ (
   "outflow");
 
 BoundaryCondition3::
-BoundaryCondition3 (const left_type& left,
-                    const right_type& right,
-                    const down_type& down,
-                    const up_type& up,
-                    const back_type& back,
-                    const front_type& front)
+BoundaryCondition3 ()
 : ::xml_schema::type (),
-  left_ (left, this),
-  right_ (right, this),
-  down_ (down, this),
-  up_ (up, this),
-  back_ (back, this),
-  front_ (front, this)
+  left_ (this),
+  right_ (this),
+  down_ (this),
+  up_ (this),
+  back_ (this),
+  front_ (this)
 {
 }
 
@@ -2459,7 +2514,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       ::std::unique_ptr< left_type > r (
         left_traits::create (i, f, this));
 
-      if (!left_.present ())
+      if (!this->left_)
       {
         this->left_.set (::std::move (r));
         continue;
@@ -2473,7 +2528,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       ::std::unique_ptr< right_type > r (
         right_traits::create (i, f, this));
 
-      if (!right_.present ())
+      if (!this->right_)
       {
         this->right_.set (::std::move (r));
         continue;
@@ -2487,7 +2542,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       ::std::unique_ptr< down_type > r (
         down_traits::create (i, f, this));
 
-      if (!down_.present ())
+      if (!this->down_)
       {
         this->down_.set (::std::move (r));
         continue;
@@ -2501,7 +2556,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       ::std::unique_ptr< up_type > r (
         up_traits::create (i, f, this));
 
-      if (!up_.present ())
+      if (!this->up_)
       {
         this->up_.set (::std::move (r));
         continue;
@@ -2515,7 +2570,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       ::std::unique_ptr< back_type > r (
         back_traits::create (i, f, this));
 
-      if (!back_.present ())
+      if (!this->back_)
       {
         this->back_.set (::std::move (r));
         continue;
@@ -2529,7 +2584,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       ::std::unique_ptr< front_type > r (
         front_traits::create (i, f, this));
 
-      if (!front_.present ())
+      if (!this->front_)
       {
         this->front_.set (::std::move (r));
         continue;
@@ -2537,48 +2592,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     }
 
     break;
-  }
-
-  if (!left_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "left",
-      "");
-  }
-
-  if (!right_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "right",
-      "");
-  }
-
-  if (!down_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "down",
-      "");
-  }
-
-  if (!up_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "up",
-      "");
-  }
-
-  if (!back_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "back",
-      "");
-  }
-
-  if (!front_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "front",
-      "");
   }
 }
 
@@ -2919,19 +2932,14 @@ const SimulationParameters::force_type SimulationParameters::force_default_value
   "Lennard-Jones");
 
 SimulationParameters::
-SimulationParameters (const end_time_type& end_time,
-                      const delta_t_type& delta_t,
-                      const frequency_type& frequency,
-                      const output_type& output,
-                      const format_type& format,
-                      const force_type& force)
+SimulationParameters ()
 : ::xml_schema::type (),
-  end_time_ (end_time, this),
-  delta_t_ (delta_t, this),
-  frequency_ (frequency, this),
-  output_ (output, this),
-  format_ (format, this),
-  force_ (force, this),
+  end_time_ (this),
+  delta_t_ (this),
+  frequency_ (this),
+  output_ (this),
+  format_ (this),
+  force_ (this),
   linked_cell_ (this)
 {
 }
@@ -2988,7 +2996,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       ::std::unique_ptr< end_time_type > r (
         end_time_traits::create (i, f, this));
 
-      if (!end_time_.present ())
+      if (!this->end_time_)
       {
         this->end_time_.set (::std::move (r));
         continue;
@@ -3002,7 +3010,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       ::std::unique_ptr< delta_t_type > r (
         delta_t_traits::create (i, f, this));
 
-      if (!delta_t_.present ())
+      if (!this->delta_t_)
       {
         this->delta_t_.set (::std::move (r));
         continue;
@@ -3013,7 +3021,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     //
     if (n.name () == "frequency" && n.namespace_ ().empty ())
     {
-      if (!frequency_.present ())
+      if (!this->frequency_)
       {
         this->frequency_.set (frequency_traits::create (i, f, this));
         continue;
@@ -3027,7 +3035,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       ::std::unique_ptr< output_type > r (
         output_traits::create (i, f, this));
 
-      if (!output_.present ())
+      if (!this->output_)
       {
         this->output_.set (::std::move (r));
         continue;
@@ -3041,7 +3049,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       ::std::unique_ptr< format_type > r (
         format_traits::create (i, f, this));
 
-      if (!format_.present ())
+      if (!this->format_)
       {
         this->format_.set (::std::move (r));
         continue;
@@ -3055,7 +3063,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       ::std::unique_ptr< force_type > r (
         force_traits::create (i, f, this));
 
-      if (!force_.present ())
+      if (!this->force_)
       {
         this->force_.set (::std::move (r));
         continue;
@@ -3077,48 +3085,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     }
 
     break;
-  }
-
-  if (!end_time_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "end_time",
-      "");
-  }
-
-  if (!delta_t_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "delta_t",
-      "");
-  }
-
-  if (!frequency_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "frequency",
-      "");
-  }
-
-  if (!output_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "output",
-      "");
-  }
-
-  if (!format_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "format",
-      "");
-  }
-
-  if (!force_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "force",
-      "");
   }
 }
 
@@ -3620,13 +3586,14 @@ operator<< (::xercesc::DOMElement& e, const DoubleVector3& i)
 
   // z
   //
+  if (i.z ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "z",
         e));
 
-    s << ::xml_schema::as_double(i.z ());
+    s << ::xml_schema::as_double(*i.z ());
   }
 }
 
@@ -3659,13 +3626,14 @@ operator<< (::xercesc::DOMElement& e, const PositiveIntVector3& i)
 
   // z
   //
+  if (i.z ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "z",
         e));
 
-    s << i.z ();
+    s << *i.z ();
   }
 }
 
@@ -3698,13 +3666,14 @@ operator<< (::xercesc::DOMElement& e, const PositiveDoubleVector3& i)
 
   // z
   //
+  if (i.z ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "z",
         e));
 
-    s << i.z ();
+    s << *i.z ();
   }
 }
 
@@ -3748,13 +3717,14 @@ operator<< (::xercesc::DOMElement& e, const ParticleType& i)
 
   // type
   //
+  if (i.type ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "type",
         e));
 
-    s << i.type ();
+    s << *i.type ();
   }
 }
 
@@ -3831,13 +3801,14 @@ operator<< (::xercesc::DOMElement& e, const CuboidType& i)
 
   // brownDimension
   //
+  if (i.brownDimension ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "brownDimension",
         e));
 
-    s << i.brownDimension ();
+    s << *i.brownDimension ();
   }
 }
 
@@ -3846,29 +3817,29 @@ operator<< (::xercesc::DOMElement& e, const SimulationObjects& i)
 {
   e << static_cast< const ::xml_schema::type& > (i);
 
-  // particles
+  // particle
   //
-  for (SimulationObjects::particles_const_iterator
-       b (i.particles ().begin ()), n (i.particles ().end ());
+  for (SimulationObjects::particle_const_iterator
+       b (i.particle ().begin ()), n (i.particle ().end ());
        b != n; ++b)
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
-        "particles",
+        "particle",
         e));
 
     s << *b;
   }
 
-  // cuboids
+  // cuboid
   //
-  for (SimulationObjects::cuboids_const_iterator
-       b (i.cuboids ().begin ()), n (i.cuboids ().end ());
+  for (SimulationObjects::cuboid_const_iterator
+       b (i.cuboid ().begin ()), n (i.cuboid ().end ());
        b != n; ++b)
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
-        "cuboids",
+        "cuboid",
         e));
 
     s << *b;
@@ -3901,68 +3872,74 @@ operator<< (::xercesc::DOMElement& e, const BoundaryCondition3& i)
 
   // left
   //
+  if (i.left ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "left",
         e));
 
-    s << i.left ();
+    s << *i.left ();
   }
 
   // right
   //
+  if (i.right ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "right",
         e));
 
-    s << i.right ();
+    s << *i.right ();
   }
 
   // down
   //
+  if (i.down ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "down",
         e));
 
-    s << i.down ();
+    s << *i.down ();
   }
 
   // up
   //
+  if (i.up ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "up",
         e));
 
-    s << i.up ();
+    s << *i.up ();
   }
 
   // back
   //
+  if (i.back ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "back",
         e));
 
-    s << i.back ();
+    s << *i.back ();
   }
 
   // front
   //
+  if (i.front ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "front",
         e));
 
-    s << i.front ();
+    s << *i.front ();
   }
 }
 
@@ -4050,68 +4027,74 @@ operator<< (::xercesc::DOMElement& e, const SimulationParameters& i)
 
   // end_time
   //
+  if (i.end_time ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "end_time",
         e));
 
-    s << i.end_time ();
+    s << *i.end_time ();
   }
 
   // delta_t
   //
+  if (i.delta_t ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "delta_t",
         e));
 
-    s << i.delta_t ();
+    s << *i.delta_t ();
   }
 
   // frequency
   //
+  if (i.frequency ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "frequency",
         e));
 
-    s << i.frequency ();
+    s << *i.frequency ();
   }
 
   // output
   //
+  if (i.output ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "output",
         e));
 
-    s << i.output ();
+    s << *i.output ();
   }
 
   // format
   //
+  if (i.format ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "format",
         e));
 
-    s << i.format ();
+    s << *i.format ();
   }
 
   // force
   //
+  if (i.force ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "force",
         e));
 
-    s << i.force ();
+    s << *i.force ();
   }
 
   // linked_cell

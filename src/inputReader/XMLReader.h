@@ -4,7 +4,7 @@
 
 class XMLReader {
 public:
-    std::unique_ptr<Simulation> readXML(std::string fileName);
+    static std::unique_ptr<Simulation> readXML(std::string fileName);
 
 };
 

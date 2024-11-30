@@ -4,7 +4,8 @@
 
 enum BoundaryCondition{
     OUTFLOW,
-    REFLECTING
+    REFLECTING,
+    PERIODIC
 };
 
 /**
