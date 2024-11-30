@@ -81,7 +81,8 @@ void LinkedCellContainer::updateF(bool newton3) {
 
     for(auto & p1 : *particles){
         p1.setOldF(p1.getF());
-        p1.setF(f->ghostforce(p1, domainSize, cutoff, b_c)); // set the ghost force
+       // p1.setF({0, 0, 0}); // reset the force
+        p1.setF(f->ghostforce(p1, domainSize, 1.1225, b_c)); // set the ghost force
     }
 
     for(int i =0 ; i< cells.size(); ++i){
@@ -90,9 +91,10 @@ void LinkedCellContainer::updateF(bool newton3) {
         for(unsigned long j = 0; j< pointCellparticles.size(); ++j){
             for(unsigned long k = j+1; k< pointCellparticles.size(); ++k){
 
+                //////////////////////////////////////////////////////////
                 double dist = ArrayUtils::L2Norm((*particles)[pointCellparticles[j]].getX() - (*particles)[pointCellparticles[k]].getX());
-
-                if(dist > cutoff) continue; // if the distance is greater than the cutoff, skip the calculation
+                if(dist > cutoff) continue;
+                 // if the distance is greater than the cutoff, skip the calculation
                 
                 std::array<double, 3> forceIJ = f->force((*particles)[pointCellparticles[j]], (*particles)[pointCellparticles[k]]);
                 
@@ -139,8 +141,8 @@ void LinkedCellContainer::updateX(double delta_t){
                 cells[cellidx_after].addIndex(cellidx_after);
             }
             else{
-                spdlog::warn("Particle moved out of the domain!");
-                // has to adjust in the xml file
+                //spdlog::warn("Particle moved out of the domain!");
+                // have to adjust in the xml file
             }
         }
     }
@@ -205,8 +207,10 @@ void LinkedCellContainer::updateCellF(const std::vector<unsigned int> &v1, const
     for (unsigned long i = 0; i < v1.size(); ++i) {
         for (unsigned long j = 0; j < v2.size(); ++j) {
 
+            //////////////////////////////////////////////////////////
             double dist = ArrayUtils::L2Norm((*particles)[v1[i]].getX() - (*particles)[v2[j]].getX());
-            if(dist > cutoff) continue;
+            if(dist > cutoff) continue; 
+            // if the distance is greater than the cutoff, skip the calculation
             
             if (newton3) {
                 std::array<double, 3> forceIJ = f->force((*particles)[v1[i]], (*particles)[v2[j]]);
