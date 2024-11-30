@@ -5,6 +5,7 @@
 #include <iostream>
 #include <math.h>
 #include "utils/ArrayUtils.h"
+#include "cmath"
 
 
 LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f,
@@ -28,11 +29,6 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
     // Initialize the variables
     this->nCells = {nX, nY, nZ};
 
-    //TODO
-//    if(reflect){
-//        near_boundary.resize(particles->size(), false);
-//        spdlog::warn("Near boundary size: {}", near_boundary.size());
-//    }
     /////////////////////////////
 
     double size_x = this->domainSize[0] / nX;
@@ -77,9 +73,15 @@ void LinkedCellContainer::updateV(double delta_t) {
 
 //TODO: Implement the function to update the forces
 void LinkedCellContainer::updateF(bool newton3) {
+    //check if the boundary conditions are reflecting
+    std::array<bool, 6> b_c ;
+    for(int i = 0; i < 6; i++){
+        b_c[i] = boundaryConditions[i] == BoundaryCondition:: REFLECTING ? true : false;
+    }
+
     for(auto & p1 : *particles){
         p1.setOldF(p1.getF());
-        p1.setF({0,0,0});
+        p1.setF(f->ghostforce(p1, domainSize, cutoff, b_c)); // set the ghost force
     }
 
     for(int i =0 ; i< cells.size(); ++i){
@@ -87,6 +89,11 @@ void LinkedCellContainer::updateF(bool newton3) {
         
         for(unsigned long j = 0; j< pointCellparticles.size(); ++j){
             for(unsigned long k = j+1; k< pointCellparticles.size(); ++k){
+
+                double dist = ArrayUtils::L2Norm((*particles)[pointCellparticles[j]].getX() - (*particles)[pointCellparticles[k]].getX());
+
+                if(dist > cutoff) continue; // if the distance is greater than the cutoff, skip the calculation
+                
                 std::array<double, 3> forceIJ = f->force((*particles)[pointCellparticles[j]], (*particles)[pointCellparticles[k]]);
                 
                 std::array<double, 3> v1_force ;
@@ -115,6 +122,9 @@ void LinkedCellContainer::updateF(bool newton3) {
 void LinkedCellContainer::updateX(double delta_t){
 
     for (auto & particle : *particles) {
+
+ 
+        
         unsigned int cellidx_before = getCellIndex(particle.getX());
 
         std::array<double, 3> vec = particle.getX() + delta_t * (particle.getV() + (delta_t / (2 * particle.getM())) * particle.getF());
@@ -127,6 +137,10 @@ void LinkedCellContainer::updateX(double delta_t){
             cells[cellidx_before].removeIndex(cellidx_before);
             if(cellidx_after >= 0 && cellidx_after < cells.size()){
                 cells[cellidx_after].addIndex(cellidx_after);
+            }
+            else{
+                spdlog::warn("Particle moved out of the domain!");
+                // has to adjust in the xml file
             }
         }
     }
@@ -190,6 +204,10 @@ std::array<int, 3> LinkedCellContainer:: get3DIndex (int cellIndex) {
 void LinkedCellContainer::updateCellF(const std::vector<unsigned int> &v1, const std::vector<unsigned int> &v2, bool newton3){
     for (unsigned long i = 0; i < v1.size(); ++i) {
         for (unsigned long j = 0; j < v2.size(); ++j) {
+
+            double dist = ArrayUtils::L2Norm((*particles)[v1[i]].getX() - (*particles)[v2[j]].getX());
+            if(dist > cutoff) continue;
+            
             if (newton3) {
                 std::array<double, 3> forceIJ = f->force((*particles)[v1[i]], (*particles)[v2[j]]);
 
