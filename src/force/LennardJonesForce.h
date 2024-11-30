@@ -26,6 +26,16 @@ public:
      */
     virtual std::array<double, 3> force(Particle& particle1, Particle& particle2) override;
 
+    /**
+     * @brief simulate the Lennard-Jones force between a particle and a ghost particle. 
+     * @param particle the particle.
+     * @param boundary the boundary of the system.
+     * @param distance  lennard jones potential distance
+     * @param boundarycondition the boundary condition of the system.
+     */
+    virtual std::array<double, 3> ghostforce(Particle& particle,std::array<double, 3> boundary, double distance,
+    std::array<bool,6> boundarycondition) override;
+
     virtual ~LennardJonesForce() override;
 };
 

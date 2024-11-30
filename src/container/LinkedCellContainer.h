@@ -40,12 +40,7 @@ private:
      */
     std::array<BoundaryCondition, 6> boundaryConditions;
 
-    /**
-     * The flag to determine if the particle should affected by ghost particles.
-     */
-    std::vector<bool> near_boundary;
-
-    
+ 
 
 public:
 
@@ -57,7 +52,7 @@ public:
     LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f,
                         std::array<double, 3> domainSize,double cutoff, std::array<BoundaryCondition, 6> boundaryConditions);
     /**
-     * @brief Update the force between all particles.
+     *  @brief Update the force between all particles.
      * @param newton3 The Newton's third law is applied if this flag is set.
      */
     void updateF(bool newton3) override;
