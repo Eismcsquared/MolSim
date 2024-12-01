@@ -18,23 +18,17 @@ std::array<double, 3> LennardJonesForce::ghostforce(Particle& particle, std::arr
 
     auto calculateForce = [&](double coord, double boundaryLimit, bool condition, bool isLower) -> double {
         if (!condition) return 0.0;
+        double r = std::abs(isLower ? 2 * coord : 2 * (boundaryLimit - coord));
 
-        double r = isLower ? 2 * coord : 2 * (boundaryLimit - coord);
-
-        if (r >= h || r <= 0) return 0.0;// No ghost force if the particle is outside the ghost region
+        if (r >= h || r <= std::numeric_limits<double>::epsilon()) return 0.0;
 
         double a = pow(sigma / r, 6);
         double factor = 24 * epsilon / pow(r,2) * (a - 2 * pow(a, 2));
         return factor * (isLower ? 2 * coord : 2 * (coord - boundaryLimit));
     };
 
-    for (int i = 0; i < 3; ++i) {
-        if (boundary[i] != 0) {
-            if( i == 2){
-                spdlog::error("Boundary condition is not supported for the Lennard-Jones force.");
-
-            }
-            
+    for (int i = 0; i < gforce.size(); ++i) {
+        if (boundary[i] != 0) { 
             gforce[i] += calculateForce(pos[i], boundary[i], boundarycondition[i * 2], true);  // Lower boundary
             gforce[i] += calculateForce(pos[i], boundary[i], boundarycondition[i * 2 + 1], false); // Upper boundary
         }

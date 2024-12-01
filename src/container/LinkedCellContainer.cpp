@@ -13,7 +13,6 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
         ParticleContainer(particles, f), cutoff(cutoff), domainSize(domainSize), boundaryConditions(boundaryConditions){
 
 
-
     //TODO: Initialize the cells
     // compute cell indicies size
     int nX = static_cast<int>(floor(domainSize[0] / cutoff));
@@ -67,6 +66,12 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
 void LinkedCellContainer::updateV(double delta_t) {
         for (auto &p : *particles) {
         std::array<double, 3> vec = p.getV() + (delta_t / (2 * p.getM())) * (p.getF() + p.getOldF());
+
+        // check if it is 2D
+        if(domainSize[2] == 0){
+            vec[2] = 0;
+        }
+
         p.setV(vec);
     }
 }
@@ -81,12 +86,18 @@ void LinkedCellContainer::updateF(bool newton3) {
 
     for(auto & p1 : *particles){
         p1.setOldF(p1.getF());
-       // p1.setF({0, 0, 0}); // reset the force
-        p1.setF(f->ghostforce(p1, domainSize, 1.1225, b_c)); // set the ghost force
+        p1.setF({0, 0, 0}); // reset the force
     }
 
     for(int i =0 ; i< cells.size(); ++i){
         std::vector<unsigned int> pointCellparticles = cells[i].getParticleIndices();
+
+        auto neighbors = getNeighborCells(i);
+        for(auto & neighbor : neighbors){
+            if (i < neighbor) {
+                updateCellF(pointCellparticles, cells[neighbor].getParticleIndices(), newton3);
+            }
+        }
         
         for(unsigned long j = 0; j< pointCellparticles.size(); ++j){
             for(unsigned long k = j+1; k< pointCellparticles.size(); ++k){
@@ -111,12 +122,32 @@ void LinkedCellContainer::updateF(bool newton3) {
             }
         }
 
-        auto neighbors = getNeighborCells(i);
-        for(auto & neighbor : neighbors){
-            if (i < neighbor) {
-                updateCellF(pointCellparticles, cells[neighbor].getParticleIndices(), newton3);
+        for(auto &pp: pointCellparticles){
+            std::array<double, 3> gforce = f->ghostforce((*particles)[pp], domainSize, cutoff, b_c);
+            std::array<double, 3> p_force = (*particles)[pp].getF();
+            double max_force = pow(10,10 );
+            if( std::abs(gforce[0]) > max_force){
+                spdlog::warn("too large force on x axis(> {}), plsase choose smaller delta_t", max_force);
+                //to avoid very large force because of the large delta_t
+                p_force[0] = -p_force[0];
             }
+            if( std::abs(gforce[1]) > max_force){
+                spdlog::warn("too large force on y axis (> {}), plsase choose smaller delta_t", max_force);
+                p_force[1] = -p_force[1];
+            }
+
+            if( std::abs(gforce[2]) > max_force){
+                spdlog::warn("too large force on z axis (> {}), plsase choose smaller delta_t", max_force);
+                p_force[2] = -p_force[2];
+            }
+
+            if(domainSize[2] == 0){
+                p_force[2] = 0;
+            }
+
+            (*particles)[pp].setF(p_force);
         }
+        
     }
 
 }
@@ -126,7 +157,6 @@ void LinkedCellContainer::updateX(double delta_t){
     for (auto & particle : *particles) {
 
  
-        
         unsigned int cellidx_before = getCellIndex(particle.getX());
 
         std::array<double, 3> vec = particle.getX() + delta_t * (particle.getV() + (delta_t / (2 * particle.getM())) * particle.getF());

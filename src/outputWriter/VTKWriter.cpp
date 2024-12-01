@@ -59,7 +59,7 @@ VTKFile_t VTKWriter::initializeOutput(int numParticles) {
     std::stringstream strstr;
     strstr << filename << "_" << std::setfill('0') << std::setw(4) << iteration << ".vtu";
 
-    auto vtkFile = initializeOutput(static_cast<int>(particles.size()));
+    auto vtkFile = initializeOutput(particles.size());
 
     for(Particle& p: particles) {
       plotParticle(vtkFile, p);
@@ -108,11 +108,13 @@ VTKFile_t VTKWriter::initializeOutput(int numParticles) {
     pointsIterator->push_back(p.getX()[0]);
     pointsIterator->push_back(p.getX()[1]);
     pointsIterator->push_back(p.getX()[2]);
-
+    // if(p.getV()[1] < -100000){
     // spdlog::warn("particle position: {} {} {}, velocity: {} {} {}, force: {} {} {}",
-    //              p.getX()[0], p.getX()[1], p.getX()[2],
-    //              p.getV()[0], p.getV()[1], p.getV()[2],
-    //              p.getF()[0], p.getF()[1], p.getF()[2]);
+    //         (p.getX()[0]),(p.getX()[1]),(p.getX()[2]),
+    //         (p.getV()[0]),(p.getV()[1]),(p.getV()[2]),
+    //         (p.getF()[0]),(p.getF()[1]),(p.getF()[2]));
+    // }
+
   }
 
   } // namespace outputWriter
