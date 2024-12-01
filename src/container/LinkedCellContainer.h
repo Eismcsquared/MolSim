@@ -14,6 +14,7 @@ private:
      */
     std::vector<Cell> cells = std::vector<Cell>();
 
+
     /**
      * The cutoff distance for the linked cell algorithm.
      */
@@ -76,7 +77,7 @@ public:
      * @param positions The position that should be tested.
      * @return The index of the cell that contains the given position.
      */
-    int getCellIndex(std::array<double, 3> positions);
+    unsigned int getCellIndex(std::array<double, 3> positions);
 
     /**
      * @brief Convert a 1D cell index to a 3D cell index.
