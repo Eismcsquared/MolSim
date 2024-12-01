@@ -10,6 +10,7 @@
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
 #include "container/DirectSumContainer.h"
+#include "body/Sphere.h"
 
 std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
     std::ifstream file(fileName);
@@ -45,6 +46,22 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
                         dim
                     );
             cuboid.createParticles(*particles);
+        }
+        for (auto s : input->objects().sphere()) {
+            double r_z = s.center().z().present() ? s.center().z().get() : DoubleVector3::z_default_value();
+            double v_z = s.velocity().z().present() ? s.velocity().z().get() : DoubleVector3::z_default_value();
+            int radius = s.radius();
+            int dim = s.dimension().present() ? (int) s.dimension().get() : (int) SphereType::dimension_default_value();
+            Sphere sphere(
+                        std::array<double, 3>{s.center().x(), s.center().y(), r_z},
+                        std::array<double, 3>{s.velocity().x(), s.velocity().y(), v_z},
+                        radius,
+                        s.mass(),
+                        s.distance(),
+                        s.brownVelocity(),
+                        dim
+                    );
+            sphere.createParticles(*particles);
         }
         std::unique_ptr<Force> force;
         if (input->parameters().gravitation().present()) {

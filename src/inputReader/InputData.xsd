@@ -58,10 +58,23 @@
         </xs:sequence>
     </xs:complexType>
 
+    <xs:complexType name="SphereType">
+        <xs:sequence>
+            <xs:element name="center" type="DoubleVector3"/>
+            <xs:element name="velocity" type="DoubleVector3"/>
+            <xs:element name="mass" type="PositiveDouble"/>
+            <xs:element name="radius" type="xs:positiveInteger"/>
+            <xs:element name="distance" type="PositiveDouble"/>
+            <xs:element name="brownVelocity" type="PositiveDouble"/>
+            <xs:element name="dimension" type="Dimension" minOccurs="0" default="3"/>
+        </xs:sequence>
+    </xs:complexType>
+
     <xs:complexType name="SimulationObjects">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
             <xs:element name="particle" type="ParticleType"/>
             <xs:element name="cuboid" type="CuboidType"/>
+            <xs:element name="sphere" type="SphereType"/>
         </xs:choice>
     </xs:complexType>
 
