@@ -626,7 +626,8 @@ class CuboidType;
 class SimulationObjects;
 class BoundaryConditionType;
 class BoundaryCondition3;
-class ForceType;
+class GravitationType;
+class LennardJonesType;
 class OutputFormatType;
 class LinkedCellType;
 class SimulationParameters;
@@ -3566,49 +3567,107 @@ class BoundaryCondition3: public ::xml_schema::type
 };
 
 /**
- * @brief Enumeration class corresponding to the %ForceType
- * schema type.
+ * @brief Class corresponding to the %GravitationType schema type.
+ *
+ * @nosubgrouping
  */
-class ForceType: public ::xml_schema::string
+class GravitationType: public ::xml_schema::type
 {
   public:
-
   /**
-   * @brief Underlying enum type.
-   */
-  enum value
-  {
-    gravitation,
-    Lennard_Jones
-  };
-
-  /**
-   * @brief Create an instance from the underlying enum value.
+   * @name g
    *
-   * @param v A enum value.
+   * @brief Accessor and modifier functions for the %g
+   * optional element.
    */
-  ForceType (value v);
+  //@{
 
   /**
-   * @brief Create an instance from a C string.
-   *
-   * @param v A string value.
+   * @brief Element type.
    */
-  ForceType (const char* v);
+  typedef ::PositiveDouble g_type;
 
   /**
-   * @brief Create an instance from a string.
-   *
-   * @param v A string value.
+   * @brief Element optional container type.
    */
-  ForceType (const ::std::string& v);
+  typedef ::xsd::cxx::tree::optional< g_type > g_optional;
 
   /**
-   * @brief Create an instance from the base value.
-   *
-   * @param v A base value.
+   * @brief Element traits type.
    */
-  ForceType (const ::xml_schema::string& v);
+  typedef ::xsd::cxx::tree::traits< g_type, char > g_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element
+   * container.
+   *
+   * @return A constant reference to the optional container.
+   */
+  const g_optional&
+  g () const;
+
+  /**
+   * @brief Return a read-write reference to the element container.
+   *
+   * @return A reference to the optional container.
+   */
+  g_optional&
+  g ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  g (const g_type& x);
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x An optional container with the new value to set.
+   *
+   * If the value is present in @a x then this function makes a copy 
+   * of this value and sets it as the new value of the element.
+   * Otherwise the element container is set the 'not present' state.
+   */
+  void
+  g (const g_optional& x);
+
+  /**
+   * @brief Set the element value without copying.
+   *
+   * @param p A new value to use.
+   *
+   * This function will try to use the passed value directly instead
+   * of making a copy.
+   */
+  void
+  g (::std::unique_ptr< g_type > p);
+
+  /**
+   * @brief Return the default value for the element.
+   *
+   * @return The element's default value.
+   */
+  static g_type
+  g_default_value ();
+
+  //@}
+
+  /**
+   * @name Constructors
+   */
+  //@{
+
+  /**
+   * @brief Create an instance from the ultimate base and
+   * initializers for required elements and attributes.
+   */
+  GravitationType ();
 
   /**
    * @brief Create an instance from a DOM element.
@@ -3618,35 +3677,9 @@ class ForceType: public ::xml_schema::string
    * @param c A pointer to the object that will contain the new
    * instance.
    */
-  ForceType (const ::xercesc::DOMElement& e,
-             ::xml_schema::flags f = 0,
-             ::xml_schema::container* c = 0);
-
-  /**
-   * @brief Create an instance from a DOM attribute.
-   *
-   * @param a A DOM attribute to extract the data from.
-   * @param f Flags to create the new instance with.
-   * @param c A pointer to the object that will contain the new
-   * instance.
-   */
-  ForceType (const ::xercesc::DOMAttr& a,
-             ::xml_schema::flags f = 0,
-             ::xml_schema::container* c = 0);
-
-  /**
-   * @brief Create an instance from a string fragment.
-   *
-   * @param s A string fragment to extract the data from.
-   * @param e A pointer to DOM element containing the string fragment.
-   * @param f Flags to create the new instance with.
-   * @param c A pointer to the object that will contain the new
-   * instance.
-   */
-  ForceType (const ::std::string& s,
-             const ::xercesc::DOMElement* e,
-             ::xml_schema::flags f = 0,
-             ::xml_schema::container* c = 0);
+  GravitationType (const ::xercesc::DOMElement& e,
+                   ::xml_schema::flags f = 0,
+                   ::xml_schema::container* c = 0);
 
   /**
    * @brief Copy constructor.
@@ -3657,9 +3690,9 @@ class ForceType: public ::xml_schema::string
    *
    * For polymorphic object models use the @c _clone function instead.
    */
-  ForceType (const ForceType& x,
-             ::xml_schema::flags f = 0,
-             ::xml_schema::container* c = 0);
+  GravitationType (const GravitationType& x,
+                   ::xml_schema::flags f = 0,
+                   ::xml_schema::container* c = 0);
 
   /**
    * @brief Copy the instance polymorphically.
@@ -3672,40 +3705,304 @@ class ForceType: public ::xml_schema::string
    * used for copying and should be used for polymorphic object
    * models instead of the copy constructor.
    */
-  virtual ForceType*
+  virtual GravitationType*
   _clone (::xml_schema::flags f = 0,
           ::xml_schema::container* c = 0) const;
 
   /**
-   * @brief Assign the underlying enum value.
+   * @brief Copy assignment operator.
    *
-   * @param v A enum value.
-   * @return A reference to the instance.
+   * @param x An instance to make a copy of.
+   * @return A reference to itself.
+   *
+   * For polymorphic object models use the @c _clone function instead.
    */
-  ForceType&
-  operator= (value v);
+  GravitationType&
+  operator= (const GravitationType& x);
+
+  //@}
 
   /**
-   * @brief Implicit conversion operator to the underlying
-   * enum value.
-   *
-   * @return A enum value.
+   * @brief Destructor.
    */
-  virtual
-  operator value () const
-  {
-    return _xsd_ForceType_convert ();
-  }
+  virtual 
+  ~GravitationType ();
+
+  // Implementation.
+  //
 
   //@cond
 
   protected:
-  value
-  _xsd_ForceType_convert () const;
+  void
+  parse (::xsd::cxx::xml::dom::parser< char >&,
+         ::xml_schema::flags);
 
+  protected:
+  g_optional g_;
+
+  //@endcond
+};
+
+/**
+ * @brief Class corresponding to the %LennardJonesType schema type.
+ *
+ * @nosubgrouping
+ */
+class LennardJonesType: public ::xml_schema::type
+{
   public:
-  static const char* const _xsd_ForceType_literals_[2];
-  static const value _xsd_ForceType_indexes_[2];
+  /**
+   * @name epsilon
+   *
+   * @brief Accessor and modifier functions for the %epsilon
+   * optional element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::PositiveDouble epsilon_type;
+
+  /**
+   * @brief Element optional container type.
+   */
+  typedef ::xsd::cxx::tree::optional< epsilon_type > epsilon_optional;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< epsilon_type, char > epsilon_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element
+   * container.
+   *
+   * @return A constant reference to the optional container.
+   */
+  const epsilon_optional&
+  epsilon () const;
+
+  /**
+   * @brief Return a read-write reference to the element container.
+   *
+   * @return A reference to the optional container.
+   */
+  epsilon_optional&
+  epsilon ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  epsilon (const epsilon_type& x);
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x An optional container with the new value to set.
+   *
+   * If the value is present in @a x then this function makes a copy 
+   * of this value and sets it as the new value of the element.
+   * Otherwise the element container is set the 'not present' state.
+   */
+  void
+  epsilon (const epsilon_optional& x);
+
+  /**
+   * @brief Set the element value without copying.
+   *
+   * @param p A new value to use.
+   *
+   * This function will try to use the passed value directly instead
+   * of making a copy.
+   */
+  void
+  epsilon (::std::unique_ptr< epsilon_type > p);
+
+  /**
+   * @brief Return the default value for the element.
+   *
+   * @return The element's default value.
+   */
+  static epsilon_type
+  epsilon_default_value ();
+
+  //@}
+
+  /**
+   * @name sigma
+   *
+   * @brief Accessor and modifier functions for the %sigma
+   * optional element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::PositiveDouble sigma_type;
+
+  /**
+   * @brief Element optional container type.
+   */
+  typedef ::xsd::cxx::tree::optional< sigma_type > sigma_optional;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< sigma_type, char > sigma_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element
+   * container.
+   *
+   * @return A constant reference to the optional container.
+   */
+  const sigma_optional&
+  sigma () const;
+
+  /**
+   * @brief Return a read-write reference to the element container.
+   *
+   * @return A reference to the optional container.
+   */
+  sigma_optional&
+  sigma ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  sigma (const sigma_type& x);
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x An optional container with the new value to set.
+   *
+   * If the value is present in @a x then this function makes a copy 
+   * of this value and sets it as the new value of the element.
+   * Otherwise the element container is set the 'not present' state.
+   */
+  void
+  sigma (const sigma_optional& x);
+
+  /**
+   * @brief Set the element value without copying.
+   *
+   * @param p A new value to use.
+   *
+   * This function will try to use the passed value directly instead
+   * of making a copy.
+   */
+  void
+  sigma (::std::unique_ptr< sigma_type > p);
+
+  /**
+   * @brief Return the default value for the element.
+   *
+   * @return The element's default value.
+   */
+  static sigma_type
+  sigma_default_value ();
+
+  //@}
+
+  /**
+   * @name Constructors
+   */
+  //@{
+
+  /**
+   * @brief Create an instance from the ultimate base and
+   * initializers for required elements and attributes.
+   */
+  LennardJonesType ();
+
+  /**
+   * @brief Create an instance from a DOM element.
+   *
+   * @param e A DOM element to extract the data from.
+   * @param f Flags to create the new instance with.
+   * @param c A pointer to the object that will contain the new
+   * instance.
+   */
+  LennardJonesType (const ::xercesc::DOMElement& e,
+                    ::xml_schema::flags f = 0,
+                    ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Copy constructor.
+   *
+   * @param x An instance to make a copy of.
+   * @param f Flags to create the copy with.
+   * @param c A pointer to the object that will contain the copy.
+   *
+   * For polymorphic object models use the @c _clone function instead.
+   */
+  LennardJonesType (const LennardJonesType& x,
+                    ::xml_schema::flags f = 0,
+                    ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Copy the instance polymorphically.
+   *
+   * @param f Flags to create the copy with.
+   * @param c A pointer to the object that will contain the copy.
+   * @return A pointer to the dynamically allocated copy.
+   *
+   * This function ensures that the dynamic type of the instance is
+   * used for copying and should be used for polymorphic object
+   * models instead of the copy constructor.
+   */
+  virtual LennardJonesType*
+  _clone (::xml_schema::flags f = 0,
+          ::xml_schema::container* c = 0) const;
+
+  /**
+   * @brief Copy assignment operator.
+   *
+   * @param x An instance to make a copy of.
+   * @return A reference to itself.
+   *
+   * For polymorphic object models use the @c _clone function instead.
+   */
+  LennardJonesType&
+  operator= (const LennardJonesType& x);
+
+  //@}
+
+  /**
+   * @brief Destructor.
+   */
+  virtual 
+  ~LennardJonesType ();
+
+  // Implementation.
+  //
+
+  //@cond
+
+  protected:
+  void
+  parse (::xsd::cxx::xml::dom::parser< char >&,
+         ::xml_schema::flags);
+
+  protected:
+  epsilon_optional epsilon_;
+  sigma_optional sigma_;
 
   //@endcond
 };
@@ -4565,29 +4862,27 @@ class SimulationParameters: public ::xml_schema::type
   //@}
 
   /**
-   * @name force
+   * @name gravitation
    *
-   * @brief Accessor and modifier functions for the %force
+   * @brief Accessor and modifier functions for the %gravitation
    * optional element.
-   *
-   * The type of the force between particles.
    */
   //@{
 
   /**
    * @brief Element type.
    */
-  typedef ::ForceType force_type;
+  typedef ::GravitationType gravitation_type;
 
   /**
    * @brief Element optional container type.
    */
-  typedef ::xsd::cxx::tree::optional< force_type > force_optional;
+  typedef ::xsd::cxx::tree::optional< gravitation_type > gravitation_optional;
 
   /**
    * @brief Element traits type.
    */
-  typedef ::xsd::cxx::tree::traits< force_type, char > force_traits;
+  typedef ::xsd::cxx::tree::traits< gravitation_type, char > gravitation_traits;
 
   /**
    * @brief Return a read-only (constant) reference to the element
@@ -4595,16 +4890,16 @@ class SimulationParameters: public ::xml_schema::type
    *
    * @return A constant reference to the optional container.
    */
-  const force_optional&
-  force () const;
+  const gravitation_optional&
+  gravitation () const;
 
   /**
    * @brief Return a read-write reference to the element container.
    *
    * @return A reference to the optional container.
    */
-  force_optional&
-  force ();
+  gravitation_optional&
+  gravitation ();
 
   /**
    * @brief Set the element value.
@@ -4615,7 +4910,7 @@ class SimulationParameters: public ::xml_schema::type
    * the new value of the element.
    */
   void
-  force (const force_type& x);
+  gravitation (const gravitation_type& x);
 
   /**
    * @brief Set the element value.
@@ -4627,7 +4922,7 @@ class SimulationParameters: public ::xml_schema::type
    * Otherwise the element container is set the 'not present' state.
    */
   void
-  force (const force_optional& x);
+  gravitation (const gravitation_optional& x);
 
   /**
    * @brief Set the element value without copying.
@@ -4638,16 +4933,83 @@ class SimulationParameters: public ::xml_schema::type
    * of making a copy.
    */
   void
-  force (::std::unique_ptr< force_type > p);
+  gravitation (::std::unique_ptr< gravitation_type > p);
+
+  //@}
 
   /**
-   * @brief Return the default value for the element.
+   * @name Lennard-Jones
    *
-   * @return A read-only (constant) reference to the element's
-   * default value.
+   * @brief Accessor and modifier functions for the %Lennard-Jones
+   * optional element.
    */
-  static const force_type&
-  force_default_value ();
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::LennardJonesType Lennard_Jones_type;
+
+  /**
+   * @brief Element optional container type.
+   */
+  typedef ::xsd::cxx::tree::optional< Lennard_Jones_type > Lennard_Jones_optional;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< Lennard_Jones_type, char > Lennard_Jones_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element
+   * container.
+   *
+   * @return A constant reference to the optional container.
+   */
+  const Lennard_Jones_optional&
+  Lennard_Jones () const;
+
+  /**
+   * @brief Return a read-write reference to the element container.
+   *
+   * @return A reference to the optional container.
+   */
+  Lennard_Jones_optional&
+  Lennard_Jones ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  Lennard_Jones (const Lennard_Jones_type& x);
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x An optional container with the new value to set.
+   *
+   * If the value is present in @a x then this function makes a copy 
+   * of this value and sets it as the new value of the element.
+   * Otherwise the element container is set the 'not present' state.
+   */
+  void
+  Lennard_Jones (const Lennard_Jones_optional& x);
+
+  /**
+   * @brief Set the element value without copying.
+   *
+   * @param p A new value to use.
+   *
+   * This function will try to use the passed value directly instead
+   * of making a copy.
+   */
+  void
+  Lennard_Jones (::std::unique_ptr< Lennard_Jones_type > p);
 
   //@}
 
@@ -4817,8 +5179,8 @@ class SimulationParameters: public ::xml_schema::type
   static const output_type output_default_value_;
   format_optional format_;
   static const format_type format_default_value_;
-  force_optional force_;
-  static const force_type force_default_value_;
+  gravitation_optional gravitation_;
+  Lennard_Jones_optional Lennard_Jones_;
   linked_cell_optional linked_cell_;
 
   //@endcond
@@ -5366,14 +5728,10 @@ void
 operator<< (::xercesc::DOMElement&, const BoundaryCondition3&);
 
 void
-operator<< (::xercesc::DOMElement&, const ForceType&);
+operator<< (::xercesc::DOMElement&, const GravitationType&);
 
 void
-operator<< (::xercesc::DOMAttr&, const ForceType&);
-
-void
-operator<< (::xml_schema::list_stream&,
-            const ForceType&);
+operator<< (::xercesc::DOMElement&, const LennardJonesType&);
 
 void
 operator<< (::xercesc::DOMElement&, const OutputFormatType&);

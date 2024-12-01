@@ -44,9 +44,9 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
         }
     }
     // assign particles to cells
-    for(int i = 0; i< particles->size(); i++){
+    for(int i = 0; i < this->particles->size(); i++){
 
-        const auto& pos = (*particles)[i].getX(); // Get particle position
+        const auto& pos = (*(this->particles))[i].getX(); // Get particle position
         
         // Add particle index to the corresponding cell
         unsigned int idx = getCellIndex(pos);

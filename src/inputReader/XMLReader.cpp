@@ -47,14 +47,13 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
             cuboid.createParticles(*particles);
         }
         std::unique_ptr<Force> force;
-        ForceType f = input->parameters().force().present() ? input->parameters().force().get() : SimulationParameters::force_default_value();
-        switch (f) {
-            case ForceType::value::gravitation:
-                force = std::make_unique<GravitationalForce>();
-                break;
-            case ForceType::Lennard_Jones:
-                force = std::make_unique<LennardJonesForce>();
-                break;
+        if (input->parameters().gravitation().present()) {
+            double g = input->parameters().gravitation().get().g().present() ? input->parameters().gravitation().get().g().get() : GravitationType::g_default_value();
+            force = std::make_unique<GravitationalForce>(g);
+        } else if (input->parameters().Lennard_Jones().present()) {
+            double epsilon = input->parameters().Lennard_Jones().get().epsilon().present() ? input->parameters().Lennard_Jones().get().epsilon().get() : LennardJonesType::epsilon_default_value();
+            double sigma = input->parameters().Lennard_Jones().get().sigma().present() ? input->parameters().Lennard_Jones().get().sigma().get() : LennardJonesType::sigma_default_value();
+            force = std::make_unique<LennardJonesForce>(epsilon, sigma);
         }
         std::unique_ptr<ParticleContainer> container;
         if (input->parameters().linked_cell().present()) {

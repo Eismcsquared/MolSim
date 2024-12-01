@@ -871,48 +871,119 @@ front_default_value ()
 }
 
 
-// ForceType
+// GravitationType
 // 
 
-ForceType::
-ForceType (value v)
-: ::xml_schema::string (_xsd_ForceType_literals_[v])
+const GravitationType::g_optional& GravitationType::
+g () const
 {
+  return this->g_;
 }
 
-ForceType::
-ForceType (const char* v)
-: ::xml_schema::string (v)
+GravitationType::g_optional& GravitationType::
+g ()
 {
+  return this->g_;
 }
 
-ForceType::
-ForceType (const ::std::string& v)
-: ::xml_schema::string (v)
+void GravitationType::
+g (const g_type& x)
 {
+  this->g_.set (x);
 }
 
-ForceType::
-ForceType (const ::xml_schema::string& v)
-: ::xml_schema::string (v)
+void GravitationType::
+g (const g_optional& x)
 {
+  this->g_ = x;
 }
 
-ForceType::
-ForceType (const ForceType& v,
-           ::xml_schema::flags f,
-           ::xml_schema::container* c)
-: ::xml_schema::string (v, f, c)
+void GravitationType::
+g (::std::unique_ptr< g_type > x)
 {
+  this->g_.set (std::move (x));
 }
 
-ForceType& ForceType::
-operator= (value v)
+GravitationType::g_type GravitationType::
+g_default_value ()
 {
-  static_cast< ::xml_schema::string& > (*this) = 
-  ::xml_schema::string (_xsd_ForceType_literals_[v]);
+  return g_type (1.0);
+}
 
-  return *this;
+
+// LennardJonesType
+// 
+
+const LennardJonesType::epsilon_optional& LennardJonesType::
+epsilon () const
+{
+  return this->epsilon_;
+}
+
+LennardJonesType::epsilon_optional& LennardJonesType::
+epsilon ()
+{
+  return this->epsilon_;
+}
+
+void LennardJonesType::
+epsilon (const epsilon_type& x)
+{
+  this->epsilon_.set (x);
+}
+
+void LennardJonesType::
+epsilon (const epsilon_optional& x)
+{
+  this->epsilon_ = x;
+}
+
+void LennardJonesType::
+epsilon (::std::unique_ptr< epsilon_type > x)
+{
+  this->epsilon_.set (std::move (x));
+}
+
+LennardJonesType::epsilon_type LennardJonesType::
+epsilon_default_value ()
+{
+  return epsilon_type (5.0);
+}
+
+const LennardJonesType::sigma_optional& LennardJonesType::
+sigma () const
+{
+  return this->sigma_;
+}
+
+LennardJonesType::sigma_optional& LennardJonesType::
+sigma ()
+{
+  return this->sigma_;
+}
+
+void LennardJonesType::
+sigma (const sigma_type& x)
+{
+  this->sigma_.set (x);
+}
+
+void LennardJonesType::
+sigma (const sigma_optional& x)
+{
+  this->sigma_ = x;
+}
+
+void LennardJonesType::
+sigma (::std::unique_ptr< sigma_type > x)
+{
+  this->sigma_.set (std::move (x));
+}
+
+LennardJonesType::sigma_type LennardJonesType::
+sigma_default_value ()
+{
+  return sigma_type (1.0);
 }
 
 
@@ -1214,40 +1285,64 @@ format_default_value ()
   return format_default_value_;
 }
 
-const SimulationParameters::force_optional& SimulationParameters::
-force () const
+const SimulationParameters::gravitation_optional& SimulationParameters::
+gravitation () const
 {
-  return this->force_;
+  return this->gravitation_;
 }
 
-SimulationParameters::force_optional& SimulationParameters::
-force ()
+SimulationParameters::gravitation_optional& SimulationParameters::
+gravitation ()
 {
-  return this->force_;
-}
-
-void SimulationParameters::
-force (const force_type& x)
-{
-  this->force_.set (x);
+  return this->gravitation_;
 }
 
 void SimulationParameters::
-force (const force_optional& x)
+gravitation (const gravitation_type& x)
 {
-  this->force_ = x;
+  this->gravitation_.set (x);
 }
 
 void SimulationParameters::
-force (::std::unique_ptr< force_type > x)
+gravitation (const gravitation_optional& x)
 {
-  this->force_.set (std::move (x));
+  this->gravitation_ = x;
 }
 
-const SimulationParameters::force_type& SimulationParameters::
-force_default_value ()
+void SimulationParameters::
+gravitation (::std::unique_ptr< gravitation_type > x)
 {
-  return force_default_value_;
+  this->gravitation_.set (std::move (x));
+}
+
+const SimulationParameters::Lennard_Jones_optional& SimulationParameters::
+Lennard_Jones () const
+{
+  return this->Lennard_Jones_;
+}
+
+SimulationParameters::Lennard_Jones_optional& SimulationParameters::
+Lennard_Jones ()
+{
+  return this->Lennard_Jones_;
+}
+
+void SimulationParameters::
+Lennard_Jones (const Lennard_Jones_type& x)
+{
+  this->Lennard_Jones_.set (x);
+}
+
+void SimulationParameters::
+Lennard_Jones (const Lennard_Jones_optional& x)
+{
+  this->Lennard_Jones_ = x;
+}
+
+void SimulationParameters::
+Lennard_Jones (::std::unique_ptr< Lennard_Jones_type > x)
+{
+  this->Lennard_Jones_.set (std::move (x));
 }
 
 const SimulationParameters::linked_cell_optional& SimulationParameters::
@@ -2624,75 +2719,193 @@ BoundaryCondition3::
 {
 }
 
-// ForceType
+// GravitationType
 //
 
-ForceType::
-ForceType (const ::xercesc::DOMElement& e,
-           ::xml_schema::flags f,
-           ::xml_schema::container* c)
-: ::xml_schema::string (e, f, c)
+GravitationType::
+GravitationType ()
+: ::xml_schema::type (),
+  g_ (this)
 {
-  _xsd_ForceType_convert ();
 }
 
-ForceType::
-ForceType (const ::xercesc::DOMAttr& a,
-           ::xml_schema::flags f,
-           ::xml_schema::container* c)
-: ::xml_schema::string (a, f, c)
+GravitationType::
+GravitationType (const GravitationType& x,
+                 ::xml_schema::flags f,
+                 ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  g_ (x.g_, f, this)
 {
-  _xsd_ForceType_convert ();
 }
 
-ForceType::
-ForceType (const ::std::string& s,
-           const ::xercesc::DOMElement* e,
-           ::xml_schema::flags f,
-           ::xml_schema::container* c)
-: ::xml_schema::string (s, e, f, c)
+GravitationType::
+GravitationType (const ::xercesc::DOMElement& e,
+                 ::xml_schema::flags f,
+                 ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  g_ (this)
 {
-  _xsd_ForceType_convert ();
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
 }
 
-ForceType* ForceType::
+void GravitationType::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    // g
+    //
+    if (n.name () == "g" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< g_type > r (
+        g_traits::create (i, f, this));
+
+      if (!this->g_)
+      {
+        this->g_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    break;
+  }
+}
+
+GravitationType* GravitationType::
 _clone (::xml_schema::flags f,
         ::xml_schema::container* c) const
 {
-  return new class ForceType (*this, f, c);
+  return new class GravitationType (*this, f, c);
 }
 
-ForceType::value ForceType::
-_xsd_ForceType_convert () const
+GravitationType& GravitationType::
+operator= (const GravitationType& x)
 {
-  ::xsd::cxx::tree::enum_comparator< char > c (_xsd_ForceType_literals_);
-  const value* i (::std::lower_bound (
-                    _xsd_ForceType_indexes_,
-                    _xsd_ForceType_indexes_ + 2,
-                    *this,
-                    c));
-
-  if (i == _xsd_ForceType_indexes_ + 2 || _xsd_ForceType_literals_[*i] != *this)
+  if (this != &x)
   {
-    throw ::xsd::cxx::tree::unexpected_enumerator < char > (*this);
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->g_ = x.g_;
   }
 
-  return *i;
+  return *this;
 }
 
-const char* const ForceType::
-_xsd_ForceType_literals_[2] =
+GravitationType::
+~GravitationType ()
 {
-  "gravitation",
-  "Lennard-Jones"
-};
+}
 
-const ForceType::value ForceType::
-_xsd_ForceType_indexes_[2] =
+// LennardJonesType
+//
+
+LennardJonesType::
+LennardJonesType ()
+: ::xml_schema::type (),
+  epsilon_ (this),
+  sigma_ (this)
 {
-  ::ForceType::Lennard_Jones,
-  ::ForceType::gravitation
-};
+}
+
+LennardJonesType::
+LennardJonesType (const LennardJonesType& x,
+                  ::xml_schema::flags f,
+                  ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  epsilon_ (x.epsilon_, f, this),
+  sigma_ (x.sigma_, f, this)
+{
+}
+
+LennardJonesType::
+LennardJonesType (const ::xercesc::DOMElement& e,
+                  ::xml_schema::flags f,
+                  ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  epsilon_ (this),
+  sigma_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
+}
+
+void LennardJonesType::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    // epsilon
+    //
+    if (n.name () == "epsilon" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< epsilon_type > r (
+        epsilon_traits::create (i, f, this));
+
+      if (!this->epsilon_)
+      {
+        this->epsilon_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    // sigma
+    //
+    if (n.name () == "sigma" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< sigma_type > r (
+        sigma_traits::create (i, f, this));
+
+      if (!this->sigma_)
+      {
+        this->sigma_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    break;
+  }
+}
+
+LennardJonesType* LennardJonesType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class LennardJonesType (*this, f, c);
+}
+
+LennardJonesType& LennardJonesType::
+operator= (const LennardJonesType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->epsilon_ = x.epsilon_;
+    this->sigma_ = x.sigma_;
+  }
+
+  return *this;
+}
+
+LennardJonesType::
+~LennardJonesType ()
+{
+}
 
 // OutputFormatType
 //
@@ -2928,9 +3141,6 @@ const SimulationParameters::output_type SimulationParameters::output_default_val
 const SimulationParameters::format_type SimulationParameters::format_default_value_ (
   "vtu");
 
-const SimulationParameters::force_type SimulationParameters::force_default_value_ (
-  "Lennard-Jones");
-
 SimulationParameters::
 SimulationParameters ()
 : ::xml_schema::type (),
@@ -2939,7 +3149,8 @@ SimulationParameters ()
   frequency_ (this),
   output_ (this),
   format_ (this),
-  force_ (this),
+  gravitation_ (this),
+  Lennard_Jones_ (this),
   linked_cell_ (this)
 {
 }
@@ -2954,7 +3165,8 @@ SimulationParameters (const SimulationParameters& x,
   frequency_ (x.frequency_, f, this),
   output_ (x.output_, f, this),
   format_ (x.format_, f, this),
-  force_ (x.force_, f, this),
+  gravitation_ (x.gravitation_, f, this),
+  Lennard_Jones_ (x.Lennard_Jones_, f, this),
   linked_cell_ (x.linked_cell_, f, this)
 {
 }
@@ -2969,7 +3181,8 @@ SimulationParameters (const ::xercesc::DOMElement& e,
   frequency_ (this),
   output_ (this),
   format_ (this),
-  force_ (this),
+  gravitation_ (this),
+  Lennard_Jones_ (this),
   linked_cell_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
@@ -3056,16 +3269,30 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // force
+    // gravitation
     //
-    if (n.name () == "force" && n.namespace_ ().empty ())
+    if (n.name () == "gravitation" && n.namespace_ ().empty ())
     {
-      ::std::unique_ptr< force_type > r (
-        force_traits::create (i, f, this));
+      ::std::unique_ptr< gravitation_type > r (
+        gravitation_traits::create (i, f, this));
 
-      if (!this->force_)
+      if (!this->gravitation_)
       {
-        this->force_.set (::std::move (r));
+        this->gravitation_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    // Lennard-Jones
+    //
+    if (n.name () == "Lennard-Jones" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< Lennard_Jones_type > r (
+        Lennard_Jones_traits::create (i, f, this));
+
+      if (!this->Lennard_Jones_)
+      {
+        this->Lennard_Jones_.set (::std::move (r));
         continue;
       }
     }
@@ -3106,7 +3333,8 @@ operator= (const SimulationParameters& x)
     this->frequency_ = x.frequency_;
     this->output_ = x.output_;
     this->format_ = x.format_;
-    this->force_ = x.force_;
+    this->gravitation_ = x.gravitation_;
+    this->Lennard_Jones_ = x.Lennard_Jones_;
     this->linked_cell_ = x.linked_cell_;
   }
 
@@ -3944,22 +4172,51 @@ operator<< (::xercesc::DOMElement& e, const BoundaryCondition3& i)
 }
 
 void
-operator<< (::xercesc::DOMElement& e, const ForceType& i)
+operator<< (::xercesc::DOMElement& e, const GravitationType& i)
 {
-  e << static_cast< const ::xml_schema::string& > (i);
+  e << static_cast< const ::xml_schema::type& > (i);
+
+  // g
+  //
+  if (i.g ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "g",
+        e));
+
+    s << *i.g ();
+  }
 }
 
 void
-operator<< (::xercesc::DOMAttr& a, const ForceType& i)
+operator<< (::xercesc::DOMElement& e, const LennardJonesType& i)
 {
-  a << static_cast< const ::xml_schema::string& > (i);
-}
+  e << static_cast< const ::xml_schema::type& > (i);
 
-void
-operator<< (::xml_schema::list_stream& l,
-            const ForceType& i)
-{
-  l << static_cast< const ::xml_schema::string& > (i);
+  // epsilon
+  //
+  if (i.epsilon ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "epsilon",
+        e));
+
+    s << *i.epsilon ();
+  }
+
+  // sigma
+  //
+  if (i.sigma ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "sigma",
+        e));
+
+    s << *i.sigma ();
+  }
 }
 
 void
@@ -4085,16 +4342,28 @@ operator<< (::xercesc::DOMElement& e, const SimulationParameters& i)
     s << *i.format ();
   }
 
-  // force
+  // gravitation
   //
-  if (i.force ())
+  if (i.gravitation ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
-        "force",
+        "gravitation",
         e));
 
-    s << *i.force ();
+    s << *i.gravitation ();
+  }
+
+  // Lennard-Jones
+  //
+  if (i.Lennard_Jones ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "Lennard-Jones",
+        e));
+
+    s << *i.Lennard_Jones ();
   }
 
   // linked_cell
