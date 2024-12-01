@@ -143,23 +143,23 @@ void LinkedCellContainer::updateF(bool newton3) {
 
 void LinkedCellContainer::updateX(double delta_t){
 
-    for (auto & particle : *particles) {
+    for (int i = 0; i < particles->size(); i++) {
 
  
-        unsigned int cellidx_before = getCellIndex(particle.getX());
+        unsigned int cellidx_before = getCellIndex((*particles)[i].getX());
 
-        std::array<double, 3> vec = particle.getX() + delta_t * (particle.getV() + (delta_t / (2 * particle.getM())) * particle.getF());
-        particle.setX(vec);
+        std::array<double, 3> vec = (*particles)[i].getX() + delta_t * ((*particles)[i].getV() + (delta_t / (2 * (*particles)[i].getM())) * (*particles)[i].getF());
+        (*particles)[i].setX(vec);
 
-        int cellidx_after = getCellIndex(particle.getX());
+        int cellidx_after = getCellIndex((*particles)[i].getX());
 
 
         if(cellidx_before != cellidx_after){
-            cells[cellidx_before].removeIndex(cellidx_before);
+            cells[cellidx_before].removeIndex(i);
             if(cellidx_after >= 0 && cellidx_after < cells.size()) {
-                cells[cellidx_after].addIndex(cellidx_after);
+                cells[cellidx_after].addIndex(i);
             } else {
-                particle.removeFromDomain();
+                (*particles)[i].removeFromDomain();
             }
         }
     }
