@@ -1,6 +1,7 @@
 #include <memory>
 #include "container/ParticleContainer.h"
 
+#pragma once
 /**
  * @brief The class that manages a container of particles and stores the entire parameters for a simulation.
  */

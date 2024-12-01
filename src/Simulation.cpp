@@ -1,6 +1,7 @@
 #include <utility>
 #include "Simulation.h"
 
+
 Simulation::Simulation(std::unique_ptr<ParticleContainer> &container, double endTime, double deltaT,
                        std::string outputFile, std::string outputFormat, unsigned int outputFrequency)
         : container(std::move(container)), endTime(endTime), deltaT(deltaT), outputFormat(std::move(outputFormat)), outputFile(std::move(outputFile)),

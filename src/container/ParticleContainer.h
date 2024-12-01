@@ -75,6 +75,12 @@ public:
     std::vector<Particle>& getParticles() const;
 
     /**
+     *
+     * @param f
+     */
+    void setF(std::unique_ptr<Force> &f);
+
+    /**
      * Update the position of particles by a time step.
      * @param delta_t The length of a time step.
      */
