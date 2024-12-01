@@ -11,7 +11,8 @@ std::array<double, 3> GravitationalForce::force(Particle& particle1, Particle& p
     return factor * (particle1.getX() - particle2.getX());
 }
 
-std::array<double, 3> GravitationalForce::ghostforce(Particle& particle, std::array<double, 3> boundary, double distance, std::array<bool, 6> boundarycondition) {
+std::array<double, 3> GravitationalForce::ghostForce(Particle &particle, std::array<double, 3> boundary,
+                                                     std::array<BoundaryCondition, 6> boundaryCondition) {
     return {0,0,0}; // no ghost force for gravitational force
 }
 

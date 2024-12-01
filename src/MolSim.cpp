@@ -156,7 +156,7 @@ int main(int argc, char *argsv[]) {
     spdlog::info("Output format: {}", simulation->getOutputFormat());
 
     auto start = std::chrono::high_resolution_clock::now();
-    // Calculate the position, force and velocity for all particles
+    // run simulation
     simulation->run();
     // Stop the timer
     auto end = std::chrono::high_resolution_clock::now();

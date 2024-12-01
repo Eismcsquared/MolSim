@@ -31,8 +31,8 @@ public:
      * @param distance lennard jones potential distance
      * @param boundarycondition the boundary condition of the system.
      */
-    std::array<double, 3> ghostforce(Particle& particle,std::array<double, 3> boundary, double distance,
-    std::array<bool,6> boundarycondition) override;
+    std::array<double, 3> ghostForce(Particle &particle, std::array<double, 3> boundary,
+                                     std::array<BoundaryCondition, 6> boundaryCondition) override;
 
     ~GravitationalForce() override;
 };

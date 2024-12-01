@@ -1,12 +1,7 @@
 #include <vector>
 #include "container/ParticleContainer.h"
 #include "container/Cell.h"
-
-enum BoundaryCondition{
-    OUTFLOW,
-    REFLECTING,
-    PERIODIC
-};
+#include "container/BoundaryCondition.h"
 
 /**
  * @brief This class represents a particle container that implements the linked cell algorithm.
@@ -81,14 +76,14 @@ public:
      * @param positions The position that should be tested.
      * @return The index of the cell that contains the given position.
      */
-    unsigned int getCellIndex(std::array<double, 3> positions);
+    int getCellIndex(std::array<double, 3> positions);
 
     /**
      * @brief Convert a 1D cell index to a 3D cell index.
      * @param cellIndex The 1D cell index.
      * @return The 3D cell index.
      */
-    std::array<int, 3> get3DIndex(int cellIndex);
+    std::array<unsigned int, 3> get3DIndex(unsigned int cellIndex);
 
 
     /**
@@ -97,5 +92,12 @@ public:
      * @param v2 The indices of particles in the second cell.
      */
     void updateCellF(const std::vector<unsigned int> &v1, const std::vector<unsigned int> &v2, bool newton3);
+
+    /**
+     * Check whether a cell is a boundary cell.
+     * @param index The linear index of the cell.
+     * @return True if the cell is at a boundary.
+     */
+    bool isBoundaryCell(unsigned int index);
 };
 

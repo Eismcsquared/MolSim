@@ -56,18 +56,24 @@ VTKFile_t VTKWriter::initializeOutput(int numParticles) {
   }
 
   void VTKWriter::writeFile(const std::string &filename, int iteration, std::vector<Particle> &particles) {
-    std::stringstream strstr;
-    strstr << filename << "_" << std::setfill('0') << std::setw(4) << iteration << ".vtu";
+      std::stringstream strstr;
+      strstr << filename << "_" << std::setfill('0') << std::setw(4) << iteration << ".vtu";
 
-    auto vtkFile = initializeOutput(particles.size());
+      int numParticles = 0;
+      for (const auto& particle : particles) {
+          if (particle.isInDomain()) numParticles++;
+      }
+      auto vtkFile = initializeOutput(numParticles);
 
-    for(Particle& p: particles) {
-      plotParticle(vtkFile, p);
-    }
+      for(Particle& p: particles) {
+          if (p.isInDomain()) {
+              plotParticle(vtkFile, p);
+          }
+      }
 
-    std::ofstream file(strstr.str().c_str());
-    VTKFile(file, vtkFile);
-    file.close();
+      std::ofstream file(strstr.str().c_str());
+      VTKFile(file, vtkFile);
+      file.close();
 
     //delete &vtkFile;
 

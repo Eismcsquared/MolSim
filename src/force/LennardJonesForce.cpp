@@ -11,30 +11,28 @@ std::array<double, 3> LennardJonesForce::force(Particle& particle1, Particle& pa
     return factor * (particle1.getX() - particle2.getX());
 }
 
-std::array<double, 3> LennardJonesForce::ghostforce(Particle& particle, std::array<double, 3> boundary, double distance, std::array<bool, 6> boundarycondition) {
-    double h = distance / 2;
-    std::array<double, 3> gforce = {0, 0, 0};
+std::array<double, 3> LennardJonesForce::ghostForce(Particle &particle, std::array<double, 3> boundary,
+                                                    std::array<BoundaryCondition, 6> boundaryCondition) {
+    std::array<double, 3> gForce = {0, 0, 0};
     std::array<double, 3> pos = particle.getX();
+    std::array<double, 3> vel = particle.getV();
+    double m = particle.getM();
+    std::array<Particle, 6> ghostParticles;
 
-    auto calculateForce = [&](double coord, double boundaryLimit, bool condition, bool isLower) -> double {
-        if (!condition) return 0.0;
-        double r = std::abs(isLower ? 2 * coord : 2 * (boundaryLimit - coord));
+    ghostParticles[0] = Particle(std::array<double, 3>{-pos[0], pos[1], pos[2]}, std::array<double, 3>{-vel[0], vel[1], vel[2]}, m);
+    ghostParticles[1] = Particle(std::array<double, 3>{2 * boundary[0] - pos[0], pos[1], pos[2]}, std::array<double, 3>{-vel[0], vel[1], vel[2]}, m);
+    ghostParticles[2] = Particle(std::array<double, 3>{pos[0], -pos[1], pos[2]}, std::array<double, 3>{vel[0], -vel[1], vel[2]}, m);
+    ghostParticles[3] = Particle(std::array<double, 3>{pos[0], 2 * boundary[1] - pos[1], pos[2]}, std::array<double, 3>{vel[0], -vel[1], vel[2]}, m);
+    ghostParticles[4] = Particle(std::array<double, 3>{pos[0], pos[1], -pos[2]}, std::array<double, 3>{vel[0], vel[1], -vel[2]}, m);
+    ghostParticles[5] = Particle(std::array<double, 3>{pos[0], pos[1], 2 * boundary[2] - pos[2]}, std::array<double, 3>{vel[0], vel[1], -vel[2]}, m);
 
-        if (r >= h || r <= std::numeric_limits<double>::epsilon()) return 0.0;
-
-        double a = pow(sigma / r, 6);
-        double factor = 24 * epsilon / pow(r,2) * (a - 2 * pow(a, 2));
-        return factor * (isLower ? 2 * coord : 2 * (coord - boundaryLimit));
-    };
-
-    for (int i = 0; i < gforce.size(); ++i) {
-        if (boundary[i] != 0) { 
-            gforce[i] += calculateForce(pos[i], boundary[i], boundarycondition[i * 2], true);  // Lower boundary
-            gforce[i] += calculateForce(pos[i], boundary[i], boundarycondition[i * 2 + 1], false); // Upper boundary
+    for (int i = 0; i < 6; ++i) {
+        if (boundaryCondition[i] == REFLECTING && ArrayUtils::L2Norm(pos - ghostParticles[i].getX()) <= sigma * pow(2, 1.0 / 6)) {
+            gForce = gForce + force(ghostParticles[i], particle);
         }
     }
 
-    return gforce;
+    return gForce;
 }
 
 

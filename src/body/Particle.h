@@ -46,6 +46,11 @@ private:
     */
     int type;
 
+    /**
+     * Flag that determines whether the particle is in domain of simulation.
+     */
+    bool inDomain;
+
 public:
     explicit Particle(int type = 0);
 
@@ -95,6 +100,11 @@ public:
      */
     int getType() const;
 
+    /**
+     * Determine whether the particle is in the domain of simulation.
+     * @return True if the particle is in domain.
+     */
+    bool isInDomain() const;
 
     /**
      * The setter for the position of a particle.
@@ -127,6 +137,10 @@ public:
      */
     void setType(int type);
 
+    /**
+     * Remove the particle from the domain.
+     */
+    void removeFromDomain();
 
     /**
      * @brief Compare two particles based on their position, velocity, current force and type, under consideration of a
