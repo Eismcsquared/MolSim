@@ -25,5 +25,5 @@ public:
      * @param particles The vector that particles should be read into.
      * @param filename The name of the input file.
      */
-    void readFile(std::vector<Particle> &particles, char *filename);
+    void readFile(std::vector<Particle> &particles, std::string filename);
 };

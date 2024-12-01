@@ -11,6 +11,10 @@ std::vector<Particle> &ParticleContainer::getParticles() const {
     return *particles;
 }
 
+void ParticleContainer::setF(std::unique_ptr<Force> &f) {
+    this->f = std::move(f);
+}
+
 void ParticleContainer::addParticle(const Particle &particle) {
     this->particles->push_back(particle);
     this->ParticleContainer::updateF();
@@ -82,6 +86,8 @@ bool ParticleContainer::operator==(const ParticleContainer &other) const {
 std::unique_ptr<Iterator> ParticleContainer::iterator() const {
     return std::make_unique<Iterator>(particles->begin(), particles->end());
 }
+
+
 
 Iterator::Iterator(std::vector<Particle>::iterator begin, std::vector<Particle>::iterator end): current(begin), end(end){}
 

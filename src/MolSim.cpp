@@ -14,6 +14,7 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include "inputReader/FileReader.h"
+#include "inputReader/XMLReader.h"
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
 #include "container/DirectSumContainer.h"
@@ -31,21 +32,8 @@ void printHelp();
 
 
 int main(int argc, char *argsv[]) {
-    spdlog::level::level_enum logLevel = spdlog::level::info; // Default log level
+    spdlog::set_level(spdlog::level::info);
     spdlog::stdout_color_mt("console"); // Create color multithreaded logger
-
-    enum ForceType {
-        GRAVITATION,
-        LENNARD_JONES
-    };
-    double start_time = 0;
-    double end_time = 5;
-    double delta_t = 0.0002;
-    std::string outputFormat = "vtu";
-    ForceType mode = GRAVITATION;
-
-    bool benchmark = false;
-    bool newton3 = true;
 
     spdlog::trace("MolSim started");
 
@@ -55,11 +43,29 @@ int main(int argc, char *argsv[]) {
         return 1;
     }
 
-    char* inputFile= argsv[1];
-    std::string outputFile("MD_vtk");
+    std::string inputFile= std::string (argsv[1]);
+    std::unique_ptr<Simulation> simulation;
 
-    std::unique_ptr<std::vector<Particle>> particles = std::make_unique<std::vector<Particle>>();
+    if (inputFile.size() >= 4 && inputFile.compare(inputFile.size() - 4, 4, ".xml") == 0) {
+        simulation = XMLReader::readXML(inputFile);
+    } else {
+        // default values when using .txt as input
+        double start_time = 0;
+        double end_time = 5;
+        double delta_t = 0.0002;
+        unsigned int frequency = 10;
+        std::string outputFile("MD_vtk");
+        std::string outputFormat = "vtu";
 
+        std::unique_ptr<std::vector<Particle>> particles = std::make_unique<std::vector<Particle>>();
+        FileReader fileReader;
+        fileReader.readFile(*particles, inputFile);
+        std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
+        std::unique_ptr<ParticleContainer> container = std::make_unique<DirectSumContainer>(particles, f);
+        simulation = std::make_unique<Simulation>(container, end_time, delta_t, outputFile, outputFormat, frequency);
+    }
+
+    std::unique_ptr<Force> f;
     int opt;
     static struct option long_options[] = {
             {"help",    no_argument,       nullptr,  'h' },
@@ -77,31 +83,31 @@ int main(int argc, char *argsv[]) {
     while ((opt = getopt_long(argc, argsv, "hd:e:f:o:s:glbn", long_options, nullptr)) != -1) {
         switch (opt) {
             case 'd':
-                delta_t = std::atof(optarg);
+                simulation->setDeltaT(std::atof(optarg));
                 break;
             case 'e':
-                end_time = std::atof(optarg);
+                simulation->setEndTime(std::atof(optarg));
                 break;
             case 'f':
-                outputFormat = optarg;
-                if (outputFormat != "xyz" && outputFormat != "vtu") {
+                if ((std::string )optarg != "xyz" && (std::string )optarg != "vtu") {
                     spdlog::error("Invalid output format! Choose either 'xyz' or 'vtu'.");
                     return 1; // exit with error
                 }
+                simulation->setOutputFormat((std::string) optarg);
                 break;
             case 'o':
-                outputFile = optarg;
+                simulation->setOutputFile((std::string) optarg);
                 break;
             case 's':
                 if (optarg) {
                     int lv = std::atoi(optarg);  
                     switch (lv) {
-                        case 1: logLevel = spdlog::level::trace; break;
-                        case 2: logLevel = spdlog::level::debug; break;
-                        case 3: logLevel = spdlog::level::info; break;
-                        case 4: logLevel = spdlog::level::warn; break;
-                        case 5: logLevel = spdlog::level::err; break;
-                        case 6: logLevel = spdlog::level::critical; break;
+                        case 1: spdlog::set_level(spdlog::level::trace); break;
+                        case 2: spdlog::set_level(spdlog::level::debug);  break;
+                        case 3: spdlog::set_level(spdlog::level::info); break;
+                        case 4: spdlog::set_level(spdlog::level::warn); break;
+                        case 5: spdlog::set_level(spdlog::level::err); break;
+                        case 6: spdlog::set_level(spdlog::level::trace); break;
                         default:
                             spdlog::error("Invalid spdlog level! Choose a number from 1 to 6.");
                             return 1;
@@ -116,16 +122,19 @@ int main(int argc, char *argsv[]) {
                 }
                 break;
             case 'b':
-                benchmark = true;
+                simulation->setSaveOutput(false);
+                spdlog::set_level(spdlog::level::off);
                 break;
             case 'n':
-                newton3 = false;
+                simulation->setNewton3(false);
                 break;
             case 'g':
-                mode = GRAVITATION;
+                f = std::make_unique<GravitationalForce>();
+                simulation->getContainer()->setF(f);
                 break;
             case 'l':
-                mode = LENNARD_JONES;
+                f = std::make_unique<LennardJonesForce>();
+                simulation->getContainer()->setF(f);
                 break;
             case '?':
                 spdlog::error("Invalid option!");
@@ -137,57 +146,28 @@ int main(int argc, char *argsv[]) {
                 return 0;
         }
     }
-    
-    // Set the log level
-    spdlog::set_level(logLevel);
-
-    FileReader fileReader;
-    fileReader.readFile(*particles, inputFile);
-
-    // Create a particle container for forwarding the particles, start time, end time, delta_t and outputFormat
-    std::unique_ptr<Force> force;
-    switch (mode) {
-        case GRAVITATION:
-            force = std::make_unique<GravitationalForce>();
-            break;
-        case LENNARD_JONES:
-            force = std::make_unique<LennardJonesForce>();
-    }
-    std::array<double, 3> domainSize = {180.0, 90.0, 0.0};
-    std::array<BoundaryCondition, 6> boundaryCondition = {REFLECTING, REFLECTING, REFLECTING, REFLECTING, REFLECTING, REFLECTING};
-    std::unique_ptr<ParticleContainer> linked_cell_container = std::make_unique<LinkedCellContainer>(particles, force, domainSize, 3.0, boundaryCondition);
-    Simulation simulation(linked_cell_container, end_time, delta_t, outputFile, outputFormat, 10);
-    //std::unique_ptr<ParticleContainer> particle_container = std::make_unique<DirectSumContainer>(particles, force);
-    //Simulation simulation(particle_container, end_time, delta_t, outputFile, outputFormat, 10);
-    if(benchmark){
-        spdlog::set_level(spdlog::level::off);
-
-        auto start = std::chrono::high_resolution_clock::now();
-        simulation.setSaveOutput(false);
-        simulation.run();
-        // Stop the timer
-        auto end = std::chrono::high_resolution_clock::now();
-
-        // Calculate the duration
-        std::chrono::duration<double> duration = end - start;
-        return 0;
-    }
 
   // Inform the user about the input parameters
-    spdlog::info("Testfilename: {}", inputFile);
-    spdlog::info("Start Time: {}", start_time);
-    spdlog::info("Time End: {}", end_time);
-    spdlog::info("Delta Time: {}", delta_t);
-    spdlog::info("Output format: {}", outputFormat);
-    
+    spdlog::info("Input file name: {}", inputFile);
+    spdlog::info("Start Time: {}", 0);
+    spdlog::info("Time End: {}", simulation->getEndTime());
+    spdlog::info("Delta Time: {}", simulation->getDeltaT());
+    spdlog::info("Output file name: {}", simulation->getOutputFile());
+    spdlog::info("Output format: {}", simulation->getOutputFormat());
 
-
+    auto start = std::chrono::high_resolution_clock::now();
     // Calculate the position, force and velocity for all particles
-    simulation.run();
+    simulation->run();
+    // Stop the timer
+    auto end = std::chrono::high_resolution_clock::now();
+    // Calculate the duration
+    std::chrono::duration<double> duration = end - start;
+
 
     spdlog::info("output written. Terminating...");
+    spdlog::set_level(spdlog::level::info);
 
-
+    spdlog::info("Duration: {}s", duration.count());
 
     return 0;
 }
