@@ -271,3 +271,19 @@ bool LinkedCellContainer::isBoundaryCell(unsigned int index) {
     }
     return false;
 }
+
+bool LinkedCellContainer::operator==(const LinkedCellContainer &other) const {
+    if (getParticleNumber() != other.getParticleNumber()) {
+        return false;
+    }
+    for (int i = 0; i < getParticleNumber(); ++i) {
+        if (!(getParticles()[i] == other.getParticles()[i])) {
+            return false;
+        }
+    }
+    if (!(domainSize == other.domainSize) || cutoff != other.cutoff || !(boundaryConditions == other.boundaryConditions)) {
+        return false;
+    }
+    return true;
+}
+

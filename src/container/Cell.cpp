@@ -3,7 +3,7 @@
 
 Cell::Cell(std::array<double, 3> position, std::array<double, 3> size): position(position), size(size) {}
 
-const std::vector<unsigned int> Cell::getParticleIndices() {
+const std::vector<unsigned int> &Cell::getParticleIndices() {
     return particleIndices;
 }
 

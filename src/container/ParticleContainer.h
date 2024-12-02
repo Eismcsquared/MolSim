@@ -2,10 +2,8 @@
 #include <memory>
 #include <spdlog/spdlog.h>
 #include "body/Particle.h"
-#include "force/Force.h"
-#include "outputWriter/VTKWriter.h"
-#include "outputWriter/XYZWriter.h"
 #include "body/Cuboid.h"
+#include "force/Force.h"
 
 #pragma once
 

@@ -25,11 +25,11 @@ protected:
         f = std::make_unique<LennardJonesForce>();
         pc = std::make_unique<DirectSumContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
-        test_logger -> info("Particle ParticleContainer created");
+        test_logger -> info("ParticleContainer created");
     }
 
     void TearDown() override {
-        test_logger->info("Particle ParticleContainer deleted\n\n");
+        test_logger->info("ParticleContainer deleted\n\n");
     }
 };
 

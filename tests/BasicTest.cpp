@@ -24,11 +24,11 @@ protected:
         f = std::make_unique<GravitationalForce>();
         pc = std::make_unique<DirectSumContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
-        test_logger -> info("Particle ParticleContainer created");
+        test_logger -> info("ParticleContainer created");
     }
 
     void TearDown() override {
-        test_logger->info("Particle ParticleContainer deleted\n\n");
+        test_logger->info("ParticleContainer deleted\n\n");
     }
 };
 
@@ -121,7 +121,7 @@ TEST_F(BasicTest, AddParticle2) {
 // Compare the simulation of this simple example with its analytic solution, one can show that for x = x_2 - x_1 it hols:
 // arccos(sqrt(x)) + sqrt(x) * sqrt(1 - x) = 2 * t => x = 1 / 2 (hence x_1 = 0.25, x_2 = 0.75 due to symmetry) if t = pi / 8 + 1 / 4
 TEST_F(BasicTest, Analytic) {
-    test_logger->info("Analytic solution test");
+    test_logger->info("Analytical solution test");
     double pi = 3.14159265358979323846;
     double end_t = pi / 8 + 0.25;
     double delta_t = 1e-6;
@@ -140,11 +140,11 @@ TEST_F(BasicTest, Analytic) {
     std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
     DirectSumContainer reference(ref_vec, ref_f);
     if (!(*pc == reference)) {
-        test_logger->error("Analytic solution test failed");
+        test_logger->error("Analytical solution test failed");
         test_logger->error("Expected: " + reference.toString());
         test_logger->error("But got: " + pc->toString());
     }
     ASSERT_EQ(*pc, reference);
-    test_logger->info("Analytic solution test passed");
+    test_logger->info("Analytical solution test passed");
 }
 

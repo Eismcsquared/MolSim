@@ -99,5 +99,7 @@ public:
      * @return True if the cell is at a boundary.
      */
     bool isBoundaryCell(unsigned int index);
+
+    bool operator==(const LinkedCellContainer &other) const;
 };
 

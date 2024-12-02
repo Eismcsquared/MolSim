@@ -44,7 +44,7 @@ public:
     * The getter for the particles' indices in a cell.
     * @return The particles' indices in the cell as a vector.
     */
-    const std::vector<unsigned int> getParticleIndices();
+    const std::vector<unsigned int> &getParticleIndices();
    /**
     * Test whether a given position belongs to the cell.
     * @param position The position that should be tested.

@@ -3,8 +3,9 @@
     <objects>
         <cuboid>
             <position>
-                <x>0</x>
-                <y>0</y>
+                <x>20</x>
+                <y>20</y>
+                <z>0.5</z>
             </position>
             <velocity>
                 <x>0</x>
@@ -12,8 +13,8 @@
             </velocity>
             <mass>1</mass>
             <size>
-                <x>40</x>
-                <y>8</y>
+                <x>100</x>
+                <y>20</y>
             </size>
             <distance>1.122462048309373</distance>
             <brownVelocity>0</brownVelocity>
@@ -21,8 +22,9 @@
         </cuboid>
         <cuboid>
             <position>
-                <x>15</x>
-                <y>15</y>
+                <x>70</x>
+                <y>60</y>
+                <z>0.5</z>
             </position>
             <velocity>
                 <x>0</x>
@@ -30,8 +32,8 @@
             </velocity>
             <mass>1</mass>
             <size>
-                <x>8</x>
-                <y>8</y>
+                <x>20</x>
+                <y>20</y>
             </size>
             <distance>1.122462048309373</distance>
             <brownVelocity>0</brownVelocity>
@@ -39,11 +41,16 @@
         </cuboid>
     </objects>
     <parameters>
-        <end_time>5</end_time>
-        <delta_t>0.0002</delta_t>
-        <output>a2</output>
-        <format>xyz</format>
-        <frequency>15</frequency>
+        <end_time>20</end_time>
+        <delta_t>0.0005</delta_t>
         <Lennard-Jones/>
+        <linked_cell>
+            <domain_size>
+                <x>180</x>
+                <y>90</y>
+            </domain_size>
+            <cutoff_radius>3</cutoff_radius>
+            <boundary_condition/>
+        </linked_cell>
     </parameters>
 </simulation>

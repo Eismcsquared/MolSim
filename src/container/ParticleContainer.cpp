@@ -1,4 +1,7 @@
 #include "ParticleContainer.h"
+#include "outputWriter/VTKWriter.h"
+#include "outputWriter/XYZWriter.h"
+
 
 ParticleContainer::ParticleContainer(std::unique_ptr<std::vector<Particle>> &particles, std::unique_ptr<Force>& f_ptr):
 particles(std::move(particles)), f(std::move(f_ptr)){}
