@@ -2,7 +2,6 @@
 #include "spdlog/spdlog.h"
 #include <vector>
 #include <array>
-#include <limits>
 #include "utils/ArrayUtils.h"
 #include "cmath"
 
@@ -323,6 +322,15 @@ std::vector<int> LinkedCellContainer::getAllHaloIndices(Direction direction) {
             }
     }
     return haloIndices;
+}
+
+void LinkedCellContainer::removeFormHalo(Direction direction) {
+    for(int i : getAllHaloIndices(direction)) {
+        for (int p: cells[i].getParticleIndices()) {
+            (*particles)[p].removeFromDomain();
+            cells[i].removeIndex(p);
+        }
+    }
 }
 
 void LinkedCellContainer::updateHalo(Direction direction, BoundaryCondition boundaryCondition) {

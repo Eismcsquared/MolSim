@@ -134,6 +134,12 @@ public:
     std::vector<int> getAllHaloIndices(Direction direction);
 
     /**
+     * Remove particles from halo cells.
+     * @param direction The direction in which the halo cells should be cleared.
+     */
+    void removeFormHalo(Direction direction);
+
+    /**
      * Handle particles in the halo cells in one direction according to the boundary condition, i.e.
      * For OUTFLOW boundary condition: particles are removed form the domain.
      * For REFLECTING boundary condition: the corresponding component of the velocity is inverted.
