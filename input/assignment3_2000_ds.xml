@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <objects>
+        <cuboid>
+            <position>
+                <x>40</x>
+                <y>50</y>
+                <z>0.5</z>
+            </position>
+            <velocity>
+                <x>0</x>
+                <y>0</y>
+            </velocity>
+            <mass>1</mass>
+            <size>
+                <x>100</x>
+                <y>20</y>
+            </size>
+            <distance>1.122462048309373</distance>
+            <brownVelocity>0.1</brownVelocity>
+            <brownDimension>2</brownDimension>
+        </cuboid>
+    </objects>
+    <parameters>
+        <end_time>20</end_time>
+        <delta_t>0.0005</delta_t>
+        <Lennard-Jones/>
+    </parameters>
+</simulation>

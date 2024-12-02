@@ -3,8 +3,8 @@
     <objects>
         <cuboid>
             <position>
-                <x>20</x>
-                <y>20</y>
+                <x>50</x>
+                <y>80</y>
                 <z>0.5</z>
             </position>
             <velocity>
@@ -13,27 +13,8 @@
             </velocity>
             <mass>1</mass>
             <size>
-                <x>100</x>
-                <y>20</y>
-            </size>
-            <distance>1.122462048309373</distance>
-            <brownVelocity>0.1</brownVelocity>
-            <brownDimension>2</brownDimension>
-        </cuboid>
-        <cuboid>
-            <position>
-                <x>70</x>
-                <y>60</y>
-                <z>0.5</z>
-            </position>
-            <velocity>
-                <x>0</x>
-                <y>-10</y>
-            </velocity>
-            <mass>1</mass>
-            <size>
-                <x>20</x>
-                <y>20</y>
+                <x>140</x>
+                <y>28</y>
             </size>
             <distance>1.122462048309373</distance>
             <brownVelocity>0.1</brownVelocity>
@@ -46,8 +27,8 @@
         <Lennard-Jones/>
         <linked_cell>
             <domain_size>
-                <x>180</x>
-                <y>90</y>
+                <x>150</x>
+                <y>200</y>
             </domain_size>
             <cutoff_radius>3</cutoff_radius>
             <boundary_condition/>
