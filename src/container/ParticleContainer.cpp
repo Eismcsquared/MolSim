@@ -1,7 +1,6 @@
 #include "ParticleContainer.h"
 #include "outputWriter/VTKWriter.h"
 #include "outputWriter/XYZWriter.h"
-#include <chrono>
 
 ParticleContainer::ParticleContainer(std::unique_ptr<std::vector<Particle>> &particles, std::unique_ptr<Force>& f_ptr):
 particles(std::move(particles)), f(std::move(f_ptr)){}
@@ -36,14 +35,11 @@ void ParticleContainer::simulate(double end_time, double delta_t, const std::str
                                  unsigned int output_frequency, bool save_output, bool newton3) {
     int max_iteration = (int) (end_time / delta_t);
 
-    
-    max_iteration = 100;
-    double total_iteration_time = 0.0; 
 
     for (int iteration = 0; iteration < max_iteration; iteration++) {
-        // if (iteration % output_frequency == 0 && save_output) {
-        //     plotParticles(iteration, out_name, output_format);
-        // }
+        if (iteration % output_frequency == 0 && save_output) {
+            plotParticles(iteration, out_name, output_format);
+        }
 
         auto start_time = std::chrono::high_resolution_clock::now();
 
@@ -55,19 +51,8 @@ void ParticleContainer::simulate(double end_time, double delta_t, const std::str
         updateV(delta_t);
         // Plot every 10th iteration
 
-
-        auto end_time = std::chrono::high_resolution_clock::now();
-
-        std::chrono::duration<double> iteration_time = end_time - start_time;
-
-        total_iteration_time += iteration_time.count();
-
-        //spdlog::trace("Iteration {} finished.", iteration + 1);
+        spdlog::trace("Iteration {} finished.", iteration + 1);
     }
-
-    double average_iteration_time = total_iteration_time / max_iteration;
-    spdlog::info("Simulation finished. Average iteration time: {:.6f} seconds.", average_iteration_time);
-
 
     spdlog::trace("output written. Terminating...");
 }
