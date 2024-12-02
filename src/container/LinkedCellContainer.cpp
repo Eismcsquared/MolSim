@@ -258,6 +258,7 @@ void LinkedCellContainer::addParticle(const Particle& particle) {
         cells[cellIndex].addIndex((int) particles->size());
     }
     particles->push_back(particle);
+    updateF(true);
 }
 
 void LinkedCellContainer::addCluster(const Cluster &cluster) {
@@ -269,6 +270,7 @@ void LinkedCellContainer::addCluster(const Cluster &cluster) {
             cells[cellIndex].addIndex(i);
         }
     }
+    updateF(true);
 }
 
 bool LinkedCellContainer::isHaloCell(int index) {
@@ -324,7 +326,7 @@ std::vector<int> LinkedCellContainer::getAllHaloIndices(Direction direction) {
     return haloIndices;
 }
 
-void LinkedCellContainer::removeFormHalo(Direction direction) {
+void LinkedCellContainer::removeFromHalo(Direction direction) {
     for(int i : getAllHaloIndices(direction)) {
         for (int p: cells[i].getParticleIndices()) {
             (*particles)[p].removeFromDomain();
@@ -363,6 +365,26 @@ void LinkedCellContainer::updateHalo() {
     for (int i = 0; i < 6; ++i) {
         updateHalo(static_cast<Direction>(i), boundaryConditions[i]);
     }
+}
+
+const std::vector<Cell> &LinkedCellContainer::getCells() const {
+    return cells;
+}
+
+double LinkedCellContainer::getCutoff() const {
+    return cutoff;
+}
+
+const std::array<double, 3> &LinkedCellContainer::getDomainSize() const {
+    return domainSize;
+}
+
+const std::array<int, 3> &LinkedCellContainer::getNCells() const {
+    return nCells;
+}
+
+const std::array<BoundaryCondition, 6> &LinkedCellContainer::getBoundaryConditions() const {
+    return boundaryConditions;
 }
 
 

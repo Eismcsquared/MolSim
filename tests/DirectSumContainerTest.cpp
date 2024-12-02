@@ -9,7 +9,7 @@
 #include "container/DirectSumContainer.h"
 #include "force/GravitationalForce.h"
 
-class BasicTest : public ::testing::Test {
+class DirectSumContainerTest : public ::testing::Test {
 protected:
     std::unique_ptr<std::vector<Particle>> particles;
     std::unique_ptr<Force> f;
@@ -34,8 +34,8 @@ protected:
 
 //Test that the FileReader still works after modifying it to read cuboids. especially if additional white spaces are appended
 // to the actual data
-TEST_F(BasicTest, ReadFile) {
-    test_logger->info("Read file test");
+TEST_F(DirectSumContainerTest, ReadFile) {
+    test_logger->info("DirectSumContainer - Read file test");
     std::unique_ptr<std::vector<Particle>> ref_vec = std::make_unique<std::vector<Particle>>();
     for (int i = 0; i < 2; ++i) {
         std::array<double, 3> x = {static_cast<double>(i), 0, 0};
@@ -45,9 +45,9 @@ TEST_F(BasicTest, ReadFile) {
     std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
     DirectSumContainer reference(ref_vec, ref_f);
     if(*pc == reference) {
-        test_logger->info("Read file test passed");
+        test_logger->info("DirectSumContainer - Read file test passed");
     } else {
-        test_logger->error("Read file test failed");
+        test_logger->error("DirectSumContainer - Read file test failed");
         test_logger->error("Expected: " + reference.toString());
         test_logger->error("But got: " + pc->toString());
     }
@@ -55,24 +55,24 @@ TEST_F(BasicTest, ReadFile) {
 }
 
 // Test whether the calculation of gravitational forces for a simple example works (which is done in the constructor of DirectSumContainer)
-TEST_F(BasicTest, Gravitation) {
-    test_logger->info("Gravitation test");
+TEST_F(DirectSumContainerTest, Gravitation) {
+    test_logger->info("DirectSumContainer - Gravitation test");
     Particle ref_p1({0, 0, 0}, {0, 0, 0}, 1);
     ref_p1.setF({1, 0, 0}); // expected force of particle 1
     Particle ref_p2({1, 0, 0}, {0, 0, 0}, 1);
     ref_p2.setF({-1, 0, 0}); // expected force of particle 2
     if (pc->getParticles()[0] == ref_p1 && pc->getParticles()[1] == ref_p2) {
-        test_logger->info("Gravitation test passed");
+        test_logger->info("DirectSumContainer - Gravitation test passed");
     } else {
-        test_logger->error("Gravitation test failed");
+        test_logger->error("DirectSumContainer - Gravitation test failed");
     }
     ASSERT_EQ(ref_p1, pc->getParticles()[0]);
     ASSERT_EQ(ref_p2, pc->getParticles()[1]);
 }
 
 // Test whether the method addParticle of DirectSumContainer works when adding a single particle
-TEST_F(BasicTest, AddParticle1) {
-    test_logger->info("Add particle test 1");
+TEST_F(DirectSumContainerTest, AddParticle1) {
+    test_logger->info("DirectSumContainer - Add particle test 1");
     Particle p = Particle({2,0,0}, {0,0,0}, 1, 0);
     pc->addParticle(p);
     std::unique_ptr<std::vector<Particle>> ref_vec = std::make_unique<std::vector<Particle>>();
@@ -84,9 +84,9 @@ TEST_F(BasicTest, AddParticle1) {
     std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
     DirectSumContainer reference(ref_vec, ref_f);
     if(*pc == reference) {
-        test_logger->info("Add particle test 1 passed");
+        test_logger->info("DirectSumContainer - Add particle test 1 passed");
     } else {
-        test_logger->error("Add particle test 1 failed");
+        test_logger->error("DirectSumContainer - Add particle test 1 failed");
         test_logger->error("Expected: " + reference.toString());
         test_logger->error("But got: " + pc->toString());
     }
@@ -94,8 +94,8 @@ TEST_F(BasicTest, AddParticle1) {
 }
 
 // Test whether the method addParticle of DirectSumContainer works when adding multiple particles
-TEST_F(BasicTest, AddParticle2) {
-    test_logger->info("Add particle test 2");
+TEST_F(DirectSumContainerTest, AddParticle2) {
+    test_logger->info("DirectSumContainer - Add particle test 2");
     for(int i = 1 ; i <= 10; i++) {
         Particle p = Particle({(double) i + 1, 0, 0}, {0, 0, 0}, 1, 0);
         pc->addParticle(p);
@@ -109,9 +109,9 @@ TEST_F(BasicTest, AddParticle2) {
     std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
     DirectSumContainer reference(ref_vec, ref_f);
     if(*pc == reference) {
-        test_logger->info("Add particle test 2 passed");
+        test_logger->info("DirectSumContainer - Add particle test 2 passed");
     } else {
-        test_logger->error("Add particle test 2 failed");
+        test_logger->error("DirectSumContainer - Add particle test 2 failed");
         test_logger->error("Expected: " + reference.toString());
         test_logger->error("But got: " + pc->toString());
     }
@@ -120,8 +120,8 @@ TEST_F(BasicTest, AddParticle2) {
 
 // Compare the simulation of this simple example with its analytic solution, one can show that for x = x_2 - x_1 it hols:
 // arccos(sqrt(x)) + sqrt(x) * sqrt(1 - x) = 2 * t => x = 1 / 2 (hence x_1 = 0.25, x_2 = 0.75 due to symmetry) if t = pi / 8 + 1 / 4
-TEST_F(BasicTest, Analytical) {
-    test_logger->info("Analytical solution test");
+TEST_F(DirectSumContainerTest, Analytical) {
+    test_logger->info("DirectSumContainer - Analytical solution test");
     double pi = 3.14159265358979323846;
     double end_t = pi / 8 + 0.25;
     double delta_t = 1e-6;
@@ -140,11 +140,11 @@ TEST_F(BasicTest, Analytical) {
     std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
     DirectSumContainer reference(ref_vec, ref_f);
     if (!(*pc == reference)) {
-        test_logger->error("Analytical solution test failed");
+        test_logger->error("DirectSumContainer - Analytical solution test failed");
         test_logger->error("Expected: " + reference.toString());
         test_logger->error("But got: " + pc->toString());
     }
     ASSERT_EQ(*pc, reference);
-    test_logger->info("Analytical solution test passed");
+    test_logger->info("DirectSumContainer - Analytical solution test passed");
 }
 

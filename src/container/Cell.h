@@ -34,17 +34,17 @@ public:
     * The getter for the position of a cell.
     * @return The position of the cell.
     */
-    const std::array<double, 3> getPosition();
+    const std::array<double, 3> getPosition() const;
    /**
     * The getter for the size of a cell.
     * @return The size of the cell.
     */
-    const std::array<double, 3> getSize();
+    const std::array<double, 3> getSize() const;
    /**
     * The getter for the particles' indices in a cell.
     * @return The particles' indices in the cell as a vector.
     */
-    const std::vector<int> &getParticleIndices();
+    const std::vector<int> &getParticleIndices() const;
    /**
     * Test whether a given position belongs to the cell.
     * @param position The position that should be tested.

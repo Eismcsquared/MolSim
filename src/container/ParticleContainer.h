@@ -67,7 +67,7 @@ public:
     virtual ~ParticleContainer() = default;
 
     /**
-     * The getter for the particles in a particle container.
+     * The getter for the particles in a particle container that are still in domain.
      * @return The particles in the container as a vector.
      */
     std::vector<Particle>& getParticles() const;

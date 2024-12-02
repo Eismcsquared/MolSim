@@ -58,6 +58,37 @@ public:
     */
     LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f,
                         std::array<double, 3> domainSize,double cutoff, std::array<BoundaryCondition, 6> boundaryConditions);
+
+    /**
+     * Getter for the cells.
+     * @return The cells.
+     */
+    const std::vector<Cell> &getCells() const;
+
+    /**
+     * Getter for the cutoff radius.
+     * @return The cutoff radius.
+     */
+    double getCutoff() const;
+
+    /**
+     * Getter for the domain size.
+     * @return The domain size.
+     */
+    const std::array<double, 3> &getDomainSize() const;
+
+    /**
+     * Getter for the number of cells in the domain.
+     * @return The number of cells in the domain.
+     */
+    const std::array<int, 3> &getNCells() const;
+
+    /**
+     * Getter for the boundary conditions.
+     * @return The boundary conditions.
+     */
+    const std::array<BoundaryCondition, 6> &getBoundaryConditions() const;
+
     /**
      *  @brief Update the force between all particles.
      * @param newton3 The Newton's third law is applied if this flag is set.
@@ -137,7 +168,7 @@ public:
      * Remove particles from halo cells.
      * @param direction The direction in which the halo cells should be cleared.
      */
-    void removeFormHalo(Direction direction);
+    void removeFromHalo(Direction direction);
 
     /**
      * Handle particles in the halo cells in one direction according to the boundary condition, i.e.

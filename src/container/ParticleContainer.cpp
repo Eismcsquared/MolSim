@@ -7,7 +7,13 @@ ParticleContainer::ParticleContainer(std::unique_ptr<std::vector<Particle>> &par
 particles(std::move(particles)), f(std::move(f_ptr)){}
 
 unsigned long ParticleContainer::getParticleNumber() const {
-    return particles->size();
+    int num = 0;
+    for (const auto& p: getParticles()) {
+        if (p.isInDomain()) {
+            num++;
+        }
+    }
+    return num;
 }
 
 std::vector<Particle> &ParticleContainer::getParticles() const {
