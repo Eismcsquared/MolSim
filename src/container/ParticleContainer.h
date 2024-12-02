@@ -109,10 +109,10 @@ public:
     virtual void addParticle(const Particle& particle);
 
     /**
-     * Add the particles in a cuboid to the container
-     * @param cuboid: The cuboid to add to the container
+     * Add the particles in a cluster to the container
+     * @param cluster: The cluster to add to the container
      */
-    void addCuboid(const Cuboid &cuboid);
+    virtual void addCluster(const Cluster &cluster);
 
 
     /**

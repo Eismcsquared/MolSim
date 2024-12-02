@@ -273,3 +273,14 @@ void LinkedCellContainer::addParticle(const Particle& particle) {
     }
     particles->push_back(particle);
 }
+
+void LinkedCellContainer::addCluster(const Cluster &cluster) {
+    int size_old = particles->size();
+    cluster.createParticles(*particles);
+    for (int i = size_old; i < particles->size(); i++) {
+        int cellIndex = getCellIndex((*particles)[i].getX());
+        if (cellIndex >= 0 && cellIndex < cells.size()) {
+            cells[cellIndex].addIndex(i);
+        }
+    }
+}

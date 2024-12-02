@@ -23,8 +23,8 @@ void ParticleContainer::addParticle(const Particle &particle) {
     this->ParticleContainer::updateF();
 }
 
-void ParticleContainer::addCuboid(const Cuboid &cuboid) {
-    cuboid.createParticles(*particles);
+void ParticleContainer::addCluster(const Cluster &cluster) {
+    cluster.createParticles(*particles);
     this->ParticleContainer::updateF();
 }
 

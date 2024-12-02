@@ -107,6 +107,12 @@ public:
      */
     void addParticle(const Particle& particle) override;
 
+    /**
+     * Add the particles in a cluster to the container
+     * @param cluster: The cluster to add to the container
+     */
+    void addCluster(const Cluster &cluster) override;
+
     bool operator==(const LinkedCellContainer &other) const;
 };
 
