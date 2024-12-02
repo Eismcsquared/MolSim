@@ -46,8 +46,8 @@
         <Lennard-Jones/>
         <linked_cell>
             <domain_size>
-                <x>128</x>
-                <y>64</y>
+                <x>180</x>
+                <y>90</y>
             </domain_size>
             <cutoff_radius>3</cutoff_radius>
             <boundary_condition/>

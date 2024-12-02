@@ -61,7 +61,8 @@ int main(int argc, char *argsv[]) {
         FileReader fileReader;
         fileReader.readFile(*particles, inputFile);
         std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
-        std::unique_ptr<ParticleContainer> container = std::make_unique<DirectSumContainer>(particles, f);
+        std::unique_ptr<ParticleContainer> container = std::make_unique<LinkedCellContainer>(particles, f, std::array<double, 3>{360, 180, 0}, 3.0, std::array<BoundaryCondition, 6>{OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW});
+        //std::unique_ptr<ParticleContainer> container = std::make_unique<DirectSumContainer>(particles, f);
         simulation = std::make_unique<Simulation>(container, end_time, delta_t, outputFile, outputFormat, frequency);
     }
 
