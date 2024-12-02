@@ -75,7 +75,7 @@ TEST_F(CuboidTest, ReadCuboids) {
 TEST_F(CuboidTest, AddCuboid) {
     test_logger->info("Cuboid - add cuboid test");
     std::unique_ptr<std::vector<Particle>> ps = std::make_unique<std::vector<Particle>>();
-    pc->addCuboid(cuboid);
+    pc->addCluster(cuboid);
     std::array<double, 3> x = {0, 0, 0};
     std::array<double, 3> v = {0, 0, 0};
     ps->emplace_back(x, v, 1);
