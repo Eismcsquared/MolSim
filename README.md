@@ -60,6 +60,8 @@ Comments are mark with "#" at the beginning of a line and are only allowed at th
 Note: Only possible if the project was built with the option
 `-DBUILD_DOCUMENTATION=ON`
 
+### Run tests
+`ctest` or `./tests`
 ### Assignments
 
 For simulations required in the individuell work sheets, run the following commands.<br>
