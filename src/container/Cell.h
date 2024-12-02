@@ -21,7 +21,7 @@ private:
    /**
     * The indices of particles contained in a cell.
     */
-    std::vector<unsigned int> particleIndices;
+    std::vector<int> particleIndices;
 
 public:
    /**
@@ -44,7 +44,7 @@ public:
     * The getter for the particles' indices in a cell.
     * @return The particles' indices in the cell as a vector.
     */
-    const std::vector<unsigned int> &getParticleIndices();
+    const std::vector<int> &getParticleIndices();
    /**
     * Test whether a given position belongs to the cell.
     * @param position The position that should be tested.
@@ -55,12 +55,12 @@ public:
     * Add a index to the cell.
     * @param index The index to be added into the cell.
     */
-    void addIndex(unsigned int index);
+    void addIndex(int index);
    /**
     * Remove a index to the cell.
     * @param index The index to be removed from the cell.
     */
-    void removeIndex(unsigned int index);
+    void removeIndex(int index);
 
 };
 

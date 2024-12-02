@@ -4,6 +4,17 @@
 #include "container/BoundaryCondition.h"
 
 /**
+ * @brief represents a direction in 3D
+ */
+enum Direction {
+    LEFT, // negative x-direction
+    RIGHT, // positive x-direction
+    DOWN, // negative y-direction
+    UP, // positive y-direction
+    BACK, //negative z-direction
+    FRONT // positive z-direction
+};
+/**
  * @brief This class represents a particle container that implements the linked cell algorithm.
  */
 class LinkedCellContainer: public ParticleContainer {
@@ -26,7 +37,7 @@ private:
     std::array<double, 3> domainSize;
 
     /**
-     * The number of cells in each dimension.
+     * The number of cells in each dimension within the domain.
      */
     std::array<int, 3> nCells;
 
@@ -77,14 +88,21 @@ public:
      * @param positions The position that should be tested.
      * @return The index of the cell that contains the given position.
      */
-    unsigned int getCellIndex(std::array<double, 3> positions);
+    int getCellIndex(std::array<double, 3> positions);
+
+    /**
+     * @brief Convert 3D cell index to 1D cell index.
+     * @param The 3D cell index.
+     * @return The 1D cell index.
+     */
+    int get1DIndex(std::array<int, 3> index3D);
 
     /**
      * @brief Convert a 1D cell index to a 3D cell index.
      * @param cellIndex The 1D cell index.
      * @return The 3D cell index.
      */
-    std::array<unsigned int, 3> get3DIndex(unsigned int cellIndex);
+    std::array<int, 3> get3DIndex(int cellIndex);
 
 
     /**
@@ -92,14 +110,42 @@ public:
      * @param v1 The indices of particles in the first cell.
      * @param v2 The indices of particles in the second cell.
      */
-    void updateCellF(const std::vector<unsigned int> &v1, const std::vector<unsigned int> &v2, bool newton3);
+    void updateCellF(const std::vector<int> &v1, const std::vector<int> &v2, bool newton3);
 
     /**
      * Check whether a cell is a boundary cell.
      * @param index The linear index of the cell.
      * @return True if the cell is at a boundary.
      */
-    bool isBoundaryCell(unsigned int index);
+    bool isBoundaryCell(int index);
+
+    /**
+     * Check whether a cell is a halo cell.
+     * @param index The linear index of the cell.
+     * @return True if the cell is a halo cell.
+     */
+    bool isHaloCell(int index);
+
+    /**
+     * Compute the indices of all halo cells
+     * @param direction: The direction of the boundary, e.g. for LEFT: Indices of all halo cells with x < 0 are returned
+     * @return The indices of halo cells in a vector
+     */
+    std::vector<int> getAllHaloIndices(Direction direction);
+
+    /**
+     * Handle particles in the halo cells in one direction according to the boundary condition, i.e.
+     * For OUTFLOW boundary condition: particles are removed form the domain.
+     * For REFLECTING boundary condition: the corresponding component of the velocity is inverted.
+     * @param direction The direction of the halo cells
+     * @param boundaryCondition The boundary condition.
+     */
+    void updateHalo(Direction direction, BoundaryCondition boundaryCondition);
+
+    /**
+     * Handle particles in the halo cells according to the boundary condition.
+     */
+     void updateHalo();
 
     /**
      * Add a particle to the linked cell container
