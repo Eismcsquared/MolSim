@@ -2,7 +2,6 @@
 #include "outputWriter/VTKWriter.h"
 #include "outputWriter/XYZWriter.h"
 
-
 ParticleContainer::ParticleContainer(std::unique_ptr<std::vector<Particle>> &particles, std::unique_ptr<Force>& f_ptr):
 particles(std::move(particles)), f(std::move(f_ptr)){}
 
@@ -41,10 +40,15 @@ void ParticleContainer::updateF() {
 void ParticleContainer::simulate(double end_time, double delta_t, const std::string &out_name, const std::string &output_format,
                                  unsigned int output_frequency, bool save_output, bool newton3) {
     int max_iteration = (int) (end_time / delta_t);
+
+
     for (int iteration = 0; iteration < max_iteration; iteration++) {
         if (iteration % output_frequency == 0 && save_output) {
             plotParticles(iteration, out_name, output_format);
         }
+
+        auto start_time = std::chrono::high_resolution_clock::now();
+
         // Calculate the position
         updateX(delta_t);
         // Calculate the force
@@ -52,8 +56,10 @@ void ParticleContainer::simulate(double end_time, double delta_t, const std::str
         // Calculate the velocity
         updateV(delta_t);
         // Plot every 10th iteration
+
         spdlog::trace("Iteration {} finished.", iteration + 1);
     }
+
     spdlog::trace("output written. Terminating...");
 }
 
