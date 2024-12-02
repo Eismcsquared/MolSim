@@ -266,3 +266,10 @@ bool LinkedCellContainer::operator==(const LinkedCellContainer &other) const {
     return true;
 }
 
+void LinkedCellContainer::addParticle(const Particle& particle) {
+    int cellIndex = getCellIndex(particle.getX());
+    if (cellIndex >= 0 && cellIndex < cells.size()) {
+        cells[cellIndex].addIndex(particles->size());
+    }
+    particles->push_back(particle);
+}

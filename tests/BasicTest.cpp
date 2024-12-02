@@ -120,7 +120,7 @@ TEST_F(BasicTest, AddParticle2) {
 
 // Compare the simulation of this simple example with its analytic solution, one can show that for x = x_2 - x_1 it hols:
 // arccos(sqrt(x)) + sqrt(x) * sqrt(1 - x) = 2 * t => x = 1 / 2 (hence x_1 = 0.25, x_2 = 0.75 due to symmetry) if t = pi / 8 + 1 / 4
-TEST_F(BasicTest, Analytic) {
+TEST_F(BasicTest, Analytical) {
     test_logger->info("Analytical solution test");
     double pi = 3.14159265358979323846;
     double end_t = pi / 8 + 0.25;

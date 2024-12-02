@@ -126,8 +126,8 @@ TEST_F(XMLReaderTest, BrownianMotion) {
     }
     mean /= particles.size();
     meanSquire /= particles.size();
-    EXPECT_NEAR(0.1 * pow(pi / 2, 0.5), mean, 2e-3) << "Wrong mean velocity of Brownian motion. Expected: "
-    << 0.1 * pow(pi / 2, 0.5) << ", but got " << mean;
+    EXPECT_NEAR(0.1 * sqrt(pi / 2), mean, 2e-3) << "Wrong mean velocity of Brownian motion. Expected: "
+    << 0.1 * sqrt(pi / 2) << ", but got " << mean;
     EXPECT_NEAR(0.02, meanSquire, 5e-4) << "Wrong mean squared velocity of Brownian motion. Expected: "
     << 0.02 << ", but got " << meanSquire;
     if(::testing::Test::HasFailure()) {

@@ -1,19 +1,15 @@
 #include <gtest/gtest.h>
-#include "body/Particle.h"
-#include "container/DirectSumContainer.h"
-#include "force/GravitationalForce.h"
 #include <vector>
-#include <iostream>
-#include "inputReader/FileReader.h"
-#include "utils/ArrayUtils.h"
-#include <string>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/fmt/ostr.h>
 #include "force/LennardJonesForce.h"
 #include "force/Force.h"
 #include "Logger.h"
-
+#include "body/Particle.h"
+#include "container/DirectSumContainer.h"
+#include "force/GravitationalForce.h"
+#include "inputReader/FileReader.h"
 
 class LennardJonesForceTest : public ::testing::Test {
 protected:

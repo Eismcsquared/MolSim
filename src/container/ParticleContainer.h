@@ -106,7 +106,7 @@ public:
      * Add a particle to the container
      * @param particle: The particle to add to the container
      */
-    void addParticle(const Particle& particle);
+    virtual void addParticle(const Particle& particle);
 
     /**
      * Add the particles in a cuboid to the container

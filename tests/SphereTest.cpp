@@ -28,8 +28,8 @@ TEST_F(SphereTest, CreateParticles2D) {
     }
     mean /= particles.size();
     meanSquire /= particles.size();
-    EXPECT_NEAR(pow(pi / 2, 0.5), mean, 2e-3) << "Wrong mean velocity of Brownian motion. Expected: "
-    << pow(pi / 2, 0.5) << ", but got " << mean;
+    EXPECT_NEAR(sqrt(pi / 2), mean, 2e-3) << "Wrong mean velocity of Brownian motion. Expected: "
+    << sqrt(pi / 2) << ", but got " << mean;
     EXPECT_NEAR(2, meanSquire, 5e-3) << "Wrong mean squared velocity of Brownian motion. Expected: "
     << 2 << ", but got " << meanSquire;
     if(::testing::Test::HasFailure()) {
@@ -55,8 +55,8 @@ TEST_F(SphereTest, CreateParticles3D) {
     }
     mean /= particles.size();
     meanSquire /= particles.size();
-    EXPECT_NEAR(pow(2 / pi, 0.5), mean, 1e-3) << "Wrong mean velocity of Brownian motion. Expected: "
-    << pow(2 / pi, 0.5) << ", but got " << mean;
+    EXPECT_NEAR(sqrt(2 / pi), mean, 1e-3) << "Wrong mean velocity of Brownian motion. Expected: "
+    << sqrt(2 / pi) << ", but got " << mean;
     EXPECT_NEAR(0.75, meanSquire, 2.5e-3) << "Wrong mean squared velocity of Brownian motion. Expected: "
     << 0.75 << ", but got " << meanSquire;
     if(::testing::Test::HasFailure()) {

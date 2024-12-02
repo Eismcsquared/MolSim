@@ -101,6 +101,12 @@ public:
      */
     bool isBoundaryCell(unsigned int index);
 
+    /**
+     * Add a particle to the linked cell container
+     * @param particle: The particle to add to the container
+     */
+    void addParticle(const Particle& particle) override;
+
     bool operator==(const LinkedCellContainer &other) const;
 };
 
