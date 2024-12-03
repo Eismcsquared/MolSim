@@ -93,7 +93,7 @@ public:
 
     /**
      * Setter for the flag of applying the Newton's third law.
-     * @param saveOutput The new flag.
+     * @param newton3 The new flag.
      */
     void setNewton3(bool newton3);
 

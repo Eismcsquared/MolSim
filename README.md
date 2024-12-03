@@ -75,3 +75,7 @@ For simulations required in the individuell work sheets, run the following comma
 - Assignment 3 - Falling drop:
   `./MolSim ../input/falling_drop.xml`
 
+### Benchmark
+Comparison: Linked cell algorithm vs. Direct sum algorithm for different number of particles. 
+![](src/images/ds_vs_lc.png)
+
