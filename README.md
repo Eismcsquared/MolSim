@@ -70,4 +70,8 @@ For simulations required in the individuell work sheets, run the following comma
   `./MolSim ../input/eingabe-sonne.txt -d 0.014 -e 1000 -g`<br>
 - Assignment 2:
   `./MolSim ../input/assignment2.txt -d 0.0002 -e 5 -l`<br>
+- Assignment 3 - Collision:
+  `./MolSim ../input/assignment3.xml`
+- Assignment 3 - Falling drop:
+  `./MolSim ../input/falling_drop.xml`
 
