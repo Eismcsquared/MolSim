@@ -1,0 +1,38 @@
+
+name : CI Pipeline
+
+on : 
+    pull_request : 
+        branches: ["master"]
+
+jobs :
+    build :
+        runs-on : ubuntu-latest
+
+        steps : 
+            - name : Checkout code
+              uses : actions/checkout@v4
+
+            - name : Set up Cmake
+              uses: lukka/get-cmake@latest
+
+
+            - name : Install xcerces-c
+              run :  sudo apt-get install libxerces-c-dev
+
+            - name : Create build directory
+              run : mkdir build
+            
+            - name : Configure Cmake with AdressSanitizer
+              run : cmake -B build -DCMAKE_CXX_FLAGS="-fsanitize=address" -DCMAKE_BUILD_TYPE=Debug
+            
+            - name : Build project 
+              run : cmake --build ${{github.workspace}}/build
+            
+            - name : Compiler check
+              run : g++ --version
+                
+            - name: Run tests
+              run: |
+                cd build
+                ctest -V

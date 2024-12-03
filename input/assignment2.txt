@@ -1,0 +1,21 @@
+#
+# file format:
+# Lines of comment start with '#' and are only allowed at the beginning of the file
+# Empty lines are not allowed.
+# The first line not being a comment has to be one integer, indicating the number of molecule data sets.
+#
+# Molecule data consists of
+# * xyz-coordinates (3 double values)
+# * velocities (2 or 3 double values)
+# * mass (1 double value)
+# Optionally, it may contain
+# * size of cuboid (number of particles in x, y, z direction)
+# * the distance between particles in a cuboid
+# * the average velocity of Brownian motion
+# Especially, if the optional parameters are specified, the corresponding data set is interpreted as a cuboid
+# consisting of particles.
+#
+# xyz-coord      velocity        mass    cuboid-size  grid-width            Brownian motion avg-velocity
+2
+0.0 0.0 0.0      0.0 0.0 0.0     1.0     40 8 1       1.122462048309373     0.1
+15.0 15.0 0.0    0.0 -10.0 0.0   1.0     8 8 1        1.122462048309373     0.1
