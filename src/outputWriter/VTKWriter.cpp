@@ -56,20 +56,24 @@ VTKFile_t VTKWriter::initializeOutput(int numParticles) {
   }
 
   void VTKWriter::writeFile(const std::string &filename, int iteration, std::vector<Particle> &particles) {
-    std::stringstream strstr;
-    strstr << filename << "_" << std::setfill('0') << std::setw(4) << iteration << ".vtu";
+      std::stringstream strstr;
+      strstr << filename << "_" << std::setfill('0') << std::setw(4) << iteration << ".vtu";
 
-    auto vtkFile = initializeOutput(static_cast<int>(particles.size()));
+      int numParticles = 0;
+      for (const auto& particle : particles) {
+          if (particle.isInDomain()) numParticles++;
+      }
+      auto vtkFile = initializeOutput(numParticles);
 
-    for(Particle& p: particles) {
-      plotParticle(vtkFile, p);
-    }
+      for(Particle& p: particles) {
+          if (p.isInDomain()) {
+              plotParticle(vtkFile, p);
+          }
+      }
 
-    std::ofstream file(strstr.str().c_str());
-    VTKFile(file, vtkFile);
-    file.close();
-
-    //delete &vtkFile;
+      std::ofstream file(strstr.str().c_str());
+      VTKFile(file, vtkFile);
+      file.close();
 
   }
 
@@ -85,19 +89,16 @@ VTKFile_t VTKWriter::initializeOutput(int numParticles) {
     PointData::DataArray_iterator dataIterator = pointDataSequence.begin();
 
     dataIterator->push_back(p.getM());
-    // cout << "Appended mass data in: " << dataIterator->Name();
 
     dataIterator++;
     dataIterator->push_back(p.getV()[0]);
     dataIterator->push_back(p.getV()[1]);
     dataIterator->push_back(p.getV()[2]);
-    // cout << "Appended velocity data in: " << dataIterator->Name();
 
     dataIterator++;
     dataIterator->push_back(p.getOldF()[0]);
     dataIterator->push_back(p.getOldF()[1]);
     dataIterator->push_back(p.getOldF()[2]);
-    // cout << "Appended force data in: " << dataIterator->Name();
 
     dataIterator++;
     dataIterator->push_back(p.getType());
@@ -108,6 +109,7 @@ VTKFile_t VTKWriter::initializeOutput(int numParticles) {
     pointsIterator->push_back(p.getX()[0]);
     pointsIterator->push_back(p.getX()[1]);
     pointsIterator->push_back(p.getX()[2]);
+
   }
 
   } // namespace outputWriter

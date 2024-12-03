@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sx="http://www.w3.org/2001/XMLSchema">
+
+    <xs:simpleType name="Dimension">
+        <xs:restriction base="xs:positiveInteger">
+            <xs:maxInclusive value="3"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="PositiveDouble">
+        <xs:restriction base="xs:double">
+            <xs:minExclusive value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="DoubleVector3">
+        <xs:sequence>
+            <xs:element name="x" type="xs:double"/>
+            <xs:element name="y" type="xs:double"/>
+            <xs:element name="z" type="xs:double" minOccurs="0" default="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PositiveIntVector3">
+        <xs:sequence>
+            <xs:element name="x" type="xs:positiveInteger"/>
+            <xs:element name="y" type="xs:positiveInteger"/>
+            <xs:element name="z" type="xs:positiveInteger" minOccurs="0" default="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PositiveDoubleVector3">
+        <xs:sequence>
+            <xs:element name="x" type="PositiveDouble"/>
+            <xs:element name="y" type="PositiveDouble"/>
+            <xs:element name="z" type="PositiveDouble" minOccurs="0" default="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ParticleType">
+        <xs:sequence>
+            <xs:element name="position" type="DoubleVector3"/>
+            <xs:element name="velocity" type="DoubleVector3"/>
+            <xs:element name="mass" type="PositiveDouble"/>
+            <xs:element name="type" type="xs:int" minOccurs="0" default="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="CuboidType">
+        <xs:sequence>
+            <xs:element name="position" type="DoubleVector3"/>
+            <xs:element name="velocity" type="DoubleVector3"/>
+            <xs:element name="mass" type="PositiveDouble"/>
+            <xs:element name="size" type="PositiveIntVector3"/>
+            <xs:element name="distance" type="PositiveDouble"/>
+            <xs:element name="brownVelocity" type="PositiveDouble"/>
+            <xs:element name="brownDimension" type="Dimension" minOccurs="0" default="3"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SphereType">
+        <xs:sequence>
+            <xs:element name="center" type="DoubleVector3"/>
+            <xs:element name="velocity" type="DoubleVector3"/>
+            <xs:element name="mass" type="PositiveDouble"/>
+            <xs:element name="radius" type="xs:positiveInteger"/>
+            <xs:element name="distance" type="PositiveDouble"/>
+            <xs:element name="brownVelocity" type="PositiveDouble"/>
+            <xs:element name="dimension" type="Dimension" minOccurs="0" default="3"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SimulationObjects">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="particle" type="ParticleType"/>
+            <xs:element name="cuboid" type="CuboidType"/>
+            <xs:element name="sphere" type="SphereType"/>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:simpleType name="BoundaryConditionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="outflow"/>
+            <xs:enumeration value="reflection"/>
+            <xs:enumeration value="periodic"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="BoundaryCondition3">
+        <xs:sequence>
+            <xs:element name="left" type="BoundaryConditionType" minOccurs="0" default="outflow">
+                <xs:annotation>
+                    <xs:documentation>
+                        The boundary condition at the boundary to the negative x-direction.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="right" type="BoundaryConditionType" minOccurs="0" default="outflow">
+                <xs:annotation>
+                    <xs:documentation>
+                        The boundary condition at the boundary to the positive x-direction.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="down" type="BoundaryConditionType" minOccurs="0" default="outflow">
+                <xs:annotation>
+                    <xs:documentation>
+                        The boundary condition at the boundary in the negative y-direction.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="up" type="BoundaryConditionType" minOccurs="0" default="outflow">
+                <xs:annotation>
+                    <xs:documentation>
+                        The boundary condition at the boundary in the positive y-direction.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="back" type="BoundaryConditionType" minOccurs="0" default="outflow">
+                <xs:annotation>
+                    <xs:documentation>
+                        The boundary condition at the boundary in the negative z-direction.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="front" type="BoundaryConditionType" minOccurs="0" default="outflow">
+                <xs:annotation>
+                    <xs:documentation>
+                        The boundary condition at the boundary in the positive z-direction.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GravitationType">
+        <xs:sequence>
+            <xs:element name="g" type="PositiveDouble" minOccurs="0" default="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="LennardJonesType">
+        <xs:sequence>
+            <xs:element name="epsilon" type="PositiveDouble" minOccurs="0" default="5"/>
+            <xs:element name="sigma" type="PositiveDouble" minOccurs="0" default="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="OutputFormatType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="vtu"/>
+            <xs:enumeration value="xyz"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="LinkedCellType">
+        <xs:sequence>
+            <xs:element name="domain_size" type="PositiveDoubleVector3"/>
+            <xs:element name="cutoff_radius" type="PositiveDouble"/>
+            <xs:element name="boundary_condition" type="BoundaryCondition3"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SimulationParameters">
+        <xs:sequence>
+            <xs:element name="end_time" type="PositiveDouble" minOccurs="0" default="5"/>
+            <xs:element name="delta_t" type="PositiveDouble" minOccurs="0" default="0.0002"/>
+            <xs:element name="frequency" type="xs:positiveInteger" minOccurs="0" default="10">
+                <xs:annotation>
+                    <xs:documentation>
+                        The output frequency of the simulation data.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="output" type="xs:string" minOccurs="0" default="MD_vtk">
+                <xs:annotation>
+                    <xs:documentation>
+                        The name of the output file.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="format" type="OutputFormatType" minOccurs="0" default="vtu">
+                <xs:annotation>
+                    <xs:documentation>
+                        The format of the output file.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:choice minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The type of the force between particles.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:element name="gravitation" type="GravitationType"/>
+                <xs:element name="Lennard-Jones" type="LennardJonesType"/>
+            </xs:choice>
+            <xs:element name="linked_cell" type="LinkedCellType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Optional. If provided, the linked cell algorithm is applied.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="InputData">
+        <xs:sequence>
+            <xs:element name="objects" type="SimulationObjects"/>
+            <xs:element name="parameters" type="SimulationParameters"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="simulation" type="InputData"/>
+</xs:schema>
