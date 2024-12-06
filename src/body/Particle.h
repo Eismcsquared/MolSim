@@ -51,6 +51,17 @@ private:
      */
     bool inDomain;
 
+    /**
+      * Parameter epsilon of the Lennard-Jones potential.
+      */
+    double epsilon;
+
+    /**
+     * Parameter sigma of the Lennard-Jones potential.
+     */
+    double sigma;
+
+
 public:
     explicit Particle(int type = 0);
 
@@ -61,6 +72,9 @@ public:
       // -> in case of 2d, we use only the first and the second
         std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg,
         int type = 0);
+
+    Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg,
+            double epsilon, double sigma);
 
     virtual ~Particle();
 
@@ -105,6 +119,18 @@ public:
      * @return True if the particle is in domain.
      */
     bool isInDomain() const;
+
+    /**
+     * Getter for the parameter epsilon.
+     * @return The parameter epsilon.
+     */
+    double getEpsilon() const;
+
+    /**
+     * Getter for the parameter sigma.
+     * @return The parameter sigma.
+     */
+    double getSigma() const;
 
     /**
      * The setter for the position of a particle.

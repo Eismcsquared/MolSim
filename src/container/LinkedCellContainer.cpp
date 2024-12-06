@@ -52,6 +52,7 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
             cells[idx].addIndex(i);
         }
     }
+    ParticleContainer::updateF();
     spdlog::trace("LinkedCellContainer generated!");
 }
 

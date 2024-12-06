@@ -5,6 +5,13 @@ Sphere::Sphere(const std::array<double, 3> &x, const std::array<double, 3> &v, i
                double distance, double avgVelocityBrownian, int dimension) :
                Cluster(x, v, m, distance, avgVelocityBrownian, dimension), radius(radius){}
 
+
+Sphere::Sphere(const std::array<double, 3> &x, const std::array<double, 3> &v, int radius, double m, double distance,
+               double avgVelocityBrownian, int dimension, double epsilon, double sigma):
+        Cluster(x, v, m, distance, avgVelocityBrownian, dimension, epsilon, sigma), radius(radius){
+
+}
+
 void Sphere::createParticles(std::vector<Particle> &particles) const {
     for (int i = -radius; i <= radius; ++i) {
         for (int j = -radius; j <= radius; ++j) {
@@ -24,3 +31,4 @@ void Sphere::createParticles(std::vector<Particle> &particles) const {
         }
     }
 }
+

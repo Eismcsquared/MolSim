@@ -39,7 +39,7 @@ TEST_F(SphereTest, CreateParticles2D) {
     }
 }
 
-// Test whether a 2D sphere generates the correct particles in terms their position, mass and velocity including Brownian motion.
+// Test whether a 3D sphere generates the correct particles in terms their position, mass and velocity including Brownian motion.
 TEST_F(SphereTest, CreateParticles3D) {
     test_logger->info("Sphere - 3D Sphere test");
     std::vector<Particle> particles;

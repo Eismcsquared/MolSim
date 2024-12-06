@@ -20,7 +20,5 @@
             <brownDimension>2</brownDimension>
         </cuboid>
     </objects>
-    <parameters>
-        <Lennard-Jones/>
-    </parameters>
+    <parameters/>
 </simulation>

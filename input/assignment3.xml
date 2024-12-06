@@ -43,7 +43,6 @@
     <parameters>
         <end_time>20</end_time>
         <delta_t>0.0005</delta_t>
-        <Lennard-Jones/>
         <linked_cell>
             <domain_size>
                 <x>180</x>

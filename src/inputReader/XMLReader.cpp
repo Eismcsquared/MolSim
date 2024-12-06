@@ -25,10 +25,14 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
         for (auto p: input->objects().particle()) {
             double r_z = p.position().z().present() ? p.position().z().get() : DoubleVector3::z_default_value();
             double v_z = p.velocity().z().present() ? p.velocity().z().get() : DoubleVector3::z_default_value();
+            double epsilon = p.epsilon().present() ? p.epsilon().get() : ParticleType::epsilon_default_value();
+            double sigma = p.sigma().present() ? p.sigma().get() : ParticleType::sigma_default_value();
             particles->emplace_back(
                         std::array<double, 3>{p.position().x(), p.position().y(), r_z},
                         std::array<double, 3>{p.velocity().x(), p.velocity().y(), v_z},
-                        p.mass()
+                        p.mass(),
+                        epsilon,
+                        sigma
                     );
         }
         for (auto c : input->objects().cuboid()) {
@@ -36,6 +40,8 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
             double v_z = c.velocity().z().present() ? c.velocity().z().get() : DoubleVector3::z_default_value();
             unsigned int n_z = c.size().z().present() ? c.size().z().get() : PositiveIntVector3::z_default_value();
             int dim = c.brownDimension().present() ? (int) c.brownDimension().get() : (int) CuboidType::brownDimension_default_value();
+            double epsilon = c.epsilon().present() ? c.epsilon().get() : CuboidType::epsilon_default_value();
+            double sigma = c.sigma().present() ? c.sigma().get() : CuboidType::sigma_default_value();
             Cuboid cuboid(
                         std::array<double, 3>{c.position().x(), c.position().y(), r_z},
                         std::array<double, 3>{c.velocity().x(), c.velocity().y(), v_z},
@@ -43,15 +49,19 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
                         c.mass(),
                         c.distance(),
                         c.brownVelocity(),
-                        dim
+                        dim,
+                        epsilon,
+                        sigma
                     );
             cuboid.createParticles(*particles);
         }
         for (auto s : input->objects().sphere()) {
             double r_z = s.center().z().present() ? s.center().z().get() : DoubleVector3::z_default_value();
             double v_z = s.velocity().z().present() ? s.velocity().z().get() : DoubleVector3::z_default_value();
-            int radius = s.radius();
-            int dim = s.dimension().present() ? (int) s.dimension().get() : (int) SphereType::dimension_default_value();
+            int radius = static_cast<int>(s.radius());
+            int dim = s.dimension().present() ? static_cast<int>(s.dimension().get()) : static_cast<int>(SphereType::dimension_default_value());
+            double epsilon = s.epsilon().present() ? s.epsilon().get() : SphereType::epsilon_default_value();
+            double sigma = s.sigma().present() ? s.sigma().get() : SphereType::sigma_default_value();
             Sphere sphere(
                         std::array<double, 3>{s.center().x(), s.center().y(), r_z},
                         std::array<double, 3>{s.velocity().x(), s.velocity().y(), v_z},
@@ -59,18 +69,20 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
                         s.mass(),
                         s.distance(),
                         s.brownVelocity(),
-                        dim
+                        dim,
+                        epsilon,
+                        sigma
                     );
             sphere.createParticles(*particles);
         }
         std::unique_ptr<Force> force;
-        if (input->parameters().gravitation().present()) {
-            double g = input->parameters().gravitation().get().g().present() ? input->parameters().gravitation().get().g().get() : GravitationType::g_default_value();
-            force = std::make_unique<GravitationalForce>(g);
-        } else if (input->parameters().Lennard_Jones().present()) {
-            double epsilon = input->parameters().Lennard_Jones().get().epsilon().present() ? input->parameters().Lennard_Jones().get().epsilon().get() : LennardJonesType::epsilon_default_value();
-            double sigma = input->parameters().Lennard_Jones().get().sigma().present() ? input->parameters().Lennard_Jones().get().sigma().get() : LennardJonesType::sigma_default_value();
-            force = std::make_unique<LennardJonesForce>(epsilon, sigma);
+        ForceType f = input->parameters().force().present() ? input->parameters().force().get() : SimulationParameters::force_default_value();
+        switch (f) {
+            case ForceType::value::gravitation:
+                force = std::make_unique<GravitationalForce>();
+                break;
+            case ForceType::value::Lennard_Jones:
+                force = std::make_unique<LennardJonesForce>();
         }
         std::unique_ptr<ParticleContainer> container;
         if (input->parameters().linked_cell().present()) {

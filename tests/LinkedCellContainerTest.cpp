@@ -13,7 +13,7 @@ protected:
     void SetUp() override {
         std::unique_ptr<std::vector<Particle>> p1 = std::make_unique<std::vector<Particle>>();
         std::unique_ptr<std::vector<Particle>> p2 = std::make_unique<std::vector<Particle>>();
-        std::unique_ptr<Force> f1 = std::make_unique<LennardJonesForce>(0.25, 1);
+        std::unique_ptr<Force> f1 = std::make_unique<LennardJonesForce>();
         std::unique_ptr<Force> f2 = std::make_unique<LennardJonesForce>();
         container2D = std::make_unique<LinkedCellContainer>(p1, f1, std::array<double, 3>{15, 15, 1}, 3,
                                           std::array<BoundaryCondition, 6>{OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW});
@@ -200,8 +200,8 @@ TEST_F(LinkedCellContainerTest, Reflecting) {
 // they pass throw.
 TEST_F(LinkedCellContainerTest, Analytical) {
     test_logger->info("LinkedCellContainer - Two body analytical test");
-    container2D->addParticle(Particle(std::array<double, 3>{7, 7.5, 0.5}, std::array<double, 3>{0, 0, 0}, 1));
-    container2D->addParticle(Particle(std::array<double, 3>{8, 7.5, 0.5}, std::array<double, 3>{0, 0, 0}, 1));
+    container2D->addParticle(Particle(std::array<double, 3>{7, 7.5, 0.5}, std::array<double, 3>{0, 0, 0}, 1, 0.25, 1));
+    container2D->addParticle(Particle(std::array<double, 3>{8, 7.5, 0.5}, std::array<double, 3>{0, 0, 0}, 1, 0.25, 1));
     container2D->simulate(25, 1e-3, "", "", 10, false, true);
     double expectedVel = sqrt((pow(1.0 / 3, 6) - pow(1.0 / 3, 12)));
     EXPECT_TRUE(ArrayUtils::L2Norm(container2D->getParticles()[0].getX() - container2D->getParticles()[1].getX()) > 3);

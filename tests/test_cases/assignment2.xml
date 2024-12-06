@@ -44,6 +44,5 @@
         <output>a2</output>
         <format>xyz</format>
         <frequency>15</frequency>
-        <Lennard-Jones/>
     </parameters>
 </simulation>

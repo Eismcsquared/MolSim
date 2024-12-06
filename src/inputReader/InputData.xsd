@@ -43,6 +43,8 @@
             <xs:element name="velocity" type="DoubleVector3"/>
             <xs:element name="mass" type="PositiveDouble"/>
             <xs:element name="type" type="xs:int" minOccurs="0" default="0"/>
+            <xs:element name="epsilon" type="xs:double" minOccurs="0" default="5"/>
+            <xs:element name="sigma" type="xs:double" minOccurs="0" default="1"/>
         </xs:sequence>
     </xs:complexType>
     
@@ -55,6 +57,8 @@
             <xs:element name="distance" type="PositiveDouble"/>
             <xs:element name="brownVelocity" type="PositiveDouble"/>
             <xs:element name="brownDimension" type="Dimension" minOccurs="0" default="3"/>
+            <xs:element name="epsilon" type="xs:double" minOccurs="0" default="5"/>
+            <xs:element name="sigma" type="xs:double" minOccurs="0" default="1"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -67,6 +71,8 @@
             <xs:element name="distance" type="PositiveDouble"/>
             <xs:element name="brownVelocity" type="PositiveDouble"/>
             <xs:element name="dimension" type="Dimension" minOccurs="0" default="3"/>
+            <xs:element name="epsilon" type="xs:double" minOccurs="0" default="5"/>
+            <xs:element name="sigma" type="xs:double" minOccurs="0" default="1"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -133,18 +139,12 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="GravitationType">
-        <xs:sequence>
-            <xs:element name="g" type="PositiveDouble" minOccurs="0" default="1"/>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:complexType name="LennardJonesType">
-        <xs:sequence>
-            <xs:element name="epsilon" type="PositiveDouble" minOccurs="0" default="5"/>
-            <xs:element name="sigma" type="PositiveDouble" minOccurs="0" default="1"/>
-        </xs:sequence>
-    </xs:complexType>
+    <xs:simpleType name="ForceType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="gravitation"/>
+            <xs:enumeration value="Lennard-Jones"/>
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:simpleType name="OutputFormatType">
         <xs:restriction base="xs:string">
@@ -186,15 +186,13 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:choice minOccurs="1" maxOccurs="1">
+            <xs:element name="force" type="ForceType" minOccurs="0" default="Lennard-Jones">
                 <xs:annotation>
                     <xs:documentation>
                         The type of the force between particles.
                     </xs:documentation>
                 </xs:annotation>
-                <xs:element name="gravitation" type="GravitationType"/>
-                <xs:element name="Lennard-Jones" type="LennardJonesType"/>
-            </xs:choice>
+            </xs:element>
             <xs:element name="linked_cell" type="LinkedCellType" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>

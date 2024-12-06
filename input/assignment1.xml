@@ -57,6 +57,6 @@
     <parameters>
         <end_time>1000</end_time>
         <delta_t>0.014</delta_t>
-        <gravitation/>
+        <force>gravitation</force>
     </parameters>
 </simulation>
