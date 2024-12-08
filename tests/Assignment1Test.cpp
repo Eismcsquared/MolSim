@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
-#include "Particle.h"
-#include "ParticleContainer.h"
-#include "GravitationalForce.h"
+#include "body/Particle.h"
+#include "container/DirectSumContainer.h"
+#include "force/GravitationalForce.h"
 #include <vector>
 #include <iostream>
-#include "FileReader.h"
+#include "inputReader/FileReader.h"
 #include <string>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
@@ -15,21 +15,23 @@
 // Test whether the simulations in assignment 1 still work as before, reference data originates from previous simulations
 class Assignment1Test : public ::testing::Test {
 protected:
-    std::vector<Particle> particles;
-    ParticleContainer *pc;
+    std::unique_ptr<std::vector<Particle>> particles;
+    std::unique_ptr<Force> f;
+    std::unique_ptr<DirectSumContainer> pc;
     char* testfile = const_cast<char*>("../tests/test_cases/assignment1.txt");
     FileReader fileReader;
 
     void SetUp() override {
-        fileReader.readFile(particles, testfile);
-        pc = new ParticleContainer(particles, new GravitationalForce(), true);
+        particles = std::make_unique<std::vector<Particle>>();
+        fileReader.readFile(*particles, testfile);
+        f = std::make_unique<GravitationalForce>();
+        pc = std::make_unique<DirectSumContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
-        test_logger -> info("Particle Container created");
+        test_logger -> info("Particle ParticleContainer created");
     }
 
     void TearDown() override {
-        test_logger->info("Particle Container deleted\n\n");
-        delete pc;
+        test_logger->info("Particle ParticleContainer deleted\n\n");
     }
 };
 
@@ -61,13 +63,14 @@ TEST_F(Assignment1Test, Simulation_simple) {
     test_logger->info("Assignment 1 - simple simulation test");
     for(int iteration = 0 ; iteration <= 3; ++iteration) {
         pc->updateX(0.014);
-        pc->updateF();
+        pc->updateF(true);
         pc->updateV(0.014);
     }
-    std::vector<Particle> ref_p;
+    std::unique_ptr<std::vector<Particle>> ref_p = std::make_unique<std::vector<Particle>>();
     char *ref_file = const_cast<char*>("../tests/Answer_Ref/Ans_simulation_simple.txt");
-    fileReader.readFile(ref_p, ref_file);
-    ParticleContainer reference(ref_p, new GravitationalForce(), true);
+    fileReader.readFile(*ref_p, ref_file);
+    std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
+    DirectSumContainer reference(ref_p, ref_f);
 
     if(!(reference == *pc)) {
         test_logger->error("Assignment 1 - simple simulation test failed");
@@ -84,13 +87,14 @@ TEST_F(Assignment1Test, Complex_simulation) {
     int max_iteration = (int) ((1000 - 0) / 0.014);
     for(int iteration = 0 ; iteration <= max_iteration; ++iteration) {
         pc->updateX(0.014);
-        pc->updateF();
+        pc->updateF(true);
         pc->updateV(0.014);
     }
-    std::vector<Particle> ref_p;
+    std::unique_ptr<std::vector<Particle>> ref_p = std::make_unique<std::vector<Particle>>();
     char *ref_file = const_cast<char*>("../tests/Answer_Ref/Ans_simulation_complex.txt");
-    fileReader.readFile(ref_p, ref_file);
-    ParticleContainer reference(ref_p, new GravitationalForce(),true);
+    fileReader.readFile(*ref_p, ref_file);
+    std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
+    DirectSumContainer reference(ref_p, ref_f);
 
     if(!(reference == *pc)) {
         test_logger->error("Assignment 1 - complex simulation test failed");
