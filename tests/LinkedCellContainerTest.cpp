@@ -74,6 +74,33 @@ TEST_F(LinkedCellContainerTest, Indices) {
     }
 }
 
+TEST_F(LinkedCellContainerTest, Neighbours) {
+    test_logger->info("LinkedCellContainer - Neighbour indices test");
+    // inner cell
+    std::set<int> ref1 = {11636, 11638, 11671, 11672, 11673, 11601, 11602, 11603,
+                          12862, 12861, 12863, 12896, 12897, 12898, 12826, 12827, 12828,
+                          10412, 10411, 10413, 10446, 10447, 10448, 10376, 10377, 10378};
+    EXPECT_EQ(ref1, container3D->getCells()[11637].getNeighbours());
+    // cell at boundary
+    std::set<int> ref2 = {1523, 1525, 1558, 1559, 1560, 1488, 1489, 1490,
+                          2749, 2748, 2750, 2783, 2784, 2785, 2713, 2714, 2715};
+    EXPECT_EQ(ref2, container3D->getCells()[1524].getNeighbours());
+    // cell at vertex
+    std::set<int> ref3 = {7387, 7421, 7422, 8611, 8612, 8646, 8647, 6161, 6162, 6196, 6197};
+    EXPECT_EQ(ref3, container3D->getCells()[7386].getNeighbours());
+    // cell at corner
+    std::set<int> ref4 = {20787, 20753, 20752, 19563, 19562, 19528, 19527};
+    EXPECT_EQ(ref4, container3D->getCells()[20788].getNeighbours());
+    // halo cells
+    std::set<int> empty{};
+    EXPECT_EQ(empty, container3D->getCells()[0].getNeighbours());
+    EXPECT_EQ(empty, container3D->getCells()[337].getNeighbours());
+    EXPECT_EQ(empty, container3D->getCells()[1237].getNeighbours());
+    EXPECT_EQ(empty, container3D->getCells()[12244].getNeighbours());
+    EXPECT_EQ(empty, container3D->getCells()[5740].getNeighbours());
+    EXPECT_EQ(empty, container3D->getCells()[5424].getNeighbours());
+}
+
 // Test whether the method removeFrom works correctly
 TEST_F(LinkedCellContainerTest, RemoveHalo) {
     test_logger->info("LinkedCellContainer - Remove halo particles test");

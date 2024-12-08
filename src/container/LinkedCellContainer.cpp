@@ -87,7 +87,7 @@ void LinkedCellContainer::updateF(bool newton3) {
         p1.setF({0, 0, 0}); // reset the force
     }
 
-    for(int i =0 ; i < cells.size(); ++i){
+    for(int i: domainCells){
         std::vector<int> pointCellParticles = cells[i].getParticleIndices();
 
         // update forces between neighbouring cells
@@ -298,7 +298,7 @@ void LinkedCellContainer::addCluster(const Cluster &cluster) {
 }
 
 bool LinkedCellContainer::isHaloCell(int index) {
-    if (index < 0 || index >= cells.size()) {
+    if (index < -1 || index > cells.size()) {
         return false;
     }
     std::array<int, 3> index3D = get3DIndex(index);
