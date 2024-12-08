@@ -91,7 +91,7 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
             BoundaryCondition3 b = input->parameters().linked_cell()->boundary_condition();
             auto boundaryConditionMap = [](const BoundaryConditionType& t) {
                 switch (t) {
-                    case BoundaryConditionType::value::reflection:
+                    case BoundaryConditionType::value::reflect:
                         return REFLECTING;
                     case BoundaryConditionType::value::outflow:
                         return OUTFLOW;
