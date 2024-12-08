@@ -6,7 +6,7 @@
 
 class CellTest: public ::testing::Test {
 protected:
-    std::vector<int> neighbours;
+    std::set<int> neighbours;
     Cell cell = Cell(std::array<double, 3>{5, 10, 0}, std::array<double, 3>{3, 1, 1}, neighbours);
 };
 

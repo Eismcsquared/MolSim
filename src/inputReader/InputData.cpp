@@ -3161,7 +3161,7 @@ const char* const BoundaryConditionType::
 _xsd_BoundaryConditionType_literals_[3] =
 {
   "outflow",
-  "reflection",
+  "reflect",
   "periodic"
 };
 
@@ -3170,7 +3170,7 @@ _xsd_BoundaryConditionType_indexes_[3] =
 {
   ::BoundaryConditionType::outflow,
   ::BoundaryConditionType::periodic,
-  ::BoundaryConditionType::reflection
+  ::BoundaryConditionType::reflect
 };
 
 // BoundaryCondition3

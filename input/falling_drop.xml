@@ -29,10 +29,10 @@
             </domain_size>
             <cutoff_radius>3</cutoff_radius>
             <boundary_condition>
-                <left>reflection</left>
-                <right>reflection</right>
-                <down>reflection</down>
-                <up>reflection</up>
+                <left>reflect</left>
+                <right>reflect</right>
+                <down>reflect</down>
+                <up>reflect</up>
             </boundary_condition>
         </linked_cell>
     </parameters>

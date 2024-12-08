@@ -1,7 +1,7 @@
 #include <algorithm>
 #include "Cell.h"
 
-Cell::Cell(std::array<double, 3> position, std::array<double, 3> size, std::vector<int>& neighbours):
+Cell::Cell(std::array<double, 3> position, std::array<double, 3> size, std::set<int>& neighbours):
 position(position), size(size), neighbours(neighbours) {}
 
 const std::vector<int> &Cell::getParticleIndices() const {
@@ -16,7 +16,7 @@ const std::array<double, 3> Cell::getSize() const {
     return size;
 }
 
-const std::vector<int> &Cell::getNeighbours() const {
+const std::set<int> &Cell::getNeighbours() const {
     return neighbours;
 }
 

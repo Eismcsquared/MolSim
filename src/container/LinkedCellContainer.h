@@ -122,7 +122,7 @@ public:
      * @param cellIndex The index of the cell.
      * @return The indices of the neighbor cells.
      */
-    std::vector<int> getNeighborCells(int cellIndex);
+    std::set<int> getNeighborCells(int cellIndex);
 
     /**
      * @brief Get the index of a cell that contains a given position.
@@ -148,10 +148,10 @@ public:
 
     /**
      * @brief Update the forces between particles in two cells.
-     * @param v1 The indices of particles in the first cell.
-     * @param v2 The indices of particles in the second cell.
+     * @param c1 The index of the first cell.
+     * @param v2 The index of the second cell.
      */
-    void updateFCells(const std::vector<int> &v1, const std::vector<int> &v2);
+    void updateFCells(int c1, int c2);
 
     /**
      * Check whether a cell is a boundary cell.

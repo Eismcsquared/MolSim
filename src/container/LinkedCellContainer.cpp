@@ -37,7 +37,7 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
                 std::array<double, 3> position = {k * size_x, j * size_y, i * size_z};
                 std::array<double, 3> size = {size_x, size_y, size_z};
                 int index = get1DIndex(index3D);
-                std::vector<int> neighbours = getNeighborCells(index);
+                std::set<int> neighbours = getNeighborCells(index);
                 // push the cell into the cells vector
                 cells.emplace_back(position, size, neighbours);
                 for (int l = 0; l < 3; ++l) {
@@ -95,7 +95,7 @@ void LinkedCellContainer::updateF(bool newton3) {
         for(auto & neighbor : neighbors){
             // make sure every pair of cells is only considered once
             if (i < neighbor) {
-                updateFCells(pointCellParticles, cells[neighbor].getParticleIndices());
+                updateFCells(neighbor, i);
             }
         }
 
@@ -109,19 +109,10 @@ void LinkedCellContainer::updateF(bool newton3) {
                 // if the distance is greater than the cutoff, skip the calculation
                 if(dist > cutoff) continue;
 
-                
                 std::array<double, 3> forceIJ = f->force((*particles)[pointCellParticles[j]], (*particles)[pointCellParticles[k]]);
-                
-                std::array<double, 3> v1_force{};
-                std::array<double, 3> v2_force{};
-                
-                for(int l = 0; l < 3; l++){
-                    v1_force[l] = (*particles)[pointCellParticles[j]].getF()[l] - forceIJ[l];
-                    v2_force[l] = (*particles)[pointCellParticles[k]].getF()[l] + forceIJ[l];
-                }
 
-                (*particles)[pointCellParticles[j]].setF(v1_force);
-                (*particles)[pointCellParticles[k]].setF(v2_force);
+                (*particles)[pointCellParticles[j]].setF((*particles)[pointCellParticles[j]].getF() - forceIJ);
+                (*particles)[pointCellParticles[k]].setF((*particles)[pointCellParticles[k]].getF() + forceIJ);
             }
         }
 
@@ -130,28 +121,46 @@ void LinkedCellContainer::updateF(bool newton3) {
 
 }
 
-void LinkedCellContainer::updateFCells(const std::vector<int> &v1, const std::vector<int> &v2){
+void LinkedCellContainer::updateFCells(int c1, int c2){
+
+    std::vector<int> v1 = cells[c1].getParticleIndices();
+    std::vector<int> v2 = cells[c2].getParticleIndices();
+
+    std::array<int, 3> idx3D1 = get3DIndex(c1);
+    std::array<int, 3> idx3D2 = get3DIndex(c2);
+
+    // Consider periodic boundary condition in the force calculation.
+    std::vector<std::array<double, 3>> offsets;
+
+    for (int z = -1 * (boundaryConditions[4] == PERIODIC); z <= (boundaryConditions[5] == PERIODIC); ++z) {
+        for (int y = -1 * (boundaryConditions[2] == PERIODIC); y <= (boundaryConditions[3] == PERIODIC); ++y) {
+            for (int x = -1 * (boundaryConditions[0] == PERIODIC); x <= (boundaryConditions[1] == PERIODIC); ++x) {
+                if (std::abs(idx3D1[0] + x * nCells[0] - idx3D2[0]) <= 1 &&
+                    std::abs(idx3D1[1] + y * nCells[1] - idx3D2[1]) <= 1 &&
+                    std::abs(idx3D1[2] + z * nCells[2] - idx3D2[2]) <= 1 ) {
+                    offsets.push_back({x * domainSize[0], y * domainSize[1], z * domainSize[2]});
+                }
+            }
+        }
+    }
+
     for (int i : v1) {
         for (int j : v2) {
 
-            //////////////////////////////////////////////////////////
-            double dist = ArrayUtils::L2Norm((*particles)[i].getX() - (*particles)[j].getX());
-            if(dist > cutoff) continue; 
-            // if the distance is greater than the cutoff, skip the calculation
-            
+            for (std::array<double, 3> offset: offsets) {
+                double dist = ArrayUtils::L2Norm((*particles)[i].getX() + offset - (*particles)[j].getX());
+                // if the distance is greater than the cutoff, skip the calculation
+                if(dist <= cutoff) {
 
-            std::array<double, 3> forceIJ = f->force((*particles)[i], (*particles)[j]);
+                    Particle mock = (*particles)[i];
+                    mock.setX(mock.getX() + offset);
 
-            std::array<double, 3> v1_force{};
-            std::array<double, 3> v2_force{};
+                    std::array<double, 3> forceIJ = f->force(mock, (*particles)[j]);
 
-            for(int k = 0; k < 3; k++){
-                v1_force[k] = (*particles)[i].getF()[k] - forceIJ[k];
-                v2_force[k] = (*particles)[j].getF()[k] + forceIJ[k];
+                    (*particles)[i].setF((*particles)[i].getF() - forceIJ);
+                    (*particles)[j].setF((*particles)[j].getF() + forceIJ);
+                }
             }
-
-            (*particles)[i].setF(v1_force);
-            (*particles)[j].setF(v2_force);
         }
     }
 }
@@ -181,9 +190,9 @@ void LinkedCellContainer::updateX(double delta_t){
 }
 
 // only used once in the constructor.
-std::vector<int> LinkedCellContainer::getNeighborCells(int cellIndex) {
+std::set<int> LinkedCellContainer::getNeighborCells(int cellIndex) {
     std::array<int, 3> index3D = get3DIndex(cellIndex);
-    std::vector<int> neighbors;
+    std::set<int> neighbors;
 
     // Halo cells don't need neighbours as they are not considered in the force calculation.
     if (isHaloCell(cellIndex)) {
@@ -202,7 +211,7 @@ std::vector<int> LinkedCellContainer::getNeighborCells(int cellIndex) {
             for (int x = neighbourBounds[0]; x <= neighbourBounds[1]; ++x) {
                 int neighborIndex = get1DIndex({(x + nCells[0]) % nCells[0], (y + nCells[1]) % nCells[1], (z + nCells[2]) % nCells[2]});
                 if (neighborIndex != cellIndex) {
-                    neighbors.push_back(neighborIndex);
+                    neighbors.insert(neighborIndex);
                 }
             }
         }

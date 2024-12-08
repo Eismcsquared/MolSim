@@ -87,7 +87,7 @@
     <xs:simpleType name="BoundaryConditionType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="outflow"/>
-            <xs:enumeration value="reflection"/>
+            <xs:enumeration value="reflect"/>
             <xs:enumeration value="periodic"/>
         </xs:restriction>
     </xs:simpleType>

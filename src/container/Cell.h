@@ -1,5 +1,6 @@
 #include <array>
 #include <vector>
+#include <set>
 #include "body/Particle.h"
 
 /**
@@ -26,7 +27,7 @@ private:
     /**
      * The indices of neighbouring cells.
      */
-    std::vector<int> neighbours;
+    std::set<int> neighbours;
 
 public:
    /**
@@ -34,7 +35,7 @@ public:
     * @param position The position of the cell.
     * @param size The size of the cell.
     */
-    Cell(std::array<double, 3> position, std::array<double, 3> size, std::vector<int>& neighbours);
+    Cell(std::array<double, 3> position, std::array<double, 3> size, std::set<int>& neighbours);
    /**
     * The getter for the position of a cell.
     * @return The position of the cell.
@@ -55,7 +56,7 @@ public:
      * Getter for the indices of the neighbouring cells.
      * @return The indices of the neighbouring cells.
      */
-    const std::vector<int> &getNeighbours() const;
+    const std::set<int> &getNeighbours() const;
 
    /**
     * Test whether a given position belongs to the cell.

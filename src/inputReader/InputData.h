@@ -3857,7 +3857,7 @@ class BoundaryConditionType: public ::xml_schema::string
   enum value
   {
     outflow,
-    reflection,
+    reflect,
     periodic
   };
 
