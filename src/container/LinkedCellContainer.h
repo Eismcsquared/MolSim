@@ -42,6 +42,16 @@ private:
     std::array<int, 3> nCells;
 
     /**
+     * The indices of halo cells in each direction. Each vector represents a direction, following the order of the enum Direction.
+     */
+    std::array<std::vector<int>, 6> haloCells;
+
+    /**
+     * The indices of domain cells.
+     */
+    std::vector<int> domainCells;
+
+    /**
      * The boundary condition of the domain, stored in the order: left, right, down, up, back, front
      * where: left->right is the x-direction, down->up is the y-direction, back->front is the z-direction.
      */
@@ -141,7 +151,7 @@ public:
      * @param v1 The indices of particles in the first cell.
      * @param v2 The indices of particles in the second cell.
      */
-    void updateCellF(const std::vector<int> &v1, const std::vector<int> &v2, bool newton3);
+    void updateFCells(const std::vector<int> &v1, const std::vector<int> &v2);
 
     /**
      * Check whether a cell is a boundary cell.
@@ -158,11 +168,11 @@ public:
     bool isHaloCell(int index);
 
     /**
-     * Compute the indices of all halo cells
-     * @param direction: The direction of the boundary, e.g. for LEFT: Indices of all halo cells with x < 0 are returned
-     * @return The indices of halo cells in a vector
+     * Check whether a cell is in domain.
+     * @param index The linear index of the cell.
+     * @return True if the cell is in domain.
      */
-    std::vector<int> getAllHaloIndices(Direction direction);
+    bool isDomainCell(int index);
 
     /**
      * Remove particles from halo cells.
@@ -176,17 +186,19 @@ public:
      * For REFLECTING boundary condition: the corresponding component of the velocity is inverted.
      * @param direction The direction of the halo cells
      * @param boundaryCondition The boundary condition.
+     * @param deltaT The time step.
      */
-    void updateHalo(Direction direction, BoundaryCondition boundaryCondition);
+    void updateHalo(Direction direction, BoundaryCondition boundaryCondition, double deltaT);
 
     /**
      * Handle particles in the halo cells according to the boundary condition.
      */
-     void updateHalo();
+     void updateHalo(double deltaT);
 
     /**
      * Add a particle to the linked cell container
      * @param particle: The particle to add to the container
+     * @param deltaT The time step.
      */
     void addParticle(const Particle& particle) override;
 

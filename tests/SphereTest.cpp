@@ -18,20 +18,20 @@ TEST_F(SphereTest, CreateParticles2D) {
     std::vector<Particle> particles;
     sphere2D.createParticles(particles);
     double mean = 0;
-    double meanSquire = 0;
+    double meanSquare = 0;
     for(Particle &p: particles) {
         EXPECT_TRUE(ArrayUtils::L2Norm(p.getX()) <= 1000) << "Wrong particle created at position ("
         << p.getX()[0] << ", " << p.getX()[1] << ", " << p.getX()[2] << ")";
         EXPECT_NEAR(1, p.getM(), 1e-12) << "Particle with wrong mass encountered. Expected: 1, but got: " << p.getM();
         mean += ArrayUtils::L2Norm(p.getV());
-        meanSquire += pow(ArrayUtils::L2Norm(p.getV()), 2);
+        meanSquare += pow(ArrayUtils::L2Norm(p.getV()), 2);
     }
     mean /= particles.size();
-    meanSquire /= particles.size();
+    meanSquare /= particles.size();
     EXPECT_NEAR(sqrt(pi / 2), mean, 2e-3) << "Wrong mean velocity of Brownian motion. Expected: "
     << sqrt(pi / 2) << ", but got " << mean;
-    EXPECT_NEAR(2, meanSquire, 5e-3) << "Wrong mean squared velocity of Brownian motion. Expected: "
-    << 2 << ", but got " << meanSquire;
+    EXPECT_NEAR(2, meanSquare, 5e-3) << "Wrong mean squared velocity of Brownian motion. Expected: "
+                                     << 2 << ", but got " << meanSquare;
     if(::testing::Test::HasFailure()) {
         test_logger->info("Sphere - 2D Sphere test failed");
     } else {
@@ -45,20 +45,20 @@ TEST_F(SphereTest, CreateParticles3D) {
     std::vector<Particle> particles;
     sphere3D.createParticles(particles);
     double mean = 0;
-    double meanSquire = 0;
+    double meanSquare = 0;
     for(Particle &p: particles) {
         EXPECT_TRUE(ArrayUtils::L2Norm(p.getX() - std::array<double, 3>{5, 5, 5}) <= 300) << "Wrong particle created at position ("
         << p.getX()[0] << ", " << p.getX()[1] << ", " << p.getX()[2] << ")";
         EXPECT_NEAR(1, p.getM(), 1e-12) << "Particle with wrong mass encountered. Expected: 1, but got: " << p.getM();
         mean += ArrayUtils::L2Norm(p.getV() - std::array<double, 3>{-1, 0, 1});
-        meanSquire += pow(ArrayUtils::L2Norm(p.getV() - std::array<double, 3>{-1, 0, 1}), 2);
+        meanSquare += pow(ArrayUtils::L2Norm(p.getV() - std::array<double, 3>{-1, 0, 1}), 2);
     }
     mean /= particles.size();
-    meanSquire /= particles.size();
+    meanSquare /= particles.size();
     EXPECT_NEAR(sqrt(2 / pi), mean, 1e-3) << "Wrong mean velocity of Brownian motion. Expected: "
     << sqrt(2 / pi) << ", but got " << mean;
-    EXPECT_NEAR(0.75, meanSquire, 2.5e-3) << "Wrong mean squared velocity of Brownian motion. Expected: "
-    << 0.75 << ", but got " << meanSquire;
+    EXPECT_NEAR(0.75, meanSquare, 2.5e-3) << "Wrong mean squared velocity of Brownian motion. Expected: "
+                                          << 0.75 << ", but got " << meanSquare;
     if(::testing::Test::HasFailure()) {
         test_logger->info("Sphere - 3D Sphere test failed");
     } else {

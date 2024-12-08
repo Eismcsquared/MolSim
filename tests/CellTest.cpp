@@ -6,7 +6,8 @@
 
 class CellTest: public ::testing::Test {
 protected:
-    Cell cell = Cell(std::array<double, 3>{5, 10, 0}, std::array<double, 3>{3, 1, 1});
+    std::vector<int> neighbours;
+    Cell cell = Cell(std::array<double, 3>{5, 10, 0}, std::array<double, 3>{3, 1, 1}, neighbours);
 };
 
 // Test whether adding and removing indices from a cell works correctly.

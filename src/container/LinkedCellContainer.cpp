@@ -33,10 +33,23 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
         for (int j = -1; j <= nY; j++) {
             for (int k = -1; k <= nX; k++) {
                 // compute the position of the cell
+                std::array<int, 3> index3D = {k, j, i};
                 std::array<double, 3> position = {k * size_x, j * size_y, i * size_z};
                 std::array<double, 3> size = {size_x, size_y, size_z};
+                int index = get1DIndex(index3D);
+                std::vector<int> neighbours = getNeighborCells(index);
                 // push the cell into the cells vector
-                cells.emplace_back(position, size);
+                cells.emplace_back(position, size, neighbours);
+                for (int l = 0; l < 3; ++l) {
+                    if (index3D[l] == -1) {
+                        haloCells[2 * l].push_back(index);
+                    } else if (index3D[l] == nCells[l]) {
+                        haloCells[2 * l + 1].push_back(index);
+                    }
+                }
+                if (k >= 0 && k < nCells[0] && j >= 0 && j < nCells[1] && i >= 0 && i < nCells[2]) {
+                    domainCells.push_back(index);
+                }
             }
         }
     }
@@ -48,8 +61,11 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
         
         // Add particle index to the corresponding cell
         int idx = getCellIndex(pos);
-        if(idx >= 0 && idx < cells.size()) {
+        std::array<int, 3> index3D = get3DIndex(idx);
+        if(index3D[0] >= 0 && index3D[0] < nCells[0] && index3D[1] >= 0 && index3D[1] < nCells[1] && index3D[2] >= 0 && index3D[2] < nCells[2]) {
             cells[idx].addIndex(i);
+        } else {
+            (*particles)[i].removeFromDomain();
         }
     }
     ParticleContainer::updateF();
@@ -75,11 +91,11 @@ void LinkedCellContainer::updateF(bool newton3) {
         std::vector<int> pointCellParticles = cells[i].getParticleIndices();
 
         // update forces between neighbouring cells
-        auto neighbors = getNeighborCells(i);
+        auto neighbors = cells[i].getNeighbours();
         for(auto & neighbor : neighbors){
             // make sure every pair of cells is only considered once
             if (i < neighbor) {
-                updateCellF(pointCellParticles, cells[neighbor].getParticleIndices(), newton3);
+                updateFCells(pointCellParticles, cells[neighbor].getParticleIndices());
             }
         }
 
@@ -96,8 +112,8 @@ void LinkedCellContainer::updateF(bool newton3) {
                 
                 std::array<double, 3> forceIJ = f->force((*particles)[pointCellParticles[j]], (*particles)[pointCellParticles[k]]);
                 
-                std::array<double, 3> v1_force;
-                std::array<double, 3> v2_force;
+                std::array<double, 3> v1_force{};
+                std::array<double, 3> v2_force{};
                 
                 for(int l = 0; l < 3; l++){
                     v1_force[l] = (*particles)[pointCellParticles[j]].getF()[l] - forceIJ[l];
@@ -114,7 +130,7 @@ void LinkedCellContainer::updateF(bool newton3) {
 
 }
 
-void LinkedCellContainer::updateCellF(const std::vector<int> &v1, const std::vector<int> &v2, bool newton3){
+void LinkedCellContainer::updateFCells(const std::vector<int> &v1, const std::vector<int> &v2){
     for (int i : v1) {
         for (int j : v2) {
 
@@ -123,35 +139,19 @@ void LinkedCellContainer::updateCellF(const std::vector<int> &v1, const std::vec
             if(dist > cutoff) continue; 
             // if the distance is greater than the cutoff, skip the calculation
             
-            if (newton3) {
-                std::array<double, 3> forceIJ = f->force((*particles)[i], (*particles)[j]);
 
-                std::array<double, 3> v1_force;
-                std::array<double, 3> v2_force;
+            std::array<double, 3> forceIJ = f->force((*particles)[i], (*particles)[j]);
 
-                for(int k = 0; k < 3; k++){
-                    v1_force[k] = (*particles)[i].getF()[k] - forceIJ[k];
-                    v2_force[k] = (*particles)[j].getF()[k] + forceIJ[k];
-                }
+            std::array<double, 3> v1_force{};
+            std::array<double, 3> v2_force{};
 
-                (*particles)[i].setF(v1_force);
-                (*particles)[j].setF(v2_force);
-            } else {
-                std::array<double, 3> forceIJ = f->force((*particles)[i], (*particles)[j]);
-                std::array<double, 3> forceJI = f->force((*particles)[j], (*particles)[i]);
-
-                std::array<double, 3> v1_force;
-                std::array<double, 3> v2_force;
-
-                for(int k = 0; k < 3; k++){
-                    v1_force[k] = (*particles)[i].getF()[k] + forceJI[k];
-                    v2_force[k] = (*particles)[j].getF()[k] + forceIJ[k];
-                }
-
-                (*particles)[i].setF(v1_force);
-                (*particles)[j].setF(v2_force);
+            for(int k = 0; k < 3; k++){
+                v1_force[k] = (*particles)[i].getF()[k] - forceIJ[k];
+                v2_force[k] = (*particles)[j].getF()[k] + forceIJ[k];
             }
 
+            (*particles)[i].setF(v1_force);
+            (*particles)[j].setF(v2_force);
         }
     }
 }
@@ -166,27 +166,41 @@ void LinkedCellContainer::updateX(double delta_t){
 
         int cellidx_after = getCellIndex((*particles)[i].getX());
 
-
         if(cellidx_before != cellidx_after){
-            cells[cellidx_before].removeIndex(i);
+            if (cellidx_before >= 0 && cellidx_before < cells.size()) {
+                cells[cellidx_before].removeIndex(i);
+            }
             if(cellidx_after >= 0 && cellidx_after < cells.size()) {
                 cells[cellidx_after].addIndex(i);
+            } else {
+                (*particles)[i].removeFromDomain();
             }
         }
     }
-    updateHalo();
+    updateHalo(delta_t);
 }
 
-
+// only used once in the constructor.
 std::vector<int> LinkedCellContainer::getNeighborCells(int cellIndex) {
     std::array<int, 3> index3D = get3DIndex(cellIndex);
     std::vector<int> neighbors;
 
-    // get all neighbors, also halo cells
-    for (int z = std::max(-1, index3D[2] - 1); z <= std::min(index3D[2] + 1, nCells[2]); ++z) {
-        for (int y = std::max(-1, index3D[1] - 1); y <= std::min(index3D[1] + 1, nCells[1]); ++y) {
-            for (int x = std::max(-1, index3D[0] - 1); x <= std::min(index3D[0] + 1, nCells[0]); ++x) {
-                int neighborIndex = get1DIndex({x, y, z});
+    // Halo cells don't need neighbours as they are not considered in the force calculation.
+    if (isHaloCell(cellIndex)) {
+        return neighbors;
+    }
+    //
+    std::array<int, 6> neighbourBounds{};
+    for (int i = 0; i < 3; ++i) {
+        neighbourBounds[2 * i] = boundaryConditions[2 * i] == PERIODIC ? index3D[i] - 1 : std::max(0, index3D[i] - 1);
+        neighbourBounds[2 * i + 1] = boundaryConditions[2 * i + 1] == PERIODIC ? index3D[i] + 1 : std::min(nCells[i] - 1, index3D[i] + 1);
+    }
+
+    // get all neighbors, for periodic boundary condition the cells on the other side are considered as well.
+    for (int z = neighbourBounds[4]; z <= neighbourBounds[5]; ++z) {
+        for (int y = neighbourBounds[2]; y <= neighbourBounds[3]; ++y) {
+            for (int x = neighbourBounds[0]; x <= neighbourBounds[1]; ++x) {
+                int neighborIndex = get1DIndex({(x + nCells[0]) % nCells[0], (y + nCells[1]) % nCells[1], (z + nCells[2]) % nCells[2]});
                 if (neighborIndex != cellIndex) {
                     neighbors.push_back(neighborIndex);
                 }
@@ -275,60 +289,25 @@ void LinkedCellContainer::addCluster(const Cluster &cluster) {
 }
 
 bool LinkedCellContainer::isHaloCell(int index) {
+    if (index < 0 || index >= cells.size()) {
+        return false;
+    }
     std::array<int, 3> index3D = get3DIndex(index);
-    return index3D[0] < 0 || index3D[0] >= nCells[0] || index3D[1] < 0 || index3D[1] >= nCells[1] || index3D[2] < 0 || index3D[2] >= nCells[2];
+    return index3D[0] == -1 || index3D[0] == nCells[0] || index3D[1] == -1 || index3D[1] == nCells[1] || index3D[2] == -1 || index3D[2] == nCells[2];
 }
 
-std::vector<int> LinkedCellContainer::getAllHaloIndices(Direction direction) {
-    std::vector<int> haloIndices;
-    switch (direction) {
-        case LEFT:
-            for (int z = -1; z <= nCells[2] ; ++z) {
-                for (int y = -1; y <= nCells[1]; ++y) {
-                    haloIndices.push_back(get1DIndex({-1, y, z}));
-                }
-            }
-            break;
-        case RIGHT:
-            for (int z = -1; z <= nCells[2] ; ++z) {
-                for (int y = -1; y <= nCells[1]; ++y) {
-                    haloIndices.push_back(get1DIndex({nCells[0], y, z}));
-                }
-            }
-            break;
-        case DOWN:
-            for (int z = -1; z <= nCells[2] ; ++z) {
-                for (int x = -1; x <= nCells[0]; ++x) {
-                    haloIndices.push_back(get1DIndex({x, -1, z}));
-                }
-            }
-            break;
-        case UP:
-            for (int z = -1; z <= nCells[2] ; ++z) {
-                for (int x = -1; x <= nCells[0]; ++x) {
-                    haloIndices.push_back(get1DIndex({x, nCells[1], z}));
-                }
-            }
-            break;
-        case BACK:
-            for (int y = -1; y <= nCells[1] ; ++y) {
-                for (int x = -1; x <= nCells[0]; ++x) {
-                    haloIndices.push_back(get1DIndex({x, y, -1}));
-                }
-            }
-            break;
-        case FRONT:
-            for (int y = -1; y <= nCells[1] ; ++y) {
-                for (int x = -1; x <= nCells[0]; ++x) {
-                    haloIndices.push_back(get1DIndex({x, y, nCells[2]}));
-                }
-            }
+bool LinkedCellContainer::isDomainCell(int index) {
+    if (index < 0 || index >= cells.size()) {
+        return false;
     }
-    return haloIndices;
+    std::array<int, 3> index3D = get3DIndex(index);
+    return index3D[0] >= 0 && index3D[0] < nCells[0] && index3D[1] >= 0 && index3D[1] < nCells[1] && index3D[2] >= 0 && index3D[2] < nCells[2];
 }
+
+
 
 void LinkedCellContainer::removeFromHalo(Direction direction) {
-    for(int i : getAllHaloIndices(direction)) {
+    for(int i : haloCells[direction]) {
         for (int p: cells[i].getParticleIndices()) {
             (*particles)[p].removeFromDomain();
             cells[i].removeIndex(p);
@@ -336,35 +315,51 @@ void LinkedCellContainer::removeFromHalo(Direction direction) {
     }
 }
 
-void LinkedCellContainer::updateHalo(Direction direction, BoundaryCondition boundaryCondition) {
-    for(int i : getAllHaloIndices(direction)) {
+void LinkedCellContainer::updateHalo(Direction direction, BoundaryCondition boundaryCondition, double deltaT) {
+    for(int i : haloCells[direction]) {
         for (int p : cells[i].getParticleIndices()) {
+            std::array<double, 3> pos = (*particles)[p].getX();
+            std::array<double, 3> vel = (*particles)[p].getV();
             switch (boundaryCondition) {
                 case OUTFLOW:
                     (*particles)[p].removeFromDomain();
                     cells[i].removeIndex(p);
                     break;
                 case REFLECTING:
-                    // change sign of the corresponding velocity component if the particle is flying away.
-                    if ((*particles)[p].getV()[direction / 2] * (direction % 2 - 0.5) > 0) {
-                        std::array<double, 3> vel = (*particles)[p].getV();
-                        vel[direction / 2] *= -1;
-                        (*particles)[p].setV(vel);
-                    }
+
+                    // change sign of the corresponding velocity component.
+                    // Also flipping the term of f_{old} in the next update of the velocity.
+                    // Note: Since the next update will add f_old / (2m) * dt to the velocity, subtracting twice of the
+                    // term in advance effectively flips this term
+
+                    vel[direction / 2] *= -1;
+                    vel[direction / 2] -= (*particles)[p].getF()[direction / 2] * deltaT / (*particles)[p].getM();
+                    (*particles)[p].setV(vel);
+
+                    // reflect the position of the particle with respect to the boundary.
+
+                    pos[direction / 2] = 2 * (direction % 2) * domainSize[direction / 2] - pos[direction / 2];
+                    (*particles)[p].setX(pos);
+                    cells[i].removeIndex(p);
+                    cells[getCellIndex(pos)].addIndex(p);
                     break;
                 case PERIODIC:
-                    cells[i].removeIndex(p);
-                    std::array<double, 3> pos = (*particles)[p].getX();
+
+                    // Move the particle to the other side once it left the domain.
+
                     pos[direction / 2] = pos[direction / 2] + pow(-1, direction % 2) * domainSize[direction / 2];
                     (*particles)[p].setX(pos);
+                    cells[i].removeIndex(p);
+                    cells[getCellIndex(pos)].addIndex(p);
             }
         }
     }
+
 }
 
-void LinkedCellContainer::updateHalo() {
+void LinkedCellContainer::updateHalo(double deltaT) {
     for (int i = 0; i < 6; ++i) {
-        updateHalo(static_cast<Direction>(i), boundaryConditions[i]);
+        updateHalo(static_cast<Direction>(i), boundaryConditions[i], deltaT);
     }
 }
 
