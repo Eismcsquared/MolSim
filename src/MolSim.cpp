@@ -17,6 +17,7 @@
 #include "inputReader/XMLReader.h"
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
+#include "force/Gravity_Force.h"
 #include "container/DirectSumContainer.h"
 #include "container/LinkedCellContainer.h"
 #include "Simulation.h"

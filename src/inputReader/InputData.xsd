@@ -150,6 +150,7 @@
             <xs:enumeration value="gravity"/>
         </xs:restriction>
     </xs:simpleType>
+    
 
     <xs:simpleType name="OutputFormatType">
         <xs:restriction base="xs:string">

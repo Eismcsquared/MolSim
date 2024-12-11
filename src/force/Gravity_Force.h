@@ -14,8 +14,6 @@ private:
 public:
     explicit Gravity_Force(const std::array<double, 3>& g);
     Gravity_Force() : g({0.0, -12.44, 0.0}) {}
-
-
     /**
      * gravitational force on gravitational field
      * particle2 is not used.

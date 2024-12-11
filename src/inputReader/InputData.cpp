@@ -3423,17 +3423,19 @@ _xsd_ForceType_convert () const
 }
 
 const char* const ForceType::
-_xsd_ForceType_literals_[2] =
+_xsd_ForceType_literals_[3] =
 {
   "gravitation",
-  "Lennard-Jones"
+  "Lennard-Jones",
+  "gravity"
 };
 
 const ForceType::value ForceType::
-_xsd_ForceType_indexes_[2] =
+_xsd_ForceType_indexes_[3] =
 {
   ::ForceType::Lennard_Jones,
-  ::ForceType::gravitation
+  ::ForceType::gravitation,
+  ::ForceType::gravity
 };
 
 // OutputFormatType

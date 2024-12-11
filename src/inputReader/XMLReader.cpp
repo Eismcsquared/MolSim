@@ -9,6 +9,7 @@
 #include "force/Force.h"
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
+#include "force/Gravity_Force.h"
 #include "container/DirectSumContainer.h"
 #include "body/Sphere.h"
 
@@ -84,6 +85,9 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
                 break;
             case ForceType::value::Lennard_Jones:
                 forces->push_back(std::make_unique<LennardJonesForce>());
+                break;
+            case ForceType::value::gravity:
+                forces->push_back(std::make_unique<Gravity_Force>());
                 break;
         } // need to be changed?
 
