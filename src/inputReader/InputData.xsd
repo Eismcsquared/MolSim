@@ -161,6 +161,15 @@
         </xs:sequence>
     </xs:complexType>
 
+    <xs:complexType name="ThermostatsType">
+        <xs:sequence>
+            <xs:element name="initial_T" type="PositiveDouble"/>
+            <xs:element name="target_T" type="PositiveDouble" minOccurs="0"/>
+            <xs:element name="periode" type="xs:positiveInteger"/>
+            <xs:element name="delta_T" type="PositiveDouble" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
     <xs:complexType name="SimulationParameters">
         <xs:sequence>
             <xs:element name="end_time" type="PositiveDouble" minOccurs="0" default="5"/>
@@ -190,6 +199,13 @@
                 <xs:annotation>
                     <xs:documentation>
                         The type of the force between particles.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="g" type="xs:double" minOccurs="0" default="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        The global gravitational acceleration (along the y-axis).
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>

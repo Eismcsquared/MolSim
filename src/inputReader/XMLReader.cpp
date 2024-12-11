@@ -23,7 +23,8 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
         std::unique_ptr<InputData> input(simulation(file, xsd::cxx::tree::flags::dont_validate));
         std::unique_ptr<std::vector<Particle>> particles = std::make_unique<std::vector<Particle>>();
         for (auto p: input->objects().particle()) {
-            double r_z = p.position().z().present() ? p.position().z().get() : DoubleVector3::z_default_value();
+
+            double r_z = p.position().z().present() ? p.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
             double v_z = p.velocity().z().present() ? p.velocity().z().get() : DoubleVector3::z_default_value();
             double epsilon = p.epsilon().present() ? p.epsilon().get() : ParticleType::epsilon_default_value();
             double sigma = p.sigma().present() ? p.sigma().get() : ParticleType::sigma_default_value();
@@ -36,7 +37,7 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
                     );
         }
         for (auto c : input->objects().cuboid()) {
-            double r_z = c.position().z().present() ? c.position().z().get() : DoubleVector3::z_default_value();
+            double r_z = c.position().z().present() ? c.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
             double v_z = c.velocity().z().present() ? c.velocity().z().get() : DoubleVector3::z_default_value();
             unsigned int n_z = c.size().z().present() ? c.size().z().get() : PositiveIntVector3::z_default_value();
             int dim = c.brownDimension().present() ? (int) c.brownDimension().get() : (int) CuboidType::brownDimension_default_value();
@@ -56,7 +57,7 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
             cuboid.createParticles(*particles);
         }
         for (auto s : input->objects().sphere()) {
-            double r_z = s.center().z().present() ? s.center().z().get() : DoubleVector3::z_default_value();
+            double r_z = s.center().z().present() ? s.center().z().get() : PositiveDoubleVector3::z_default_value() / 2;
             double v_z = s.velocity().z().present() ? s.velocity().z().get() : DoubleVector3::z_default_value();
             int radius = static_cast<int>(s.radius());
             int dim = s.dimension().present() ? static_cast<int>(s.dimension().get()) : static_cast<int>(SphereType::dimension_default_value());
