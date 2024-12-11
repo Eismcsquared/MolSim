@@ -75,15 +75,18 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
                     );
             sphere.createParticles(*particles);
         }
-        std::unique_ptr<Force> force;
+
+        std::unique_ptr<std::vector<std::unique_ptr<Force>>> forces = std::make_unique<std::vector<std::unique_ptr<Force>>>();
         ForceType f = input->parameters().force().present() ? input->parameters().force().get() : SimulationParameters::force_default_value();
         switch (f) {
             case ForceType::value::gravitation:
-                force = std::make_unique<GravitationalForce>();
+                forces->push_back(std::make_unique<GravitationalForce>());
                 break;
             case ForceType::value::Lennard_Jones:
-                force = std::make_unique<LennardJonesForce>();
-        }
+                forces->push_back(std::make_unique<LennardJonesForce>());
+                break;
+        } // need to be changed?
+
         std::unique_ptr<ParticleContainer> container;
         if (input->parameters().linked_cell().present()) {
             PositiveDoubleVector3 domainSize = input->parameters().linked_cell()->domain_size();
@@ -116,13 +119,13 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
             double size_z = domainSize.z().present() ? domainSize.z().get() : PositiveDoubleVector3::z_default_value();
             container = std::make_unique<LinkedCellContainer>(
                     particles,
-                    force,
+                    forces,
                     std::array<double, 3>{domainSize.x(), domainSize.y(), size_z},
                     cutoffRadius,
                     boundaryCondition
             );
         } else {
-            container = std::make_unique<DirectSumContainer>(particles, force);
+            container = std::make_unique<DirectSumContainer>(particles, forces);
         }
         double end_time = input->parameters().end_time().present() ? input->parameters().end_time().get() : SimulationParameters::end_time_default_value();
         double delta_t = input->parameters().delta_t().present() ? input->parameters().delta_t().get() : SimulationParameters::delta_t_default_value();

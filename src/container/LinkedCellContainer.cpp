@@ -6,7 +6,7 @@
 #include "cmath"
 
 
-LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f,
+LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<std::vector<std::unique_ptr<Force>>> &f,
                                          std::array<double, 3> domainSize, double cutoff, std::array<BoundaryCondition, 6> boundaryConditions) :
         ParticleContainer(particles, f), cutoff(cutoff), domainSize(domainSize), boundaryConditions(boundaryConditions){
 
@@ -109,7 +109,13 @@ void LinkedCellContainer::updateF(bool newton3) {
                 // if the distance is greater than the cutoff, skip the calculation
                 if(dist > cutoff) continue;
 
-                std::array<double, 3> forceIJ = f->force((*particles)[pointCellParticles[j]], (*particles)[pointCellParticles[k]]);
+                std::array<double, 3> forceIJ = {0.0, 0.0, 0.0};
+                for(auto &l : *(this->f)){
+                    std::array<double, 3> tempForce = l->force((*particles)[pointCellParticles[j]], (*particles)[pointCellParticles[k]]);
+                    for (int idx = 0; idx < 3; ++idx) {
+                        forceIJ[idx] += tempForce[idx];
+                    }
+                }
 
                 (*particles)[pointCellParticles[j]].setF((*particles)[pointCellParticles[j]].getF() - forceIJ);
                 (*particles)[pointCellParticles[k]].setF((*particles)[pointCellParticles[k]].getF() + forceIJ);
@@ -155,7 +161,13 @@ void LinkedCellContainer::updateFCells(int c1, int c2){
                     Particle mock = (*particles)[i];
                     mock.setX(mock.getX() + offset);
 
-                    std::array<double, 3> forceIJ = f->force(mock, (*particles)[j]);
+                    std::array<double, 3> forceIJ = {0.0, 0.0, 0.0};
+                    for (auto &l : *f) {
+                        std::array<double, 3> tempForce = l->force(mock, (*particles)[j]);
+                        for (int idx = 0; idx < 3; ++idx) {
+                            forceIJ[idx] += tempForce[idx];
+                        }
+                    }
 
                     (*particles)[i].setF((*particles)[i].getF() - forceIJ);
                     (*particles)[j].setF((*particles)[j].getF() + forceIJ);

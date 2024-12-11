@@ -140,9 +140,14 @@
     </xs:complexType>
 
     <xs:simpleType name="ForceType">
+        <xs:list itemType="AllowedForces"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="AllowedForces">
         <xs:restriction base="xs:string">
             <xs:enumeration value="gravitation"/>
             <xs:enumeration value="Lennard-Jones"/>
+            <xs:enumeration value="gravity"/>
         </xs:restriction>
     </xs:simpleType>
 

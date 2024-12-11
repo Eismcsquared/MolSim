@@ -10,7 +10,8 @@
 #include "spdlog/spdlog.h"
 
 
-DirectSumContainer::DirectSumContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f) : ParticleContainer(particles, f) {
+DirectSumContainer::DirectSumContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<std::vector<std::unique_ptr<Force>>> &f) : ParticleContainer(particles, f) 
+{
     // compute initial forces
     ParticleContainer::updateF();
     spdlog::trace("DirectSumContainer generated!");
@@ -27,7 +28,17 @@ void DirectSumContainer::updateF(bool newton3) {
         std::vector<std::array<double, 3>> newForces(particles->size(), {0, 0, 0});
         for (unsigned long i = 0; i < particles->size(); ++i) {
             for (unsigned long j = i + 1; j < particles->size(); ++j) {
-                std::array<double, 3> forceIJ = f->force((*particles)[i], (*particles)[j]);
+
+
+                std::array<double, 3> forceIJ = {0.0, 0.0, 0.0};
+
+                for(auto &k : *(this->f)){
+                    std::array<double, 3> tempForce = k->force((*particles)[i], (*particles)[j]);
+                    for (int idx = 0; idx < 3; ++idx) {
+                        forceIJ[idx] += tempForce[idx];
+                    }
+                }
+
                 // update forces using the third Newton axiom
                 newForces[i] = newForces[i] - forceIJ;
                 newForces[j] = newForces[j] + forceIJ;
@@ -43,8 +54,10 @@ void DirectSumContainer::updateF(bool newton3) {
             std::array<double, 3> cal_f = {0,0,0};
             for (auto &p2 : *particles) {
                 if(&p1 != &p2) {
-                    std::array<double, 3> forceIJ = f->force(p2, p1);
-                    cal_f = cal_f + forceIJ;
+                    for(auto &k : *f){
+                        std::array<double, 3> forceIJ = k->force(p2, p1);
+                        cal_f = cal_f + forceIJ;
+                    }
                 }
                 p1.setF(cal_f);
             }
