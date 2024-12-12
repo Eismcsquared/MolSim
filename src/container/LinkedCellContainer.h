@@ -66,7 +66,7 @@ public:
     * @param particles: The particles to store.
     * @param f: The force object that defines the force between two particles.
     */
-    LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f,
+    LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<std::vector<std::unique_ptr<Force>>> &f,
                         std::array<double, 3> domainSize,double cutoff, std::array<BoundaryCondition, 6> boundaryConditions);
 
     /**

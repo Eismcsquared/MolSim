@@ -17,6 +17,7 @@
 #include "inputReader/XMLReader.h"
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
+#include "force/Gravity_Force.h"
 #include "container/DirectSumContainer.h"
 #include "container/LinkedCellContainer.h"
 #include "Simulation.h"
@@ -60,12 +61,15 @@ int main(int argc, char *argsv[]) {
         std::unique_ptr<std::vector<Particle>> particles = std::make_unique<std::vector<Particle>>();
         FileReader fileReader;
         fileReader.readFile(*particles, inputFile);
-        std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
+
+        std::unique_ptr<std::vector<std::unique_ptr<Force>>> f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
+        f->push_back(std::make_unique<LennardJonesForce>());
+
         std::unique_ptr<ParticleContainer> container = std::make_unique<DirectSumContainer>(particles, f);
         simulation = std::make_unique<Simulation>(container, end_time, delta_t, outputFile, outputFormat, frequency);
     }
 
-    std::unique_ptr<Force> f;
+    std::unique_ptr<std::vector<std::unique_ptr<Force>>> f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
     int opt;
     static struct option long_options[] = {
             {"help",    no_argument,       nullptr,  'h' },
@@ -129,11 +133,11 @@ int main(int argc, char *argsv[]) {
                 simulation->setNewton3(false);
                 break;
             case 'g':
-                f = std::make_unique<GravitationalForce>();
+                f->push_back(std::make_unique<GravitationalForce>());
                 simulation->getContainer()->setF(f);
                 break;
             case 'l':
-                f = std::make_unique<LennardJonesForce>();
+                f -> push_back(std::make_unique<LennardJonesForce>());
                 simulation->getContainer()->setF(f);
                 break;
             case '?':

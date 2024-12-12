@@ -4630,7 +4630,8 @@ class ForceType: public ::xml_schema::string
   enum value
   {
     gravitation,
-    Lennard_Jones
+    Lennard_Jones,
+    gravity
   };
 
   /**
@@ -4755,8 +4756,8 @@ class ForceType: public ::xml_schema::string
   _xsd_ForceType_convert () const;
 
   public:
-  static const char* const _xsd_ForceType_literals_[2];
-  static const value _xsd_ForceType_indexes_[2];
+  static const char* const _xsd_ForceType_literals_[3];
+  static const value _xsd_ForceType_indexes_[3];
 
   //@endcond
 };

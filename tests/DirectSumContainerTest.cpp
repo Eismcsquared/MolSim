@@ -12,7 +12,7 @@
 class DirectSumContainerTest : public ::testing::Test {
 protected:
     std::unique_ptr<std::vector<Particle>> particles;
-    std::unique_ptr<Force> f;
+    std::unique_ptr<std::vector<std::unique_ptr<Force>>> f ;
     std::unique_ptr<DirectSumContainer> pc;
     char* testfile = const_cast<char*>("../tests/test_cases/two_body.txt");
 
@@ -21,7 +21,8 @@ protected:
         particles = std::make_unique<std::vector<Particle>>();
         FileReader fileReader;
         fileReader.readFile(*particles, testfile);
-        f = std::make_unique<GravitationalForce>();
+        f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
+        f->push_back(std::make_unique<GravitationalForce>());
         pc = std::make_unique<DirectSumContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("ParticleContainer created");
@@ -42,7 +43,8 @@ TEST_F(DirectSumContainerTest, ReadFile) {
         std::array<double, 3> v = {0, 0, 0};
         ref_vec->emplace_back(x, v, 1);
     }
-    std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
+    std::unique_ptr<std::vector<std::unique_ptr<Force>>> ref_f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
+    ref_f->push_back(std::make_unique<GravitationalForce>());
     DirectSumContainer reference(ref_vec, ref_f);
     if(*pc == reference) {
         test_logger->info("DirectSumContainer - Read file test passed");
@@ -81,7 +83,9 @@ TEST_F(DirectSumContainerTest, AddParticle1) {
         std::array<double, 3> v = {0, 0, 0};
         ref_vec->emplace_back(x, v, 1);
     }
-    std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
+
+    std::unique_ptr<std::vector<std::unique_ptr<Force>>> ref_f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
+    ref_f->push_back(std::make_unique<GravitationalForce>());
     DirectSumContainer reference(ref_vec, ref_f);
     if(*pc == reference) {
         test_logger->info("DirectSumContainer - Add particle test 1 passed");
@@ -106,7 +110,9 @@ TEST_F(DirectSumContainerTest, AddParticle2) {
         std::array<double, 3> v = {0, 0, 0};
         ref_vec->emplace_back(x, v, 1);
     }
-    std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
+
+    std::unique_ptr<std::vector<std::unique_ptr<Force>>> ref_f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
+    ref_f->push_back(std::make_unique<GravitationalForce>());
     DirectSumContainer reference(ref_vec, ref_f);
     if(*pc == reference) {
         test_logger->info("DirectSumContainer - Add particle test 2 passed");
@@ -137,7 +143,9 @@ TEST_F(DirectSumContainerTest, Analytical) {
     std::array<double, 3> v_2 = {-1, 0, 0}; // expected velocity of particle 2
     ref_vec->emplace_back(x_1, v_1, 1);
     ref_vec->emplace_back(x_2, v_2, 1);
-    std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
+
+    std::unique_ptr<std::vector<std::unique_ptr<Force>>> ref_f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
+    ref_f->push_back(std::make_unique<GravitationalForce>());
     DirectSumContainer reference(ref_vec, ref_f);
     if (!(*pc == reference)) {
         test_logger->error("DirectSumContainer - Analytical solution test failed");

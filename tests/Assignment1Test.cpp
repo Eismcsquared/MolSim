@@ -16,7 +16,7 @@
 class Assignment1Test : public ::testing::Test {
 protected:
     std::unique_ptr<std::vector<Particle>> particles;
-    std::unique_ptr<Force> f;
+    std::unique_ptr<std::vector<std::unique_ptr<Force>>> f;
     std::unique_ptr<DirectSumContainer> pc;
     char* testfile = const_cast<char*>("../tests/test_cases/assignment1.txt");
     FileReader fileReader;
@@ -24,7 +24,9 @@ protected:
     void SetUp() override {
         particles = std::make_unique<std::vector<Particle>>();
         fileReader.readFile(*particles, testfile);
-        f = std::make_unique<GravitationalForce>();
+
+        f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
+        f->push_back(std::make_unique<GravitationalForce>());
         pc = std::make_unique<DirectSumContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("Particle ParticleContainer created");
@@ -69,7 +71,8 @@ TEST_F(Assignment1Test, Simulation_simple) {
     std::unique_ptr<std::vector<Particle>> ref_p = std::make_unique<std::vector<Particle>>();
     char *ref_file = const_cast<char*>("../tests/Answer_Ref/Ans_simulation_simple.txt");
     fileReader.readFile(*ref_p, ref_file);
-    std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
+    std::unique_ptr<std::vector<std::unique_ptr<Force>>> ref_f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
+    ref_f->push_back(std::make_unique<GravitationalForce>());
     DirectSumContainer reference(ref_p, ref_f);
 
     if(!(reference == *pc)) {
@@ -93,7 +96,8 @@ TEST_F(Assignment1Test, Complex_simulation) {
     std::unique_ptr<std::vector<Particle>> ref_p = std::make_unique<std::vector<Particle>>();
     char *ref_file = const_cast<char*>("../tests/Answer_Ref/Ans_simulation_complex.txt");
     fileReader.readFile(*ref_p, ref_file);
-    std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
+    std::unique_ptr<std::vector<std::unique_ptr<Force>>> ref_f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
+    ref_f->push_back(std::make_unique<GravitationalForce>());
     DirectSumContainer reference(ref_p, ref_f);
 
     if(!(reference == *pc)) {
