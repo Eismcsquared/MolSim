@@ -5,7 +5,6 @@
             <position>
                 <x>20</x>
                 <y>20</y>
-                <z>0.5</z>
             </position>
             <velocity>
                 <x>0</x>
@@ -24,7 +23,6 @@
             <position>
                 <x>70</x>
                 <y>60</y>
-                <z>0.5</z>
             </position>
             <velocity>
                 <x>0</x>

@@ -128,6 +128,11 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
         } else {
             container = std::make_unique<DirectSumContainer>(particles, force);
         }
+
+        if (input->parameters().g().present()) {
+            container->setG(input->parameters().g().get());
+        }
+
         double end_time = input->parameters().end_time().present() ? input->parameters().end_time().get() : SimulationParameters::end_time_default_value();
         double delta_t = input->parameters().delta_t().present() ? input->parameters().delta_t().get() : SimulationParameters::delta_t_default_value();
         std::string output = input->parameters().output().present() ? input->parameters().output().get() : SimulationParameters::output_default_value();

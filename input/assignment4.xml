@@ -5,7 +5,6 @@
             <position>
                 <x>0.6</x>
                 <y>2</y>
-                <z>0.5</z>
             </position>
             <velocity>
                 <x>0</x>
@@ -24,7 +23,6 @@
             <position>
                 <x>0.6</x>
                 <y>19</y>
-                <z>0.5</z>
             </position>
             <velocity>
                 <x>0</x>
@@ -40,10 +38,11 @@
             <brownDimension>2</brownDimension>
         </cuboid>
     </objects>
-    <parameters>   
-        <force>gravity</force>
+    <parameters>
         <end_time>25</end_time>
         <delta_t>0.0005</delta_t>
+        <force>Lennard-Jones</force>
+        <g>-12.44</g>
         <linked_cell>
             <domain_size>
                 <x>63</x>

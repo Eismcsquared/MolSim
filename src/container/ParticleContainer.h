@@ -85,10 +85,16 @@ public:
     std::vector<Particle>& getParticles() const;
 
     /**
-     *
+     * Setter for the force.
      * @param f
      */
     void setF(std::unique_ptr<Force> &f);
+
+    /**
+     * Setter for the gravitational acceleration.
+     * @param g
+     */
+    void setG(double g);
 
     /**
      * Update the position of particles by a time step.
@@ -108,6 +114,7 @@ public:
      * Update the force of particles based on their positions.
      */
     virtual void updateF(bool newton3) = 0;
+
     /**
      * Determine the number of particles in a container.
      * @return The number of particles contained in the container.
