@@ -51,7 +51,7 @@ protected:
     /**
      * Particles stored in the container
      */
-    std::unique_ptr<std::vector<Particle>> particles;
+    std::vector<Particle> &particles;
     /**
      * The functional interface which computes the forces between two particles (gravitational force, Lennard Jones force...)
      */
@@ -66,7 +66,7 @@ public:
     * @param particles: The particles to store.
     * @param f_ptr: The force objects that defines the force between two particles.
     */
-    ParticleContainer(std::unique_ptr<std::vector<Particle>> &particles, std::unique_ptr<Force> &f_ptr);
+    ParticleContainer(std::vector<Particle> &particles, std::unique_ptr<Force> &f_ptr);
 
     /**
     * Construct a particle container.
@@ -74,7 +74,7 @@ public:
     * @param f_ptr: The force objects that defines the force between two particles.
     * @param g: The gravitational acceleration (applied in the y-direction).
     */
-    ParticleContainer(std::unique_ptr<std::vector<Particle>> &particles, std::unique_ptr<Force> &f_ptr, double g);
+    ParticleContainer(std::vector<Particle> &particles, std::unique_ptr<Force> &f_ptr, double g);
 
     virtual ~ParticleContainer() = default;
 

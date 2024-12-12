@@ -6,7 +6,7 @@
 #include "cmath"
 
 
-LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force> &f,
+LinkedCellContainer::LinkedCellContainer(std::vector<Particle>& particles, std::unique_ptr<Force> &f,
                                          std::array<double, 3> domainSize, double cutoff, std::array<BoundaryCondition, 6> boundaryConditions) :
         ParticleContainer(particles, f), cutoff(cutoff), domainSize(domainSize), boundaryConditions(boundaryConditions){
 
@@ -55,9 +55,9 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
     }
     // assign particles to cells
 
-    for(int i = 0; i < this->particles->size(); i++){
+    for(int i = 0; i < particles.size(); i++){
 
-        const auto& pos = (*(this->particles))[i].getX(); // Get particle position
+        const auto& pos = particles[i].getX(); // Get particle position
         
         // Add particle index to the corresponding cell
         int idx = getCellIndex(pos);
@@ -65,7 +65,7 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
         if(index3D[0] >= 0 && index3D[0] < nCells[0] && index3D[1] >= 0 && index3D[1] < nCells[1] && index3D[2] >= 0 && index3D[2] < nCells[2]) {
             cells[idx].addIndex(i);
         } else {
-            (*particles)[i].removeFromDomain();
+            particles[i].removeFromDomain();
         }
     }
     ParticleContainer::updateF();
@@ -74,7 +74,7 @@ LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>&
 
 
 void LinkedCellContainer::updateV(double delta_t) {
-    for (auto &p : *particles) {
+    for (auto &p : particles) {
         std::array<double, 3> vec = p.getV() + (delta_t / (2 * p.getM())) * (p.getF() + p.getOldF());
         p.setV(vec);
     }
@@ -82,7 +82,7 @@ void LinkedCellContainer::updateV(double delta_t) {
 
 void LinkedCellContainer::updateF(bool newton3) {
 
-    for(auto & p1 : *particles){
+    for(auto & p1 : particles){
         p1.setOldF(p1.getF());
         p1.setF({0, p1.getM() * g, 0}); // reset the force
     }
@@ -104,15 +104,15 @@ void LinkedCellContainer::updateF(bool newton3) {
             for(unsigned long k = j + 1; k < pointCellParticles.size(); ++k){
 
                 //////////////////////////////////////////////////////////
-                double dist = ArrayUtils::L2Norm((*particles)[pointCellParticles[j]].getX() - (*particles)[pointCellParticles[k]].getX());
+                double dist = ArrayUtils::L2Norm(particles[pointCellParticles[j]].getX() - particles[pointCellParticles[k]].getX());
 
                 // if the distance is greater than the cutoff, skip the calculation
                 if(dist > cutoff) continue;
 
-                std::array<double, 3> forceIJ = force->force((*particles)[pointCellParticles[j]], (*particles)[pointCellParticles[k]]);
+                std::array<double, 3> forceIJ = force->force(particles[pointCellParticles[j]], particles[pointCellParticles[k]]);
 
-                (*particles)[pointCellParticles[j]].setF((*particles)[pointCellParticles[j]].getF() - forceIJ);
-                (*particles)[pointCellParticles[k]].setF((*particles)[pointCellParticles[k]].getF() + forceIJ);
+                particles[pointCellParticles[j]].setF(particles[pointCellParticles[j]].getF() - forceIJ);
+                particles[pointCellParticles[k]].setF(particles[pointCellParticles[k]].getF() + forceIJ);
             }
         }
 
@@ -148,18 +148,18 @@ void LinkedCellContainer::updateFCells(int c1, int c2){
         for (int j : v2) {
 
             for (std::array<double, 3> offset: offsets) {
-                double dist = ArrayUtils::L2Norm((*particles)[i].getX() + offset - (*particles)[j].getX());
+                double dist = ArrayUtils::L2Norm(particles[i].getX() + offset - particles[j].getX());
                 // if the distance is greater than the cutoff, skip the calculation
                 if(dist <= cutoff) {
 
-                    std::array<double, 3> pos = (*particles)[i].getX();
-                    (*particles)[i].setX(pos + offset);
+                    std::array<double, 3> pos = particles[i].getX();
+                    particles[i].setX(pos + offset);
 
-                    std::array<double, 3> forceIJ = force->force((*particles)[i], (*particles)[j]);
+                    std::array<double, 3> forceIJ = force->force(particles[i], particles[j]);
 
-                    (*particles)[i].setX(pos);
-                    (*particles)[i].setF((*particles)[i].getF() - forceIJ);
-                    (*particles)[j].setF((*particles)[j].getF() + forceIJ);
+                    particles[i].setX(pos);
+                    particles[i].setF(particles[i].getF() - forceIJ);
+                    particles[j].setF(particles[j].getF() + forceIJ);
                 }
             }
         }
@@ -168,13 +168,13 @@ void LinkedCellContainer::updateFCells(int c1, int c2){
 
 void LinkedCellContainer::updateX(double delta_t){
 
-    for (int i = 0; i < particles->size(); i++) {
-        int cellidx_before = getCellIndex((*particles)[i].getX());
+    for (int i = 0; i < particles.size(); i++) {
+        int cellidx_before = getCellIndex(particles[i].getX());
 
-        std::array<double, 3> vec = (*particles)[i].getX() + delta_t * ((*particles)[i].getV() + (delta_t / (2 * (*particles)[i].getM())) * (*particles)[i].getF());
-        (*particles)[i].setX(vec);
+        std::array<double, 3> vec = particles[i].getX() + delta_t * (particles[i].getV() + (delta_t / (2 * particles[i].getM())) * particles[i].getF());
+        particles[i].setX(vec);
 
-        int cellidx_after = getCellIndex((*particles)[i].getX());
+        int cellidx_after = getCellIndex(particles[i].getX());
 
         if(cellidx_before != cellidx_after){
             if (cellidx_before >= 0 && cellidx_before < cells.size()) {
@@ -183,7 +183,7 @@ void LinkedCellContainer::updateX(double delta_t){
             if(cellidx_after >= 0 && cellidx_after < cells.size()) {
                 cells[cellidx_after].addIndex(i);
             } else {
-                (*particles)[i].removeFromDomain();
+                particles[i].removeFromDomain();
             }
         }
     }
@@ -280,17 +280,17 @@ bool LinkedCellContainer::operator==(const LinkedCellContainer &other) const {
 void LinkedCellContainer::addParticle(const Particle& particle) {
     int cellIndex = getCellIndex(particle.getX());
     if (cellIndex >= 0 && cellIndex < cells.size()) {
-        cells[cellIndex].addIndex((int) particles->size());
+        cells[cellIndex].addIndex((int) particles.size());
     }
-    particles->push_back(particle);
+    particles.push_back(particle);
     updateF(true);
 }
 
 void LinkedCellContainer::addCluster(const Cluster &cluster) {
-    int size_old = (int) particles->size();
-    cluster.createParticles(*particles);
-    for (int i = size_old; i < particles->size(); i++) {
-        int cellIndex = getCellIndex((*particles)[i].getX());
+    int size_old = (int) particles.size();
+    cluster.createParticles(particles);
+    for (int i = size_old; i < particles.size(); i++) {
+        int cellIndex = getCellIndex(particles[i].getX());
         if (cellIndex >= 0 && cellIndex < cells.size()) {
             cells[cellIndex].addIndex(i);
         }
@@ -319,7 +319,7 @@ bool LinkedCellContainer::isDomainCell(int index) {
 void LinkedCellContainer::removeFromHalo(Direction direction) {
     for(int i : haloCells[direction]) {
         for (int p: cells[i].getParticleIndices()) {
-            (*particles)[p].removeFromDomain();
+            particles[p].removeFromDomain();
             cells[i].removeIndex(p);
         }
     }
@@ -328,11 +328,11 @@ void LinkedCellContainer::removeFromHalo(Direction direction) {
 void LinkedCellContainer::updateHalo(Direction direction, BoundaryCondition boundaryCondition, double deltaT) {
     for(int i : haloCells[direction]) {
         for (int p : cells[i].getParticleIndices()) {
-            std::array<double, 3> pos = (*particles)[p].getX();
-            std::array<double, 3> vel = (*particles)[p].getV();
+            std::array<double, 3> pos = particles[p].getX();
+            std::array<double, 3> vel = particles[p].getV();
             switch (boundaryCondition) {
                 case OUTFLOW:
-                    (*particles)[p].removeFromDomain();
+                    particles[p].removeFromDomain();
                     break;
                 case REFLECTING:
 
@@ -342,13 +342,13 @@ void LinkedCellContainer::updateHalo(Direction direction, BoundaryCondition boun
                     // term in advance effectively flips this term
 
                     vel[direction / 2] *= -1;
-                    vel[direction / 2] -= (*particles)[p].getF()[direction / 2] * deltaT / (*particles)[p].getM();
-                    (*particles)[p].setV(vel);
+                    vel[direction / 2] -= particles[p].getF()[direction / 2] * deltaT / particles[p].getM();
+                    particles[p].setV(vel);
 
                     // reflect the position of the particle with respect to the boundary.
 
                     pos[direction / 2] = 2 * (direction % 2) * domainSize[direction / 2] - pos[direction / 2];
-                    (*particles)[p].setX(pos);
+                    particles[p].setX(pos);
                     cells[getCellIndex(pos)].addIndex(p);
                     break;
                 case PERIODIC:
@@ -356,7 +356,7 @@ void LinkedCellContainer::updateHalo(Direction direction, BoundaryCondition boun
                     // Move the particle to the other side once it left the domain.
 
                     pos[direction / 2] = pos[direction / 2] + pow(-1, direction % 2) * domainSize[direction / 2];
-                    (*particles)[p].setX(pos);
+                    particles[p].setX(pos);
                     cells[getCellIndex(pos)].addIndex(p);
             }
         }

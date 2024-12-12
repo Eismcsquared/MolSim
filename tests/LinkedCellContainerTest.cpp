@@ -7,16 +7,16 @@
 
 class LinkedCellContainerTest: public ::testing::Test {
 protected:
+    std::vector<Particle> p1;
+    std::vector<Particle> p2;
+    std::vector<Particle> p3;
+    std::vector<Particle> p4;
     std::unique_ptr<LinkedCellContainer> container2D;
     std::unique_ptr<LinkedCellContainer> container3D;
     std::unique_ptr<LinkedCellContainer> container3DPeriodicX;
     std::unique_ptr<LinkedCellContainer> container3DPeriodicAll;
 
     void SetUp() override {
-        std::unique_ptr<std::vector<Particle>> p1 = std::make_unique<std::vector<Particle>>();
-        std::unique_ptr<std::vector<Particle>> p2 = std::make_unique<std::vector<Particle>>();
-        std::unique_ptr<std::vector<Particle>> p3 = std::make_unique<std::vector<Particle>>();
-        std::unique_ptr<std::vector<Particle>> p4 = std::make_unique<std::vector<Particle>>();
 
         std::unique_ptr<Force> f1 = std::make_unique<LennardJonesForce>();
         std::unique_ptr<Force> f2 = std::make_unique<LennardJonesForce>();

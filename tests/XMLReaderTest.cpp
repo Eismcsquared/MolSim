@@ -10,22 +10,27 @@
 
 class XMLReaderTest: public ::testing::Test {
 protected:
+    std::vector<Particle> particles;
     std::string inputFile;
     std::unique_ptr<Simulation> simulation;
     const double pi = 3.141592653589793;
+
+    void SetUp() override {
+        particles = std::vector<Particle>();
+    }
 };
 
 // Test whether the input file for the assignment 1 is correctly parsed.
 TEST_F(XMLReaderTest, Assigment1Input) {
     test_logger->info("XMLReader - Assignment 1 input test");
     inputFile = "../tests/test_cases/assignment1.xml";
-    simulation = XMLReader::readXML(inputFile);
+    simulation = XMLReader::readXML(particles, inputFile);
     EXPECT_EQ(4, simulation->getContainer()->getParticleNumber());
-    std::unique_ptr<std::vector<Particle>> ref_p = std::make_unique<std::vector<Particle>>();
-    ref_p->emplace_back(std::array<double, 3>{0, 0, 0}, std::array<double, 3>{0, 0, 0}, 1);
-    ref_p->emplace_back(std::array<double, 3>{0, 1, 0}, std::array<double, 3>{-1, 0, 0}, 3e-6);
-    ref_p->emplace_back(std::array<double, 3>{0, 5.36, 0}, std::array<double, 3>{-0.425, 0, 0}, 9.55e-4);
-    ref_p->emplace_back(std::array<double, 3>{34.75, 0, 0}, std::array<double, 3>{0, 0.0296, 0}, 1e-14);
+    std::vector<Particle> ref_p;
+    ref_p.emplace_back(std::array<double, 3>{0, 0, 0}, std::array<double, 3>{0, 0, 0}, 1);
+    ref_p.emplace_back(std::array<double, 3>{0, 1, 0}, std::array<double, 3>{-1, 0, 0}, 3e-6);
+    ref_p.emplace_back(std::array<double, 3>{0, 5.36, 0}, std::array<double, 3>{-0.425, 0, 0}, 9.55e-4);
+    ref_p.emplace_back(std::array<double, 3>{34.75, 0, 0}, std::array<double, 3>{0, 0.0296, 0}, 1e-14);
 
     std::unique_ptr<Force> f = std::make_unique<GravitationalForce>();
 
@@ -47,13 +52,13 @@ TEST_F(XMLReaderTest, Assigment1Input) {
 TEST_F(XMLReaderTest, Assigment2Input) {
     test_logger->info("XMLReader - Assignment 2 input test");
     inputFile = "../tests/test_cases/assignment2.xml";
-    simulation = XMLReader::readXML(inputFile);
+    simulation = XMLReader::readXML(particles, inputFile);
     EXPECT_EQ(384, simulation->getContainer()->getParticleNumber());
-    std::unique_ptr<std::vector<Particle>> ref_p = std::make_unique<std::vector<Particle>>();
+    std::vector<Particle> ref_p;
     Cuboid c1(std::array<double, 3>{0, 0, 0.5}, std::array<double, 3>{0, 0, 0}, std::array<unsigned int, 3>{40, 8, 1}, 1, pow(2, 1.0 / 6), 0, 2);
     Cuboid c2(std::array<double, 3>{15, 15, 0.5}, std::array<double, 3>{0, -10, 0}, std::array<unsigned int, 3>{8, 8, 1}, 1, pow(2, 1.0 / 6), 0, 2);
-    c1.createParticles(*ref_p);
-    c2.createParticles(*ref_p);
+    c1.createParticles(ref_p);
+    c2.createParticles(ref_p);
     std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
     DirectSumContainer ref(ref_p, f);
     EXPECT_EQ(ref, *(simulation->getContainer()));
@@ -74,13 +79,13 @@ TEST_F(XMLReaderTest, Assigment2Input) {
 TEST_F(XMLReaderTest, Assigment3Input) {
     test_logger->info("XMLReader - Assignment 3 input test");
     inputFile = "../tests/test_cases/assignment3.xml";
-    simulation = XMLReader::readXML(inputFile);
+    simulation = XMLReader::readXML(particles, inputFile);
     EXPECT_EQ(2400, simulation->getContainer()->getParticleNumber());
-    std::unique_ptr<std::vector<Particle>> ref_p = std::make_unique<std::vector<Particle>>();
+    std::vector<Particle> ref_p;
     Cuboid c1(std::array<double, 3>{20, 20, 0.5}, std::array<double, 3>{0, 0, 0}, std::array<unsigned int, 3>{100, 20, 1}, 1, pow(2, 1.0 / 6), 0, 2);
     Cuboid c2(std::array<double, 3>{70, 60, 0.5}, std::array<double, 3>{0, -10, 0}, std::array<unsigned int, 3>{20, 20, 1}, 1, pow(2, 1.0 / 6), 0, 2);
-    c1.createParticles(*ref_p);
-    c2.createParticles(*ref_p);
+    c1.createParticles(ref_p);
+    c2.createParticles(ref_p);
     std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
     LinkedCellContainer ref(ref_p, f, std::array<double, 3>{180, 90, 1}, 3, std::array<BoundaryCondition, 6>{OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW});
     EXPECT_EQ(ref, dynamic_cast<LinkedCellContainer&>(*(simulation->getContainer())));
@@ -97,10 +102,10 @@ TEST_F(XMLReaderTest, Assigment3Input) {
 TEST_F(XMLReaderTest, FallingDropInput) {
     test_logger->info("XMLReader - Falling drop input test");
     inputFile = "../tests/test_cases/falling_drop.xml";
-    simulation = XMLReader::readXML(inputFile);
-    std::unique_ptr<std::vector<Particle>> ref_p = std::make_unique<std::vector<Particle>>();
+    simulation = XMLReader::readXML(particles, inputFile);
+    std::vector<Particle> ref_p;
     Sphere s(std::array<double, 3>{60, 25, 0.5}, std::array<double, 3>{0, -10, 0}, 15, 1, pow(2, 1.0 / 6), 0, 2);
-    s.createParticles(*ref_p);
+    s.createParticles(ref_p);
     std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
     LinkedCellContainer ref(ref_p, f, std::array<double, 3>{120, 50, 1}, 3, std::array<BoundaryCondition, 6>{REFLECTING, REFLECTING, REFLECTING, REFLECTING, OUTFLOW, OUTFLOW});
     EXPECT_EQ(ref, dynamic_cast<LinkedCellContainer&>(*(simulation->getContainer())));
@@ -117,10 +122,9 @@ TEST_F(XMLReaderTest, FallingDropInput) {
 TEST_F(XMLReaderTest, BrownianMotion) {
     test_logger->info("XMLReader - Brownian motion input test");
     inputFile = "../tests/test_cases/large.xml";
-    simulation = XMLReader::readXML(inputFile);
-    double mean = 0;
-    double meanSquire = 0;
-    std::vector<Particle> &particles = simulation->getContainer()->getParticles();
+    simulation = XMLReader::readXML(particles, inputFile);
+    long double mean = 0;
+    long double meanSquire = 0;
     EXPECT_EQ(10000, particles.size());
     for(Particle &p: particles) {
         mean += ArrayUtils::L2Norm(p.getV());

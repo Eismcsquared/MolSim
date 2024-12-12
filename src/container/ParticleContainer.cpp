@@ -2,12 +2,12 @@
 #include "outputWriter/VTKWriter.h"
 #include "outputWriter/XYZWriter.h"
 
-ParticleContainer::ParticleContainer(std::unique_ptr<std::vector<Particle>> &particles, std::unique_ptr<Force> &f_ptr) :
-        particles(std::move(particles)), force(std::move(f_ptr)), g(0){}
+ParticleContainer::ParticleContainer(std::vector<Particle> &particles, std::unique_ptr<Force> &f_ptr) :
+        particles(particles), force(std::move(f_ptr)), g(0){}
 
-ParticleContainer::ParticleContainer(std::unique_ptr<std::vector<Particle>> &particles,
+ParticleContainer::ParticleContainer(std::vector<Particle> &particles,
                                              std::unique_ptr<Force> &f_ptr, double g) :
-        particles(std::move(particles)), force(std::move(f_ptr)), g(g) {}
+        particles(particles), force(std::move(f_ptr)), g(g) {}
 
 
 unsigned long ParticleContainer::getParticleNumber() const {
@@ -21,7 +21,7 @@ unsigned long ParticleContainer::getParticleNumber() const {
 }
 
 std::vector<Particle> &ParticleContainer::getParticles() const {
-    return *particles;
+    return particles;
 }
 
 void ParticleContainer::setF(std::unique_ptr<Force> &f) {
@@ -35,12 +35,12 @@ void ParticleContainer::setG(double g) {
 
 
 void ParticleContainer::addParticle(const Particle &particle) {
-    this->particles->push_back(particle);
+    this->particles.push_back(particle);
     this->ParticleContainer::updateF();
 }
 
 void ParticleContainer::addCluster(const Cluster &cluster) {
-    cluster.createParticles(*particles);
+    cluster.createParticles(particles);
     this->ParticleContainer::updateF();
 }
 
@@ -79,19 +79,19 @@ void ParticleContainer::plotParticles(int iteration, const std::string &out_name
 
     if(output_format == "vtu") {
         outputWriter::VTKWriter writer;
-        writer.writeFile(out_name, iteration, *particles);
+        writer.writeFile(out_name, iteration, particles);
     }
     else if(output_format == "xyz") {
         outputWriter::XYZWriter writer;
-        writer.plotParticles(*particles, out_name, iteration);
+        writer.plotParticles(particles, out_name, iteration);
     }
 }
 
 
 std::string ParticleContainer::toString() {
     std::stringstream buf;
-    buf << "Number of particles: " << particles->size() << std::endl;
-    for (auto &p : *particles) {
+    buf << "Number of particles: " << particles.size() << std::endl;
+    for (auto &p : particles) {
         buf << p.toString() << std::endl;
     }
     return buf.str();
@@ -110,7 +110,7 @@ bool ParticleContainer::operator==(const ParticleContainer &other) const {
 }
 
 std::unique_ptr<Iterator> ParticleContainer::iterator() const {
-    return std::make_unique<Iterator>(particles->begin(), particles->end());
+    return std::make_unique<Iterator>(particles.begin(), particles.end());
 }
 
 

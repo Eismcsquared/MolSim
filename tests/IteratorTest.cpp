@@ -8,7 +8,7 @@
 
 class IteratorTest: public ::testing::Test {
 protected:
-    std::unique_ptr<std::vector<Particle>> particles;
+    std::vector<Particle> particles;
     std::unique_ptr<DirectSumContainer> pc;
     std::unique_ptr<Force> f;
     char* testfile = const_cast<char*>("../tests/test_cases/assignment1.txt");
@@ -16,8 +16,7 @@ protected:
 
     void SetUp() override {
         FileReader fileReader;
-        particles = std::make_unique<std::vector<Particle>>();
-        fileReader.readFile(*particles, testfile);
+        fileReader.readFile(particles, testfile);
 
         f = std::make_unique<LennardJonesForce>();
         pc = std::make_unique<DirectSumContainer>(particles, f);

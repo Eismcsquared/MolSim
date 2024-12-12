@@ -12,7 +12,7 @@
 #include "container/DirectSumContainer.h"
 #include "body/Sphere.h"
 
-std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
+std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles, std::string fileName) {
     std::ifstream file(fileName);
     if (!file.is_open()) {
         spdlog::error("Error: could not open file {}", fileName);
@@ -21,14 +21,13 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
 
     try {
         std::unique_ptr<InputData> input(simulation(file, xsd::cxx::tree::flags::dont_validate));
-        std::unique_ptr<std::vector<Particle>> particles = std::make_unique<std::vector<Particle>>();
         for (auto p: input->objects().particle()) {
 
             double r_z = p.position().z().present() ? p.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
             double v_z = p.velocity().z().present() ? p.velocity().z().get() : DoubleVector3::z_default_value();
             double epsilon = p.epsilon().present() ? p.epsilon().get() : ParticleType::epsilon_default_value();
             double sigma = p.sigma().present() ? p.sigma().get() : ParticleType::sigma_default_value();
-            particles->emplace_back(
+            particles.emplace_back(
                         std::array<double, 3>{p.position().x(), p.position().y(), r_z},
                         std::array<double, 3>{p.velocity().x(), p.velocity().y(), v_z},
                         p.mass(),
@@ -54,7 +53,7 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
                         epsilon,
                         sigma
                     );
-            cuboid.createParticles(*particles);
+            cuboid.createParticles(particles);
         }
         for (auto s : input->objects().sphere()) {
             double r_z = s.center().z().present() ? s.center().z().get() : PositiveDoubleVector3::z_default_value() / 2;
@@ -74,7 +73,7 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
                         epsilon,
                         sigma
                     );
-            sphere.createParticles(*particles);
+            sphere.createParticles(particles);
         }
 
         std::unique_ptr<Force> force;

@@ -45,9 +45,10 @@ int main(int argc, char *argsv[]) {
 
     std::string inputFile= std::string (argsv[1]);
     std::unique_ptr<Simulation> simulation;
+    std::vector<Particle> particles;
 
     if (inputFile.size() >= 4 && inputFile.compare(inputFile.size() - 4, 4, ".xml") == 0) {
-        simulation = XMLReader::readXML(inputFile);
+        simulation = XMLReader::readXML(particles, inputFile);
     } else {
         // default values when using .txt as input
         double start_time = 0;
@@ -57,9 +58,8 @@ int main(int argc, char *argsv[]) {
         std::string outputFile("MD_vtk");
         std::string outputFormat = "vtu";
 
-        std::unique_ptr<std::vector<Particle>> particles = std::make_unique<std::vector<Particle>>();
         FileReader fileReader;
-        fileReader.readFile(*particles, inputFile);
+        fileReader.readFile(particles, inputFile);
 
         std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
 

@@ -10,7 +10,7 @@
 #include "spdlog/spdlog.h"
 
 
-DirectSumContainer::DirectSumContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force> &f) : ParticleContainer(particles, f)
+DirectSumContainer::DirectSumContainer(std::vector<Particle>& particles, std::unique_ptr<Force> &f) : ParticleContainer(particles, f)
 {
     // compute initial forces
     ParticleContainer::updateF();
@@ -26,30 +26,30 @@ DirectSumContainer::~DirectSumContainer(){
 void DirectSumContainer::updateF(bool newton3) {
     if (newton3) {
         std::vector<std::array<double, 3>> newForces;
-        newForces.reserve(particles->size());
-        for (unsigned long i = 0; i < particles->size(); ++i) {
-            newForces.push_back({0, (*particles)[i].getM() * g, 0});
+        newForces.reserve(particles.size());
+        for (unsigned long i = 0; i < particles.size(); ++i) {
+            newForces.push_back({0, particles[i].getM() * g, 0});
         }
-        for (unsigned long i = 0; i < particles->size(); ++i) {
-            for (unsigned long j = i + 1; j < particles->size(); ++j) {
+        for (unsigned long i = 0; i < particles.size(); ++i) {
+            for (unsigned long j = i + 1; j < particles.size(); ++j) {
 
 
-                std::array<double, 3> forceIJ = force->force((*particles)[i], (*particles)[j]);
+                std::array<double, 3> forceIJ = force->force(particles[i], particles[j]);
 
                 // update forces using the third Newton axiom
                 newForces[i] = newForces[i] - forceIJ;
                 newForces[j] = newForces[j] + forceIJ;
             }
         }
-        for (unsigned long i = 0; i < particles->size(); ++i) {
-            (*particles)[i].setOldF((*particles)[i].getF());
-            (*particles)[i].setF(newForces[i]);
+        for (unsigned long i = 0; i < particles.size(); ++i) {
+            particles[i].setOldF(particles[i].getF());
+            particles[i].setF(newForces[i]);
         }
     } else {
-        for (auto &p1 : *particles) {
+        for (auto &p1 : particles) {
             p1.setOldF(p1.getF());
             std::array<double, 3> cal_f = {0, p1.getM() * g, 0};
-            for (auto &p2 : *particles) {
+            for (auto &p2 : particles) {
                 if(&p1 != &p2) {
                     std::array<double, 3> forceIJ = force->force(p2, p1);
                     cal_f = cal_f + forceIJ;
@@ -63,7 +63,7 @@ void DirectSumContainer::updateF(bool newton3) {
 
 
 void DirectSumContainer::updateX(double delta_t){
-    for (auto & particle : *particles) {
+    for (auto & particle : particles) {
         std::array<double, 3> vec = particle.getX() + delta_t * (particle.getV() + (delta_t / (2 * particle.getM())) * particle.getF());
         particle.setX(vec);
   }
@@ -71,7 +71,7 @@ void DirectSumContainer::updateX(double delta_t){
 
 
 void DirectSumContainer::updateV(double delta_t){
-    for (auto &p : *particles) {
+    for (auto &p : particles) {
         std::array<double, 3> vec = p.getV() + (delta_t / (2 * p.getM())) * (p.getF() + p.getOldF());
         p.setV(vec);
     }
