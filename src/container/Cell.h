@@ -76,5 +76,10 @@ public:
     */
     void removeIndex(int index);
 
+    /**
+     * Remove all particles from the cell.
+     */
+     void clear();
+
 };
 

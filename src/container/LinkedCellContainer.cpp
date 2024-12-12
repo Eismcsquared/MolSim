@@ -225,8 +225,8 @@ int LinkedCellContainer::getCellIndex(std::array<double, 3> positions) {
 
     std::array<double, 3> cellSize = cells[0].getSize();
     // Check if the position is within the domain + halo region
-    if(positions[0] < -cellSize[0] || positions[0] > domainSize[0] + cellSize[0] || positions[1] < -cellSize[1] ||
-    positions[1] > domainSize[1] + cellSize[1] || positions[2] < -cellSize[2] || positions[2] > domainSize[2] + cellSize[2]){
+    if(positions[0] < -cellSize[0] || positions[0] >= domainSize[0] + cellSize[0] || positions[1] < -cellSize[1] ||
+    positions[1] >= domainSize[1] + cellSize[1] || positions[2] < -cellSize[2] || positions[2] >= domainSize[2] + cellSize[2]){
         return -1;
     }
 
@@ -333,7 +333,6 @@ void LinkedCellContainer::updateHalo(Direction direction, BoundaryCondition boun
             switch (boundaryCondition) {
                 case OUTFLOW:
                     (*particles)[p].removeFromDomain();
-                    cells[i].removeIndex(p);
                     break;
                 case REFLECTING:
 
@@ -350,7 +349,6 @@ void LinkedCellContainer::updateHalo(Direction direction, BoundaryCondition boun
 
                     pos[direction / 2] = 2 * (direction % 2) * domainSize[direction / 2] - pos[direction / 2];
                     (*particles)[p].setX(pos);
-                    cells[i].removeIndex(p);
                     cells[getCellIndex(pos)].addIndex(p);
                     break;
                 case PERIODIC:
@@ -359,12 +357,11 @@ void LinkedCellContainer::updateHalo(Direction direction, BoundaryCondition boun
 
                     pos[direction / 2] = pos[direction / 2] + pow(-1, direction % 2) * domainSize[direction / 2];
                     (*particles)[p].setX(pos);
-                    cells[i].removeIndex(p);
                     cells[getCellIndex(pos)].addIndex(p);
             }
         }
+        cells[i].clear();
     }
-
 }
 
 void LinkedCellContainer::updateHalo(double deltaT) {

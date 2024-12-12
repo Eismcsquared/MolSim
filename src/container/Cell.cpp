@@ -37,3 +37,7 @@ void Cell::removeIndex(int index) {
     auto newEnd = std::remove(particleIndices.begin(), particleIndices.end(), index);
     particleIndices.erase(newEnd, particleIndices.end());
 }
+
+void Cell::clear() {
+    particleIndices.clear();
+}
