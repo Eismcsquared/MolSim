@@ -1,38 +1,36 @@
 #include <gtest/gtest.h>
-#include "Particle.h"
-#include "ParticleContainer.h"
-#include "GravitationalForce.h"
 #include <vector>
-#include <iostream>
-#include "FileReader.h"
-#include "utils/ArrayUtils.h"
-#include <string>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/fmt/ostr.h>
-#include "LennardJonesForce.h"
-#include "Force.h"
+#include "force/LennardJonesForce.h"
+#include "force/Force.h"
 #include "Logger.h"
-
+#include "body/Particle.h"
+#include "container/DirectSumContainer.h"
+#include "force/GravitationalForce.h"
+#include "inputReader/FileReader.h"
 
 class LennardJonesForceTest : public ::testing::Test {
 protected:
-    std::vector<Particle> particles;
-    ParticleContainer *pc;
+    std::unique_ptr<std::vector<Particle>> particles;
+    std::unique_ptr<DirectSumContainer> pc;
+    std::unique_ptr<Force> f;
     char* testfile = const_cast<char*>("../tests/test_cases/two_body.txt");
 
 
     void SetUp() override {
         FileReader fileReader;
-        fileReader.readFile(particles, testfile);
-        pc = new ParticleContainer(particles, new LennardJonesForce(),true);
+        particles = std::make_unique<std::vector<Particle>>();
+        fileReader.readFile(*particles, testfile);
+        f = std::make_unique<LennardJonesForce>();
+        pc = std::make_unique<DirectSumContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
-        test_logger -> info("Particle Container created");
+        test_logger -> info("ParticleContainer created");
     }
 
     void TearDown() override {
-        test_logger->info("Particle Container deleted\n\n");
-        delete pc;
+        test_logger->info("ParticleContainer deleted\n\n");
     }
 };
 
