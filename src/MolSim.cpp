@@ -17,7 +17,6 @@
 #include "inputReader/XMLReader.h"
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
-#include "force/Gravity_Force.h"
 #include "container/DirectSumContainer.h"
 #include "container/LinkedCellContainer.h"
 #include "Simulation.h"
@@ -62,14 +61,13 @@ int main(int argc, char *argsv[]) {
         FileReader fileReader;
         fileReader.readFile(*particles, inputFile);
 
-        std::unique_ptr<std::vector<std::unique_ptr<Force>>> f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
-        f->push_back(std::make_unique<LennardJonesForce>());
+        std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
 
         std::unique_ptr<ParticleContainer> container = std::make_unique<DirectSumContainer>(particles, f);
         simulation = std::make_unique<Simulation>(container, end_time, delta_t, outputFile, outputFormat, frequency);
     }
 
-    std::unique_ptr<std::vector<std::unique_ptr<Force>>> f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
+    std::unique_ptr<Force> f;
     int opt;
     static struct option long_options[] = {
             {"help",    no_argument,       nullptr,  'h' },
@@ -133,11 +131,11 @@ int main(int argc, char *argsv[]) {
                 simulation->setNewton3(false);
                 break;
             case 'g':
-                f->push_back(std::make_unique<GravitationalForce>());
+                f = std::make_unique<GravitationalForce>();
                 simulation->getContainer()->setF(f);
                 break;
             case 'l':
-                f -> push_back(std::make_unique<LennardJonesForce>());
+                f = std::make_unique<LennardJonesForce>();
                 simulation->getContainer()->setF(f);
                 break;
             case '?':
@@ -180,11 +178,11 @@ int main(int argc, char *argsv[]) {
 void printHelp() {
     std::cout << "MolSim for PSE" << "\n";
     std::cout << "Usage:" << "\n";
-    std::cout << "  ./MolSim <input-file> [-d <time-step>] [-e <duration>] [-f <output-format>] [-o <output-file>] [-l|-g] [-s <log-level>]" << "\n";
+    std::cout << "  ./MolSim <input-file> [-d <time-step>] [-e <duration>] [-force <output-format>] [-o <output-file>] [-l|-g] [-s <log-level>]" << "\n";
     std::cout << "Options:" << "\n";
     std::cout << "  -d or --delta_t <time-step>    = The length of each time step of the simulation (Default: 0.0002)." << "\n";
     std::cout << "  -e or --end_time <duration>    = The total duration of the simulation (Default = 5)." << "\n";
-    std::cout << "  -f or --format <output-format> = The format of the output, must be either vtu or xyz (Default: vtu)." << "\n";
+    std::cout << "  -force or --format <output-format> = The format of the output, must be either vtu or xyz (Default: vtu)." << "\n";
     std::cout << "  -o or --output <output-file>   = The name of files that data should be written to (Default: MD_vtk)." << "\n";
     std::cout << "  -s or --spdlog_level <level>   = Set spdlog level (trace -1, debug -2, info -3, warn -4, error -5, critical -6).\n";
     std::cout << "  -b or --benchmark              = If specified, the benchmark mode is activated." << "\n";

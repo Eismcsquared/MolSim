@@ -27,8 +27,7 @@ TEST_F(XMLReaderTest, Assigment1Input) {
     ref_p->emplace_back(std::array<double, 3>{0, 5.36, 0}, std::array<double, 3>{-0.425, 0, 0}, 9.55e-4);
     ref_p->emplace_back(std::array<double, 3>{34.75, 0, 0}, std::array<double, 3>{0, 0.0296, 0}, 1e-14);
 
-    std::unique_ptr<std::vector<std::unique_ptr<Force>>> f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
-    f->push_back(std::make_unique<GravitationalForce>());
+    std::unique_ptr<Force> f = std::make_unique<GravitationalForce>();
 
     DirectSumContainer ref(ref_p, f);
     EXPECT_EQ(ref, *(simulation->getContainer()));
@@ -51,12 +50,11 @@ TEST_F(XMLReaderTest, Assigment2Input) {
     simulation = XMLReader::readXML(inputFile);
     EXPECT_EQ(384, simulation->getContainer()->getParticleNumber());
     std::unique_ptr<std::vector<Particle>> ref_p = std::make_unique<std::vector<Particle>>();
-    Cuboid c1(std::array<double, 3>{0, 0, 0}, std::array<double, 3>{0, 0, 0}, std::array<unsigned int, 3>{40, 8, 1}, 1, pow(2, 1.0 / 6), 0, 2);
-    Cuboid c2(std::array<double, 3>{15, 15, 0}, std::array<double, 3>{0, -10, 0}, std::array<unsigned int, 3>{8, 8, 1}, 1, pow(2, 1.0 / 6), 0, 2);
+    Cuboid c1(std::array<double, 3>{0, 0, 0.5}, std::array<double, 3>{0, 0, 0}, std::array<unsigned int, 3>{40, 8, 1}, 1, pow(2, 1.0 / 6), 0, 2);
+    Cuboid c2(std::array<double, 3>{15, 15, 0.5}, std::array<double, 3>{0, -10, 0}, std::array<unsigned int, 3>{8, 8, 1}, 1, pow(2, 1.0 / 6), 0, 2);
     c1.createParticles(*ref_p);
     c2.createParticles(*ref_p);
-    std::unique_ptr<std::vector<std::unique_ptr<Force>>> f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
-    f->push_back(std::make_unique<LennardJonesForce>());
+    std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
     DirectSumContainer ref(ref_p, f);
     EXPECT_EQ(ref, *(simulation->getContainer()));
     EXPECT_NEAR(5, simulation->getEndTime(), 1e-12);
@@ -83,8 +81,7 @@ TEST_F(XMLReaderTest, Assigment3Input) {
     Cuboid c2(std::array<double, 3>{70, 60, 0.5}, std::array<double, 3>{0, -10, 0}, std::array<unsigned int, 3>{20, 20, 1}, 1, pow(2, 1.0 / 6), 0, 2);
     c1.createParticles(*ref_p);
     c2.createParticles(*ref_p);
-    std::unique_ptr<std::vector<std::unique_ptr<Force>>> f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
-    f->push_back(std::make_unique<LennardJonesForce>());
+    std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
     LinkedCellContainer ref(ref_p, f, std::array<double, 3>{180, 90, 1}, 3, std::array<BoundaryCondition, 6>{OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW});
     EXPECT_EQ(ref, dynamic_cast<LinkedCellContainer&>(*(simulation->getContainer())));
     EXPECT_NEAR(20, simulation->getEndTime(), 1e-12);
@@ -104,8 +101,7 @@ TEST_F(XMLReaderTest, FallingDropInput) {
     std::unique_ptr<std::vector<Particle>> ref_p = std::make_unique<std::vector<Particle>>();
     Sphere s(std::array<double, 3>{60, 25, 0.5}, std::array<double, 3>{0, -10, 0}, 15, 1, pow(2, 1.0 / 6), 0, 2);
     s.createParticles(*ref_p);
-    std::unique_ptr<std::vector<std::unique_ptr<Force>>> f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
-    f->push_back(std::make_unique<LennardJonesForce>());
+    std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
     LinkedCellContainer ref(ref_p, f, std::array<double, 3>{120, 50, 1}, 3, std::array<BoundaryCondition, 6>{REFLECTING, REFLECTING, REFLECTING, REFLECTING, OUTFLOW, OUTFLOW});
     EXPECT_EQ(ref, dynamic_cast<LinkedCellContainer&>(*(simulation->getContainer())));
     EXPECT_NEAR(10, simulation->getEndTime(), 1e-12);

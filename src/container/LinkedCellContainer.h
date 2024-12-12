@@ -61,12 +61,27 @@ private:
 
 public:
 
+     /**
+     * Construct a linked cell container.
+     * @param particles: The particles to store.
+     * @param f: The force object that defines the force between two particles.
+     * @param domainSize: The size of the domain.
+     * @param cutoff: The cutoff radius.
+     * @param boundaryConditions: The boundary conditions on different boundaries.
+     */
+    LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force> &f,
+                        std::array<double, 3> domainSize,double cutoff, std::array<BoundaryCondition, 6> boundaryConditions);
+
     /**
-    * Construct a linked cell container.
-    * @param particles: The particles to store.
-    * @param f: The force object that defines the force between two particles.
-    */
-    LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<std::vector<std::unique_ptr<Force>>> &f,
+     * Construct a linked cell container.
+     * @param particles: The particles to store.
+     * @param f: The force object that defines the force between two particles.
+     * * @param g The gravitational acceleration, which is applied in the y-direction.
+     * @param domainSize: The size of the domain.
+     * @param cutoff: The cutoff radius.
+     * @param boundaryConditions: The boundary conditions on different boundaries.
+     */
+    LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force> &f, double g,
                         std::array<double, 3> domainSize,double cutoff, std::array<BoundaryCondition, 6> boundaryConditions);
 
     /**

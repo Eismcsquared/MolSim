@@ -13,7 +13,7 @@ class CuboidTest : public ::testing::Test {
 protected:
     std::unique_ptr<std::vector<Particle>> particles;
     std::unique_ptr<DirectSumContainer> pc;
-    std::unique_ptr<std::vector<std::unique_ptr<Force>>> f;
+    std::unique_ptr<Force> f;
     Cuboid cuboid = Cuboid({0, 10, 0}, {0, 0, 0}, {2, 4, 3}, 1, 1, 0, 3);
     char* testfile = const_cast<char*>("../tests/test_cases/two_cuboid.txt");
 
@@ -22,8 +22,7 @@ protected:
         particles = std::make_unique<std::vector<Particle>>();
         FileReader fileReader;
         fileReader.readFile(*particles, testfile);
-        f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
-        f->push_back(std::make_unique<LennardJonesForce>());
+        f = std::make_unique<LennardJonesForce>();
         pc = std::make_unique<DirectSumContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("ParticleContainer created");
@@ -67,8 +66,7 @@ TEST_F(CuboidTest, ReadCuboids) {
         }
     }
 
-    std::unique_ptr<std::vector<std::unique_ptr<Force>>> ref_f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
-    ref_f->push_back(std::make_unique<LennardJonesForce>());
+    std::unique_ptr<Force> ref_f = std::make_unique<LennardJonesForce>();
     DirectSumContainer reference(ps, ref_f);
     ASSERT_EQ(reference, *pc) << "Cuboid - read file test failed";
     test_logger->info("Cuboid - read file test passed");
@@ -100,8 +98,7 @@ TEST_F(CuboidTest, AddCuboid) {
             }
         }
     }
-    std::unique_ptr<std::vector<std::unique_ptr<Force>>> ref_f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
-    ref_f->push_back(std::make_unique<LennardJonesForce>());
+    std::unique_ptr<Force> ref_f = std::make_unique<LennardJonesForce>();
     DirectSumContainer reference(ps, ref_f);
     ASSERT_EQ(reference, *pc) << "Cuboid - read file test failed";
     test_logger->info("Cuboid - read file test filed");

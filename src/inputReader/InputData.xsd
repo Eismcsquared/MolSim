@@ -140,17 +140,11 @@
     </xs:complexType>
 
     <xs:simpleType name="ForceType">
-        <xs:list itemType="AllowedForces"/>
-    </xs:simpleType>
-
-    <xs:simpleType name="AllowedForces">
         <xs:restriction base="xs:string">
             <xs:enumeration value="gravitation"/>
             <xs:enumeration value="Lennard-Jones"/>
-            <xs:enumeration value="gravity"/>
         </xs:restriction>
     </xs:simpleType>
-    
 
     <xs:simpleType name="OutputFormatType">
         <xs:restriction base="xs:string">
@@ -212,6 +206,13 @@
                 <xs:annotation>
                     <xs:documentation>
                         The global gravitational acceleration (along the y-axis).
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="thermostats" type="ThermostatsType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Specifies the thermostats that should be applied.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>

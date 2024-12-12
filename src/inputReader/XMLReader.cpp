@@ -9,7 +9,6 @@
 #include "force/Force.h"
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
-#include "force/Gravity_Force.h"
 #include "container/DirectSumContainer.h"
 #include "body/Sphere.h"
 
@@ -78,19 +77,16 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
             sphere.createParticles(*particles);
         }
 
-        std::unique_ptr<std::vector<std::unique_ptr<Force>>> forces = std::make_unique<std::vector<std::unique_ptr<Force>>>();
+        std::unique_ptr<Force> force;
         ForceType f = input->parameters().force().present() ? input->parameters().force().get() : SimulationParameters::force_default_value();
         switch (f) {
             case ForceType::value::gravitation:
-                forces->push_back(std::make_unique<GravitationalForce>());
+                force = std::make_unique<GravitationalForce>();
                 break;
             case ForceType::value::Lennard_Jones:
-                forces->push_back(std::make_unique<LennardJonesForce>());
+                force = std::make_unique<LennardJonesForce>();
                 break;
-            case ForceType::value::gravity:
-                forces->push_back(std::make_unique<Gravity_Force>());
-                break;
-        } // need to be changed?
+        }
 
         std::unique_ptr<ParticleContainer> container;
         if (input->parameters().linked_cell().present()) {
@@ -124,13 +120,13 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::string fileName) {
             double size_z = domainSize.z().present() ? domainSize.z().get() : PositiveDoubleVector3::z_default_value();
             container = std::make_unique<LinkedCellContainer>(
                     particles,
-                    forces,
+                    force,
                     std::array<double, 3>{domainSize.x(), domainSize.y(), size_z},
                     cutoffRadius,
                     boundaryCondition
             );
         } else {
-            container = std::make_unique<DirectSumContainer>(particles, forces);
+            container = std::make_unique<DirectSumContainer>(particles, force);
         }
         double end_time = input->parameters().end_time().present() ? input->parameters().end_time().get() : SimulationParameters::end_time_default_value();
         double delta_t = input->parameters().delta_t().present() ? input->parameters().delta_t().get() : SimulationParameters::delta_t_default_value();

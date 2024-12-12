@@ -1413,6 +1413,112 @@ boundary_condition (::std::unique_ptr< boundary_condition_type > x)
 }
 
 
+// ThermostatsType
+// 
+
+const ThermostatsType::initial_T_type& ThermostatsType::
+initial_T () const
+{
+  return this->initial_T_.get ();
+}
+
+ThermostatsType::initial_T_type& ThermostatsType::
+initial_T ()
+{
+  return this->initial_T_.get ();
+}
+
+void ThermostatsType::
+initial_T (const initial_T_type& x)
+{
+  this->initial_T_.set (x);
+}
+
+void ThermostatsType::
+initial_T (::std::unique_ptr< initial_T_type > x)
+{
+  this->initial_T_.set (std::move (x));
+}
+
+const ThermostatsType::target_T_optional& ThermostatsType::
+target_T () const
+{
+  return this->target_T_;
+}
+
+ThermostatsType::target_T_optional& ThermostatsType::
+target_T ()
+{
+  return this->target_T_;
+}
+
+void ThermostatsType::
+target_T (const target_T_type& x)
+{
+  this->target_T_.set (x);
+}
+
+void ThermostatsType::
+target_T (const target_T_optional& x)
+{
+  this->target_T_ = x;
+}
+
+void ThermostatsType::
+target_T (::std::unique_ptr< target_T_type > x)
+{
+  this->target_T_.set (std::move (x));
+}
+
+const ThermostatsType::periode_type& ThermostatsType::
+periode () const
+{
+  return this->periode_.get ();
+}
+
+ThermostatsType::periode_type& ThermostatsType::
+periode ()
+{
+  return this->periode_.get ();
+}
+
+void ThermostatsType::
+periode (const periode_type& x)
+{
+  this->periode_.set (x);
+}
+
+const ThermostatsType::delta_T_optional& ThermostatsType::
+delta_T () const
+{
+  return this->delta_T_;
+}
+
+ThermostatsType::delta_T_optional& ThermostatsType::
+delta_T ()
+{
+  return this->delta_T_;
+}
+
+void ThermostatsType::
+delta_T (const delta_T_type& x)
+{
+  this->delta_T_.set (x);
+}
+
+void ThermostatsType::
+delta_T (const delta_T_optional& x)
+{
+  this->delta_T_ = x;
+}
+
+void ThermostatsType::
+delta_T (::std::unique_ptr< delta_T_type > x)
+{
+  this->delta_T_.set (std::move (x));
+}
+
+
 // SimulationParameters
 // 
 
@@ -1624,6 +1730,66 @@ const SimulationParameters::force_type& SimulationParameters::
 force_default_value ()
 {
   return force_default_value_;
+}
+
+const SimulationParameters::g_optional& SimulationParameters::
+g () const
+{
+  return this->g_;
+}
+
+SimulationParameters::g_optional& SimulationParameters::
+g ()
+{
+  return this->g_;
+}
+
+void SimulationParameters::
+g (const g_type& x)
+{
+  this->g_.set (x);
+}
+
+void SimulationParameters::
+g (const g_optional& x)
+{
+  this->g_ = x;
+}
+
+SimulationParameters::g_type SimulationParameters::
+g_default_value ()
+{
+  return g_type (0.0);
+}
+
+const SimulationParameters::thermostats_optional& SimulationParameters::
+thermostats () const
+{
+  return this->thermostats_;
+}
+
+SimulationParameters::thermostats_optional& SimulationParameters::
+thermostats ()
+{
+  return this->thermostats_;
+}
+
+void SimulationParameters::
+thermostats (const thermostats_type& x)
+{
+  this->thermostats_.set (x);
+}
+
+void SimulationParameters::
+thermostats (const thermostats_optional& x)
+{
+  this->thermostats_ = x;
+}
+
+void SimulationParameters::
+thermostats (::std::unique_ptr< thermostats_type > x)
+{
+  this->thermostats_.set (std::move (x));
 }
 
 const SimulationParameters::linked_cell_optional& SimulationParameters::
@@ -3423,19 +3589,17 @@ _xsd_ForceType_convert () const
 }
 
 const char* const ForceType::
-_xsd_ForceType_literals_[3] =
+_xsd_ForceType_literals_[2] =
 {
   "gravitation",
-  "Lennard-Jones",
-  "gravity"
+  "Lennard-Jones"
 };
 
 const ForceType::value ForceType::
-_xsd_ForceType_indexes_[3] =
+_xsd_ForceType_indexes_[2] =
 {
   ::ForceType::Lennard_Jones,
-  ::ForceType::gravitation,
-  ::ForceType::gravity
+  ::ForceType::gravitation
 };
 
 // OutputFormatType
@@ -3663,6 +3827,157 @@ LinkedCellType::
 {
 }
 
+// ThermostatsType
+//
+
+ThermostatsType::
+ThermostatsType (const initial_T_type& initial_T,
+                 const periode_type& periode)
+: ::xml_schema::type (),
+  initial_T_ (initial_T, this),
+  target_T_ (this),
+  periode_ (periode, this),
+  delta_T_ (this)
+{
+}
+
+ThermostatsType::
+ThermostatsType (const ThermostatsType& x,
+                 ::xml_schema::flags f,
+                 ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  initial_T_ (x.initial_T_, f, this),
+  target_T_ (x.target_T_, f, this),
+  periode_ (x.periode_, f, this),
+  delta_T_ (x.delta_T_, f, this)
+{
+}
+
+ThermostatsType::
+ThermostatsType (const ::xercesc::DOMElement& e,
+                 ::xml_schema::flags f,
+                 ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  initial_T_ (this),
+  target_T_ (this),
+  periode_ (this),
+  delta_T_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
+}
+
+void ThermostatsType::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    // initial_T
+    //
+    if (n.name () == "initial_T" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< initial_T_type > r (
+        initial_T_traits::create (i, f, this));
+
+      if (!initial_T_.present ())
+      {
+        this->initial_T_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    // target_T
+    //
+    if (n.name () == "target_T" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< target_T_type > r (
+        target_T_traits::create (i, f, this));
+
+      if (!this->target_T_)
+      {
+        this->target_T_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    // periode
+    //
+    if (n.name () == "periode" && n.namespace_ ().empty ())
+    {
+      if (!periode_.present ())
+      {
+        this->periode_.set (periode_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // delta_T
+    //
+    if (n.name () == "delta_T" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< delta_T_type > r (
+        delta_T_traits::create (i, f, this));
+
+      if (!this->delta_T_)
+      {
+        this->delta_T_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    break;
+  }
+
+  if (!initial_T_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "initial_T",
+      "");
+  }
+
+  if (!periode_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "periode",
+      "");
+  }
+}
+
+ThermostatsType* ThermostatsType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class ThermostatsType (*this, f, c);
+}
+
+ThermostatsType& ThermostatsType::
+operator= (const ThermostatsType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->initial_T_ = x.initial_T_;
+    this->target_T_ = x.target_T_;
+    this->periode_ = x.periode_;
+    this->delta_T_ = x.delta_T_;
+  }
+
+  return *this;
+}
+
+ThermostatsType::
+~ThermostatsType ()
+{
+}
+
 // SimulationParameters
 //
 
@@ -3684,6 +3999,8 @@ SimulationParameters ()
   output_ (this),
   format_ (this),
   force_ (this),
+  g_ (this),
+  thermostats_ (this),
   linked_cell_ (this)
 {
 }
@@ -3699,6 +4016,8 @@ SimulationParameters (const SimulationParameters& x,
   output_ (x.output_, f, this),
   format_ (x.format_, f, this),
   force_ (x.force_, f, this),
+  g_ (x.g_, f, this),
+  thermostats_ (x.thermostats_, f, this),
   linked_cell_ (x.linked_cell_, f, this)
 {
 }
@@ -3714,6 +4033,8 @@ SimulationParameters (const ::xercesc::DOMElement& e,
   output_ (this),
   format_ (this),
   force_ (this),
+  g_ (this),
+  thermostats_ (this),
   linked_cell_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
@@ -3814,6 +4135,31 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // g
+    //
+    if (n.name () == "g" && n.namespace_ ().empty ())
+    {
+      if (!this->g_)
+      {
+        this->g_.set (g_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // thermostats
+    //
+    if (n.name () == "thermostats" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< thermostats_type > r (
+        thermostats_traits::create (i, f, this));
+
+      if (!this->thermostats_)
+      {
+        this->thermostats_.set (::std::move (r));
+        continue;
+      }
+    }
+
     // linked_cell
     //
     if (n.name () == "linked_cell" && n.namespace_ ().empty ())
@@ -3851,6 +4197,8 @@ operator= (const SimulationParameters& x)
     this->output_ = x.output_;
     this->format_ = x.format_;
     this->force_ = x.force_;
+    this->g_ = x.g_;
+    this->thermostats_ = x.thermostats_;
     this->linked_cell_ = x.linked_cell_;
   }
 
@@ -4935,6 +5283,58 @@ operator<< (::xercesc::DOMElement& e, const LinkedCellType& i)
 }
 
 void
+operator<< (::xercesc::DOMElement& e, const ThermostatsType& i)
+{
+  e << static_cast< const ::xml_schema::type& > (i);
+
+  // initial_T
+  //
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "initial_T",
+        e));
+
+    s << i.initial_T ();
+  }
+
+  // target_T
+  //
+  if (i.target_T ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "target_T",
+        e));
+
+    s << *i.target_T ();
+  }
+
+  // periode
+  //
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "periode",
+        e));
+
+    s << i.periode ();
+  }
+
+  // delta_T
+  //
+  if (i.delta_T ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "delta_T",
+        e));
+
+    s << *i.delta_T ();
+  }
+}
+
+void
 operator<< (::xercesc::DOMElement& e, const SimulationParameters& i)
 {
   e << static_cast< const ::xml_schema::type& > (i);
@@ -5009,6 +5409,30 @@ operator<< (::xercesc::DOMElement& e, const SimulationParameters& i)
         e));
 
     s << *i.force ();
+  }
+
+  // g
+  //
+  if (i.g ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "g",
+        e));
+
+    s << ::xml_schema::as_double(*i.g ());
+  }
+
+  // thermostats
+  //
+  if (i.thermostats ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "thermostats",
+        e));
+
+    s << *i.thermostats ();
   }
 
   // linked_cell

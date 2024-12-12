@@ -2,8 +2,13 @@
 #include "outputWriter/VTKWriter.h"
 #include "outputWriter/XYZWriter.h"
 
-ParticleContainer::ParticleContainer(std::unique_ptr<std::vector<Particle>> &particles, std::unique_ptr<std::vector<std::unique_ptr<Force>>> &f_ptr) :
-particles(std::move(particles)), f(std::move(f_ptr)){}
+ParticleContainer::ParticleContainer(std::unique_ptr<std::vector<Particle>> &particles, std::unique_ptr<Force> &f_ptr) :
+        particles(std::move(particles)), force(std::move(f_ptr)), g(0){}
+
+ParticleContainer::ParticleContainer(std::unique_ptr<std::vector<Particle>> &particles,
+                                             std::unique_ptr<Force> &f_ptr, double g) :
+        particles(std::move(particles)), force(std::move(f_ptr)), g(g) {}
+
 
 unsigned long ParticleContainer::getParticleNumber() const {
     int num = 0;
@@ -19,8 +24,8 @@ std::vector<Particle> &ParticleContainer::getParticles() const {
     return *particles;
 }
 
-void ParticleContainer::setF(std::unique_ptr<std::vector<std::unique_ptr<Force>>> &f) {
-    this->f = std::move(f);
+void ParticleContainer::setF(std::unique_ptr<Force> &f) {
+    this->force = std::move(f);
 }
 
 

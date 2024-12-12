@@ -6,7 +6,7 @@
 #include "cmath"
 
 
-LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<std::vector<std::unique_ptr<Force>>> &f,
+LinkedCellContainer::LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force> &f,
                                          std::array<double, 3> domainSize, double cutoff, std::array<BoundaryCondition, 6> boundaryConditions) :
         ParticleContainer(particles, f), cutoff(cutoff), domainSize(domainSize), boundaryConditions(boundaryConditions){
 
@@ -84,7 +84,7 @@ void LinkedCellContainer::updateF(bool newton3) {
 
     for(auto & p1 : *particles){
         p1.setOldF(p1.getF());
-        p1.setF({0, 0, 0}); // reset the force
+        p1.setF({0, p1.getM() * g, 0}); // reset the force
     }
 
     for(int i: domainCells){
@@ -109,13 +109,7 @@ void LinkedCellContainer::updateF(bool newton3) {
                 // if the distance is greater than the cutoff, skip the calculation
                 if(dist > cutoff) continue;
 
-                std::array<double, 3> forceIJ = {0.0, 0.0, 0.0};
-                for(auto &l : *(this->f)){
-                    std::array<double, 3> tempForce = l->force((*particles)[pointCellParticles[j]], (*particles)[pointCellParticles[k]]);
-                    for (int idx = 0; idx < 3; ++idx) {
-                        forceIJ[idx] += tempForce[idx];
-                    }
-                }
+                std::array<double, 3> forceIJ = force->force((*particles)[pointCellParticles[j]], (*particles)[pointCellParticles[k]]);
 
                 (*particles)[pointCellParticles[j]].setF((*particles)[pointCellParticles[j]].getF() - forceIJ);
                 (*particles)[pointCellParticles[k]].setF((*particles)[pointCellParticles[k]].getF() + forceIJ);
@@ -158,17 +152,12 @@ void LinkedCellContainer::updateFCells(int c1, int c2){
                 // if the distance is greater than the cutoff, skip the calculation
                 if(dist <= cutoff) {
 
-                    Particle mock = (*particles)[i];
-                    mock.setX(mock.getX() + offset);
+                    std::array<double, 3> pos = (*particles)[i].getX();
+                    (*particles)[i].setX(pos + offset);
 
-                    std::array<double, 3> forceIJ = {0.0, 0.0, 0.0};
-                    for (auto &l : *f) {
-                        std::array<double, 3> tempForce = l->force(mock, (*particles)[j]);
-                        for (int idx = 0; idx < 3; ++idx) {
-                            forceIJ[idx] += tempForce[idx];
-                        }
-                    }
+                    std::array<double, 3> forceIJ = force->force((*particles)[i], (*particles)[j]);
 
+                    (*particles)[i].setX(pos);
                     (*particles)[i].setF((*particles)[i].getF() - forceIJ);
                     (*particles)[j].setF((*particles)[j].getF() + forceIJ);
                 }

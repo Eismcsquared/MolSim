@@ -18,17 +18,10 @@ protected:
         std::unique_ptr<std::vector<Particle>> p3 = std::make_unique<std::vector<Particle>>();
         std::unique_ptr<std::vector<Particle>> p4 = std::make_unique<std::vector<Particle>>();
 
-        std::unique_ptr<std::vector<std::unique_ptr<Force>>> f1 = std::make_unique<std::vector<std::unique_ptr<Force>>>();
-        f1->push_back(std::make_unique<LennardJonesForce>());
-
-        std::unique_ptr<std::vector<std::unique_ptr<Force>>> f2 = std::make_unique<std::vector<std::unique_ptr<Force>>>();
-        f2->push_back(std::make_unique<LennardJonesForce>());
-
-        std::unique_ptr<std::vector<std::unique_ptr<Force>>> f3 = std::make_unique<std::vector<std::unique_ptr<Force>>>();
-        f3->push_back(std::make_unique<LennardJonesForce>());
-
-        std::unique_ptr<std::vector<std::unique_ptr<Force>>> f4 = std::make_unique<std::vector<std::unique_ptr<Force>>>();
-        f4->push_back(std::make_unique<LennardJonesForce>());
+        std::unique_ptr<Force> f1 = std::make_unique<LennardJonesForce>();
+        std::unique_ptr<Force> f2 = std::make_unique<LennardJonesForce>();
+        std::unique_ptr<Force> f3 = std::make_unique<LennardJonesForce>();
+        std::unique_ptr<Force> f4 = std::make_unique<LennardJonesForce>();
 
         container2D = std::make_unique<LinkedCellContainer>(p1, f1, std::array<double, 3>{15, 15, 1}, 3,
                                           std::array<BoundaryCondition, 6>{OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW});

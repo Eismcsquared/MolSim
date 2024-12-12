@@ -10,7 +10,7 @@ class IteratorTest: public ::testing::Test {
 protected:
     std::unique_ptr<std::vector<Particle>> particles;
     std::unique_ptr<DirectSumContainer> pc;
-    std::unique_ptr<std::vector<std::unique_ptr<Force>>> f;
+    std::unique_ptr<Force> f;
     char* testfile = const_cast<char*>("../tests/test_cases/assignment1.txt");
 
 
@@ -19,8 +19,7 @@ protected:
         particles = std::make_unique<std::vector<Particle>>();
         fileReader.readFile(*particles, testfile);
 
-        std::unique_ptr<std::vector<std::unique_ptr<Force>>> f = std::make_unique<std::vector<std::unique_ptr<Force>>>();
-        f->push_back(std::make_unique<LennardJonesForce>());
+        f = std::make_unique<LennardJonesForce>();
         pc = std::make_unique<DirectSumContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("ParticleContainer created");

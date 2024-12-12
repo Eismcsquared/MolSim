@@ -10,7 +10,7 @@
 #include "spdlog/spdlog.h"
 
 
-DirectSumContainer::DirectSumContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<std::vector<std::unique_ptr<Force>>> &f) : ParticleContainer(particles, f) 
+DirectSumContainer::DirectSumContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force> &f) : ParticleContainer(particles, f)
 {
     // compute initial forces
     ParticleContainer::updateF();
@@ -25,19 +25,16 @@ DirectSumContainer::~DirectSumContainer(){
 
 void DirectSumContainer::updateF(bool newton3) {
     if (newton3) {
-        std::vector<std::array<double, 3>> newForces(particles->size(), {0, 0, 0});
+        std::vector<std::array<double, 3>> newForces;
+        newForces.reserve(particles->size());
+        for (unsigned long i = 0; i < particles->size(); ++i) {
+            newForces.push_back({0, (*particles)[i].getM() * g, 0});
+        }
         for (unsigned long i = 0; i < particles->size(); ++i) {
             for (unsigned long j = i + 1; j < particles->size(); ++j) {
 
 
-                std::array<double, 3> forceIJ = {0.0, 0.0, 0.0};
-
-                for(auto &k : *(this->f)){
-                    std::array<double, 3> tempForce = k->force((*particles)[i], (*particles)[j]);
-                    for (int idx = 0; idx < 3; ++idx) {
-                        forceIJ[idx] += tempForce[idx];
-                    }
-                }
+                std::array<double, 3> forceIJ = force->force((*particles)[i], (*particles)[j]);
 
                 // update forces using the third Newton axiom
                 newForces[i] = newForces[i] - forceIJ;
@@ -51,16 +48,15 @@ void DirectSumContainer::updateF(bool newton3) {
     } else {
         for (auto &p1 : *particles) {
             p1.setOldF(p1.getF());
-            std::array<double, 3> cal_f = {0,0,0};
+            std::array<double, 3> cal_f = {0, p1.getM() * g, 0};
             for (auto &p2 : *particles) {
                 if(&p1 != &p2) {
-                    for(auto &k : *f){
-                        std::array<double, 3> forceIJ = k->force(p2, p1);
-                        cal_f = cal_f + forceIJ;
-                    }
+                    std::array<double, 3> forceIJ = force->force(p2, p1);
+                    cal_f = cal_f + forceIJ;
                 }
-                p1.setF(cal_f);
+
             }
+            p1.setF(cal_f);
         }
     }
 }
