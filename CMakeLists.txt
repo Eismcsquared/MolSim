@@ -62,7 +62,7 @@ include(gtest)
 include (fmt)
 include(xsd)
 include(GoogleTest)
-include(xcerces)
+#include(xcerces)
 #testfiles 
 file(GLOB_RECURSE MY_TESTS
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp"
