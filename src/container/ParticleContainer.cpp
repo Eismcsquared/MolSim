@@ -3,7 +3,7 @@
 #include "outputWriter/XYZWriter.h"
 
 ParticleContainer::ParticleContainer(std::vector<Particle> &particles, std::unique_ptr<Force> &f_ptr) :
-        particles(particles), force(std::move(f_ptr)), g(0){}
+        particles(particles), force(std::move(f_ptr)), g(0) {}
 
 ParticleContainer::ParticleContainer(std::vector<Particle> &particles,
                                              std::unique_ptr<Force> &f_ptr, double g) :
@@ -33,6 +33,9 @@ void ParticleContainer::setG(double g) {
     ParticleContainer::g = g;
 }
 
+void ParticleContainer::setThermostat(std::unique_ptr<Thermostat> &thermostat) {
+    ParticleContainer::thermostat = std::move(thermostat);
+}
 
 void ParticleContainer::addParticle(const Particle &particle) {
     this->particles.push_back(particle);
@@ -56,6 +59,10 @@ void ParticleContainer::simulate(double end_time, double delta_t, const std::str
     for (int iteration = 0; iteration < max_iteration; iteration++) {
         if (iteration % output_frequency == 0 && save_output) {
             plotParticles(iteration, out_name, output_format);
+        }
+
+        if (iteration > 0 && thermostat && iteration % thermostat->getPeriode() == 0) {
+            thermostat->apply(particles);
         }
 
         auto start_time = std::chrono::high_resolution_clock::now();

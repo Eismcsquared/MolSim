@@ -3,6 +3,7 @@
 #include <vector>
 #include <spdlog/spdlog.h>
 #include <iostream>
+#include <limits>
 #include "XMLReader.h"
 #include "inputReader/InputData.h"
 #include "container/LinkedCellContainer.h"
@@ -21,8 +22,8 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
 
     try {
         std::unique_ptr<InputData> input(simulation(file, xsd::cxx::tree::flags::dont_validate));
-        for (auto p: input->objects().particle()) {
 
+        for (auto p: input->objects().particle()) {
             double r_z = p.position().z().present() ? p.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
             double v_z = p.velocity().z().present() ? p.velocity().z().get() : DoubleVector3::z_default_value();
             double epsilon = p.epsilon().present() ? p.epsilon().get() : ParticleType::epsilon_default_value();
@@ -35,41 +36,63 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
                         sigma
                     );
         }
+
+        int dimension = static_cast<int>(input->parameters().dimension().present() ? input->parameters().dimension().get() : InputData::parameters_type::dimension_default_value());
+
         for (auto c : input->objects().cuboid()) {
             double r_z = c.position().z().present() ? c.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
             double v_z = c.velocity().z().present() ? c.velocity().z().get() : DoubleVector3::z_default_value();
             unsigned int n_z = c.size().z().present() ? c.size().z().get() : PositiveIntVector3::z_default_value();
-            int dim = c.brownDimension().present() ? (int) c.brownDimension().get() : (int) CuboidType::brownDimension_default_value();
             double epsilon = c.epsilon().present() ? c.epsilon().get() : CuboidType::epsilon_default_value();
             double sigma = c.sigma().present() ? c.sigma().get() : CuboidType::sigma_default_value();
+
+            double brown_vel;
+            if (input->parameters().thermostats().present()) {
+                brown_vel = sqrt(input->parameters().thermostats()->initial_T() / c.mass());
+            } else if (c.brown_velocity().present()) {
+                brown_vel = c.brown_velocity().get();
+            } else {
+                brown_vel = CuboidType::brown_velocity_default_value();
+            }
+
             Cuboid cuboid(
                         std::array<double, 3>{c.position().x(), c.position().y(), r_z},
                         std::array<double, 3>{c.velocity().x(), c.velocity().y(), v_z},
                         std::array<unsigned int, 3>{(unsigned int) c.size().x(), (unsigned int) c.size().y(), n_z},
                         c.mass(),
                         c.distance(),
-                        c.brownVelocity(),
-                        dim,
+                        brown_vel,
+                        dimension,
                         epsilon,
                         sigma
                     );
             cuboid.createParticles(particles);
         }
+
         for (auto s : input->objects().sphere()) {
             double r_z = s.center().z().present() ? s.center().z().get() : PositiveDoubleVector3::z_default_value() / 2;
             double v_z = s.velocity().z().present() ? s.velocity().z().get() : DoubleVector3::z_default_value();
             int radius = static_cast<int>(s.radius());
-            int dim = s.dimension().present() ? static_cast<int>(s.dimension().get()) : static_cast<int>(SphereType::dimension_default_value());
             double epsilon = s.epsilon().present() ? s.epsilon().get() : SphereType::epsilon_default_value();
             double sigma = s.sigma().present() ? s.sigma().get() : SphereType::sigma_default_value();
+
+            double brown_vel;
+            if (input->parameters().thermostats().present()) {
+                brown_vel = sqrt(input->parameters().thermostats()->initial_T() / s.mass());
+            } else if (s.brown_velocity().present()) {
+                brown_vel = s.brown_velocity().get();
+            } else {
+                brown_vel = SphereType::brown_velocity_default_value();
+            }
+
             Sphere sphere(
                         std::array<double, 3>{s.center().x(), s.center().y(), r_z},
                         std::array<double, 3>{s.velocity().x(), s.velocity().y(), v_z},
                         radius,
                         s.mass(),
                         s.distance(),
-                        s.brownVelocity(),
-                        dim,
+                        brown_vel,
+                        dimension,
                         epsilon,
                         sigma
                     );
@@ -130,6 +153,19 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
 
         if (input->parameters().g().present()) {
             container->setG(input->parameters().g().get());
+        }
+
+        if (input->parameters().thermostats().present()) {
+            auto ts = input->parameters().thermostats().get();
+            double target_T = ts.target_T().present() ? ts.target_T().get() : ts.initial_T();
+            double maxChange = ts.maxDelta().present() ? static_cast<double>(ts.maxDelta().get()) : std::numeric_limits<double>::infinity();
+            std::unique_ptr<Thermostat> thermostat = std::make_unique<Thermostat>(
+                    target_T,
+                    ts.periode(),
+                    maxChange,
+                    dimension
+            );
+            container->setThermostat(thermostat);
         }
 
         double end_time = input->parameters().end_time().present() ? input->parameters().end_time().get() : SimulationParameters::end_time_default_value();

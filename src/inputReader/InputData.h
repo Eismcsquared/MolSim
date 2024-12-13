@@ -2466,67 +2466,9 @@ class CuboidType: public ::xml_schema::type
   //@}
 
   /**
-   * @name brownVelocity
+   * @name brown_velocity
    *
-   * @brief Accessor and modifier functions for the %brownVelocity
-   * required element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::PositiveDouble brownVelocity_type;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< brownVelocity_type, char > brownVelocity_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element.
-   *
-   * @return A constant reference to the element.
-   */
-  const brownVelocity_type&
-  brownVelocity () const;
-
-  /**
-   * @brief Return a read-write reference to the element.
-   *
-   * @return A reference to the element.
-   */
-  brownVelocity_type&
-  brownVelocity ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  brownVelocity (const brownVelocity_type& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  brownVelocity (::std::unique_ptr< brownVelocity_type > p);
-
-  //@}
-
-  /**
-   * @name brownDimension
-   *
-   * @brief Accessor and modifier functions for the %brownDimension
+   * @brief Accessor and modifier functions for the %brown_velocity
    * optional element.
    */
   //@{
@@ -2534,17 +2476,17 @@ class CuboidType: public ::xml_schema::type
   /**
    * @brief Element type.
    */
-  typedef ::Dimension brownDimension_type;
+  typedef ::xml_schema::double_ brown_velocity_type;
 
   /**
    * @brief Element optional container type.
    */
-  typedef ::xsd::cxx::tree::optional< brownDimension_type > brownDimension_optional;
+  typedef ::xsd::cxx::tree::optional< brown_velocity_type > brown_velocity_optional;
 
   /**
    * @brief Element traits type.
    */
-  typedef ::xsd::cxx::tree::traits< brownDimension_type, char > brownDimension_traits;
+  typedef ::xsd::cxx::tree::traits< brown_velocity_type, char, ::xsd::cxx::tree::schema_type::double_ > brown_velocity_traits;
 
   /**
    * @brief Return a read-only (constant) reference to the element
@@ -2552,16 +2494,16 @@ class CuboidType: public ::xml_schema::type
    *
    * @return A constant reference to the optional container.
    */
-  const brownDimension_optional&
-  brownDimension () const;
+  const brown_velocity_optional&
+  brown_velocity () const;
 
   /**
    * @brief Return a read-write reference to the element container.
    *
    * @return A reference to the optional container.
    */
-  brownDimension_optional&
-  brownDimension ();
+  brown_velocity_optional&
+  brown_velocity ();
 
   /**
    * @brief Set the element value.
@@ -2572,7 +2514,7 @@ class CuboidType: public ::xml_schema::type
    * the new value of the element.
    */
   void
-  brownDimension (const brownDimension_type& x);
+  brown_velocity (const brown_velocity_type& x);
 
   /**
    * @brief Set the element value.
@@ -2584,26 +2526,15 @@ class CuboidType: public ::xml_schema::type
    * Otherwise the element container is set the 'not present' state.
    */
   void
-  brownDimension (const brownDimension_optional& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly instead
-   * of making a copy.
-   */
-  void
-  brownDimension (::std::unique_ptr< brownDimension_type > p);
+  brown_velocity (const brown_velocity_optional& x);
 
   /**
    * @brief Return the default value for the element.
    *
    * @return The element's default value.
    */
-  static brownDimension_type
-  brownDimension_default_value ();
+  static brown_velocity_type
+  brown_velocity_default_value ();
 
   //@}
 
@@ -2766,8 +2697,7 @@ class CuboidType: public ::xml_schema::type
               const velocity_type&,
               const mass_type&,
               const size_type&,
-              const distance_type&,
-              const brownVelocity_type&);
+              const distance_type&);
 
   /**
    * @brief Create an instance from the ultimate base and
@@ -2781,8 +2711,7 @@ class CuboidType: public ::xml_schema::type
               ::std::unique_ptr< velocity_type >,
               const mass_type&,
               ::std::unique_ptr< size_type >,
-              const distance_type&,
-              const brownVelocity_type&);
+              const distance_type&);
 
   /**
    * @brief Create an instance from a DOM element.
@@ -2859,8 +2788,7 @@ class CuboidType: public ::xml_schema::type
   ::xsd::cxx::tree::one< mass_type > mass_;
   ::xsd::cxx::tree::one< size_type > size_;
   ::xsd::cxx::tree::one< distance_type > distance_;
-  ::xsd::cxx::tree::one< brownVelocity_type > brownVelocity_;
-  brownDimension_optional brownDimension_;
+  brown_velocity_optional brown_velocity_;
   epsilon_optional epsilon_;
   sigma_optional sigma_;
 
@@ -3155,67 +3083,9 @@ class SphereType: public ::xml_schema::type
   //@}
 
   /**
-   * @name brownVelocity
+   * @name brown_velocity
    *
-   * @brief Accessor and modifier functions for the %brownVelocity
-   * required element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::PositiveDouble brownVelocity_type;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< brownVelocity_type, char > brownVelocity_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element.
-   *
-   * @return A constant reference to the element.
-   */
-  const brownVelocity_type&
-  brownVelocity () const;
-
-  /**
-   * @brief Return a read-write reference to the element.
-   *
-   * @return A reference to the element.
-   */
-  brownVelocity_type&
-  brownVelocity ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  brownVelocity (const brownVelocity_type& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  brownVelocity (::std::unique_ptr< brownVelocity_type > p);
-
-  //@}
-
-  /**
-   * @name dimension
-   *
-   * @brief Accessor and modifier functions for the %dimension
+   * @brief Accessor and modifier functions for the %brown_velocity
    * optional element.
    */
   //@{
@@ -3223,17 +3093,17 @@ class SphereType: public ::xml_schema::type
   /**
    * @brief Element type.
    */
-  typedef ::Dimension dimension_type;
+  typedef ::xml_schema::double_ brown_velocity_type;
 
   /**
    * @brief Element optional container type.
    */
-  typedef ::xsd::cxx::tree::optional< dimension_type > dimension_optional;
+  typedef ::xsd::cxx::tree::optional< brown_velocity_type > brown_velocity_optional;
 
   /**
    * @brief Element traits type.
    */
-  typedef ::xsd::cxx::tree::traits< dimension_type, char > dimension_traits;
+  typedef ::xsd::cxx::tree::traits< brown_velocity_type, char, ::xsd::cxx::tree::schema_type::double_ > brown_velocity_traits;
 
   /**
    * @brief Return a read-only (constant) reference to the element
@@ -3241,16 +3111,16 @@ class SphereType: public ::xml_schema::type
    *
    * @return A constant reference to the optional container.
    */
-  const dimension_optional&
-  dimension () const;
+  const brown_velocity_optional&
+  brown_velocity () const;
 
   /**
    * @brief Return a read-write reference to the element container.
    *
    * @return A reference to the optional container.
    */
-  dimension_optional&
-  dimension ();
+  brown_velocity_optional&
+  brown_velocity ();
 
   /**
    * @brief Set the element value.
@@ -3261,7 +3131,7 @@ class SphereType: public ::xml_schema::type
    * the new value of the element.
    */
   void
-  dimension (const dimension_type& x);
+  brown_velocity (const brown_velocity_type& x);
 
   /**
    * @brief Set the element value.
@@ -3273,26 +3143,15 @@ class SphereType: public ::xml_schema::type
    * Otherwise the element container is set the 'not present' state.
    */
   void
-  dimension (const dimension_optional& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly instead
-   * of making a copy.
-   */
-  void
-  dimension (::std::unique_ptr< dimension_type > p);
+  brown_velocity (const brown_velocity_optional& x);
 
   /**
    * @brief Return the default value for the element.
    *
    * @return The element's default value.
    */
-  static dimension_type
-  dimension_default_value ();
+  static brown_velocity_type
+  brown_velocity_default_value ();
 
   //@}
 
@@ -3455,8 +3314,7 @@ class SphereType: public ::xml_schema::type
               const velocity_type&,
               const mass_type&,
               const radius_type&,
-              const distance_type&,
-              const brownVelocity_type&);
+              const distance_type&);
 
   /**
    * @brief Create an instance from the ultimate base and
@@ -3470,8 +3328,7 @@ class SphereType: public ::xml_schema::type
               ::std::unique_ptr< velocity_type >,
               const mass_type&,
               const radius_type&,
-              const distance_type&,
-              const brownVelocity_type&);
+              const distance_type&);
 
   /**
    * @brief Create an instance from a DOM element.
@@ -3548,8 +3405,7 @@ class SphereType: public ::xml_schema::type
   ::xsd::cxx::tree::one< mass_type > mass_;
   ::xsd::cxx::tree::one< radius_type > radius_;
   ::xsd::cxx::tree::one< distance_type > distance_;
-  ::xsd::cxx::tree::one< brownVelocity_type > brownVelocity_;
-  dimension_optional dimension_;
+  brown_velocity_optional brown_velocity_;
   epsilon_optional epsilon_;
   sigma_optional sigma_;
 
@@ -5381,9 +5237,9 @@ class ThermostatsType: public ::xml_schema::type
   //@}
 
   /**
-   * @name delta_T
+   * @name maxDelta
    *
-   * @brief Accessor and modifier functions for the %delta_T
+   * @brief Accessor and modifier functions for the %maxDelta
    * optional element.
    */
   //@{
@@ -5391,17 +5247,17 @@ class ThermostatsType: public ::xml_schema::type
   /**
    * @brief Element type.
    */
-  typedef ::PositiveDouble delta_T_type;
+  typedef ::PositiveDouble maxDelta_type;
 
   /**
    * @brief Element optional container type.
    */
-  typedef ::xsd::cxx::tree::optional< delta_T_type > delta_T_optional;
+  typedef ::xsd::cxx::tree::optional< maxDelta_type > maxDelta_optional;
 
   /**
    * @brief Element traits type.
    */
-  typedef ::xsd::cxx::tree::traits< delta_T_type, char > delta_T_traits;
+  typedef ::xsd::cxx::tree::traits< maxDelta_type, char > maxDelta_traits;
 
   /**
    * @brief Return a read-only (constant) reference to the element
@@ -5409,16 +5265,16 @@ class ThermostatsType: public ::xml_schema::type
    *
    * @return A constant reference to the optional container.
    */
-  const delta_T_optional&
-  delta_T () const;
+  const maxDelta_optional&
+  maxDelta () const;
 
   /**
    * @brief Return a read-write reference to the element container.
    *
    * @return A reference to the optional container.
    */
-  delta_T_optional&
-  delta_T ();
+  maxDelta_optional&
+  maxDelta ();
 
   /**
    * @brief Set the element value.
@@ -5429,7 +5285,7 @@ class ThermostatsType: public ::xml_schema::type
    * the new value of the element.
    */
   void
-  delta_T (const delta_T_type& x);
+  maxDelta (const maxDelta_type& x);
 
   /**
    * @brief Set the element value.
@@ -5441,7 +5297,7 @@ class ThermostatsType: public ::xml_schema::type
    * Otherwise the element container is set the 'not present' state.
    */
   void
-  delta_T (const delta_T_optional& x);
+  maxDelta (const maxDelta_optional& x);
 
   /**
    * @brief Set the element value without copying.
@@ -5452,7 +5308,7 @@ class ThermostatsType: public ::xml_schema::type
    * of making a copy.
    */
   void
-  delta_T (::std::unique_ptr< delta_T_type > p);
+  maxDelta (::std::unique_ptr< maxDelta_type > p);
 
   //@}
 
@@ -5541,7 +5397,7 @@ class ThermostatsType: public ::xml_schema::type
   ::xsd::cxx::tree::one< initial_T_type > initial_T_;
   target_T_optional target_T_;
   ::xsd::cxx::tree::one< periode_type > periode_;
-  delta_T_optional delta_T_;
+  maxDelta_optional maxDelta_;
 
   //@endcond
 };
@@ -6134,6 +5990,92 @@ class SimulationParameters: public ::xml_schema::type
   //@}
 
   /**
+   * @name dimension
+   *
+   * @brief Accessor and modifier functions for the %dimension
+   * optional element.
+   *
+   * The dimension of the simulation.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::Dimension dimension_type;
+
+  /**
+   * @brief Element optional container type.
+   */
+  typedef ::xsd::cxx::tree::optional< dimension_type > dimension_optional;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< dimension_type, char > dimension_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element
+   * container.
+   *
+   * @return A constant reference to the optional container.
+   */
+  const dimension_optional&
+  dimension () const;
+
+  /**
+   * @brief Return a read-write reference to the element container.
+   *
+   * @return A reference to the optional container.
+   */
+  dimension_optional&
+  dimension ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  dimension (const dimension_type& x);
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x An optional container with the new value to set.
+   *
+   * If the value is present in @a x then this function makes a copy 
+   * of this value and sets it as the new value of the element.
+   * Otherwise the element container is set the 'not present' state.
+   */
+  void
+  dimension (const dimension_optional& x);
+
+  /**
+   * @brief Set the element value without copying.
+   *
+   * @param p A new value to use.
+   *
+   * This function will try to use the passed value directly instead
+   * of making a copy.
+   */
+  void
+  dimension (::std::unique_ptr< dimension_type > p);
+
+  /**
+   * @brief Return the default value for the element.
+   *
+   * @return The element's default value.
+   */
+  static dimension_type
+  dimension_default_value ();
+
+  //@}
+
+  /**
    * @name thermostats
    *
    * @brief Accessor and modifier functions for the %thermostats
@@ -6380,6 +6322,7 @@ class SimulationParameters: public ::xml_schema::type
   force_optional force_;
   static const force_type force_default_value_;
   g_optional g_;
+  dimension_optional dimension_;
   thermostats_optional thermostats_;
   linked_cell_optional linked_cell_;
 

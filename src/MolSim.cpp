@@ -116,7 +116,7 @@ int main(int argc, char *argsv[]) {
                     }
                 } else {  
                     if(optarg == nullptr){
-                        spdlog::error("No log levasel specified for -s option.");
+                        spdlog::error("No log level specified for -s option.");
                         return 1;
                     }
                     spdlog::error("No log level specified for -s option.");

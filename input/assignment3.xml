@@ -16,8 +16,7 @@
                 <y>20</y>
             </size>
             <distance>1.122462048309373</distance>
-            <brownVelocity>0.1</brownVelocity>
-            <brownDimension>2</brownDimension>
+            <brown_velocity>0.1</brown_velocity>
         </cuboid>
         <cuboid>
             <position>
@@ -34,8 +33,7 @@
                 <y>20</y>
             </size>
             <distance>1.122462048309373</distance>
-            <brownVelocity>0.1</brownVelocity>
-            <brownDimension>2</brownDimension>
+            <brown_velocity>0.1</brown_velocity>
         </cuboid>
     </objects>
     <parameters>

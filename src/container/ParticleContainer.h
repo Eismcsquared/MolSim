@@ -4,6 +4,7 @@
 #include "body/Particle.h"
 #include "body/Cuboid.h"
 #include "force/Force.h"
+#include "thermostats/Thermostat.h"
 
 #pragma once
 
@@ -52,14 +53,21 @@ protected:
      * Particles stored in the container
      */
     std::vector<Particle> &particles;
+
     /**
      * The functional interface which computes the forces between two particles (gravitational force, Lennard Jones force...)
      */
     std::unique_ptr<Force> force;
+
     /**
      * The gravitational acceleration (in y-direction) acting on all particles.
      */
      double g;
+
+     /**
+      * The thermostat that adjusts the temperature of the system.
+      */
+     std::unique_ptr<Thermostat> thermostat;
 public:
     /**
     * Construct a particle container.
@@ -95,6 +103,12 @@ public:
      * @param g
      */
     void setG(double g);
+
+    /**
+     * Setter for the thermostat.
+     * @param thermostat A unique pointer to the thermostat.
+     */
+    void setThermostat(std::unique_ptr<Thermostat> &thermostat);
 
     /**
      * Update the position of particles by a time step.
@@ -174,6 +188,8 @@ public:
      * @return a new iterator for the container.
      */
     std::unique_ptr<Iterator> iterator() const;
+
+
 };
 
 

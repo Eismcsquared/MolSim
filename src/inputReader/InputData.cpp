@@ -565,64 +565,34 @@ distance (::std::unique_ptr< distance_type > x)
   this->distance_.set (std::move (x));
 }
 
-const CuboidType::brownVelocity_type& CuboidType::
-brownVelocity () const
+const CuboidType::brown_velocity_optional& CuboidType::
+brown_velocity () const
 {
-  return this->brownVelocity_.get ();
+  return this->brown_velocity_;
 }
 
-CuboidType::brownVelocity_type& CuboidType::
-brownVelocity ()
+CuboidType::brown_velocity_optional& CuboidType::
+brown_velocity ()
 {
-  return this->brownVelocity_.get ();
-}
-
-void CuboidType::
-brownVelocity (const brownVelocity_type& x)
-{
-  this->brownVelocity_.set (x);
+  return this->brown_velocity_;
 }
 
 void CuboidType::
-brownVelocity (::std::unique_ptr< brownVelocity_type > x)
+brown_velocity (const brown_velocity_type& x)
 {
-  this->brownVelocity_.set (std::move (x));
-}
-
-const CuboidType::brownDimension_optional& CuboidType::
-brownDimension () const
-{
-  return this->brownDimension_;
-}
-
-CuboidType::brownDimension_optional& CuboidType::
-brownDimension ()
-{
-  return this->brownDimension_;
+  this->brown_velocity_.set (x);
 }
 
 void CuboidType::
-brownDimension (const brownDimension_type& x)
+brown_velocity (const brown_velocity_optional& x)
 {
-  this->brownDimension_.set (x);
+  this->brown_velocity_ = x;
 }
 
-void CuboidType::
-brownDimension (const brownDimension_optional& x)
+CuboidType::brown_velocity_type CuboidType::
+brown_velocity_default_value ()
 {
-  this->brownDimension_ = x;
-}
-
-void CuboidType::
-brownDimension (::std::unique_ptr< brownDimension_type > x)
-{
-  this->brownDimension_.set (std::move (x));
-}
-
-CuboidType::brownDimension_type CuboidType::
-brownDimension_default_value ()
-{
-  return brownDimension_type (3ULL);
+  return brown_velocity_type (0.0);
 }
 
 const CuboidType::epsilon_optional& CuboidType::
@@ -803,64 +773,34 @@ distance (::std::unique_ptr< distance_type > x)
   this->distance_.set (std::move (x));
 }
 
-const SphereType::brownVelocity_type& SphereType::
-brownVelocity () const
+const SphereType::brown_velocity_optional& SphereType::
+brown_velocity () const
 {
-  return this->brownVelocity_.get ();
+  return this->brown_velocity_;
 }
 
-SphereType::brownVelocity_type& SphereType::
-brownVelocity ()
+SphereType::brown_velocity_optional& SphereType::
+brown_velocity ()
 {
-  return this->brownVelocity_.get ();
-}
-
-void SphereType::
-brownVelocity (const brownVelocity_type& x)
-{
-  this->brownVelocity_.set (x);
+  return this->brown_velocity_;
 }
 
 void SphereType::
-brownVelocity (::std::unique_ptr< brownVelocity_type > x)
+brown_velocity (const brown_velocity_type& x)
 {
-  this->brownVelocity_.set (std::move (x));
-}
-
-const SphereType::dimension_optional& SphereType::
-dimension () const
-{
-  return this->dimension_;
-}
-
-SphereType::dimension_optional& SphereType::
-dimension ()
-{
-  return this->dimension_;
+  this->brown_velocity_.set (x);
 }
 
 void SphereType::
-dimension (const dimension_type& x)
+brown_velocity (const brown_velocity_optional& x)
 {
-  this->dimension_.set (x);
+  this->brown_velocity_ = x;
 }
 
-void SphereType::
-dimension (const dimension_optional& x)
+SphereType::brown_velocity_type SphereType::
+brown_velocity_default_value ()
 {
-  this->dimension_ = x;
-}
-
-void SphereType::
-dimension (::std::unique_ptr< dimension_type > x)
-{
-  this->dimension_.set (std::move (x));
-}
-
-SphereType::dimension_type SphereType::
-dimension_default_value ()
-{
-  return dimension_type (3ULL);
+  return brown_velocity_type (0.0);
 }
 
 const SphereType::epsilon_optional& SphereType::
@@ -1488,34 +1428,34 @@ periode (const periode_type& x)
   this->periode_.set (x);
 }
 
-const ThermostatsType::delta_T_optional& ThermostatsType::
-delta_T () const
+const ThermostatsType::maxDelta_optional& ThermostatsType::
+maxDelta () const
 {
-  return this->delta_T_;
+  return this->maxDelta_;
 }
 
-ThermostatsType::delta_T_optional& ThermostatsType::
-delta_T ()
+ThermostatsType::maxDelta_optional& ThermostatsType::
+maxDelta ()
 {
-  return this->delta_T_;
-}
-
-void ThermostatsType::
-delta_T (const delta_T_type& x)
-{
-  this->delta_T_.set (x);
+  return this->maxDelta_;
 }
 
 void ThermostatsType::
-delta_T (const delta_T_optional& x)
+maxDelta (const maxDelta_type& x)
 {
-  this->delta_T_ = x;
+  this->maxDelta_.set (x);
 }
 
 void ThermostatsType::
-delta_T (::std::unique_ptr< delta_T_type > x)
+maxDelta (const maxDelta_optional& x)
 {
-  this->delta_T_.set (std::move (x));
+  this->maxDelta_ = x;
+}
+
+void ThermostatsType::
+maxDelta (::std::unique_ptr< maxDelta_type > x)
+{
+  this->maxDelta_.set (std::move (x));
 }
 
 
@@ -1760,6 +1700,42 @@ SimulationParameters::g_type SimulationParameters::
 g_default_value ()
 {
   return g_type (0.0);
+}
+
+const SimulationParameters::dimension_optional& SimulationParameters::
+dimension () const
+{
+  return this->dimension_;
+}
+
+SimulationParameters::dimension_optional& SimulationParameters::
+dimension ()
+{
+  return this->dimension_;
+}
+
+void SimulationParameters::
+dimension (const dimension_type& x)
+{
+  this->dimension_.set (x);
+}
+
+void SimulationParameters::
+dimension (const dimension_optional& x)
+{
+  this->dimension_ = x;
+}
+
+void SimulationParameters::
+dimension (::std::unique_ptr< dimension_type > x)
+{
+  this->dimension_.set (std::move (x));
+}
+
+SimulationParameters::dimension_type SimulationParameters::
+dimension_default_value ()
+{
+  return dimension_type (2ULL);
 }
 
 const SimulationParameters::thermostats_optional& SimulationParameters::
@@ -2586,16 +2562,14 @@ CuboidType (const position_type& position,
             const velocity_type& velocity,
             const mass_type& mass,
             const size_type& size,
-            const distance_type& distance,
-            const brownVelocity_type& brownVelocity)
+            const distance_type& distance)
 : ::xml_schema::type (),
   position_ (position, this),
   velocity_ (velocity, this),
   mass_ (mass, this),
   size_ (size, this),
   distance_ (distance, this),
-  brownVelocity_ (brownVelocity, this),
-  brownDimension_ (this),
+  brown_velocity_ (this),
   epsilon_ (this),
   sigma_ (this)
 {
@@ -2606,16 +2580,14 @@ CuboidType (::std::unique_ptr< position_type > position,
             ::std::unique_ptr< velocity_type > velocity,
             const mass_type& mass,
             ::std::unique_ptr< size_type > size,
-            const distance_type& distance,
-            const brownVelocity_type& brownVelocity)
+            const distance_type& distance)
 : ::xml_schema::type (),
   position_ (std::move (position), this),
   velocity_ (std::move (velocity), this),
   mass_ (mass, this),
   size_ (std::move (size), this),
   distance_ (distance, this),
-  brownVelocity_ (brownVelocity, this),
-  brownDimension_ (this),
+  brown_velocity_ (this),
   epsilon_ (this),
   sigma_ (this)
 {
@@ -2631,8 +2603,7 @@ CuboidType (const CuboidType& x,
   mass_ (x.mass_, f, this),
   size_ (x.size_, f, this),
   distance_ (x.distance_, f, this),
-  brownVelocity_ (x.brownVelocity_, f, this),
-  brownDimension_ (x.brownDimension_, f, this),
+  brown_velocity_ (x.brown_velocity_, f, this),
   epsilon_ (x.epsilon_, f, this),
   sigma_ (x.sigma_, f, this)
 {
@@ -2648,8 +2619,7 @@ CuboidType (const ::xercesc::DOMElement& e,
   mass_ (this),
   size_ (this),
   distance_ (this),
-  brownVelocity_ (this),
-  brownDimension_ (this),
+  brown_velocity_ (this),
   epsilon_ (this),
   sigma_ (this)
 {
@@ -2740,30 +2710,13 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // brownVelocity
+    // brown_velocity
     //
-    if (n.name () == "brownVelocity" && n.namespace_ ().empty ())
+    if (n.name () == "brown_velocity" && n.namespace_ ().empty ())
     {
-      ::std::unique_ptr< brownVelocity_type > r (
-        brownVelocity_traits::create (i, f, this));
-
-      if (!brownVelocity_.present ())
+      if (!this->brown_velocity_)
       {
-        this->brownVelocity_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    // brownDimension
-    //
-    if (n.name () == "brownDimension" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< brownDimension_type > r (
-        brownDimension_traits::create (i, f, this));
-
-      if (!this->brownDimension_)
-      {
-        this->brownDimension_.set (::std::move (r));
+        this->brown_velocity_.set (brown_velocity_traits::create (i, f, this));
         continue;
       }
     }
@@ -2827,13 +2780,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "distance",
       "");
   }
-
-  if (!brownVelocity_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "brownVelocity",
-      "");
-  }
 }
 
 CuboidType* CuboidType::
@@ -2854,8 +2800,7 @@ operator= (const CuboidType& x)
     this->mass_ = x.mass_;
     this->size_ = x.size_;
     this->distance_ = x.distance_;
-    this->brownVelocity_ = x.brownVelocity_;
-    this->brownDimension_ = x.brownDimension_;
+    this->brown_velocity_ = x.brown_velocity_;
     this->epsilon_ = x.epsilon_;
     this->sigma_ = x.sigma_;
   }
@@ -2876,16 +2821,14 @@ SphereType (const center_type& center,
             const velocity_type& velocity,
             const mass_type& mass,
             const radius_type& radius,
-            const distance_type& distance,
-            const brownVelocity_type& brownVelocity)
+            const distance_type& distance)
 : ::xml_schema::type (),
   center_ (center, this),
   velocity_ (velocity, this),
   mass_ (mass, this),
   radius_ (radius, this),
   distance_ (distance, this),
-  brownVelocity_ (brownVelocity, this),
-  dimension_ (this),
+  brown_velocity_ (this),
   epsilon_ (this),
   sigma_ (this)
 {
@@ -2896,16 +2839,14 @@ SphereType (::std::unique_ptr< center_type > center,
             ::std::unique_ptr< velocity_type > velocity,
             const mass_type& mass,
             const radius_type& radius,
-            const distance_type& distance,
-            const brownVelocity_type& brownVelocity)
+            const distance_type& distance)
 : ::xml_schema::type (),
   center_ (std::move (center), this),
   velocity_ (std::move (velocity), this),
   mass_ (mass, this),
   radius_ (radius, this),
   distance_ (distance, this),
-  brownVelocity_ (brownVelocity, this),
-  dimension_ (this),
+  brown_velocity_ (this),
   epsilon_ (this),
   sigma_ (this)
 {
@@ -2921,8 +2862,7 @@ SphereType (const SphereType& x,
   mass_ (x.mass_, f, this),
   radius_ (x.radius_, f, this),
   distance_ (x.distance_, f, this),
-  brownVelocity_ (x.brownVelocity_, f, this),
-  dimension_ (x.dimension_, f, this),
+  brown_velocity_ (x.brown_velocity_, f, this),
   epsilon_ (x.epsilon_, f, this),
   sigma_ (x.sigma_, f, this)
 {
@@ -2938,8 +2878,7 @@ SphereType (const ::xercesc::DOMElement& e,
   mass_ (this),
   radius_ (this),
   distance_ (this),
-  brownVelocity_ (this),
-  dimension_ (this),
+  brown_velocity_ (this),
   epsilon_ (this),
   sigma_ (this)
 {
@@ -3027,30 +2966,13 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // brownVelocity
+    // brown_velocity
     //
-    if (n.name () == "brownVelocity" && n.namespace_ ().empty ())
+    if (n.name () == "brown_velocity" && n.namespace_ ().empty ())
     {
-      ::std::unique_ptr< brownVelocity_type > r (
-        brownVelocity_traits::create (i, f, this));
-
-      if (!brownVelocity_.present ())
+      if (!this->brown_velocity_)
       {
-        this->brownVelocity_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    // dimension
-    //
-    if (n.name () == "dimension" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< dimension_type > r (
-        dimension_traits::create (i, f, this));
-
-      if (!this->dimension_)
-      {
-        this->dimension_.set (::std::move (r));
+        this->brown_velocity_.set (brown_velocity_traits::create (i, f, this));
         continue;
       }
     }
@@ -3114,13 +3036,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "distance",
       "");
   }
-
-  if (!brownVelocity_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "brownVelocity",
-      "");
-  }
 }
 
 SphereType* SphereType::
@@ -3141,8 +3056,7 @@ operator= (const SphereType& x)
     this->mass_ = x.mass_;
     this->radius_ = x.radius_;
     this->distance_ = x.distance_;
-    this->brownVelocity_ = x.brownVelocity_;
-    this->dimension_ = x.dimension_;
+    this->brown_velocity_ = x.brown_velocity_;
     this->epsilon_ = x.epsilon_;
     this->sigma_ = x.sigma_;
   }
@@ -3837,7 +3751,7 @@ ThermostatsType (const initial_T_type& initial_T,
   initial_T_ (initial_T, this),
   target_T_ (this),
   periode_ (periode, this),
-  delta_T_ (this)
+  maxDelta_ (this)
 {
 }
 
@@ -3849,7 +3763,7 @@ ThermostatsType (const ThermostatsType& x,
   initial_T_ (x.initial_T_, f, this),
   target_T_ (x.target_T_, f, this),
   periode_ (x.periode_, f, this),
-  delta_T_ (x.delta_T_, f, this)
+  maxDelta_ (x.maxDelta_, f, this)
 {
 }
 
@@ -3861,7 +3775,7 @@ ThermostatsType (const ::xercesc::DOMElement& e,
   initial_T_ (this),
   target_T_ (this),
   periode_ (this),
-  delta_T_ (this)
+  maxDelta_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -3919,16 +3833,16 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // delta_T
+    // maxDelta
     //
-    if (n.name () == "delta_T" && n.namespace_ ().empty ())
+    if (n.name () == "maxDelta" && n.namespace_ ().empty ())
     {
-      ::std::unique_ptr< delta_T_type > r (
-        delta_T_traits::create (i, f, this));
+      ::std::unique_ptr< maxDelta_type > r (
+        maxDelta_traits::create (i, f, this));
 
-      if (!this->delta_T_)
+      if (!this->maxDelta_)
       {
-        this->delta_T_.set (::std::move (r));
+        this->maxDelta_.set (::std::move (r));
         continue;
       }
     }
@@ -3967,7 +3881,7 @@ operator= (const ThermostatsType& x)
     this->initial_T_ = x.initial_T_;
     this->target_T_ = x.target_T_;
     this->periode_ = x.periode_;
-    this->delta_T_ = x.delta_T_;
+    this->maxDelta_ = x.maxDelta_;
   }
 
   return *this;
@@ -4000,6 +3914,7 @@ SimulationParameters ()
   format_ (this),
   force_ (this),
   g_ (this),
+  dimension_ (this),
   thermostats_ (this),
   linked_cell_ (this)
 {
@@ -4017,6 +3932,7 @@ SimulationParameters (const SimulationParameters& x,
   format_ (x.format_, f, this),
   force_ (x.force_, f, this),
   g_ (x.g_, f, this),
+  dimension_ (x.dimension_, f, this),
   thermostats_ (x.thermostats_, f, this),
   linked_cell_ (x.linked_cell_, f, this)
 {
@@ -4034,6 +3950,7 @@ SimulationParameters (const ::xercesc::DOMElement& e,
   format_ (this),
   force_ (this),
   g_ (this),
+  dimension_ (this),
   thermostats_ (this),
   linked_cell_ (this)
 {
@@ -4146,6 +4063,20 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // dimension
+    //
+    if (n.name () == "dimension" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< dimension_type > r (
+        dimension_traits::create (i, f, this));
+
+      if (!this->dimension_)
+      {
+        this->dimension_.set (::std::move (r));
+        continue;
+      }
+    }
+
     // thermostats
     //
     if (n.name () == "thermostats" && n.namespace_ ().empty ())
@@ -4198,6 +4129,7 @@ operator= (const SimulationParameters& x)
     this->format_ = x.format_;
     this->force_ = x.force_;
     this->g_ = x.g_;
+    this->dimension_ = x.dimension_;
     this->thermostats_ = x.thermostats_;
     this->linked_cell_ = x.linked_cell_;
   }
@@ -4904,27 +4836,16 @@ operator<< (::xercesc::DOMElement& e, const CuboidType& i)
     s << i.distance ();
   }
 
-  // brownVelocity
+  // brown_velocity
   //
+  if (i.brown_velocity ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
-        "brownVelocity",
+        "brown_velocity",
         e));
 
-    s << i.brownVelocity ();
-  }
-
-  // brownDimension
-  //
-  if (i.brownDimension ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "brownDimension",
-        e));
-
-    s << *i.brownDimension ();
+    s << ::xml_schema::as_double(*i.brown_velocity ());
   }
 
   // epsilon
@@ -5012,27 +4933,16 @@ operator<< (::xercesc::DOMElement& e, const SphereType& i)
     s << i.distance ();
   }
 
-  // brownVelocity
+  // brown_velocity
   //
+  if (i.brown_velocity ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
-        "brownVelocity",
+        "brown_velocity",
         e));
 
-    s << i.brownVelocity ();
-  }
-
-  // dimension
-  //
-  if (i.dimension ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "dimension",
-        e));
-
-    s << *i.dimension ();
+    s << ::xml_schema::as_double(*i.brown_velocity ());
   }
 
   // epsilon
@@ -5321,16 +5231,16 @@ operator<< (::xercesc::DOMElement& e, const ThermostatsType& i)
     s << i.periode ();
   }
 
-  // delta_T
+  // maxDelta
   //
-  if (i.delta_T ())
+  if (i.maxDelta ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
-        "delta_T",
+        "maxDelta",
         e));
 
-    s << *i.delta_T ();
+    s << *i.maxDelta ();
   }
 }
 
@@ -5421,6 +5331,18 @@ operator<< (::xercesc::DOMElement& e, const SimulationParameters& i)
         e));
 
     s << ::xml_schema::as_double(*i.g ());
+  }
+
+  // dimension
+  //
+  if (i.dimension ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "dimension",
+        e));
+
+    s << *i.dimension ();
   }
 
   // thermostats

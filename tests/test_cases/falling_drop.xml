@@ -14,8 +14,6 @@
             <mass>1</mass>
             <radius>15</radius>
             <distance>1.122462048309373</distance>
-            <brownVelocity>0</brownVelocity>
-            <dimension>2</dimension>
         </sphere>
     </objects>
     <parameters>
