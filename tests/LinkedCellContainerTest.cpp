@@ -42,23 +42,15 @@ protected:
 //Test whether cells are instantiated with correct size and number, especially if the cell size does not divide the domain size.
 TEST_F(LinkedCellContainerTest, CellInstantiation) {
     test_logger->info("LinkedCellContainer - Cell instantiation test");
-    EXPECT_EQ(5, container2D->getNCells()[0]);
-    EXPECT_EQ(5, container2D->getNCells()[1]);
-    EXPECT_EQ(1, container2D->getNCells()[2]);
+    EXPECT_TRUE((std::array<int, 3>{5, 5, 1}) == container2D->getNCells());
     for (const auto& c: container2D->getCells()) {
-        EXPECT_EQ(3, c.getSize()[0]);
-        EXPECT_EQ(3, c.getSize()[1]);
-        EXPECT_EQ(1, c.getSize()[2]);
+        EXPECT_LE(ArrayUtils::L2Norm(c.getSize() - std::array<double, 3>{3, 3, 1}), 1e-12);
     }
     EXPECT_EQ(147, container2D->getCells().size());
 
-    EXPECT_EQ(33, container3D->getNCells()[0]);
-    EXPECT_EQ(33, container3D->getNCells()[1]);
-    EXPECT_EQ(16, container3D->getNCells()[2]);
-    for (auto c: container3D->getCells()) {
-        EXPECT_FLOAT_EQ(100.0 / 33, c.getSize()[0]);
-        EXPECT_FLOAT_EQ(100.0 / 33, c.getSize()[1]);
-        EXPECT_FLOAT_EQ(50.0 / 16, c.getSize()[2]);
+    EXPECT_TRUE((std::array<int, 3>{33, 33, 16}) == container3D->getNCells());
+    for (const auto& c: container3D->getCells()) {
+        EXPECT_LE(ArrayUtils::L2Norm(c.getSize() - std::array<double, 3>{100.0 / 33, 100.0 / 33, 50.0 / 16}), 1e-12);
     }
     EXPECT_EQ(22050, container3D->getCells().size());
     if (::testing::Test::HasFailure()) {
@@ -76,9 +68,7 @@ TEST_F(LinkedCellContainerTest, Indices) {
     EXPECT_EQ(64, container2D->getCellIndex({1, 3.5, 0.4}));
     EXPECT_EQ(-1, container3D->getCellIndex({105, 50, 40}));
     std::array<int, 3> index3D = container2D->get3DIndex(28);
-    EXPECT_EQ(-1, index3D[0]);
-    EXPECT_EQ(3, index3D[1]);
-    EXPECT_EQ(-1, index3D[2]);
+    EXPECT_TRUE((std::array<int, 3>{-1, 3, -1}) == index3D);
     if (::testing::Test::HasFailure()) {
         test_logger->info("LinkedCellContainer - Get indices test failed");
     } else {
@@ -219,61 +209,125 @@ TEST_F(LinkedCellContainerTest, ForceCalculationPeriodic) {
     container3DPeriodicX->addParticle(Particle(pos[0], {0, 0, 0}, 1));
     container3DPeriodicX->addParticle(Particle(pos[1], {0, 0, 0}, 1));
 
-    EXPECT_NEAR(-force(2), container3DPeriodicX->getParticles()[0].getF()[0], 1e-12);
-    EXPECT_NEAR(0, container3DPeriodicX->getParticles()[0].getF()[1], 1e-12);
-    EXPECT_NEAR(0, container3DPeriodicX->getParticles()[0].getF()[2], 1e-12);
-    EXPECT_NEAR(force(2), container3DPeriodicX->getParticles()[1].getF()[0], 1e-12);
-    EXPECT_NEAR(0, container3DPeriodicX->getParticles()[1].getF()[1], 1e-12);
-    EXPECT_NEAR(0, container3DPeriodicX->getParticles()[1].getF()[2], 1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[0].getF() -
+                 std::array<double, 3>{
+                    -force(2),
+                    0,
+                    0
+                 }),
+              1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[1].getF() -
+                std::array<double, 3>{
+                    force(2),
+                    0,
+                    0
+                }),
+              1e-12);
 
     container3DPeriodicX->addParticle(Particle(pos[2], {0, 0, 0}, 1));
 
-    EXPECT_NEAR(-force(2) - force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[0].getF()[0], 1e-12);
-    EXPECT_NEAR(0, container3DPeriodicX->getParticles()[0].getF()[1], 1e-12);
-    EXPECT_NEAR(force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[0].getF()[2], 1e-12);
-    EXPECT_NEAR(force(2), container3DPeriodicX->getParticles()[1].getF()[0], 1e-12);
-    EXPECT_NEAR(0, container3DPeriodicX->getParticles()[1].getF()[1], 1e-12);
-    EXPECT_NEAR(force(2), container3DPeriodicX->getParticles()[1].getF()[2], 1e-12);
-    EXPECT_NEAR(force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[2].getF()[0], 1e-12);
-    EXPECT_NEAR(0, container3DPeriodicX->getParticles()[2].getF()[1], 1e-12);
-    EXPECT_NEAR(-force(2) - force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[2].getF()[2], 1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[0].getF() -
+                std::array<double, 3>{
+                    -force(2) - force(sqrt(8)) / sqrt(2),
+                    0,
+                    force(sqrt(8)) / sqrt(2)
+                }),
+              1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[1].getF() -
+                std::array<double, 3>{
+                    force(2),
+                    0,
+                    force(2)
+                }),
+              1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[2].getF() -
+                std::array<double, 3>{
+                    force(sqrt(8)) / sqrt(2),
+                    0,
+                    -force(2) - force(sqrt(8)) / sqrt(2)
+                }),
+              1e-12);
 
     container3DPeriodicX->addParticle(Particle(pos[3], {0, 0, 0}, 1));
 
-    EXPECT_NEAR(-force(2) - 2 * force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[0].getF()[0], 1e-12);
-    EXPECT_NEAR(force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[0].getF()[1], 1e-12);
-    EXPECT_NEAR(force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[0].getF()[2], 1e-12);
-    EXPECT_NEAR(force(2), container3DPeriodicX->getParticles()[1].getF()[0], 1e-12);
-    EXPECT_NEAR(force(2), container3DPeriodicX->getParticles()[1].getF()[1], 1e-12);
-    EXPECT_NEAR(force(2), container3DPeriodicX->getParticles()[1].getF()[2], 1e-12);
-    EXPECT_NEAR(force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[2].getF()[0], 1e-12);
-    EXPECT_NEAR(force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[2].getF()[1], 1e-12);
-    EXPECT_NEAR(-force(2) - 2 * force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[2].getF()[2], 1e-12);
-    EXPECT_NEAR(force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[3].getF()[0], 1e-12);
-    EXPECT_NEAR(-force(2) - 2 * force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[3].getF()[1], 1e-12);
-    EXPECT_NEAR(force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[3].getF()[2], 1e-12);
+
+    EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[0].getF() -
+                std::array<double, 3>{
+                    -force(2) - 2 * force(sqrt(8)) / sqrt(2),
+                    force(sqrt(8)) / sqrt(2),
+                    force(sqrt(8)) / sqrt(2)
+                }),
+              1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[1].getF() -
+                std::array<double, 3>{
+                    force(2),
+                    force(2),
+                    force(2)
+                }),
+              1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[2].getF() -
+                std::array<double, 3>{
+                    force(sqrt(8)) / sqrt(2),
+                    force(sqrt(8)) / sqrt(2),
+                    -force(2) - 2 * force(sqrt(8)) / sqrt(2)
+                }),
+              1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[3].getF() -
+                std::array<double, 3>{
+                    force(sqrt(8)) / sqrt(2),
+                    -force(2) - 2 * force(sqrt(8)) / sqrt(2),
+                    force(sqrt(8)) / sqrt(2)
+                }),
+              1e-12);
+
 
     container3DPeriodicX->addParticle(Particle(pos[4], {0, 0, 0}, 1));
     container3DPeriodicX->addParticle(Particle(pos[5], {0, 0, 0}, 1));
 
-    EXPECT_NEAR(-force(2) - 2 * force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[0].getF()[0], 1e-12);
-    EXPECT_NEAR(force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[0].getF()[1], 1e-12);
-    EXPECT_NEAR(force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[0].getF()[2], 1e-12);
-    EXPECT_NEAR(force(2), container3DPeriodicX->getParticles()[1].getF()[0], 1e-12);
-    EXPECT_NEAR(force(2), container3DPeriodicX->getParticles()[1].getF()[1], 1e-12);
-    EXPECT_NEAR(force(2), container3DPeriodicX->getParticles()[1].getF()[2], 1e-12);
-    EXPECT_NEAR(force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[2].getF()[0], 1e-12);
-    EXPECT_NEAR(force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[2].getF()[1], 1e-12);
-    EXPECT_NEAR(-force(2) - 2 * force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[2].getF()[2], 1e-12);
-    EXPECT_NEAR(force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[3].getF()[0], 1e-12);
-    EXPECT_NEAR(-force(2) - 2 * force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[3].getF()[1], 1e-12);
-    EXPECT_NEAR(force(sqrt(8)) / sqrt(2), container3DPeriodicX->getParticles()[3].getF()[2], 1e-12);
-    EXPECT_NEAR(0, container3DPeriodicX->getParticles()[4].getF()[0], 1e-12);
-    EXPECT_NEAR(0, container3DPeriodicX->getParticles()[4].getF()[1], 1e-12);
-    EXPECT_NEAR(0, container3DPeriodicX->getParticles()[4].getF()[2], 1e-12);
-    EXPECT_NEAR(0, container3DPeriodicX->getParticles()[5].getF()[0], 1e-12);
-    EXPECT_NEAR(0, container3DPeriodicX->getParticles()[5].getF()[1], 1e-12);
-    EXPECT_NEAR(0, container3DPeriodicX->getParticles()[5].getF()[2], 1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[0].getF() -
+                std::array<double, 3>{
+                    -force(2) - 2 * force(sqrt(8)) / sqrt(2),
+                    force(sqrt(8)) / sqrt(2),
+                    force(sqrt(8)) / sqrt(2)
+                }),
+              1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[1].getF() -
+                std::array<double, 3>{
+                    force(2),
+                    force(2),
+                    force(2)
+                }),
+              1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[2].getF() -
+                std::array<double, 3>{
+                    force(sqrt(8)) / sqrt(2),
+                    force(sqrt(8)) / sqrt(2),
+                    -force(2) - 2 * force(sqrt(8)) / sqrt(2)
+                }),
+              1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[3].getF() -
+                std::array<double, 3>{
+                    force(sqrt(8)) / sqrt(2),
+                    -force(2) - 2 * force(sqrt(8)) / sqrt(2),
+                    force(sqrt(8)) / sqrt(2)
+                }),
+              1e-12);
+
+    EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[4].getF() -
+            std::array<double, 3>{
+                    0,
+                    0,
+                    0
+                }),
+              1e-12);
+
+    EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[4].getF() -
+                std::array<double, 3>{
+                    0,
+                    0,
+                    0
+                }),
+              1e-12);
 
     if (::testing::Test::HasFailure()) {
         test_logger->info("LinkedCellContainer - Periodic force calculation test failed");
@@ -375,12 +429,23 @@ TEST_F(LinkedCellContainerTest, Analytical) {
     container2D->simulate(25, 1e-3, "", "", 10, false, true);
     double expectedVel = sqrt((pow(1.0 / 3, 6) - pow(1.0 / 3, 12)));
     EXPECT_TRUE(ArrayUtils::L2Norm(container2D->getParticles()[0].getX() - container2D->getParticles()[1].getX()) > 3);
-    EXPECT_NEAR(-expectedVel, container2D->getParticles()[0].getV()[0], 1e-4);
-    EXPECT_NEAR(0, container2D->getParticles()[0].getV()[1], 1e-12);
-    EXPECT_NEAR(0, container2D->getParticles()[0].getV()[2], 1e-12);
-    EXPECT_NEAR(expectedVel, container2D->getParticles()[1].getV()[0], 1e-4);
-    EXPECT_NEAR(0, container2D->getParticles()[1].getV()[1], 1e-12);
-    EXPECT_NEAR(0, container2D->getParticles()[1].getV()[2], 1e-12);
+
+    EXPECT_LE(ArrayUtils::L2Norm(container2D->getParticles()[0].getV() -
+                std::array<double, 3>{
+                    -expectedVel,
+                    0,
+                    0
+                }),
+              1e-4);
+
+    EXPECT_LE(ArrayUtils::L2Norm(container2D->getParticles()[1].getV() -
+                 std::array<double, 3>{
+                     expectedVel,
+                     0,
+                     0
+                 }),
+               1e-4);
+
     if (::testing::Test::HasFailure()) {
         test_logger->info("LinkedCellContainer - Two body analytical test failed");
     } else {
