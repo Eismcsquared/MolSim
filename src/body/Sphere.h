@@ -1,4 +1,5 @@
 #include <array>
+#include "utils/ArrayUtils.h"
 #include "Cluster.h"
 /**
  * @brief This class represents a sphere consisting of particles
@@ -42,5 +43,23 @@ public:
      * Create particles that belong to the sphere and insert them into the given vector.
      * @param particles: The vector that particles of the cuboid should be added to.
      */
-    void createParticles(std::vector<Particle>& particles) const;
+    inline void createParticles(std::vector<Particle>& particles) const override {
+        for (int i = -radius; i <= radius; ++i) {
+            for (int j = -radius; j <= radius; ++j) {
+                if (dimension == 2) {
+                    std::array<double, 3> pos = x + std::array<double, 3> {i * distance, j * distance, 0};
+                    if(ArrayUtils::L2Norm(x - pos) <= radius * distance) {
+                        particles.emplace_back(pos, v + maxwellBoltzmannDistributedVelocity(avgVelocityBrownian, dimension), m, epsilon, sigma);
+                    }
+                } else {
+                    for (int k = -radius; k <= radius; ++k) {
+                        std::array<double, 3> pos = x + std::array<double, 3> {i * distance, j * distance, k * distance};
+                        if(ArrayUtils::L2Norm(x - pos) <= radius * distance) {
+                            particles.emplace_back(pos, v + maxwellBoltzmannDistributedVelocity(avgVelocityBrownian, dimension), m, epsilon, sigma);
+                        }
+                    }
+                }
+            }
+        }
+    }
 };

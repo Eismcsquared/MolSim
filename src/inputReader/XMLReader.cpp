@@ -2,8 +2,8 @@
 #include <memory>
 #include <vector>
 #include <spdlog/spdlog.h>
-#include <iostream>
 #include <limits>
+#include <iostream>
 #include "XMLReader.h"
 #include "inputReader/InputData.h"
 #include "container/LinkedCellContainer.h"
@@ -22,6 +22,8 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
 
     try {
         std::unique_ptr<InputData> input(simulation(file, xsd::cxx::tree::flags::dont_validate));
+
+
 
         for (auto p: input->objects().particle()) {
             double r_z = p.position().z().present() ? p.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
@@ -47,8 +49,8 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
             double sigma = c.sigma().present() ? c.sigma().get() : CuboidType::sigma_default_value();
 
             double brown_vel;
-            if (input->parameters().thermostats().present()) {
-                brown_vel = sqrt(input->parameters().thermostats()->initial_T() / c.mass());
+            if (input->parameters().thermostat().present()) {
+                brown_vel = sqrt(input->parameters().thermostat()->initial_T() / c.mass());
             } else if (c.brown_velocity().present()) {
                 brown_vel = c.brown_velocity().get();
             } else {
@@ -66,7 +68,9 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
                         epsilon,
                         sigma
                     );
+
             cuboid.createParticles(particles);
+
         }
 
         for (auto s : input->objects().sphere()) {
@@ -77,8 +81,8 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
             double sigma = s.sigma().present() ? s.sigma().get() : SphereType::sigma_default_value();
 
             double brown_vel;
-            if (input->parameters().thermostats().present()) {
-                brown_vel = sqrt(input->parameters().thermostats()->initial_T() / s.mass());
+            if (input->parameters().thermostat().present()) {
+                brown_vel = sqrt(input->parameters().thermostat()->initial_T() / s.mass());
             } else if (s.brown_velocity().present()) {
                 brown_vel = s.brown_velocity().get();
             } else {
@@ -114,7 +118,7 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
         if (input->parameters().linked_cell().present()) {
             PositiveDoubleVector3 domainSize = input->parameters().linked_cell()->domain_size();
             PositiveDouble cutoffRadius = input->parameters().linked_cell()->cutoff_radius();
-            BoundaryCondition3 b = input->parameters().linked_cell()->boundary_condition();
+            auto b = input->parameters().linked_cell()->boundary_condition();
             auto boundaryConditionMap = [](const BoundaryConditionType& t) {
                 switch (t) {
                     case BoundaryConditionType::value::reflect:
@@ -125,12 +129,12 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
                         return PERIODIC;
                 }
             };
-            BoundaryConditionType left = b.left().present() ? b.left().get() : BoundaryCondition3::left_default_value();
-            BoundaryConditionType right = b.right().present() ? b.right().get() : BoundaryCondition3::right_default_value();
-            BoundaryConditionType down = b.down().present() ? b.down().get() : BoundaryCondition3::down_default_value();
-            BoundaryConditionType up = b.up().present() ? b.up().get() : BoundaryCondition3::up_default_value();
-            BoundaryConditionType back = b.back().present() ? b.back().get() : BoundaryCondition3::back_default_value();
-            BoundaryConditionType front = b.front().present() ? b.front().get() : BoundaryCondition3::front_default_value();
+            BoundaryConditionType left = b.present() && b.get().left().present() ? b.get().left().get() : BoundaryCondition3::left_default_value();
+            BoundaryConditionType right = b.present() && b.get().right().present() ? b.get().right().get() : BoundaryCondition3::right_default_value();
+            BoundaryConditionType down = b.present() && b.get().down().present() ? b.get().down().get() : BoundaryCondition3::down_default_value();
+            BoundaryConditionType up = b.present() && b.get().up().present() ? b.get().up().get() : BoundaryCondition3::up_default_value();
+            BoundaryConditionType back = b.present() && b.get().back().present() ? b.get().back().get() : BoundaryCondition3::back_default_value();
+            BoundaryConditionType front = b.present() && b.get().front().present() ? b.get().front().get() : BoundaryCondition3::front_default_value();
             std::array<BoundaryCondition, 6> boundaryCondition = {
                     boundaryConditionMap(left),
                     boundaryConditionMap(right),
@@ -155,16 +159,16 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
             container->setG(input->parameters().g().get());
         }
 
-        if (input->parameters().thermostats().present()) {
-            auto ts = input->parameters().thermostats().get();
+        if (input->parameters().thermostat().present()) {
+            auto ts = input->parameters().thermostat().get();
             double target_T = ts.target_T().present() ? ts.target_T().get() : ts.initial_T();
-            double maxChange = ts.maxDelta().present() ? static_cast<double>(ts.maxDelta().get()) : std::numeric_limits<double>::infinity();
+            double maxChange = ts.max_delta().present() ? static_cast<double>(ts.max_delta().get()) : std::numeric_limits<double>::infinity();
             std::unique_ptr<Thermostat> thermostat = std::make_unique<Thermostat>(
                     target_T,
                     ts.periode(),
                     maxChange,
                     dimension
-            );
+                );
             container->setThermostat(thermostat);
         }
 

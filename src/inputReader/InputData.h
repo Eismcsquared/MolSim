@@ -4891,7 +4891,7 @@ class LinkedCellType: public ::xml_schema::type
    * @name boundary_condition
    *
    * @brief Accessor and modifier functions for the %boundary_condition
-   * required element.
+   * optional element.
    */
   //@{
 
@@ -4901,24 +4901,30 @@ class LinkedCellType: public ::xml_schema::type
   typedef ::BoundaryCondition3 boundary_condition_type;
 
   /**
+   * @brief Element optional container type.
+   */
+  typedef ::xsd::cxx::tree::optional< boundary_condition_type > boundary_condition_optional;
+
+  /**
    * @brief Element traits type.
    */
   typedef ::xsd::cxx::tree::traits< boundary_condition_type, char > boundary_condition_traits;
 
   /**
-   * @brief Return a read-only (constant) reference to the element.
+   * @brief Return a read-only (constant) reference to the element
+   * container.
    *
-   * @return A constant reference to the element.
+   * @return A constant reference to the optional container.
    */
-  const boundary_condition_type&
+  const boundary_condition_optional&
   boundary_condition () const;
 
   /**
-   * @brief Return a read-write reference to the element.
+   * @brief Return a read-write reference to the element container.
    *
-   * @return A reference to the element.
+   * @return A reference to the optional container.
    */
-  boundary_condition_type&
+  boundary_condition_optional&
   boundary_condition ();
 
   /**
@@ -4933,12 +4939,24 @@ class LinkedCellType: public ::xml_schema::type
   boundary_condition (const boundary_condition_type& x);
 
   /**
+   * @brief Set the element value.
+   *
+   * @param x An optional container with the new value to set.
+   *
+   * If the value is present in @a x then this function makes a copy 
+   * of this value and sets it as the new value of the element.
+   * Otherwise the element container is set the 'not present' state.
+   */
+  void
+  boundary_condition (const boundary_condition_optional& x);
+
+  /**
    * @brief Set the element value without copying.
    *
    * @param p A new value to use.
    *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
+   * This function will try to use the passed value directly instead
+   * of making a copy.
    */
   void
   boundary_condition (::std::unique_ptr< boundary_condition_type > p);
@@ -4955,8 +4973,7 @@ class LinkedCellType: public ::xml_schema::type
    * initializers for required elements and attributes.
    */
   LinkedCellType (const domain_size_type&,
-                  const cutoff_radius_type&,
-                  const boundary_condition_type&);
+                  const cutoff_radius_type&);
 
   /**
    * @brief Create an instance from the ultimate base and
@@ -4967,8 +4984,7 @@ class LinkedCellType: public ::xml_schema::type
    * instead of making copies.
    */
   LinkedCellType (::std::unique_ptr< domain_size_type >,
-                  const cutoff_radius_type&,
-                  ::std::unique_ptr< boundary_condition_type >);
+                  const cutoff_radius_type&);
 
   /**
    * @brief Create an instance from a DOM element.
@@ -5042,7 +5058,7 @@ class LinkedCellType: public ::xml_schema::type
   protected:
   ::xsd::cxx::tree::one< domain_size_type > domain_size_;
   ::xsd::cxx::tree::one< cutoff_radius_type > cutoff_radius_;
-  ::xsd::cxx::tree::one< boundary_condition_type > boundary_condition_;
+  boundary_condition_optional boundary_condition_;
 
   //@endcond
 };
@@ -5237,9 +5253,9 @@ class ThermostatsType: public ::xml_schema::type
   //@}
 
   /**
-   * @name maxDelta
+   * @name max_delta
    *
-   * @brief Accessor and modifier functions for the %maxDelta
+   * @brief Accessor and modifier functions for the %max_delta
    * optional element.
    */
   //@{
@@ -5247,17 +5263,17 @@ class ThermostatsType: public ::xml_schema::type
   /**
    * @brief Element type.
    */
-  typedef ::PositiveDouble maxDelta_type;
+  typedef ::PositiveDouble max_delta_type;
 
   /**
    * @brief Element optional container type.
    */
-  typedef ::xsd::cxx::tree::optional< maxDelta_type > maxDelta_optional;
+  typedef ::xsd::cxx::tree::optional< max_delta_type > max_delta_optional;
 
   /**
    * @brief Element traits type.
    */
-  typedef ::xsd::cxx::tree::traits< maxDelta_type, char > maxDelta_traits;
+  typedef ::xsd::cxx::tree::traits< max_delta_type, char > max_delta_traits;
 
   /**
    * @brief Return a read-only (constant) reference to the element
@@ -5265,16 +5281,16 @@ class ThermostatsType: public ::xml_schema::type
    *
    * @return A constant reference to the optional container.
    */
-  const maxDelta_optional&
-  maxDelta () const;
+  const max_delta_optional&
+  max_delta () const;
 
   /**
    * @brief Return a read-write reference to the element container.
    *
    * @return A reference to the optional container.
    */
-  maxDelta_optional&
-  maxDelta ();
+  max_delta_optional&
+  max_delta ();
 
   /**
    * @brief Set the element value.
@@ -5285,7 +5301,7 @@ class ThermostatsType: public ::xml_schema::type
    * the new value of the element.
    */
   void
-  maxDelta (const maxDelta_type& x);
+  max_delta (const max_delta_type& x);
 
   /**
    * @brief Set the element value.
@@ -5297,7 +5313,7 @@ class ThermostatsType: public ::xml_schema::type
    * Otherwise the element container is set the 'not present' state.
    */
   void
-  maxDelta (const maxDelta_optional& x);
+  max_delta (const max_delta_optional& x);
 
   /**
    * @brief Set the element value without copying.
@@ -5308,7 +5324,7 @@ class ThermostatsType: public ::xml_schema::type
    * of making a copy.
    */
   void
-  maxDelta (::std::unique_ptr< maxDelta_type > p);
+  max_delta (::std::unique_ptr< max_delta_type > p);
 
   //@}
 
@@ -5397,7 +5413,7 @@ class ThermostatsType: public ::xml_schema::type
   ::xsd::cxx::tree::one< initial_T_type > initial_T_;
   target_T_optional target_T_;
   ::xsd::cxx::tree::one< periode_type > periode_;
-  maxDelta_optional maxDelta_;
+  max_delta_optional max_delta_;
 
   //@endcond
 };
@@ -6076,9 +6092,9 @@ class SimulationParameters: public ::xml_schema::type
   //@}
 
   /**
-   * @name thermostats
+   * @name thermostat
    *
-   * @brief Accessor and modifier functions for the %thermostats
+   * @brief Accessor and modifier functions for the %thermostat
    * optional element.
    *
    * Specifies the thermostats that should be applied.
@@ -6088,17 +6104,17 @@ class SimulationParameters: public ::xml_schema::type
   /**
    * @brief Element type.
    */
-  typedef ::ThermostatsType thermostats_type;
+  typedef ::ThermostatsType thermostat_type;
 
   /**
    * @brief Element optional container type.
    */
-  typedef ::xsd::cxx::tree::optional< thermostats_type > thermostats_optional;
+  typedef ::xsd::cxx::tree::optional< thermostat_type > thermostat_optional;
 
   /**
    * @brief Element traits type.
    */
-  typedef ::xsd::cxx::tree::traits< thermostats_type, char > thermostats_traits;
+  typedef ::xsd::cxx::tree::traits< thermostat_type, char > thermostat_traits;
 
   /**
    * @brief Return a read-only (constant) reference to the element
@@ -6106,16 +6122,16 @@ class SimulationParameters: public ::xml_schema::type
    *
    * @return A constant reference to the optional container.
    */
-  const thermostats_optional&
-  thermostats () const;
+  const thermostat_optional&
+  thermostat () const;
 
   /**
    * @brief Return a read-write reference to the element container.
    *
    * @return A reference to the optional container.
    */
-  thermostats_optional&
-  thermostats ();
+  thermostat_optional&
+  thermostat ();
 
   /**
    * @brief Set the element value.
@@ -6126,7 +6142,7 @@ class SimulationParameters: public ::xml_schema::type
    * the new value of the element.
    */
   void
-  thermostats (const thermostats_type& x);
+  thermostat (const thermostat_type& x);
 
   /**
    * @brief Set the element value.
@@ -6138,7 +6154,7 @@ class SimulationParameters: public ::xml_schema::type
    * Otherwise the element container is set the 'not present' state.
    */
   void
-  thermostats (const thermostats_optional& x);
+  thermostat (const thermostat_optional& x);
 
   /**
    * @brief Set the element value without copying.
@@ -6149,7 +6165,7 @@ class SimulationParameters: public ::xml_schema::type
    * of making a copy.
    */
   void
-  thermostats (::std::unique_ptr< thermostats_type > p);
+  thermostat (::std::unique_ptr< thermostat_type > p);
 
   //@}
 
@@ -6323,7 +6339,7 @@ class SimulationParameters: public ::xml_schema::type
   static const force_type force_default_value_;
   g_optional g_;
   dimension_optional dimension_;
-  thermostats_optional thermostats_;
+  thermostat_optional thermostat_;
   linked_cell_optional linked_cell_;
 
   //@endcond

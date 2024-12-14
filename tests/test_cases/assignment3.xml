@@ -43,7 +43,6 @@
                 <y>90</y>
             </domain_size>
             <cutoff_radius>3</cutoff_radius>
-            <boundary_condition/>
         </linked_cell>
     </parameters>
 </simulation>

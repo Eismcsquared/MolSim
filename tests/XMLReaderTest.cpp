@@ -41,6 +41,8 @@ TEST_F(XMLReaderTest, Assigment1Input) {
     EXPECT_EQ("MD_vtk", simulation->getOutputFile());
     EXPECT_EQ("vtu", simulation->getOutputFormat());
     EXPECT_EQ(10, simulation->getOutputFrequency());
+    EXPECT_FLOAT_EQ(0, simulation->getContainer()->getG());
+    EXPECT_FALSE(simulation->getContainer()->getThermostat());
     if(::testing::Test::HasFailure()) {
         test_logger->info("XMLReader - Assignment 1 input test failed");
     } else {
@@ -67,6 +69,8 @@ TEST_F(XMLReaderTest, Assigment2Input) {
     EXPECT_EQ("a2", simulation->getOutputFile());
     EXPECT_EQ("xyz", simulation->getOutputFormat());
     EXPECT_EQ(15, simulation->getOutputFrequency());
+    EXPECT_FLOAT_EQ(0, simulation->getContainer()->getG());
+    EXPECT_FALSE(simulation->getContainer()->getThermostat());
     if(::testing::Test::HasFailure()) {
         test_logger->info("XMLReader - Assignment 2 input test failed");
     } else {
@@ -120,7 +124,7 @@ TEST_F(XMLReaderTest, FallingDropInput) {
 
 // Test whether Brownian motion is initialized correctly.
 TEST_F(XMLReaderTest, BrownianMotion) {
-    test_logger->info("XMLReader - Brownian motion input test");
+    test_logger->info("XMLReader - Brownian motion reading test");
     inputFile = "../tests/test_cases/large.xml";
     simulation = XMLReader::readXML(particles, inputFile);
     long double mean = 0;
@@ -137,9 +141,78 @@ TEST_F(XMLReaderTest, BrownianMotion) {
     EXPECT_NEAR(0.02, meanSquire, 5e-4) << "Wrong mean squared velocity of Brownian motion. Expected: "
     << 0.02 << ", but got " << meanSquire;
     if(::testing::Test::HasFailure()) {
-        test_logger->info("XMLReader - Brownian motion input test failed");
+        test_logger->info("XMLReader - Brownian motion reading test failed");
     } else {
-        test_logger->info("XMLReader - Brownian motion input test passed");
+        test_logger->info("XMLReader - Brownian motion reading test passed");
+    }
+}
+
+// Test whether the xml reader read the thermostat and gravitational acceleration correctly
+
+TEST_F(XMLReaderTest, Assignment4Input) {
+    test_logger->info("XMLReader - Assignment 4 input test");
+    inputFile = "../tests/test_cases/assignment4.xml";
+    simulation = XMLReader::readXML(particles, inputFile);
+    EXPECT_TRUE(simulation->getContainer()->getThermostat());
+    EXPECT_EQ(1000, simulation->getContainer()->getThermostat()->getPeriode());
+    EXPECT_FLOAT_EQ(40, simulation->getContainer()->getThermostat()->getTargetT());
+    EXPECT_FLOAT_EQ(std::numeric_limits<double>::infinity(), simulation->getContainer()->getThermostat()->getMaxDelta());
+    EXPECT_EQ(2, simulation->getContainer()->getThermostat()->getDimension());
+    EXPECT_FLOAT_EQ(-12.44, simulation->getContainer()->getG());
+
+    for (Particle &p: particles) {
+        EXPECT_FLOAT_EQ(1, p.getEpsilon());
+        if (std::abs(p.getM() - 1) < 1e-12) {
+            EXPECT_FLOAT_EQ(1, p.getSigma());
+        } else {
+            EXPECT_FLOAT_EQ(0.9412, p.getSigma());
+        }
+    }
+
+    if(::testing::Test::HasFailure()) {
+        test_logger->info("XMLReader - Assignment 4 input test failed");
+    } else {
+        test_logger->info("XMLReader - Assignment 4 input test passed");
+    }
+}
+
+// Test the generation of Brownian motion by temperature
+
+TEST_F(XMLReaderTest, InitialTemperature) {
+    test_logger->info("XMLReader - Initial temperature test");
+    inputFile = "../tests/test_cases/large_with_thermostat.xml";
+    particles.reserve(20000);
+    simulation = XMLReader::readXML(particles, inputFile);
+
+    EXPECT_TRUE(simulation->getContainer()->getThermostat());
+    EXPECT_EQ(1000, simulation->getContainer()->getThermostat()->getPeriode());
+    EXPECT_FLOAT_EQ(60, simulation->getContainer()->getThermostat()->getTargetT());
+    EXPECT_FLOAT_EQ(0.95, simulation->getContainer()->getThermostat()->getMaxDelta());
+    EXPECT_EQ(3, simulation->getContainer()->getThermostat()->getDimension());
+
+    // two different masses
+
+    double meanSquare1 = 0;
+    double meanSquare2 = 0;
+
+    for (Particle &p: simulation->getContainer()->getParticles()) {
+        if (std::abs(p.getM() - 1) < 1e-12) {
+            meanSquare1 += pow(ArrayUtils::L2Norm(p.getV()), 2);
+        } else {
+            meanSquare2 += pow(ArrayUtils::L2Norm(p.getV()), 2);
+        }
+    }
+
+    meanSquare1 /= 1e5;
+    meanSquare2 /= 1e5;
+
+    EXPECT_NEAR(120, meanSquare1, 1);
+    EXPECT_NEAR(60, meanSquare2, .5);
+
+    if(::testing::Test::HasFailure()) {
+        test_logger->info("XMLReader - Initial temperature test failed");
+    } else {
+        test_logger->info("XMLReader - Initial temperature test passed");
     }
 }
 

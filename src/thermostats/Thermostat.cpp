@@ -49,3 +49,15 @@ void Thermostat::apply(std::vector<Particle> &particles) const {
 int Thermostat::getPeriode() const {
     return periode;
 }
+
+double Thermostat::getTargetT() const {
+    return target_T;
+}
+
+double Thermostat::getMaxDelta() const {
+    return maxDelta;
+}
+
+int Thermostat::getDimension() const {
+    return dimension;
+}

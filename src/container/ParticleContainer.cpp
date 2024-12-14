@@ -24,6 +24,14 @@ std::vector<Particle> &ParticleContainer::getParticles() const {
     return particles;
 }
 
+double ParticleContainer::getG() const {
+    return g;
+}
+
+std::unique_ptr<Thermostat> &ParticleContainer::getThermostat(){
+    return thermostat;
+}
+
 void ParticleContainer::setF(std::unique_ptr<Force> &f) {
     this->force = std::move(f);
 }

@@ -156,7 +156,7 @@
         <xs:sequence>
             <xs:element name="domain_size" type="PositiveDoubleVector3"/>
             <xs:element name="cutoff_radius" type="PositiveDouble"/>
-            <xs:element name="boundary_condition" type="BoundaryCondition3"/>
+            <xs:element name="boundary_condition" type="BoundaryCondition3" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -165,7 +165,7 @@
             <xs:element name="initial_T" type="PositiveDouble"/>
             <xs:element name="target_T" type="PositiveDouble" minOccurs="0"/>
             <xs:element name="periode" type="xs:positiveInteger"/>
-            <xs:element name="maxDelta" type="PositiveDouble" minOccurs="0"/>
+            <xs:element name="max_delta" type="PositiveDouble" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -215,7 +215,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="thermostats" type="ThermostatsType" minOccurs="0">
+            <xs:element name="thermostat" type="ThermostatsType" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>
                         Specifies the thermostats that should be applied.

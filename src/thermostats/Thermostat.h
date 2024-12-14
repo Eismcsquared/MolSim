@@ -49,5 +49,23 @@ public:
      * @return The application periode.
      */
     int getPeriode() const;
+
+    /**
+     * Getter for the target temperature.
+     * @return The target temperature.
+     */
+    double getTargetT() const;
+
+    /**
+     * Getter for the maximal change of temperature in one step.
+     * @return The maximal temperature change.
+     */
+    double getMaxDelta() const;
+
+    /**
+     * Getter for the dimension of the system the thermostat is applied on.
+     * @return The dimension of the simulation.
+     */
+    int getDimension() const;
 };
 

@@ -65,5 +65,5 @@ public:
      * Create particles that belong to the cuboid and insert them into the given vector.
      * @param particles: The vector that particles of the cuboid should be added to.
      */
-    virtual void createParticles(std::vector<Particle>& particles) const = 0;
+    inline virtual void createParticles(std::vector<Particle>& particles) const = 0;
 };

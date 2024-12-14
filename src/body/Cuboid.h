@@ -1,6 +1,7 @@
 #include <array>
 #include <vector>
 #include "Particle.h"
+#include "utils/ArrayUtils.h"
 #include "Cluster.h"
 /**
  * @brief This class represents a cuboid consisting of particles.
@@ -45,7 +46,18 @@ public:
      * Create particles that belong to the cuboid and insert them into the given vector.
      * @param particles: The vector that particles of the cuboid should be added to.
      */
-    void createParticles(std::vector<Particle>& particles) const;
+    inline void createParticles(std::vector<Particle>& particles) const override {
+        for (unsigned int i = 0; i < N[0]; ++i) {
+            for (unsigned int j = 0; j < N[1]; ++j) {
+                for (unsigned int k = 0; k < N[2]; ++k) {
+                    std::array<double, 3> x_particle = {x[0] + i * distance, x[1] + j * distance, x[2] + k * distance};
+                    std::array<double, 3> vBrownian = maxwellBoltzmannDistributedVelocity(avgVelocityBrownian, dimension);
+                    std::array<double, 3> v_particle = v + vBrownian;
+                    particles.emplace_back(x_particle, v_particle, m, epsilon, sigma);
+                }
+            }
+        }
+    }
 };
 
 

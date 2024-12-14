@@ -130,6 +130,18 @@ public:
     virtual void updateF(bool newton3) = 0;
 
     /**
+     * Getter for the gravitational acceleration.
+     * @return The value of g.
+     */
+    double getG() const;
+
+    /**
+     * Getter for the thermostat.
+     * @return The thermostat.
+     */
+    std::unique_ptr<Thermostat> &getThermostat();
+
+    /**
      * Determine the number of particles in a container.
      * @return The number of particles contained in the container.
      */

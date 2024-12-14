@@ -1328,22 +1328,28 @@ cutoff_radius (::std::unique_ptr< cutoff_radius_type > x)
   this->cutoff_radius_.set (std::move (x));
 }
 
-const LinkedCellType::boundary_condition_type& LinkedCellType::
+const LinkedCellType::boundary_condition_optional& LinkedCellType::
 boundary_condition () const
 {
-  return this->boundary_condition_.get ();
+  return this->boundary_condition_;
 }
 
-LinkedCellType::boundary_condition_type& LinkedCellType::
+LinkedCellType::boundary_condition_optional& LinkedCellType::
 boundary_condition ()
 {
-  return this->boundary_condition_.get ();
+  return this->boundary_condition_;
 }
 
 void LinkedCellType::
 boundary_condition (const boundary_condition_type& x)
 {
   this->boundary_condition_.set (x);
+}
+
+void LinkedCellType::
+boundary_condition (const boundary_condition_optional& x)
+{
+  this->boundary_condition_ = x;
 }
 
 void LinkedCellType::
@@ -1428,34 +1434,34 @@ periode (const periode_type& x)
   this->periode_.set (x);
 }
 
-const ThermostatsType::maxDelta_optional& ThermostatsType::
-maxDelta () const
+const ThermostatsType::max_delta_optional& ThermostatsType::
+max_delta () const
 {
-  return this->maxDelta_;
+  return this->max_delta_;
 }
 
-ThermostatsType::maxDelta_optional& ThermostatsType::
-maxDelta ()
+ThermostatsType::max_delta_optional& ThermostatsType::
+max_delta ()
 {
-  return this->maxDelta_;
-}
-
-void ThermostatsType::
-maxDelta (const maxDelta_type& x)
-{
-  this->maxDelta_.set (x);
+  return this->max_delta_;
 }
 
 void ThermostatsType::
-maxDelta (const maxDelta_optional& x)
+max_delta (const max_delta_type& x)
 {
-  this->maxDelta_ = x;
+  this->max_delta_.set (x);
 }
 
 void ThermostatsType::
-maxDelta (::std::unique_ptr< maxDelta_type > x)
+max_delta (const max_delta_optional& x)
 {
-  this->maxDelta_.set (std::move (x));
+  this->max_delta_ = x;
+}
+
+void ThermostatsType::
+max_delta (::std::unique_ptr< max_delta_type > x)
+{
+  this->max_delta_.set (std::move (x));
 }
 
 
@@ -1738,34 +1744,34 @@ dimension_default_value ()
   return dimension_type (2ULL);
 }
 
-const SimulationParameters::thermostats_optional& SimulationParameters::
-thermostats () const
+const SimulationParameters::thermostat_optional& SimulationParameters::
+thermostat () const
 {
-  return this->thermostats_;
+  return this->thermostat_;
 }
 
-SimulationParameters::thermostats_optional& SimulationParameters::
-thermostats ()
+SimulationParameters::thermostat_optional& SimulationParameters::
+thermostat ()
 {
-  return this->thermostats_;
-}
-
-void SimulationParameters::
-thermostats (const thermostats_type& x)
-{
-  this->thermostats_.set (x);
+  return this->thermostat_;
 }
 
 void SimulationParameters::
-thermostats (const thermostats_optional& x)
+thermostat (const thermostat_type& x)
 {
-  this->thermostats_ = x;
+  this->thermostat_.set (x);
 }
 
 void SimulationParameters::
-thermostats (::std::unique_ptr< thermostats_type > x)
+thermostat (const thermostat_optional& x)
 {
-  this->thermostats_.set (std::move (x));
+  this->thermostat_ = x;
+}
+
+void SimulationParameters::
+thermostat (::std::unique_ptr< thermostat_type > x)
+{
+  this->thermostat_.set (std::move (x));
 }
 
 const SimulationParameters::linked_cell_optional& SimulationParameters::
@@ -3591,23 +3597,21 @@ _xsd_OutputFormatType_indexes_[2] =
 
 LinkedCellType::
 LinkedCellType (const domain_size_type& domain_size,
-                const cutoff_radius_type& cutoff_radius,
-                const boundary_condition_type& boundary_condition)
+                const cutoff_radius_type& cutoff_radius)
 : ::xml_schema::type (),
   domain_size_ (domain_size, this),
   cutoff_radius_ (cutoff_radius, this),
-  boundary_condition_ (boundary_condition, this)
+  boundary_condition_ (this)
 {
 }
 
 LinkedCellType::
 LinkedCellType (::std::unique_ptr< domain_size_type > domain_size,
-                const cutoff_radius_type& cutoff_radius,
-                ::std::unique_ptr< boundary_condition_type > boundary_condition)
+                const cutoff_radius_type& cutoff_radius)
 : ::xml_schema::type (),
   domain_size_ (std::move (domain_size), this),
   cutoff_radius_ (cutoff_radius, this),
-  boundary_condition_ (std::move (boundary_condition), this)
+  boundary_condition_ (this)
 {
 }
 
@@ -3683,7 +3687,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       ::std::unique_ptr< boundary_condition_type > r (
         boundary_condition_traits::create (i, f, this));
 
-      if (!boundary_condition_.present ())
+      if (!this->boundary_condition_)
       {
         this->boundary_condition_.set (::std::move (r));
         continue;
@@ -3704,13 +3708,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
   {
     throw ::xsd::cxx::tree::expected_element< char > (
       "cutoff_radius",
-      "");
-  }
-
-  if (!boundary_condition_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "boundary_condition",
       "");
   }
 }
@@ -3751,7 +3748,7 @@ ThermostatsType (const initial_T_type& initial_T,
   initial_T_ (initial_T, this),
   target_T_ (this),
   periode_ (periode, this),
-  maxDelta_ (this)
+  max_delta_ (this)
 {
 }
 
@@ -3763,7 +3760,7 @@ ThermostatsType (const ThermostatsType& x,
   initial_T_ (x.initial_T_, f, this),
   target_T_ (x.target_T_, f, this),
   periode_ (x.periode_, f, this),
-  maxDelta_ (x.maxDelta_, f, this)
+  max_delta_ (x.max_delta_, f, this)
 {
 }
 
@@ -3775,7 +3772,7 @@ ThermostatsType (const ::xercesc::DOMElement& e,
   initial_T_ (this),
   target_T_ (this),
   periode_ (this),
-  maxDelta_ (this)
+  max_delta_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -3833,16 +3830,16 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // maxDelta
+    // max_delta
     //
-    if (n.name () == "maxDelta" && n.namespace_ ().empty ())
+    if (n.name () == "max_delta" && n.namespace_ ().empty ())
     {
-      ::std::unique_ptr< maxDelta_type > r (
-        maxDelta_traits::create (i, f, this));
+      ::std::unique_ptr< max_delta_type > r (
+        max_delta_traits::create (i, f, this));
 
-      if (!this->maxDelta_)
+      if (!this->max_delta_)
       {
-        this->maxDelta_.set (::std::move (r));
+        this->max_delta_.set (::std::move (r));
         continue;
       }
     }
@@ -3881,7 +3878,7 @@ operator= (const ThermostatsType& x)
     this->initial_T_ = x.initial_T_;
     this->target_T_ = x.target_T_;
     this->periode_ = x.periode_;
-    this->maxDelta_ = x.maxDelta_;
+    this->max_delta_ = x.max_delta_;
   }
 
   return *this;
@@ -3915,7 +3912,7 @@ SimulationParameters ()
   force_ (this),
   g_ (this),
   dimension_ (this),
-  thermostats_ (this),
+  thermostat_ (this),
   linked_cell_ (this)
 {
 }
@@ -3933,7 +3930,7 @@ SimulationParameters (const SimulationParameters& x,
   force_ (x.force_, f, this),
   g_ (x.g_, f, this),
   dimension_ (x.dimension_, f, this),
-  thermostats_ (x.thermostats_, f, this),
+  thermostat_ (x.thermostat_, f, this),
   linked_cell_ (x.linked_cell_, f, this)
 {
 }
@@ -3951,7 +3948,7 @@ SimulationParameters (const ::xercesc::DOMElement& e,
   force_ (this),
   g_ (this),
   dimension_ (this),
-  thermostats_ (this),
+  thermostat_ (this),
   linked_cell_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
@@ -4077,16 +4074,16 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // thermostats
+    // thermostat
     //
-    if (n.name () == "thermostats" && n.namespace_ ().empty ())
+    if (n.name () == "thermostat" && n.namespace_ ().empty ())
     {
-      ::std::unique_ptr< thermostats_type > r (
-        thermostats_traits::create (i, f, this));
+      ::std::unique_ptr< thermostat_type > r (
+        thermostat_traits::create (i, f, this));
 
-      if (!this->thermostats_)
+      if (!this->thermostat_)
       {
-        this->thermostats_.set (::std::move (r));
+        this->thermostat_.set (::std::move (r));
         continue;
       }
     }
@@ -4130,7 +4127,7 @@ operator= (const SimulationParameters& x)
     this->force_ = x.force_;
     this->g_ = x.g_;
     this->dimension_ = x.dimension_;
-    this->thermostats_ = x.thermostats_;
+    this->thermostat_ = x.thermostat_;
     this->linked_cell_ = x.linked_cell_;
   }
 
@@ -5182,13 +5179,14 @@ operator<< (::xercesc::DOMElement& e, const LinkedCellType& i)
 
   // boundary_condition
   //
+  if (i.boundary_condition ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "boundary_condition",
         e));
 
-    s << i.boundary_condition ();
+    s << *i.boundary_condition ();
   }
 }
 
@@ -5231,16 +5229,16 @@ operator<< (::xercesc::DOMElement& e, const ThermostatsType& i)
     s << i.periode ();
   }
 
-  // maxDelta
+  // max_delta
   //
-  if (i.maxDelta ())
+  if (i.max_delta ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
-        "maxDelta",
+        "max_delta",
         e));
 
-    s << *i.maxDelta ();
+    s << *i.max_delta ();
   }
 }
 
@@ -5345,16 +5343,16 @@ operator<< (::xercesc::DOMElement& e, const SimulationParameters& i)
     s << *i.dimension ();
   }
 
-  // thermostats
+  // thermostat
   //
-  if (i.thermostats ())
+  if (i.thermostat ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
-        "thermostats",
+        "thermostat",
         e));
 
-    s << *i.thermostats ();
+    s << *i.thermostat ();
   }
 
   // linked_cell
