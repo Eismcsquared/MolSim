@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <string>
 #include "inputReader/XMLReader.h"
-#include "Logger.h"
+#include "../Logger.h"
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
 #include "container/DirectSumContainer.h"
@@ -44,9 +44,9 @@ TEST_F(XMLReaderTest, Assigment1Input) {
     EXPECT_FLOAT_EQ(0, simulation->getContainer()->getG());
     EXPECT_FALSE(simulation->getContainer()->getThermostat());
     if(::testing::Test::HasFailure()) {
-        test_logger->info("XMLReader - Assignment 1 input test failed");
+        test_logger->info("XMLReader - Assignment 1 input test failed\n\n");
     } else {
-        test_logger->info("XMLReader - Assignment 1 input test passed");
+        test_logger->info("XMLReader - Assignment 1 input test passed\n\n");
     }
 }
 
@@ -72,9 +72,9 @@ TEST_F(XMLReaderTest, Assigment2Input) {
     EXPECT_FLOAT_EQ(0, simulation->getContainer()->getG());
     EXPECT_FALSE(simulation->getContainer()->getThermostat());
     if(::testing::Test::HasFailure()) {
-        test_logger->info("XMLReader - Assignment 2 input test failed");
+        test_logger->info("XMLReader - Assignment 2 input test failed\n\n");
     } else {
-        test_logger->info("XMLReader - Assignment 2 input test passed");
+        test_logger->info("XMLReader - Assignment 2 input test passed\n\n");
     }
 
 }
@@ -96,9 +96,9 @@ TEST_F(XMLReaderTest, Assigment3Input) {
     EXPECT_NEAR(20, simulation->getEndTime(), 1e-12);
     EXPECT_NEAR(0.0005, simulation->getDeltaT(), 1e-12);
     if(::testing::Test::HasFailure()) {
-        test_logger->info("XMLReader - Assignment 3 input test failed");
+        test_logger->info("XMLReader - Assignment 3 input test failed\n\n");
     } else {
-        test_logger->info("XMLReader - Assignment 3 input test passed");
+        test_logger->info("XMLReader - Assignment 3 input test passed\n\n");
     }
 }
 
@@ -116,9 +116,9 @@ TEST_F(XMLReaderTest, FallingDropInput) {
     EXPECT_NEAR(10, simulation->getEndTime(), 1e-12);
     EXPECT_NEAR(0.00005, simulation->getDeltaT(), 1e-12);
     if(::testing::Test::HasFailure()) {
-        test_logger->info("XMLReader - Falling drop input test failed");
+        test_logger->info("XMLReader - Falling drop input test failed\n\n");
     } else {
-        test_logger->info("XMLReader - Falling drop input test passed");
+        test_logger->info("XMLReader - Falling drop input test passed\n\n");
     }
 }
 
@@ -141,9 +141,9 @@ TEST_F(XMLReaderTest, BrownianMotion) {
     EXPECT_NEAR(0.02, meanSquire, 5e-4) << "Wrong mean squared velocity of Brownian motion. Expected: "
     << 0.02 << ", but got " << meanSquire;
     if(::testing::Test::HasFailure()) {
-        test_logger->info("XMLReader - Brownian motion reading test failed");
+        test_logger->info("XMLReader - Brownian motion reading test failed\n\n");
     } else {
-        test_logger->info("XMLReader - Brownian motion reading test passed");
+        test_logger->info("XMLReader - Brownian motion reading test passed\n\n");
     }
 }
 
@@ -170,9 +170,9 @@ TEST_F(XMLReaderTest, Assignment4Input) {
     }
 
     if(::testing::Test::HasFailure()) {
-        test_logger->info("XMLReader - Assignment 4 input test failed");
+        test_logger->info("XMLReader - Assignment 4 input test failed\n\n");
     } else {
-        test_logger->info("XMLReader - Assignment 4 input test passed");
+        test_logger->info("XMLReader - Assignment 4 input test passed\n\n");
     }
 }
 
@@ -210,9 +210,9 @@ TEST_F(XMLReaderTest, InitialTemperature) {
     EXPECT_NEAR(60, meanSquare2, .5);
 
     if(::testing::Test::HasFailure()) {
-        test_logger->info("XMLReader - Initial temperature test failed");
+        test_logger->info("XMLReader - Initial temperature test failed\n\n");
     } else {
-        test_logger->info("XMLReader - Initial temperature test passed");
+        test_logger->info("XMLReader - Initial temperature test passed\n\n");
     }
 }
 

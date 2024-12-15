@@ -1,8 +1,8 @@
 #include <vector>
 #include <gtest/gtest.h>
-#include <spdlog/spdlog.h>
+#include "spdlog/spdlog.h"
 #include "container/Cell.h"
-#include "Logger.h"
+#include "../Logger.h"
 
 class CellTest: public ::testing::Test {
 protected:
@@ -20,7 +20,7 @@ TEST_F(CellTest, AddAndRemove) {
     cell.removeIndex(9);
     cell.removeIndex(3);
     cell.removeIndex(7);
-    // remove indicis that are not in the cell
+    // remove indices that are not in the cell
     cell.removeIndex(-1);
     cell.removeIndex(10);
     EXPECT_EQ(6, cell.getParticleIndices().size());
@@ -28,9 +28,9 @@ TEST_F(CellTest, AddAndRemove) {
     std::set<unsigned int> indexSet(cell.getParticleIndices().begin(), cell.getParticleIndices().end());
     EXPECT_EQ(ref, indexSet);
     if (::testing::Test::HasFailure()) {
-        test_logger->info("Cell - Add and remove test failed");
+        test_logger->info("Cell - Add and remove test failed\n\n");
     } else {
-        test_logger->info("Cell - Add and remove test passed");
+        test_logger->info("Cell - Add and remove test passed\n\n");
     }
 }
 
@@ -51,9 +51,9 @@ TEST_F(CellTest, Contains) {
     EXPECT_FALSE(cell.contains(std::array<double, 3>{6, 10.5, -1}));
     EXPECT_FALSE(cell.contains(std::array<double, 3>{6, 10.5, 3}));
     if (::testing::Test::HasFailure()) {
-        test_logger->info("Cell - contains test failed");
+        test_logger->info("Cell - contains test failed\n\n");
     } else {
-        test_logger->info("Cell - contains test passed");
+        test_logger->info("Cell - contains test passed\n\n");
     }
 }
 

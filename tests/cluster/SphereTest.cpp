@@ -1,8 +1,8 @@
-#include <spdlog/spdlog.h>
+#include "spdlog/spdlog.h"
 #include <gtest/gtest.h>
 #include <vector>
 #include "body/Sphere.h"
-#include "Logger.h"
+#include "../Logger.h"
 #include "utils/ArrayUtils.h"
 
 class SphereTest: public ::testing::Test {
@@ -33,9 +33,9 @@ TEST_F(SphereTest, CreateParticles2D) {
     EXPECT_NEAR(2, meanSquare, 5e-3) << "Wrong mean squared velocity of Brownian motion. Expected: "
                                      << 2 << ", but got " << meanSquare;
     if(::testing::Test::HasFailure()) {
-        test_logger->info("Sphere - 2D Sphere test failed");
+        test_logger->info("Sphere - 2D Sphere test failed\\n\\n");
     } else {
-        test_logger->info("Sphere - 2D Sphere test passed");
+        test_logger->info("Sphere - 2D Sphere test passed\n\n");
     }
 }
 
@@ -60,8 +60,8 @@ TEST_F(SphereTest, CreateParticles3D) {
     EXPECT_NEAR(0.75, meanSquare, 2.5e-3) << "Wrong mean squared velocity of Brownian motion. Expected: "
                                           << 0.75 << ", but got " << meanSquare;
     if(::testing::Test::HasFailure()) {
-        test_logger->info("Sphere - 3D Sphere test failed");
+        test_logger->info("Sphere - 3D Sphere test failed\n\n");
     } else {
-        test_logger->info("Sphere - 3D Sphere test passed");
+        test_logger->info("Sphere - 3D Sphere test passed\n\n");
     }
 }

@@ -172,7 +172,7 @@ public:
      */
     void simulate(double end_time, double delta_t, const std::string& out_name,
                           const std::string& output_format, unsigned int output_frequency,
-                          bool save_output, bool newton3);
+                          bool save_output, bool newton3 = true);
 
     /**
      * Write the current state of the container to the output files.

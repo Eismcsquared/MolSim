@@ -27,8 +27,8 @@ void DirectSumContainer::updateF(bool newton3) {
     if (newton3) {
         std::vector<std::array<double, 3>> newForces;
         newForces.reserve(particles.size());
-        for (unsigned long i = 0; i < particles.size(); ++i) {
-            newForces.push_back({0, particles[i].getM() * g, 0});
+        for (const auto & particle : particles) {
+            newForces.push_back({0, particle.getM() * g, 0});
         }
         for (unsigned long i = 0; i < particles.size(); ++i) {
             for (unsigned long j = i + 1; j < particles.size(); ++j) {

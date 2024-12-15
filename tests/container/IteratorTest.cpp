@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <memory>
-#include "Logger.h"
+#include "../Logger.h"
 #include "inputReader/FileReader.h"
 #include "body/Particle.h"
 #include "container/DirectSumContainer.h"

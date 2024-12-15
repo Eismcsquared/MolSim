@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 #include <vector>
-#include <spdlog/spdlog.h>
+#include "spdlog/spdlog.h"
 #include "container/LinkedCellContainer.h"
 #include "force/LennardJonesForce.h"
-#include "Logger.h"
+#include "../Logger.h"
 
 class LinkedCellContainerTest: public ::testing::Test {
 protected:
@@ -35,7 +35,7 @@ protected:
     }
 
     void TearDown() override {
-        test_logger -> info("LinkedCellContainer destructed");
+        test_logger -> info("LinkedCellContainer destructed\n\n");
     }
 };
 

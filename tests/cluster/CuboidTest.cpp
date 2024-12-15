@@ -1,8 +1,8 @@
 #include <vector>
 #include <gtest/gtest.h>
-#include <spdlog/spdlog.h>
-#include <spdlog/sinks/basic_file_sink.h>
-#include "Logger.h"
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/basic_file_sink.h"
+#include "../Logger.h"
 #include "inputReader/FileReader.h"
 #include "utils/ArrayUtils.h"
 #include "body/Particle.h"

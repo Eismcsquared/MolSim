@@ -61,29 +61,33 @@ void ParticleContainer::updateF() {
 
 void ParticleContainer::simulate(double end_time, double delta_t, const std::string &out_name, const std::string &output_format,
                                  unsigned int output_frequency, bool save_output, bool newton3) {
-    int max_iteration = (int) (end_time / delta_t);
+    int max_iteration = static_cast<int>(std::round(end_time / delta_t));
 
+    // save the initial state also.
+    if (save_output) {
+        plotParticles(0, out_name, output_format);
+    }
 
-    for (int iteration = 0; iteration < max_iteration; iteration++) {
+    for (int iteration = 1; iteration <= max_iteration; iteration++) {
+
+        // Calculate the position
+        updateX(delta_t);
+
+        // Calculate the force
+        updateF(newton3);
+
+        // Calculate the velocity
+        updateV(delta_t);
+
         if (iteration % output_frequency == 0 && save_output) {
             plotParticles(iteration, out_name, output_format);
         }
 
-        if (iteration > 0 && thermostat && iteration % thermostat->getPeriode() == 0) {
+        if (thermostat && iteration % thermostat->getPeriode() == 0) {
             thermostat->apply(particles);
         }
 
-        auto start_time = std::chrono::high_resolution_clock::now();
-
-        // Calculate the position
-        updateX(delta_t);
-        // Calculate the force
-        updateF(newton3);
-        // Calculate the velocity
-        updateV(delta_t);
-        // Plot every 10th iteration
-
-        spdlog::trace("Iteration {} finished.", iteration + 1);
+        spdlog::trace("Iteration {} finished.", iteration);
     }
 
     spdlog::trace("output written. Terminating...");

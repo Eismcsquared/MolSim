@@ -27,6 +27,13 @@ private:
      */
      int dimension;
 
+     /**
+      * Compute the mean velocity of a system.
+      * @param particles: The particles in the system.
+      * @return The mean velocity of the particles.
+      */
+     static std::array<double, 3> meanVelocity(std::vector<Particle> &particles);
+
 public:
 
     /**
@@ -67,5 +74,12 @@ public:
      * @return The dimension of the simulation.
      */
     int getDimension() const;
+
+    /**
+     * Compute the temperature of the given system of particles.
+     * @param particles The particles in the system.
+     * @return The temperature of the system.
+     */
+    static double temperature(std::vector<Particle> &particles, int dimension);
 };
 

@@ -12,17 +12,17 @@
             </velocity>
             <mass>1</mass>
             <size>
-                <x>50</x>
-                <y>14</y>
+                <x>250</x>
+                <y>20</y>
             </size>
             <distance>1.2</distance>
             <epsilon>1</epsilon>
-            <sigma>1</sigma>
+            <sigma>1.2</sigma>
         </cuboid>
         <cuboid>
             <position>
                 <x>0.6</x>
-                <y>19</y>
+                <y>27</y>
             </position>
             <velocity>
                 <x>0</x>
@@ -30,17 +30,19 @@
             </velocity>
             <mass>2</mass>
             <size>
-                <x>50</x>
-                <y>14</y>
+                <x>250</x>
+                <y>20</y>
             </size>
             <distance>1.2</distance>
             <epsilon>1</epsilon>
-            <sigma>0.9412</sigma>
+            <sigma>1.1</sigma>
         </cuboid>
     </objects>
     <parameters>
-        <end_time>25</end_time>
+        <end_time>50</end_time>
         <delta_t>0.0005</delta_t>
+        <output>assignment4</output>
+        <frequency>20</frequency>
         <force>Lennard-Jones</force>
         <g>-12.44</g>
         <thermostat>
@@ -49,10 +51,10 @@
         </thermostat>
         <linked_cell>
             <domain_size>
-                <x>63</x>
-                <y>35</y>
+                <x>300</x>
+                <y>54</y>
             </domain_size>
-            <cutoff_radius>2.5</cutoff_radius>
+            <cutoff_radius>3</cutoff_radius>
             <boundary_condition>
                 <left>periodic</left>
                 <right>periodic</right>

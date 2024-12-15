@@ -69,8 +69,8 @@ public:
      * @param cutoff: The cutoff radius.
      * @param boundaryConditions: The boundary conditions on different boundaries.
      */
-    LinkedCellContainer(std::vector<Particle>& particles, std::unique_ptr<Force> &f,
-                        std::array<double, 3> domainSize,double cutoff, std::array<BoundaryCondition, 6> boundaryConditions);
+     LinkedCellContainer(std::vector<Particle>& particles, std::unique_ptr<Force> &f,
+                         std::array<double, 3> domainSize, double cutoff, std::array<BoundaryCondition, 6> boundaryConditions);
 
 
     /**

@@ -1,9 +1,9 @@
 #include <vector>
 #include <string>
 #include <gtest/gtest.h>
-#include <spdlog/spdlog.h>
-#include <spdlog/sinks/basic_file_sink.h>
-#include "Logger.h"
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/basic_file_sink.h"
+#include "../Logger.h"
 #include "inputReader/FileReader.h"
 #include "body/Particle.h"
 #include "container/DirectSumContainer.h"
