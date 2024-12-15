@@ -2,7 +2,6 @@
 #include <gtest/gtest.h>
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h"
-#include "../Logger.h"
 #include "inputReader/FileReader.h"
 #include "utils/ArrayUtils.h"
 #include "body/Particle.h"
@@ -15,8 +14,8 @@ protected:
     std::unique_ptr<DirectSumContainer> pc;
     std::unique_ptr<Force> f;
     Cuboid cuboid = Cuboid({0, 10, 0}, {0, 0, 0}, {2, 4, 3}, 1, 1, 0, 3);
-    char* testfile = const_cast<char*>("../tests/test_cases/two_cuboid.txt");
-
+    std::string testfile = "../tests/test_cases/two_cuboid.txt";
+    std::shared_ptr<spdlog::logger> test_logger = spdlog::get("test_logger");
 
     void SetUp() override {
         FileReader fileReader;

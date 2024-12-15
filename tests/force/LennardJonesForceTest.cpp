@@ -5,7 +5,6 @@
 #include "spdlog/fmt/ostr.h"
 #include "force/LennardJonesForce.h"
 #include "force/Force.h"
-#include "../Logger.h"
 #include "body/Particle.h"
 #include "container/DirectSumContainer.h"
 #include "force/GravitationalForce.h"
@@ -16,6 +15,7 @@ protected:
     std::vector<Particle> particles;
     std::unique_ptr<DirectSumContainer> pc;
     std::unique_ptr<Force> f;
+    std::shared_ptr<spdlog::logger> test_logger = spdlog::get("test_logger");
 
 
     void SetUp() override {

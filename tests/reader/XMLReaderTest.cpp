@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 #include <string>
 #include "inputReader/XMLReader.h"
-#include "../Logger.h"
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
 #include "container/DirectSumContainer.h"
@@ -14,6 +13,7 @@ protected:
     std::string inputFile;
     std::unique_ptr<Simulation> simulation;
     const double pi = 3.141592653589793;
+    std::shared_ptr<spdlog::logger> test_logger = spdlog::get("test_logger");
 
     void SetUp() override {
         particles = std::vector<Particle>();

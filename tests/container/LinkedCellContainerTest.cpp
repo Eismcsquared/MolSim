@@ -3,7 +3,6 @@
 #include "spdlog/spdlog.h"
 #include "container/LinkedCellContainer.h"
 #include "force/LennardJonesForce.h"
-#include "../Logger.h"
 
 class LinkedCellContainerTest: public ::testing::Test {
 protected:
@@ -15,6 +14,7 @@ protected:
     std::unique_ptr<LinkedCellContainer> container3D;
     std::unique_ptr<LinkedCellContainer> container3DPeriodicX;
     std::unique_ptr<LinkedCellContainer> container3DPeriodicAll;
+    std::shared_ptr<spdlog::logger> test_logger = spdlog::get("test_logger");
 
     void SetUp() override {
 

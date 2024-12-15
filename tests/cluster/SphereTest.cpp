@@ -2,7 +2,6 @@
 #include <gtest/gtest.h>
 #include <vector>
 #include "body/Sphere.h"
-#include "../Logger.h"
 #include "utils/ArrayUtils.h"
 
 class SphereTest: public ::testing::Test {
@@ -10,6 +9,7 @@ protected:
     Sphere sphere2D = Sphere({0, 0, 0}, {0, 0, 0}, 1000, 1, 1, 1, 2);
     Sphere sphere3D = Sphere({5, 5, 5}, {-1, 0, 1}, 100, 1, 3, 0.5, 3);
     const double pi = 3.141592653589793;
+    std::shared_ptr<spdlog::logger> test_logger = spdlog::get("test_logger");
 };
 
 // Test whether a 2D sphere generates the correct particles in terms their position, mass and velocity including Brownian motion.
@@ -26,8 +26,8 @@ TEST_F(SphereTest, CreateParticles2D) {
         mean += ArrayUtils::L2Norm(p.getV());
         meanSquare += pow(ArrayUtils::L2Norm(p.getV()), 2);
     }
-    mean /= particles.size();
-    meanSquare /= particles.size();
+    mean /= static_cast<double>(particles.size());
+    meanSquare /= static_cast<double>(particles.size());
     EXPECT_NEAR(sqrt(pi / 2), mean, 2e-3) << "Wrong mean velocity of Brownian motion. Expected: "
     << sqrt(pi / 2) << ", but got " << mean;
     EXPECT_NEAR(2, meanSquare, 5e-3) << "Wrong mean squared velocity of Brownian motion. Expected: "
@@ -53,8 +53,8 @@ TEST_F(SphereTest, CreateParticles3D) {
         mean += ArrayUtils::L2Norm(p.getV() - std::array<double, 3>{-1, 0, 1});
         meanSquare += pow(ArrayUtils::L2Norm(p.getV() - std::array<double, 3>{-1, 0, 1}), 2);
     }
-    mean /= particles.size();
-    meanSquare /= particles.size();
+    mean /= static_cast<double>(particles.size());
+    meanSquare /= static_cast<double>(particles.size());
     EXPECT_NEAR(sqrt(2 / pi), mean, 1e-3) << "Wrong mean velocity of Brownian motion. Expected: "
     << sqrt(2 / pi) << ", but got " << mean;
     EXPECT_NEAR(0.75, meanSquare, 2.5e-3) << "Wrong mean squared velocity of Brownian motion. Expected: "

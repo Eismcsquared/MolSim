@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 #include <vector>
 #include "spdlog/spdlog.h"
-#include "../Logger.h"
 #include "container/LinkedCellContainer.h"
 #include "force/LennardJonesForce.h"
 
@@ -10,6 +9,7 @@ class ThermostatTest: public ::testing::Test {
 protected:
     std::vector<Particle> particles1;
     std::vector<Particle> particles2;
+    std::shared_ptr<spdlog::logger> test_logger = spdlog::get("test_logger");
 
     void SetUp() override {
 

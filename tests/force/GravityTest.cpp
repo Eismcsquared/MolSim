@@ -2,7 +2,6 @@
 #include <vector>
 #include <functional>
 #include "spdlog/spdlog.h"
-#include "../Logger.h"
 #include "container/DirectSumContainer.h"
 #include "container/LinkedCellContainer.h"
 #include "force/GravitationalForce.h"
@@ -16,6 +15,7 @@ protected:
     std::vector<Particle> particles2;
     std::unique_ptr<ParticleContainer> directSum;
     std::unique_ptr<ParticleContainer> linkedCell;
+    std::shared_ptr<spdlog::logger> test_logger = spdlog::get("test_logger");
 
     void SetUp() override {
 

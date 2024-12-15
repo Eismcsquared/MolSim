@@ -3,7 +3,6 @@
 #include <gtest/gtest.h>
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h"
-#include "../Logger.h"
 #include "inputReader/FileReader.h"
 #include "body/Particle.h"
 #include "container/DirectSumContainer.h"
@@ -14,7 +13,8 @@ protected:
     std::vector<Particle> particles;
     std::unique_ptr<Force> f ;
     std::unique_ptr<DirectSumContainer> pc;
-    char* testfile = const_cast<char*>("../tests/test_cases/two_body.txt");
+    std::string testfile = "../tests/test_cases/two_body.txt";
+    std::shared_ptr<spdlog::logger> test_logger = spdlog::get("test_logger");
 
 
     void SetUp() override {

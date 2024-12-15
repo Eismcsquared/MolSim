@@ -1,13 +1,13 @@
 #include <vector>
 #include <gtest/gtest.h>
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 #include "container/Cell.h"
-#include "../Logger.h"
 
 class CellTest: public ::testing::Test {
 protected:
     std::set<int> neighbours;
     Cell cell = Cell(std::array<double, 3>{5, 10, 0}, std::array<double, 3>{3, 1, 1}, neighbours);
+    std::shared_ptr<spdlog::logger> test_logger = spdlog::get("test_logger");
 };
 
 // Test whether adding and removing indices from a cell works correctly.
