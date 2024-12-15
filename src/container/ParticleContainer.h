@@ -168,11 +168,12 @@ public:
      * @param output_format The format of the output file, either "vtu" or "xyz".
      * @param output_frequency THe frequency of the output, in number of time steps.
      * @param save_output Output is activated if this flag is set.
+     * @param checkpointing The name of the file which the final state is stored to for restarting the simulation. If the name is empty, checkpointing is deactivated.
      * @param newton3 The Newton's third law is applied in the force calculations if this flag is set.
      */
     void simulate(double end_time, double delta_t, const std::string& out_name,
                           const std::string& output_format, unsigned int output_frequency,
-                          bool save_output, bool newton3 = true);
+                          bool save_output, const std::string& checkpointing = "", bool newton3 = true);
 
     /**
      * Write the current state of the container to the output files.

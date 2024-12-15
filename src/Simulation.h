@@ -33,12 +33,18 @@ class Simulation {
      * The frequency of the output.
      */
     unsigned int outputFrequency;
+
     /**
      * Represents whether output should be activated, useful for benchmarking.
      */
     bool saveOutput;
+
     /**
-     * represents whether the Newton's third law should be applied in the force calculations.
+     * The name of the file which the final tate of the system is stored to, checkpointing is deactivated by default.
+     */
+    std::string checkpointing;
+    /**
+     * Represents whether the Newton's third law should be applied in the force calculations.
      */
     bool newton3;
 public:
@@ -87,13 +93,19 @@ public:
 
     /**
      * Setter for the flag of saving output.
-     * @param saveOutput The new flag.
+     * @param saveOutput
      */
     void setSaveOutput(bool saveOutput);
 
     /**
+     * Setter for the checkpointing file name.
+     * @param checkpointing
+     */
+    void setCheckpointing(const std::string &checkpointing);
+
+    /**
      * Setter for the flag of applying the Newton's third law.
-     * @param newton3 The new flag.
+     * @param newton3
      */
     void setNewton3(bool newton3);
 
