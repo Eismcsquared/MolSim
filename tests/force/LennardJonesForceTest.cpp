@@ -78,8 +78,8 @@ TEST_F(LennardJonesForceTest, ForceCalculation2) {
 // Test whether the Lorentz-Berthelot mixing rule is correctly applied in the force calculation.
 TEST_F(LennardJonesForceTest, LorentzBerthelotMixingRule) {
     test_logger->info("Lennard-Jones force - Lorentz-Berthelot mixing rule test");
-    pc->addParticle(Particle({0, 0, 0}, {0, 0, 0}, 1, 5, 1));
-    pc->addParticle(Particle({1, 0, 0}, {0, 0, 0}, 1, 3, 2));
+    pc->addParticle(Particle({0, 0, 0}, {0, 0, 0}, 1, 0, 5, 1));
+    pc->addParticle(Particle({1, 0, 0}, {0, 0, 0}, 1, 0, 3, 2));
     double expected = 24 * sqrt(15) * (2 * pow(1.5, 12) - pow(1.5, 6));
     EXPECT_LE(ArrayUtils::L2Norm(pc->getParticles()[0].getF() - std::array<double, 3>{-expected, 0, 0}), 1e-12);
     EXPECT_LE(ArrayUtils::L2Norm(pc->getParticles()[1].getF() - std::array<double, 3>{expected, 0, 0}), 1e-12);

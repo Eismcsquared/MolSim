@@ -40,7 +40,7 @@ public:
      * @param sigma The parameter sigma of the Lennard-Jones potential.
      */
     Cuboid(const std::array<double, 3> &x, const std::array<double, 3> &v, const std::array<unsigned int, 3> &n,
-           double m, double distance, double avgVelocityBrownian, int dimension, double epsilon, double sigma);
+           double m, double distance, double avgVelocityBrownian, int dimension, int type, double epsilon, double sigma);
 
     /**
      * Create particles that belong to the cuboid and insert them into the given vector.
@@ -53,7 +53,7 @@ public:
                     std::array<double, 3> x_particle = {x[0] + i * distance, x[1] + j * distance, x[2] + k * distance};
                     std::array<double, 3> vBrownian = maxwellBoltzmannDistributedVelocity(avgVelocityBrownian, dimension);
                     std::array<double, 3> v_particle = v + vBrownian;
-                    particles.emplace_back(x_particle, v_particle, m, epsilon, sigma);
+                    particles.emplace_back(x_particle, v_particle, m, type, epsilon, sigma);
                 }
             }
         }

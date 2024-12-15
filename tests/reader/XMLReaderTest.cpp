@@ -160,12 +160,15 @@ TEST_F(XMLReaderTest, Assignment4Input) {
     EXPECT_EQ(2, simulation->getContainer()->getThermostat()->getDimension());
     EXPECT_FLOAT_EQ(-12.44, simulation->getContainer()->getG());
 
+    // Test whether the parameters epsilon, sigma and the type of particles are read correcly as well.
     for (Particle &p: particles) {
         EXPECT_FLOAT_EQ(1, p.getEpsilon());
         if (std::abs(p.getM() - 1) < 1e-12) {
             EXPECT_FLOAT_EQ(1, p.getSigma());
+            EXPECT_EQ(1, p.getType());
         } else {
             EXPECT_FLOAT_EQ(0.9412, p.getSigma());
+            EXPECT_EQ(2, p.getType());
         }
     }
 

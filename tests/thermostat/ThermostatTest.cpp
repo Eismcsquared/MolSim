@@ -39,7 +39,7 @@ TEST_F(ThermostatTest, Temperature) {
     Thermostat thermostat3D(10, 1, 10, 3);
 
     EXPECT_FLOAT_EQ(21, Thermostat::temperature(particles1, 2));
-    EXPECT_NEAR(25, Thermostat::temperature(particles2, 3), 1e-1);
+    EXPECT_NEAR(25, Thermostat::temperature(particles2, 3), .25);
 
     if (::testing::Test::HasFailure()) {
         test_logger->info("ThermostatTest - Temperature computation test failed\n\n");

@@ -33,8 +33,8 @@ Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg,
 
 
 
-Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, double epsilon,
-                   double sigma): x(x_arg), v(v_arg), f{0., 0., 0.}, old_f{0., 0., 0.}, m(m_arg), type(0), inDomain(
+Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, int type, double epsilon,
+                   double sigma): x(x_arg), v(v_arg), f{0., 0., 0.}, old_f{0., 0., 0.}, m(m_arg), type(type), inDomain(
         true), epsilon(epsilon), sigma(sigma){
 
 }

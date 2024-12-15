@@ -16,6 +16,7 @@
                 <y>14</y>
             </size>
             <distance>1.2</distance>
+            <type>1</type>
             <epsilon>1</epsilon>
             <sigma>1</sigma>
         </cuboid>
@@ -34,6 +35,7 @@
                 <y>14</y>
             </size>
             <distance>1.2</distance>
+            <type>2</type>
             <epsilon>1</epsilon>
             <sigma>0.9412</sigma>
         </cuboid>

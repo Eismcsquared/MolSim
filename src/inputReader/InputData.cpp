@@ -595,6 +595,36 @@ brown_velocity_default_value ()
   return brown_velocity_type (0.0);
 }
 
+const CuboidType::type_optional& CuboidType::
+type () const
+{
+  return this->type_;
+}
+
+CuboidType::type_optional& CuboidType::
+type ()
+{
+  return this->type_;
+}
+
+void CuboidType::
+type (const type_type& x)
+{
+  this->type_.set (x);
+}
+
+void CuboidType::
+type (const type_optional& x)
+{
+  this->type_ = x;
+}
+
+CuboidType::type_type CuboidType::
+type_default_value ()
+{
+  return type_type (0);
+}
+
 const CuboidType::epsilon_optional& CuboidType::
 epsilon () const
 {
@@ -801,6 +831,36 @@ SphereType::brown_velocity_type SphereType::
 brown_velocity_default_value ()
 {
   return brown_velocity_type (0.0);
+}
+
+const SphereType::type_optional& SphereType::
+type () const
+{
+  return this->type_;
+}
+
+SphereType::type_optional& SphereType::
+type ()
+{
+  return this->type_;
+}
+
+void SphereType::
+type (const type_type& x)
+{
+  this->type_.set (x);
+}
+
+void SphereType::
+type (const type_optional& x)
+{
+  this->type_ = x;
+}
+
+SphereType::type_type SphereType::
+type_default_value ()
+{
+  return type_type (0);
 }
 
 const SphereType::epsilon_optional& SphereType::
@@ -2576,6 +2636,7 @@ CuboidType (const position_type& position,
   size_ (size, this),
   distance_ (distance, this),
   brown_velocity_ (this),
+  type_ (this),
   epsilon_ (this),
   sigma_ (this)
 {
@@ -2594,6 +2655,7 @@ CuboidType (::std::unique_ptr< position_type > position,
   size_ (std::move (size), this),
   distance_ (distance, this),
   brown_velocity_ (this),
+  type_ (this),
   epsilon_ (this),
   sigma_ (this)
 {
@@ -2610,6 +2672,7 @@ CuboidType (const CuboidType& x,
   size_ (x.size_, f, this),
   distance_ (x.distance_, f, this),
   brown_velocity_ (x.brown_velocity_, f, this),
+  type_ (x.type_, f, this),
   epsilon_ (x.epsilon_, f, this),
   sigma_ (x.sigma_, f, this)
 {
@@ -2626,6 +2689,7 @@ CuboidType (const ::xercesc::DOMElement& e,
   size_ (this),
   distance_ (this),
   brown_velocity_ (this),
+  type_ (this),
   epsilon_ (this),
   sigma_ (this)
 {
@@ -2727,6 +2791,17 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // type
+    //
+    if (n.name () == "type" && n.namespace_ ().empty ())
+    {
+      if (!this->type_)
+      {
+        this->type_.set (type_traits::create (i, f, this));
+        continue;
+      }
+    }
+
     // epsilon
     //
     if (n.name () == "epsilon" && n.namespace_ ().empty ())
@@ -2807,6 +2882,7 @@ operator= (const CuboidType& x)
     this->size_ = x.size_;
     this->distance_ = x.distance_;
     this->brown_velocity_ = x.brown_velocity_;
+    this->type_ = x.type_;
     this->epsilon_ = x.epsilon_;
     this->sigma_ = x.sigma_;
   }
@@ -2835,6 +2911,7 @@ SphereType (const center_type& center,
   radius_ (radius, this),
   distance_ (distance, this),
   brown_velocity_ (this),
+  type_ (this),
   epsilon_ (this),
   sigma_ (this)
 {
@@ -2853,6 +2930,7 @@ SphereType (::std::unique_ptr< center_type > center,
   radius_ (radius, this),
   distance_ (distance, this),
   brown_velocity_ (this),
+  type_ (this),
   epsilon_ (this),
   sigma_ (this)
 {
@@ -2869,6 +2947,7 @@ SphereType (const SphereType& x,
   radius_ (x.radius_, f, this),
   distance_ (x.distance_, f, this),
   brown_velocity_ (x.brown_velocity_, f, this),
+  type_ (x.type_, f, this),
   epsilon_ (x.epsilon_, f, this),
   sigma_ (x.sigma_, f, this)
 {
@@ -2885,6 +2964,7 @@ SphereType (const ::xercesc::DOMElement& e,
   radius_ (this),
   distance_ (this),
   brown_velocity_ (this),
+  type_ (this),
   epsilon_ (this),
   sigma_ (this)
 {
@@ -2983,6 +3063,17 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // type
+    //
+    if (n.name () == "type" && n.namespace_ ().empty ())
+    {
+      if (!this->type_)
+      {
+        this->type_.set (type_traits::create (i, f, this));
+        continue;
+      }
+    }
+
     // epsilon
     //
     if (n.name () == "epsilon" && n.namespace_ ().empty ())
@@ -3063,6 +3154,7 @@ operator= (const SphereType& x)
     this->radius_ = x.radius_;
     this->distance_ = x.distance_;
     this->brown_velocity_ = x.brown_velocity_;
+    this->type_ = x.type_;
     this->epsilon_ = x.epsilon_;
     this->sigma_ = x.sigma_;
   }
@@ -4845,6 +4937,18 @@ operator<< (::xercesc::DOMElement& e, const CuboidType& i)
     s << ::xml_schema::as_double(*i.brown_velocity ());
   }
 
+  // type
+  //
+  if (i.type ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "type",
+        e));
+
+    s << *i.type ();
+  }
+
   // epsilon
   //
   if (i.epsilon ())
@@ -4940,6 +5044,18 @@ operator<< (::xercesc::DOMElement& e, const SphereType& i)
         e));
 
     s << ::xml_schema::as_double(*i.brown_velocity ());
+  }
+
+  // type
+  //
+  if (i.type ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "type",
+        e));
+
+    s << *i.type ();
   }
 
   // epsilon

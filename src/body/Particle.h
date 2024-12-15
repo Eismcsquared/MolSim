@@ -73,7 +73,7 @@ public:
         std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg,
         int type = 0);
 
-    Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg,
+    Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, int type,
             double epsilon, double sigma);
 
     virtual ~Particle();

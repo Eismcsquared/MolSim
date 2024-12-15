@@ -28,12 +28,14 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
         for (auto p: input->objects().particle()) {
             double r_z = p.position().z().present() ? p.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
             double v_z = p.velocity().z().present() ? p.velocity().z().get() : DoubleVector3::z_default_value();
+            int type = p.type().present() ? p.type().get() : ParticleType::type_default_value();
             double epsilon = p.epsilon().present() ? p.epsilon().get() : ParticleType::epsilon_default_value();
             double sigma = p.sigma().present() ? p.sigma().get() : ParticleType::sigma_default_value();
             particles.emplace_back(
                         std::array<double, 3>{p.position().x(), p.position().y(), r_z},
                         std::array<double, 3>{p.velocity().x(), p.velocity().y(), v_z},
                         p.mass(),
+                        type,
                         epsilon,
                         sigma
                     );
@@ -45,6 +47,7 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
             double r_z = c.position().z().present() ? c.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
             double v_z = c.velocity().z().present() ? c.velocity().z().get() : DoubleVector3::z_default_value();
             unsigned int n_z = c.size().z().present() ? c.size().z().get() : PositiveIntVector3::z_default_value();
+            int type = c.type().present() ? c.type().get() : ParticleType::type_default_value();
             double epsilon = c.epsilon().present() ? c.epsilon().get() : CuboidType::epsilon_default_value();
             double sigma = c.sigma().present() ? c.sigma().get() : CuboidType::sigma_default_value();
 
@@ -65,6 +68,7 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
                         c.distance(),
                         brown_vel,
                         dimension,
+                        type,
                         epsilon,
                         sigma
                     );
@@ -77,6 +81,7 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
             double r_z = s.center().z().present() ? s.center().z().get() : PositiveDoubleVector3::z_default_value() / 2;
             double v_z = s.velocity().z().present() ? s.velocity().z().get() : DoubleVector3::z_default_value();
             int radius = static_cast<int>(s.radius());
+            int type = s.type().present() ? s.type().get() : ParticleType::type_default_value();
             double epsilon = s.epsilon().present() ? s.epsilon().get() : SphereType::epsilon_default_value();
             double sigma = s.sigma().present() ? s.sigma().get() : SphereType::sigma_default_value();
 
@@ -97,6 +102,7 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
                         s.distance(),
                         brown_vel,
                         dimension,
+                        type,
                         epsilon,
                         sigma
                     );
