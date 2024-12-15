@@ -102,6 +102,14 @@ bool Particle::operator==(const Particle &other) const {
     if (std::abs(m - other.m) > delta_rel * std::max(std::abs(m), std::abs(other.m)) + delta_abs) {
         return false;
     }
+
+    if (std::abs(epsilon - other.epsilon) > delta_rel * std::max(std::abs(epsilon), std::abs(other.epsilon)) + delta_abs) {
+        return false;
+    }
+
+    if (std::abs(sigma - other.sigma) > delta_rel * std::max(std::abs(sigma), std::abs(other.sigma)) + delta_abs) {
+        return false;
+    }
     return type == other.type;
 }
 
