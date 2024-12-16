@@ -68,7 +68,6 @@ LinkedCellContainer::LinkedCellContainer(std::vector<Particle>& particles, std::
             particles[i].removeFromDomain();
         }
     }
-    ParticleContainer::updateF();
     spdlog::trace("LinkedCellContainer generated!");
 }
 
@@ -80,7 +79,7 @@ void LinkedCellContainer::updateV(double delta_t) {
     }
 }
 
-void LinkedCellContainer::updateF(bool newton3) {
+void LinkedCellContainer::updateF() {
 
     for(auto & p1 : particles){
         p1.setOldF(p1.getF());
@@ -115,7 +114,6 @@ void LinkedCellContainer::updateF(bool newton3) {
                 particles[pointCellParticles[k]].setF(particles[pointCellParticles[k]].getF() + forceIJ);
             }
         }
-
         
     }
 
@@ -283,7 +281,6 @@ void LinkedCellContainer::addParticle(const Particle& particle) {
         cells[cellIndex].addIndex((int) particles.size());
     }
     particles.push_back(particle);
-    updateF(true);
 }
 
 void LinkedCellContainer::addCluster(const Cluster &cluster) {
@@ -295,7 +292,6 @@ void LinkedCellContainer::addCluster(const Cluster &cluster) {
             cells[cellIndex].addIndex(i);
         }
     }
-    updateF(true);
 }
 
 bool LinkedCellContainer::isHaloCell(int index) {

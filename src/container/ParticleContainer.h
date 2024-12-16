@@ -120,14 +120,11 @@ public:
      * @param delta_t The length of a time step.
      */
     virtual void updateV(double delta_t) = 0;
+
     /**
      * Update the force between all particles with the Newton's third law applied.
      */
-    void updateF();
-    /**
-     * Update the force of particles based on their positions.
-     */
-    virtual void updateF(bool newton3) = 0;
+    virtual void updateF() = 0;
 
     /**
      * Getter for the gravitational acceleration.
@@ -169,11 +166,10 @@ public:
      * @param output_frequency THe frequency of the output, in number of time steps.
      * @param save_output Output is activated if this flag is set.
      * @param checkpointingFile The name of the file which the final state is stored to for restarting the simulation. If the name is empty, checkpointing is deactivated.
-     * @param newton3 The Newton's third law is applied in the force calculations if this flag is set.
      */
     void simulate(double end_time, double delta_t, const std::string& out_name,
                           const std::string& output_format, unsigned int output_frequency,
-                          bool save_output, const std::string& checkpointingFile = "", bool newton3 = true);
+                          bool save_output, const std::string& checkpointingFile = "");
 
     /**
      * Write the current state of the container to the output files.

@@ -31,7 +31,6 @@ Options:
 `-o | --output <output-file>` = The name of files that data should be written to (Default: MD_vtk).<br>
 `-s | --spdlog_level <level>` = Set spdlog level (trace -1, debug -2, info -3, warn -4, error -5, critical -6).<br>
 `-b | --benchmark` = If specified, the benchmark mode is activated and the output of data is deactivated.<br>
-`-n | --newton3` = If specified, the Newton's third law is not applied.<br>
 `-g | --gravitation` = If specified, The gravitation (with G = 1) is taken to be the force between objects. Otherwise, the Lennard-Jones force is assumed by default.<br>
 `-c | --checkpoint <file>` = If specified, the final state is stored to the given file and the output of simulation data is deactivated.<br>
 `-l | --load <file>` = If specified, additional particles are loaded from the given file.<br>

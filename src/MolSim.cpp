@@ -78,13 +78,12 @@ int main(int argc, char *argsv[]) {
             {"output", required_argument, nullptr, 'o'},
             {"spdlog_level", required_argument, nullptr, 's'},
             {"benchmark", no_argument, nullptr, 'b'},
-            {"newton3 ", no_argument, nullptr, 'n'},
             {"gravitation", no_argument, nullptr, 'g'},
             {"checkpoint", required_argument, nullptr, 'c'},
             {"load", required_argument, nullptr, 'l'},
             {nullptr, 0, nullptr, 0} 
     };
-    while ((opt = getopt_long(argc, argsv, "hd:e:f:o:s:gc:l:bn", long_options, nullptr)) != -1) {
+    while ((opt = getopt_long(argc, argsv, "hd:e:f:o:s:gc:l:b", long_options, nullptr)) != -1) {
         switch (opt) {
             case 'd':
                 simulation->setDeltaT(std::atof(optarg));
@@ -128,9 +127,6 @@ int main(int argc, char *argsv[]) {
             case 'b':
                 simulation->setSaveOutput(false);
                 spdlog::set_level(spdlog::level::off);
-                break;
-            case 'n':
-                simulation->setNewton3(false);
                 break;
             case 'g':
                 f = std::make_unique<GravitationalForce>();
@@ -192,7 +188,6 @@ void printHelp() {
     std::cout << "  -o or --output <output-file>   = The name of files that data should be written to (Default: MD_vtk)." << "\n";
     std::cout << "  -s or --spdlog_level <level>   = Set spdlog level (trace -1, debug -2, info -3, warn -4, error -5, critical -6).\n";
     std::cout << "  -b or --benchmark              = If specified, the benchmark mode is activated." << "\n";
-    std::cout << "  -n or --newton3                = If specified, the Newton's third law is not applied." << "\n";
     std::cout << "  -g or --gravitation            = If specified, The gravitation (with G = 1) is taken to be the force between objects. Otherwise, the Lennard-Jones force is assumed." << "\n";
     std::cout << "  -c or --checkpoint <file>      = If specified, the final state is stored to the given file and the output of simulation data is deactivated." << "\n";
     std::cout << "  -l or --load <file>            = If specified, additional particles are loaded from the given file." << "\n";

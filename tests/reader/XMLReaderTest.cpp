@@ -107,7 +107,7 @@ TEST_F(XMLReaderTest, Assigment3Input) {
 // Test whether the input file for the fallig drop simulation is correctly parsed. The Brownian motion is set to 0 for test purpose.
 TEST_F(XMLReaderTest, FallingDropInput) {
     test_logger->info("XMLReader - Falling drop input test");
-    inputFile = "../tests/test_cases/assignment3_falling_drop.xml";
+    inputFile = "../tests/test_cases/falling_drop.xml";
     simulation = XMLReader::readXML(particles, inputFile);
     std::vector<Particle> ref_p;
     Sphere s(std::array<double, 3>{60, 25, 0.5}, std::array<double, 3>{0, -10, 0}, 15, 1, pow(2, 1.0 / 6), 0, 2);
@@ -229,17 +229,13 @@ TEST_F(XMLReaderTest, Checkpointing) {
 
     EXPECT_EQ(2, simulation->getContainer()->getParticleNumber());
 
+
     std::vector<Particle> ref;
     ref.emplace_back(std::array<double, 3>{7, 7, 3}, std::array<double, 3>{-1, 2, 0.5}, 1, 1, 5, 1.2);
     ref.emplace_back(std::array<double, 3>{7, 8, 3}, std::array<double, 3>{1, 0.5, 0.5}, 3.5, 2, 4, 1.1);
 
-    LennardJonesForce lj;
-    std::array<double, 3> force01 = lj.force(ref[0], ref[1]);
-    ref[0].setF(-1 * force01);
-    ref[1].setF(force01);
-
     EXPECT_EQ(ref[0], particles[0]);
-    EXPECT_EQ(ref[0], particles[0]);
+    EXPECT_EQ(ref[1], particles[1]);
     EXPECT_EQ("../tests/test_cases/checkpointing_out.txt", simulation->getCheckpointingFile());
 
     simulation->run();
@@ -248,12 +244,9 @@ TEST_F(XMLReaderTest, Checkpointing) {
 
     StateReader::loadState(loadedParticles, "../tests/test_cases/checkpointing_out.txt");
 
-    loadedParticles[0].setF(-1 * force01);
-    loadedParticles[1].setF(force01);
-
     EXPECT_EQ(2, loadedParticles.size());
-    EXPECT_EQ(particles[0], loadedParticles[0]);
-    EXPECT_EQ(particles[1], loadedParticles[1]);
+    EXPECT_EQ(ref[0], loadedParticles[0]);
+    EXPECT_EQ(ref[1], loadedParticles[1]);
 
     std::filesystem::remove("../tests/test_cases/checkpointing_out.txt");
 

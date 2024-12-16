@@ -43,10 +43,7 @@ class Simulation {
      * The name of the file which the final tate of the system is stored to, checkpointing is deactivated by default.
      */
     std::string checkpointingFile;
-    /**
-     * Represents whether the Newton's third law should be applied in the force calculations.
-     */
-    bool newton3;
+
 public:
 
     /**
@@ -104,12 +101,6 @@ public:
     void setCheckpointingFile(const std::string &checkpointingFile);
 
     /**
-     * Setter for the flag of applying the Newton's third law.
-     * @param newton3
-     */
-    void setNewton3(bool newton3);
-
-    /**
      * Getter for the particle container.
      * @return The particle container.
      */
@@ -156,12 +147,6 @@ public:
      * @return output file name for checkpointing.
      */
     std::string getCheckpointingFile() const;
-
-    /**
-     * Getter for the flag for applying the Newton's third law.
-     * @return The flag whether the Newton's third law is applied.
-     */
-    bool isNewton3() const;
 
     /**
      * Run the simulation.

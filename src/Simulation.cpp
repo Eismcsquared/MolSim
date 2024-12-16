@@ -5,7 +5,7 @@
 Simulation::Simulation(std::unique_ptr<ParticleContainer> &container, double endTime, double deltaT,
                        std::string outputFile, std::string outputFormat, unsigned int outputFrequency)
         : container(std::move(container)), endTime(endTime), deltaT(deltaT), outputFormat(std::move(outputFormat)), outputFile(std::move(outputFile)),
-          outputFrequency(outputFrequency), saveOutput(true), newton3(true) {}
+          outputFrequency(outputFrequency), saveOutput(true) {}
 
 
 void Simulation::setEndTime(double endTime) {
@@ -34,10 +34,6 @@ void Simulation::setSaveOutput(bool saveOutput) {
 
 void Simulation::setCheckpointingFile(const std::string &checkpointingFile) {
     Simulation::checkpointingFile = checkpointingFile;
-}
-
-void Simulation::setNewton3(bool newton3) {
-    Simulation::newton3 = newton3;
 }
 
 
@@ -73,11 +69,7 @@ std::string Simulation::getCheckpointingFile() const {
     return checkpointingFile;
 }
 
-bool Simulation::isNewton3() const {
-    return newton3;
-}
-
 
 void Simulation::run() {
-    container->simulate(endTime, deltaT, outputFile, outputFormat, outputFrequency, saveOutput, checkpointingFile, newton3);
+    container->simulate(endTime, deltaT, outputFile, outputFormat, outputFrequency, saveOutput, checkpointingFile);
 }

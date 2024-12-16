@@ -48,22 +48,18 @@ void ParticleContainer::setThermostat(std::unique_ptr<Thermostat> &thermostat) {
 
 void ParticleContainer::addParticle(const Particle &particle) {
     this->particles.push_back(particle);
-    this->ParticleContainer::updateF();
 }
 
 void ParticleContainer::addCluster(const Cluster &cluster) {
     cluster.createParticles(particles);
-    this->ParticleContainer::updateF();
-}
-
-void ParticleContainer::updateF() {
-    updateF(true);
 }
 
 void ParticleContainer::simulate(double end_time, double delta_t, const std::string &out_name, const std::string &output_format,
-                                 unsigned int output_frequency, bool save_output, const std::string& checkpointingFile, bool newton3) {
+                                 unsigned int output_frequency, bool save_output, const std::string& checkpointingFile) {
     int max_iteration = static_cast<int>(std::round(end_time / delta_t));
 
+    // compute initial forces.
+    updateF();
     // save the initial state also.
     if (save_output) {
         plotParticles(0, out_name, output_format);
@@ -75,7 +71,7 @@ void ParticleContainer::simulate(double end_time, double delta_t, const std::str
         updateX(delta_t);
 
         // Calculate the force
-        updateF(newton3);
+        updateF();
 
         // Calculate the velocity
         updateV(delta_t);

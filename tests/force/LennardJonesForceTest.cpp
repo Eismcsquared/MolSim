@@ -35,6 +35,7 @@ TEST_F(LennardJonesForceTest, ForceCalculation1) {
     test_logger->info("Lennard-Jones force - two-body test");
     pc->addParticle(Particle({0, 0, 0}, {0, 0, 0}, 1));
     pc->addParticle(Particle({1, 0, 0}, {0, 0, 0}, 1));
+    pc->updateF();
     Particle ref_p1({0, 0, 0}, {0, 0, 0}, 1);
     ref_p1.setF({-120, 0, 0}); // expected force of particle 1
     Particle ref_p2({1, 0, 0}, {0, 0, 0}, 1);
@@ -55,6 +56,7 @@ TEST_F(LennardJonesForceTest, ForceCalculation2) {
     pc->addParticle(Particle({1, 0, 0}, {0, 0, 0}, 1));
     pc->addParticle(Particle({0, 1, 0}, {0, 0, 0}, 1));
     pc->addParticle(Particle({1, 1, 0}, {0, 0, 0}, 1));
+    pc->updateF();
     Particle ref_p1({0, 0, 0}, {0, 0, 0}, 1);
     ref_p1.setF({-915.0 / 8, -915.0 / 8, 0}); // expected force of particle 1
     Particle ref_p2({1, 0, 0}, {0, 0, 0}, 1);
@@ -80,6 +82,7 @@ TEST_F(LennardJonesForceTest, LorentzBerthelotMixingRule) {
     test_logger->info("Lennard-Jones force - Lorentz-Berthelot mixing rule test");
     pc->addParticle(Particle({0, 0, 0}, {0, 0, 0}, 1, 0, 5, 1));
     pc->addParticle(Particle({1, 0, 0}, {0, 0, 0}, 1, 0, 3, 2));
+    pc->updateF();
     double expected = 24 * sqrt(15) * (2 * pow(1.5, 12) - pow(1.5, 6));
     EXPECT_LE(ArrayUtils::L2Norm(pc->getParticles()[0].getF() - std::array<double, 3>{-expected, 0, 0}), 1e-12);
     EXPECT_LE(ArrayUtils::L2Norm(pc->getParticles()[1].getF() - std::array<double, 3>{expected, 0, 0}), 1e-12);

@@ -31,7 +31,7 @@ class DirectSumContainer: public ParticleContainer{
     /**
      * Update the force between all particles.
      */
-    void updateF(bool newton3) override;
+    void updateF() override;
 
 
     /**

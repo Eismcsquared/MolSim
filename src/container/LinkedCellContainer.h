@@ -104,10 +104,9 @@ public:
     const std::array<BoundaryCondition, 6> &getBoundaryConditions() const;
 
     /**
-     *  @brief Update the force between all particles.
-     * @param newton3 The Newton's third law is applied if this flag is set.
+     * @brief Update the force between all particles.
      */
-    void updateF(bool newton3) override;
+    void updateF() override;
 
     /**
      * @brief Update the position for all particles.
