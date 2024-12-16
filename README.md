@@ -68,9 +68,9 @@ Note: Only possible if the project was built with the option
 For simulations required in the individuell work sheets, run the following commands.<br>
 
 - Assignment 1:
-  `./MolSim ../input/eingabe-sonne.txt -d 0.014 -e 1000 -g`<br>
+  `./MolSim ../input/assignment1.xml`<br>
 - Assignment 2:
-  `./MolSim ../input/assignment2.txt -d 0.0002 -e 5 -l`<br>
+  `./MolSim ../input/assignment2.xml`<br>
 - Assignment 3 - Collision:
   `./MolSim ../input/assignment3.xml`
 - Assignment 3 - Falling drop:
@@ -78,7 +78,7 @@ For simulations required in the individuell work sheets, run the following comma
 - Assignment 4 - Rayleigh-Taylor instability: 
   `./MolSim ../input/assignment4.xml`
 - Assignment 4 - Falling drop:
-  `./MolSim ../input/assignment4_fluid.xml`
+  `./MolSim ../input/assignment4_fluid.xml` followed by
   `./MolSim ../input/assignment4_falling_drop.xml`
 
 ### Benchmark
