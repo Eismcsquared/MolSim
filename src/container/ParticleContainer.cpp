@@ -96,7 +96,9 @@ void ParticleContainer::simulate(double start_time, double end_time, double delt
         // Stop the timer
         auto end = std::chrono::high_resolution_clock::now();
         // Calculate the duration
-        duration += (end - start).count();
+        std::chrono::duration<double> difference = end - start;
+
+        duration += difference.count();
         numberUpdates += particleNumber;
 
         if (iteration % output_frequency == 0 && save_output) {
