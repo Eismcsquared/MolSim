@@ -347,17 +347,17 @@ TEST_F(LinkedCellContainerTest, Outflow) {
     container2D->addParticle(Particle({13, 13, 0.5}, {0, 1, 0}, 1)); // outflow at t=2
     container2D->addParticle(Particle({13, 1, 0.5}, {sqrt(2), sqrt(2), 0}, 1)); // outflow at t=sqrt(2)
     EXPECT_EQ(3, container2D->getParticleNumber());
-    container2D->simulate(0.99, 1e-3, "", "", 10, false);
+    container2D->simulate(0, 0.99, 1e-3, "", "", 10, false);
     EXPECT_EQ(3, container2D->getParticleNumber());
-    container2D->simulate(0.02, 1e-3, "", "", 10, false);
+    container2D->simulate(0.99, 1.01, 1e-3, "", "", 10, false);
     EXPECT_EQ(2, container2D->getParticleNumber());
-    container2D->simulate(0.40, 1e-3, "", "", 10, false);
+    container2D->simulate(1.01, 1.41, 1e-3, "", "", 10, false);
     EXPECT_EQ(2, container2D->getParticleNumber());
-    container2D->simulate(0.01, 1e-3, "", "", 10, false);
+    container2D->simulate(1.41, 1.42, 1e-3, "", "", 10, false);
     EXPECT_EQ(1, container2D->getParticleNumber());
-    container2D->simulate(0.57, 1e-3, "", "", 10, false);
+    container2D->simulate(1.42, 1.99, 1e-3, "", "", 10, false);
     EXPECT_EQ(1, container2D->getParticleNumber());
-    container2D->simulate(0.02, 1e-3, "", "", 10, false);
+    container2D->simulate(1.99, 2.01, 1e-3, "", "", 10, false);
     EXPECT_EQ(0, container2D->getParticleNumber());
     if (::testing::Test::HasFailure()) {
         test_logger->info("LinkedCellContainer - Outflow boundary test failed");
@@ -372,14 +372,14 @@ TEST_F(LinkedCellContainerTest, Reflecting) {
     container3D->addParticle(Particle({1, 1, 10}, {-1, 0, 0}, 1)); //reflected at t=1
     container3D->addParticle(Particle({98, 98, 10}, {1, 1, 0}, 1)); //reflected at t=2
     container3D->addParticle(Particle({50, 1, 48}, {2, -1, 1}, 1)); //reflect at t=1, outflow at t=2
-    container3D->simulate(1.5, 1e-1, "", "", 10, false);
+    container3D->simulate(0, 1.5, 1e-1, "", "", 10, false);
 
     EXPECT_EQ(3, container3D->getParticleNumber());
     EXPECT_EQ(Particle({0.5, 1, 10}, {1, 0, 0}, 1), container3D->getParticles()[0]);
     EXPECT_EQ(Particle({99.5, 99.5, 10}, {1, 1, 0}, 1), container3D->getParticles()[1]);
     EXPECT_EQ(Particle({53, 0.5, 49.5}, {2, 1, 1}, 1), container3D->getParticles()[2]);
 
-    container3D->simulate(1, 1e-1, "", "", 10, false);
+    container3D->simulate(1.5, 2.5, 1e-1, "", "", 10, false);
 
     EXPECT_EQ(2, container3D->getParticleNumber());
     EXPECT_FALSE(container3D->getParticles()[2].isInDomain());
@@ -400,12 +400,12 @@ TEST_F(LinkedCellContainerTest, Periodic) {
     container3DPeriodicX->addParticle(Particle({98, 98, 10}, {1, 1, 0}, 1)); // periodic + reflecting at t=2
     container3DPeriodicX->addParticle(Particle({1, 1, 48}, {-1, 0, 2}, 1)); // periodic + outflow at t=1
 
-    container3DPeriodicX->simulate(1.5, 1e-1, "", "", 10, false);
+    container3DPeriodicX->simulate(0, 1.5, 1e-1, "", "", 10, false);
     EXPECT_EQ(2, container3DPeriodicX->getParticleNumber());
     EXPECT_FALSE(container3DPeriodicX->getParticles()[2].isInDomain());
     EXPECT_EQ(Particle({99.5, 1, 10}, {-1, 0, 0}, 1), container3DPeriodicX->getParticles()[0]);
     EXPECT_EQ(Particle({99.5, 99.5, 10}, {1, 1, 0}, 1), container3DPeriodicX->getParticles()[1]);
-    container3DPeriodicX->simulate(1, 1e-1, "", "", 10, false);
+    container3DPeriodicX->simulate(1.5, 2.5, 1e-1, "", "", 10, false);
     EXPECT_EQ(2, container3DPeriodicX->getParticleNumber());
     EXPECT_EQ(Particle({98.5, 1, 10}, {-1, 0, 0}, 1), container3DPeriodicX->getParticles()[0]);
     EXPECT_EQ(Particle({0.5, 99.5, 10}, {1, -1, 0}, 1), container3DPeriodicX->getParticles()[1]);
@@ -413,7 +413,7 @@ TEST_F(LinkedCellContainerTest, Periodic) {
     // What happens at "periodic corners"?
 
     container3DPeriodicAll->addParticle(Particle({1, 1, 1}, {-1, -1, -1}, 1));
-    container3DPeriodicAll->simulate(2, 1e-1, "", "", 10, false);
+    container3DPeriodicAll->simulate(0, 2, 1e-1, "", "", 10, false);
     EXPECT_EQ(Particle({99, 99, 49}, {-1, -1, -1}, 1), container3DPeriodicAll->getParticles()[0]);
 
     if (::testing::Test::HasFailure()) {
@@ -430,7 +430,7 @@ TEST_F(LinkedCellContainerTest, Analytical) {
     test_logger->info("LinkedCellContainer - Two body analytical test");
     container2D->addParticle(Particle(std::array<double, 3>{7, 7.5, 0.5}, std::array<double, 3>{0, 0, 0}, 1, 0, 0.25, 1));
     container2D->addParticle(Particle(std::array<double, 3>{8, 7.5, 0.5}, std::array<double, 3>{0, 0, 0}, 1, 0, 0.25, 1));
-    container2D->simulate(25, 1e-3, "", "", 10, false);
+    container2D->simulate(0, 25, 1e-3, "", "", 10, false);
     double expectedVel = sqrt((pow(1.0 / 3, 6) - pow(1.0 / 3, 12)));
     EXPECT_TRUE(ArrayUtils::L2Norm(container2D->getParticles()[0].getX() - container2D->getParticles()[1].getX()) > 3);
 

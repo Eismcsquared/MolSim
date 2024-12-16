@@ -10,6 +10,12 @@ class Simulation {
      * The objects in the simulation
      */
     std::unique_ptr<ParticleContainer> container;
+
+    /**
+     * The start time of the simulation.
+     */
+    double startTime;
+
     /**
      * The end time of the simulation.
      */
@@ -57,6 +63,25 @@ public:
      */
     Simulation(std::unique_ptr<ParticleContainer> &container, double endTime, double deltaT,
                std::string outputFile, std::string outputFormat, unsigned int outputFrequency);
+
+    /**
+     * Constructor.
+     * @param container The container that contains the particles for the simulation.
+     * @param startTime The start time of the simulation.
+     * @param endTime The end time of the simulation.
+     * @param deltaT The time step of the simulation.
+     * @param outputFormat The format of the output file.
+     * @param outputFile The name of the output file.
+     * @param outputFrequency The frequency of output.
+     */
+    Simulation(std::unique_ptr<ParticleContainer> &container, double startTime, double endTime, double deltaT,
+               std::string outputFile, std::string outputFormat, unsigned int outputFrequency);
+
+    /**
+     * Setter for the start time.
+     * @param startTime The new start time.
+     */
+    void setStartTime(double startTime);
 
     /**
      * Setter for the end time.
@@ -107,7 +132,13 @@ public:
     const std::unique_ptr<ParticleContainer> &getContainer() const;
 
     /**
-     * Getter for the simulation duration.
+     * Getter for the start time.
+     * @return The start time of the simulation.
+     */
+    double getStartTime() const;
+
+    /**
+     * Getter for the end time.
      * @return The end time of the simulation.
      */
     double getEndTime() const;

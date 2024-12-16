@@ -4,21 +4,22 @@
 #include "outputWriter/StateWriter.h"
 
 ParticleContainer::ParticleContainer(std::vector<Particle> &particles, std::unique_ptr<Force> &f_ptr) :
-        particles(particles), force(std::move(f_ptr)), g(0) {}
+        ParticleContainer(particles, f_ptr, 0) {}
 
 ParticleContainer::ParticleContainer(std::vector<Particle> &particles,
                                              std::unique_ptr<Force> &f_ptr, double g) :
-        particles(particles), force(std::move(f_ptr)), g(g) {}
+        particles(particles), force(std::move(f_ptr)), g(g), particleNumber(particles.size()) {
+
+    for (Particle &p: particles) {
+        if (!p.isInDomain()) {
+            particleNumber--;
+        }
+    }
+}
 
 
 unsigned long ParticleContainer::getParticleNumber() const {
-    int num = 0;
-    for (const auto& p: getParticles()) {
-        if (p.isInDomain()) {
-            num++;
-        }
-    }
-    return num;
+    return particleNumber;
 }
 
 std::vector<Particle> &ParticleContainer::getParticles() const {
@@ -54,18 +55,25 @@ void ParticleContainer::addCluster(const Cluster &cluster) {
     cluster.createParticles(particles);
 }
 
-void ParticleContainer::simulate(double end_time, double delta_t, const std::string &out_name, const std::string &output_format,
-                                 unsigned int output_frequency, bool save_output, const std::string& checkpointingFile) {
-    int max_iteration = static_cast<int>(std::round(end_time / delta_t));
+void ParticleContainer::simulate(double start_time, double end_time, double delta_t, const std::string &out_name, const std::string &output_format,
+                                 unsigned int output_frequency, bool save_output) {
+    int start_iteration = static_cast<int>(std::round(start_time / delta_t));
+    int end_iteration = static_cast<int>(std::round(end_time / delta_t));
 
     // compute initial forces.
     updateF();
     // save the initial state also.
-    if (save_output) {
-        plotParticles(0, out_name, output_format);
+    if (save_output && start_iteration % output_frequency == 0) {
+        plotParticles(start_iteration, out_name, output_format);
     }
 
-    for (int iteration = 1; iteration <= max_iteration; iteration++) {
+    long double duration = 0;
+    unsigned long numberUpdates = 0;
+
+    for (int iteration = start_iteration + 1; iteration <= end_iteration; iteration++) {
+
+        // Start the timer.
+        auto start = std::chrono::high_resolution_clock::now();
 
         // Calculate the position
         updateX(delta_t);
@@ -76,22 +84,29 @@ void ParticleContainer::simulate(double end_time, double delta_t, const std::str
         // Calculate the velocity
         updateV(delta_t);
 
-        if (iteration % output_frequency == 0 && save_output) {
-            plotParticles(iteration, out_name, output_format);
-        }
-
         if (thermostat && iteration % thermostat->getPeriode() == 0) {
             thermostat->apply(particles);
+        }
+
+        // Stop the timer
+        auto end = std::chrono::high_resolution_clock::now();
+        // Calculate the duration
+        duration += (end - start).count();
+        numberUpdates += particleNumber;
+
+        if (iteration % output_frequency == 0 && save_output) {
+            plotParticles(iteration, out_name, output_format);
         }
 
         spdlog::trace("Iteration {} finished.", iteration);
     }
 
-    if (!checkpointingFile.empty()) {
-        StateWriter::saveState(particles, checkpointingFile);
-    }
-
     spdlog::trace("output written. Terminating...");
+
+    // print measurement results.
+    spdlog::set_level(spdlog::level::info);
+    spdlog::info("Duration: {}s", duration);
+    spdlog::info("Updates per second: {}", numberUpdates / duration);
 }
 
 void ParticleContainer::plotParticles(int iteration, const std::string &out_name, const std::string &output_format) {

@@ -65,6 +65,11 @@ protected:
      double g;
 
      /**
+      * The number of particles in domain.
+      */
+     unsigned long particleNumber;
+
+     /**
       * The thermostat that adjusts the temperature of the system.
       */
      std::unique_ptr<Thermostat> thermostat;
@@ -159,17 +164,17 @@ public:
 
     /**
      * Simulate the system of particles.
+     * @param start_time The start time of the simulation.
      * @param end_time The duration of the simulation.
      * @param delta_t The time step of the simulation.
      * @param out_name The name of the output file.
      * @param output_format The format of the output file, either "vtu" or "xyz".
      * @param output_frequency THe frequency of the output, in number of time steps.
      * @param save_output Output is activated if this flag is set.
-     * @param checkpointingFile The name of the file which the final state is stored to for restarting the simulation. If the name is empty, checkpointing is deactivated.
      */
-    void simulate(double end_time, double delta_t, const std::string& out_name,
+    void simulate(double start_time, double end_time, double delta_t, const std::string& out_name,
                           const std::string& output_format, unsigned int output_frequency,
-                          bool save_output, const std::string& checkpointingFile = "");
+                          bool save_output);
 
     /**
      * Write the current state of the container to the output files.

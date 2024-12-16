@@ -64,8 +64,9 @@ LinkedCellContainer::LinkedCellContainer(std::vector<Particle>& particles, std::
         std::array<int, 3> index3D = get3DIndex(idx);
         if(index3D[0] >= 0 && index3D[0] < nCells[0] && index3D[1] >= 0 && index3D[1] < nCells[1] && index3D[2] >= 0 && index3D[2] < nCells[2]) {
             cells[idx].addIndex(i);
-        } else {
-            particles[i].removeFromDomain();
+        } else if (particles[i].isInDomain()) {
+            (this->particles)[i].removeFromDomain();
+            particleNumber--;
         }
     }
     spdlog::trace("LinkedCellContainer generated!");
@@ -73,17 +74,21 @@ LinkedCellContainer::LinkedCellContainer(std::vector<Particle>& particles, std::
 
 
 void LinkedCellContainer::updateV(double delta_t) {
-    for (auto &p : particles) {
-        std::array<double, 3> vec = p.getV() + (delta_t / (2 * p.getM())) * (p.getF() + p.getOldF());
-        p.setV(vec);
+    for (int i: domainCells) {
+        for (int p: cells[i].getParticleIndices()) {
+            std::array<double, 3> vec = particles[p].getV() + (delta_t / (2 * particles[p].getM())) * (particles[p].getF() + particles[p].getOldF());
+            particles[p].setV(vec);
+        }
     }
 }
 
 void LinkedCellContainer::updateF() {
 
-    for(auto & p1 : particles){
-        p1.setOldF(p1.getF());
-        p1.setF({0, p1.getM() * g, 0}); // reset the force
+    for(int i: domainCells){
+        for (int p_idx: cells[i].getParticleIndices()) {
+            particles[p_idx].setOldF(particles[p_idx].getF());
+            particles[p_idx].setF({0, particles[p_idx].getM() * g, 0}); // reset the force
+        }
     }
 
     for(int i: domainCells){
@@ -167,23 +172,28 @@ void LinkedCellContainer::updateFCells(int c1, int c2){
 void LinkedCellContainer::updateX(double delta_t){
 
     for (int i = 0; i < particles.size(); i++) {
-        int cellidx_before = getCellIndex(particles[i].getX());
 
-        std::array<double, 3> vec = particles[i].getX() + delta_t * (particles[i].getV() + (delta_t / (2 * particles[i].getM())) * particles[i].getF());
-        particles[i].setX(vec);
+        if (particles[i].isInDomain()) {
+            int cellidx_before = getCellIndex(particles[i].getX());
 
-        int cellidx_after = getCellIndex(particles[i].getX());
+            std::array<double, 3> vec = particles[i].getX() + delta_t * (particles[i].getV() + (delta_t / (2 * particles[i].getM())) * particles[i].getF());
+            particles[i].setX(vec);
 
-        if(cellidx_before != cellidx_after){
-            if (cellidx_before >= 0 && cellidx_before < cells.size()) {
-                cells[cellidx_before].removeIndex(i);
-            }
-            if(cellidx_after >= 0 && cellidx_after < cells.size()) {
-                cells[cellidx_after].addIndex(i);
-            } else {
-                particles[i].removeFromDomain();
+            int cellidx_after = getCellIndex(particles[i].getX());
+
+            if(cellidx_before != cellidx_after){
+                if (cellidx_before >= 0 && cellidx_before < cells.size()) {
+                    cells[cellidx_before].removeIndex(i);
+                }
+                if(cellidx_after >= 0 && cellidx_after < cells.size()) {
+                    cells[cellidx_after].addIndex(i);
+                } else {
+                    particles[i].removeFromDomain();
+                    particleNumber--;
+                }
             }
         }
+
     }
     updateHalo(delta_t);
 }
@@ -315,9 +325,12 @@ bool LinkedCellContainer::isDomainCell(int index) {
 void LinkedCellContainer::removeFromHalo(Direction direction) {
     for(int i : haloCells[direction]) {
         for (int p: cells[i].getParticleIndices()) {
-            particles[p].removeFromDomain();
-            cells[i].removeIndex(p);
+            if (particles[p].isInDomain()) {
+                particles[p].removeFromDomain();
+                particleNumber--;
+            }
         }
+        cells[i].clear();
     }
 }
 
@@ -328,7 +341,10 @@ void LinkedCellContainer::updateHalo(Direction direction, BoundaryCondition boun
             std::array<double, 3> vel = particles[p].getV();
             switch (boundaryCondition) {
                 case OUTFLOW:
-                    particles[p].removeFromDomain();
+                    if (particles[p].isInDomain()) {
+                        particles[p].removeFromDomain();
+                        particleNumber--;
+                    }
                     break;
                 case REFLECTING:
 

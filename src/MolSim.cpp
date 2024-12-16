@@ -153,25 +153,14 @@ int main(int argc, char *argsv[]) {
 
   // Inform the user about the input parameters
     spdlog::info("Input file name: {}", inputFile);
-    spdlog::info("Start Time: {}", 0);
-    spdlog::info("Time End: {}", simulation->getEndTime());
-    spdlog::info("Delta Time: {}", simulation->getDeltaT());
+    spdlog::info("Start time: {}", 0);
+    spdlog::info("End time: {}", simulation->getEndTime());
+    spdlog::info("Time step: {}", simulation->getDeltaT());
     spdlog::info("Output file name: {}", simulation->getOutputFile());
     spdlog::info("Output format: {}", simulation->getOutputFormat());
 
-    auto start = std::chrono::high_resolution_clock::now();
     // run simulation
     simulation->run();
-    // Stop the timer
-    auto end = std::chrono::high_resolution_clock::now();
-    // Calculate the duration
-    std::chrono::duration<double> duration = end - start;
-
-
-    spdlog::info("output written. Terminating...");
-    spdlog::set_level(spdlog::level::info);
-
-    spdlog::info("Duration: {}s", duration.count());
 
     return 0;
 }
