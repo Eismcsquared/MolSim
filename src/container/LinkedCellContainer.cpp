@@ -287,19 +287,23 @@ bool LinkedCellContainer::operator==(const LinkedCellContainer &other) const {
 
 void LinkedCellContainer::addParticle(const Particle& particle) {
     int cellIndex = getCellIndex(particle.getX());
-    if (cellIndex >= 0 && cellIndex < cells.size()) {
-        cells[cellIndex].addIndex((int) particles.size());
+    if (isDomainCell(cellIndex) && particle.isInDomain()) {
+        cells[cellIndex].addIndex(static_cast<int>(particles.size()));
+        particles.push_back(particle);
+        particleNumber++;
     }
-    particles.push_back(particle);
 }
 
 void LinkedCellContainer::addCluster(const Cluster &cluster) {
-    int size_old = (int) particles.size();
+    int size_old = static_cast<int>(particles.size());
     cluster.createParticles(particles);
     for (int i = size_old; i < particles.size(); i++) {
         int cellIndex = getCellIndex(particles[i].getX());
-        if (cellIndex >= 0 && cellIndex < cells.size()) {
+        if (isDomainCell(cellIndex)) {
             cells[cellIndex].addIndex(i);
+            particleNumber++;
+        } else {
+            particles[i].removeFromDomain();
         }
     }
 }

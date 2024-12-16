@@ -48,11 +48,16 @@ void ParticleContainer::setThermostat(std::unique_ptr<Thermostat> &thermostat) {
 }
 
 void ParticleContainer::addParticle(const Particle &particle) {
-    this->particles.push_back(particle);
+    if (particle.isInDomain()) {
+        this->particles.push_back(particle);
+        particleNumber++;
+    }
 }
 
 void ParticleContainer::addCluster(const Cluster &cluster) {
+    unsigned long sizeOld = particles.size();
     cluster.createParticles(particles);
+    particleNumber += particles.size() - sizeOld;
 }
 
 void ParticleContainer::simulate(double start_time, double end_time, double delta_t, const std::string &out_name, const std::string &output_format,
