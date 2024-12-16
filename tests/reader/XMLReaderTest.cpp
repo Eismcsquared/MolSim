@@ -107,7 +107,7 @@ TEST_F(XMLReaderTest, Assigment3Input) {
 // Test whether the input file for the fallig drop simulation is correctly parsed. The Brownian motion is set to 0 for test purpose.
 TEST_F(XMLReaderTest, FallingDropInput) {
     test_logger->info("XMLReader - Falling drop input test");
-    inputFile = "../tests/test_cases/falling_drop.xml";
+    inputFile = "../tests/test_cases/assignment3_falling_drop.xml";
     simulation = XMLReader::readXML(particles, inputFile);
     std::vector<Particle> ref_p;
     Sphere s(std::array<double, 3>{60, 25, 0.5}, std::array<double, 3>{0, -10, 0}, 15, 1, pow(2, 1.0 / 6), 0, 2);
@@ -240,7 +240,7 @@ TEST_F(XMLReaderTest, Checkpointing) {
 
     EXPECT_EQ(ref[0], particles[0]);
     EXPECT_EQ(ref[0], particles[0]);
-    EXPECT_EQ("../tests/test_cases/checkpointing_out.txt", simulation->getCheckpointing());
+    EXPECT_EQ("../tests/test_cases/checkpointing_out.txt", simulation->getCheckpointingFile());
 
     simulation->run();
 
@@ -258,9 +258,9 @@ TEST_F(XMLReaderTest, Checkpointing) {
     std::filesystem::remove("../tests/test_cases/checkpointing_out.txt");
 
     if (::testing::Test::HasFailure()) {
-        test_logger->info("XMLReaderTest - checkpointing test failed");
+        test_logger->info("XMLReaderTest - checkpointing test failed\n\n");
     } else {
-        test_logger->info("XMLReaderTest - checkpointing test passed");
+        test_logger->info("XMLReaderTest - checkpointing test passed\n\n");
     }
 }
 

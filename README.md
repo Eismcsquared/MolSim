@@ -32,8 +32,9 @@ Options:
 `-s | --spdlog_level <level>` = Set spdlog level (trace -1, debug -2, info -3, warn -4, error -5, critical -6).<br>
 `-b | --benchmark` = If specified, the benchmark mode is activated and the output of data is deactivated.<br>
 `-n | --newton3` = If specified, the Newton's third law is not applied.<br>
-`-g | --gravitation` = The simulation of gravitational force (with G = 1) between objects.<br>
-`-l | --Lennard_Jones` = If specified, the Lennard Jones potential (with epsilon = 5 and sigma = 1) is simulated.<br>
+`-g | --gravitation` = If specified, The gravitation (with G = 1) is taken to be the force between objects. Otherwise, the Lennard-Jones force is assumed by default.<br>
+`-c | --checkpoint <file>` = If specified, the final state is stored to the given file and the output of simulation data is deactivated.<br>
+`-l | --load <file>` = If specified, additional particles are loaded from the given file.<br>
 `-h | --help` = Print help message.<br>
 
 
@@ -73,7 +74,12 @@ For simulations required in the individuell work sheets, run the following comma
 - Assignment 3 - Collision:
   `./MolSim ../input/assignment3.xml`
 - Assignment 3 - Falling drop:
-  `./MolSim ../input/falling_drop.xml`
+  `./MolSim ../input/assignment3_falling_drop.xml`
+- Assignment 4 - Rayleigh-Taylor instability: 
+  `./MolSim ../input/assignment4.xml`
+- Assignment 4 - Falling drop:
+  `./MolSim ../input/assignment4_fluid.xml`
+  `./MolSim ../input/assignment4_falling_drop.xml`
 
 ### Benchmark
 Comparison: Linked cell algorithm vs. Direct sum algorithm for different number of particles. 

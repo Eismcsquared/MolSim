@@ -200,7 +200,7 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
                 );
 
         if (input->parameters().store().present()) {
-            simulation->setCheckpointing(input->parameters().store().get());
+            simulation->setCheckpointingFile(input->parameters().store().get());
             simulation->setSaveOutput(false);
         }
 

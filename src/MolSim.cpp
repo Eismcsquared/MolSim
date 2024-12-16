@@ -15,6 +15,7 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include "inputReader/FileReader.h"
 #include "inputReader/XMLReader.h"
+#include "inputReader/StateReader.h"
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
 #include "container/DirectSumContainer.h"
@@ -79,10 +80,11 @@ int main(int argc, char *argsv[]) {
             {"benchmark", no_argument, nullptr, 'b'},
             {"newton3 ", no_argument, nullptr, 'n'},
             {"gravitation", no_argument, nullptr, 'g'},
-            {"Lennard_Jones", no_argument, nullptr, 'l'},
+            {"checkpoint", required_argument, nullptr, 'c'},
+            {"load", required_argument, nullptr, 'l'},
             {nullptr, 0, nullptr, 0} 
     };
-    while ((opt = getopt_long(argc, argsv, "hd:e:f:o:s:glbn", long_options, nullptr)) != -1) {
+    while ((opt = getopt_long(argc, argsv, "hd:e:f:o:s:gc:l:bn", long_options, nullptr)) != -1) {
         switch (opt) {
             case 'd':
                 simulation->setDeltaT(std::atof(optarg));
@@ -134,9 +136,13 @@ int main(int argc, char *argsv[]) {
                 f = std::make_unique<GravitationalForce>();
                 simulation->getContainer()->setF(f);
                 break;
+            case 'c':
+                simulation->setCheckpointingFile(optarg);
+                simulation->setSaveOutput(false);
+                break;
             case 'l':
-                f = std::make_unique<LennardJonesForce>();
-                simulation->getContainer()->setF(f);
+                StateReader::loadState(simulation->getContainer()->getParticles(), optarg);
+                simulation->getContainer()->updateF();
                 break;
             case '?':
                 spdlog::error("Invalid option!");
@@ -182,12 +188,13 @@ void printHelp() {
     std::cout << "Options:" << "\n";
     std::cout << "  -d or --delta_t <time-step>    = The length of each time step of the simulation (Default: 0.0002)." << "\n";
     std::cout << "  -e or --end_time <duration>    = The total duration of the simulation (Default = 5)." << "\n";
-    std::cout << "  -force or --format <output-format> = The format of the output, must be either vtu or xyz (Default: vtu)." << "\n";
+    std::cout << "  -f or --format <output-format> = The format of the output, must be either vtu or xyz (Default: vtu)." << "\n";
     std::cout << "  -o or --output <output-file>   = The name of files that data should be written to (Default: MD_vtk)." << "\n";
     std::cout << "  -s or --spdlog_level <level>   = Set spdlog level (trace -1, debug -2, info -3, warn -4, error -5, critical -6).\n";
     std::cout << "  -b or --benchmark              = If specified, the benchmark mode is activated." << "\n";
     std::cout << "  -n or --newton3                = If specified, the Newton's third law is not applied." << "\n";
-    std::cout << "  -g or --gravitation            = The simulation of gravitational force (with G = 1) between objects (Default)." << "\n";
-    std::cout << "  -l or --Lennard_Jones          = If specified, the Lennard Jones potential (with epsilon = 5 and sigma = 1) is simulated." << "\n";
+    std::cout << "  -g or --gravitation            = If specified, The gravitation (with G = 1) is taken to be the force between objects. Otherwise, the Lennard-Jones force is assumed." << "\n";
+    std::cout << "  -c or --checkpoint <file>      = If specified, the final state is stored to the given file and the output of simulation data is deactivated." << "\n";
+    std::cout << "  -l or --load <file>            = If specified, additional particles are loaded from the given file." << "\n";
     std::cout << "  -h or --help                   = Print help message." << "\n";
 }

@@ -32,8 +32,8 @@ void Simulation::setSaveOutput(bool saveOutput) {
     Simulation::saveOutput = saveOutput;
 }
 
-void Simulation::setCheckpointing(const std::string &checkpointing) {
-    Simulation::checkpointing = checkpointing;
+void Simulation::setCheckpointingFile(const std::string &checkpointingFile) {
+    Simulation::checkpointingFile = checkpointingFile;
 }
 
 void Simulation::setNewton3(bool newton3) {
@@ -69,8 +69,8 @@ bool Simulation::isSaveOutput() const {
     return saveOutput;
 }
 
-std::string Simulation::getCheckpointing() const {
-    return checkpointing;
+std::string Simulation::getCheckpointingFile() const {
+    return checkpointingFile;
 }
 
 bool Simulation::isNewton3() const {
@@ -79,5 +79,5 @@ bool Simulation::isNewton3() const {
 
 
 void Simulation::run() {
-    container->simulate(endTime, deltaT, outputFile, outputFormat, outputFrequency, saveOutput, checkpointing, newton3);
+    container->simulate(endTime, deltaT, outputFile, outputFormat, outputFrequency, saveOutput, checkpointingFile, newton3);
 }

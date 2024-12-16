@@ -61,7 +61,7 @@ void ParticleContainer::updateF() {
 }
 
 void ParticleContainer::simulate(double end_time, double delta_t, const std::string &out_name, const std::string &output_format,
-                                 unsigned int output_frequency, bool save_output, const std::string& checkpointing, bool newton3) {
+                                 unsigned int output_frequency, bool save_output, const std::string& checkpointingFile, bool newton3) {
     int max_iteration = static_cast<int>(std::round(end_time / delta_t));
 
     // save the initial state also.
@@ -91,8 +91,8 @@ void ParticleContainer::simulate(double end_time, double delta_t, const std::str
         spdlog::trace("Iteration {} finished.", iteration);
     }
 
-    if (!checkpointing.empty()) {
-        StateWriter::saveState(particles, checkpointing);
+    if (!checkpointingFile.empty()) {
+        StateWriter::saveState(particles, checkpointingFile);
     }
 
     spdlog::trace("output written. Terminating...");
