@@ -274,8 +274,10 @@ bool LinkedCellContainer::operator==(const LinkedCellContainer &other) const {
     if (getParticleNumber() != other.getParticleNumber()) {
         return false;
     }
-    for (int i = 0; i < getParticleNumber(); ++i) {
-        if (!(getParticles()[i] == other.getParticles()[i])) {
+    for (int i = 0, i1 = 0, i2 = 0; i < getParticleNumber(); ++i) {
+        while (!getParticles()[i1].isInDomain()) i1++;
+        while (!other.getParticles()[i2].isInDomain()) i2++;
+        if (!(getParticles()[i1++] == other.getParticles()[i2++])) {
             return false;
         }
     }

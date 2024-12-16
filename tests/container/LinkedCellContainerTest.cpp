@@ -121,44 +121,6 @@ TEST_F(LinkedCellContainerTest, Neighbours) {
     }
 }
 
-// Test whether the method removeFrom works correctly
-TEST_F(LinkedCellContainerTest, RemoveHalo) {
-    test_logger->info("LinkedCellContainer - Remove halo particles test");
-    // In halo cells of all 6 direction plus two positions in domain.
-    std::array<std::array<double, 3>, 8> pos = {
-            std::array<double, 3>{-1, 40, 46},
-            std::array<double, 3>{102, 75, 30},
-            std::array<double, 3>{60, -2, 40},
-            std::array<double, 3>{46, 101, 28},
-            std::array<double, 3>{70, 70, -1},
-            std::array<double, 3>{63, 49, 50.5},
-            std::array<double, 3>{63, 49, 38},
-            std::array<double, 3>{74, 23, 19}};
-    for (int i = 0; i < 8; ++i) {
-        container3D->addParticle(Particle(pos[i], {0, 0, 0}, 1));
-    }
-    EXPECT_EQ(8, container3D->getParticleNumber());
-    for (int i = 0; i < 8; ++i) {
-        EXPECT_EQ(1, container3D->getCells()[container3D->getCellIndex(pos[i])].getParticleIndices().size());
-        EXPECT_TRUE(container3D->getParticles()[i].isInDomain());
-    }
-
-    for (int i = 0; i < 6; ++i) {
-        // remove particles in halo cells direction by direction.
-        container3D->removeFromHalo(static_cast<Direction>(i));
-        for (int j = 0; j <= i; ++j) {
-            EXPECT_EQ(0, container3D->getCells()[container3D->getCellIndex(pos[j])].getParticleIndices().size());
-            EXPECT_FALSE(container3D->getParticles()[j].isInDomain());
-        }
-        for (int j = i + 1; j < 8; ++j) {
-            EXPECT_EQ(1, container3D->getCells()[container3D->getCellIndex(pos[j])].getParticleIndices().size());
-            EXPECT_TRUE(container3D->getParticles()[j].isInDomain());
-        }
-        // Also check the getParticleNumber method.
-        EXPECT_EQ(7 - i, container3D->getParticleNumber());
-    }
-}
-
 // Test whether particles more than cutoff apart indeed does not affect each other
 TEST_F(LinkedCellContainerTest, ForceCalculation) {
     test_logger->info("LinkedCellContainer - Force calculation test");

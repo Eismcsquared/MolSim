@@ -13,7 +13,7 @@ protected:
 // Test whether adding and removing indices from a cell works correctly.
 TEST_F(CellTest, AddAndRemove) {
     test_logger->info("Cell - Add and remove test");
-    for(unsigned int i = 0; i < 10; ++i) {
+    for(int i = 0; i < 10; ++i) {
         cell.addIndex(i);
     }
     cell.removeIndex(0);
