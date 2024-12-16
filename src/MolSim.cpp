@@ -153,7 +153,7 @@ int main(int argc, char *argsv[]) {
 
   // Inform the user about the input parameters
     spdlog::info("Input file name: {}", inputFile);
-    spdlog::info("Start time: {}", 0);
+    spdlog::info("Start time: {}", simulation->getStartTime());
     spdlog::info("End time: {}", simulation->getEndTime());
     spdlog::info("Time step: {}", simulation->getDeltaT());
     spdlog::info("Output file name: {}", simulation->getOutputFile());

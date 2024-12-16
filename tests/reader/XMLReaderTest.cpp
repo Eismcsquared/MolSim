@@ -38,8 +38,9 @@ TEST_F(XMLReaderTest, Assigment1Input) {
 
     DirectSumContainer ref(ref_p, f);
     EXPECT_EQ(ref, *(simulation->getContainer()));
-    EXPECT_NEAR(1000, simulation->getEndTime(), 1e-12);
-    EXPECT_NEAR(0.014, simulation->getDeltaT(), 1e-12);
+    EXPECT_FLOAT_EQ(100, simulation->getStartTime());
+    EXPECT_FLOAT_EQ(1000, simulation->getEndTime());
+    EXPECT_FLOAT_EQ(0.014, simulation->getDeltaT());
     EXPECT_EQ("", simulation->getOutputFile());
     EXPECT_EQ("vtu", simulation->getOutputFormat());
     EXPECT_EQ(10, simulation->getOutputFrequency());
@@ -67,8 +68,9 @@ TEST_F(XMLReaderTest, Assigment2Input) {
     std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
     DirectSumContainer ref(ref_p, f);
     EXPECT_EQ(ref, *(simulation->getContainer()));
-    EXPECT_NEAR(5, simulation->getEndTime(), 1e-12);
-    EXPECT_NEAR(0.0002, simulation->getDeltaT(), 1e-12);
+    EXPECT_FLOAT_EQ(0, simulation->getStartTime());
+    EXPECT_FLOAT_EQ(5, simulation->getEndTime());
+    EXPECT_FLOAT_EQ(0.0002, simulation->getDeltaT());
     EXPECT_EQ("a2", simulation->getOutputFile());
     EXPECT_EQ("xyz", simulation->getOutputFormat());
     EXPECT_EQ(15, simulation->getOutputFrequency());
