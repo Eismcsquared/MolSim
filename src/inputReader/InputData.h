@@ -3761,6 +3761,72 @@ class SimulationObjects: public ::xml_schema::type
   //@}
 
   /**
+   * @name load
+   *
+   * @brief Accessor and modifier functions for the %load
+   * sequence element.
+   *
+   * File name for loading particles from files.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::xml_schema::string load_type;
+
+  /**
+   * @brief Element sequence container type.
+   */
+  typedef ::xsd::cxx::tree::sequence< load_type > load_sequence;
+
+  /**
+   * @brief Element iterator type.
+   */
+  typedef load_sequence::iterator load_iterator;
+
+  /**
+   * @brief Element constant iterator type.
+   */
+  typedef load_sequence::const_iterator load_const_iterator;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< load_type, char > load_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element
+   * sequence.
+   *
+   * @return A constant reference to the sequence container.
+   */
+  const load_sequence&
+  load () const;
+
+  /**
+   * @brief Return a read-write reference to the element sequence.
+   *
+   * @return A reference to the sequence container.
+   */
+  load_sequence&
+  load ();
+
+  /**
+   * @brief Copy elements from a given sequence.
+   *
+   * @param s A sequence to copy elements from.
+   *
+   * For each element in @a s this function makes a copy and adds it 
+   * to the sequence. Note that this operation completely changes the 
+   * sequence and all old elements will be lost.
+   */
+  void
+  load (const load_sequence& s);
+
+  //@}
+
+  /**
    * @name Constructors
    */
   //@{
@@ -3844,6 +3910,7 @@ class SimulationObjects: public ::xml_schema::type
   particle_sequence particle_;
   cuboid_sequence cuboid_;
   sphere_sequence sphere_;
+  load_sequence load_;
 
   //@endcond
 };
@@ -6396,6 +6463,84 @@ class SimulationParameters: public ::xml_schema::type
   //@}
 
   /**
+   * @name store
+   *
+   * @brief Accessor and modifier functions for the %store
+   * optional element.
+   *
+   * File name for saving the final state.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::xml_schema::string store_type;
+
+  /**
+   * @brief Element optional container type.
+   */
+  typedef ::xsd::cxx::tree::optional< store_type > store_optional;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< store_type, char > store_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element
+   * container.
+   *
+   * @return A constant reference to the optional container.
+   */
+  const store_optional&
+  store () const;
+
+  /**
+   * @brief Return a read-write reference to the element container.
+   *
+   * @return A reference to the optional container.
+   */
+  store_optional&
+  store ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  store (const store_type& x);
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x An optional container with the new value to set.
+   *
+   * If the value is present in @a x then this function makes a copy 
+   * of this value and sets it as the new value of the element.
+   * Otherwise the element container is set the 'not present' state.
+   */
+  void
+  store (const store_optional& x);
+
+  /**
+   * @brief Set the element value without copying.
+   *
+   * @param p A new value to use.
+   *
+   * This function will try to use the passed value directly instead
+   * of making a copy.
+   */
+  void
+  store (::std::unique_ptr< store_type > p);
+
+  //@}
+
+  /**
    * @name Constructors
    */
   //@{
@@ -6489,6 +6634,7 @@ class SimulationParameters: public ::xml_schema::type
   dimension_optional dimension_;
   thermostat_optional thermostat_;
   linked_cell_optional linked_cell_;
+  store_optional store_;
 
   //@endcond
 };

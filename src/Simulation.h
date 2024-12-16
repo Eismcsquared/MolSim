@@ -152,6 +152,12 @@ public:
     bool isSaveOutput() const;
 
     /**
+     * Getter for the checkpointing output file.
+     * @return output file name for checkpointing.
+     */
+    std::string getCheckpointing() const;
+
+    /**
      * Getter for the flag for applying the Newton's third law.
      * @return The flag whether the Newton's third law is applied.
      */

@@ -12,6 +12,7 @@
 #include "force/LennardJonesForce.h"
 #include "container/DirectSumContainer.h"
 #include "body/Sphere.h"
+#include "inputReader/StateReader.h"
 
 std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles, std::string fileName) {
     std::ifstream file(fileName);
@@ -109,6 +110,10 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
             sphere.createParticles(particles);
         }
 
+        for (auto f:  input->objects().load()) {
+            StateReader::loadState(particles, f);
+        }
+
         std::unique_ptr<Force> force;
         ForceType f = input->parameters().force().present() ? input->parameters().force().get() : SimulationParameters::force_default_value();
         switch (f) {
@@ -134,6 +139,7 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
                     case BoundaryConditionType::value::periodic:
                         return PERIODIC;
                 }
+                return OUTFLOW;
             };
             BoundaryConditionType left = b.present() && b.get().left().present() ? b.get().left().get() : BoundaryCondition3::left_default_value();
             BoundaryConditionType right = b.present() && b.get().right().present() ? b.get().right().get() : BoundaryCondition3::right_default_value();
@@ -184,7 +190,7 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
         std::string format = input->parameters().format().present() ? input->parameters().format().get() : SimulationParameters::format_default_value();
         unsigned int frequency = input->parameters().frequency().present() ? input->parameters().frequency().get() : SimulationParameters::frequency_default_value();
 
-        return std::make_unique<Simulation>(
+        std::unique_ptr<Simulation> simulation =  std::make_unique<Simulation>(
                     container,
                     end_time,
                     delta_t,
@@ -192,6 +198,13 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
                     format,
                     frequency
                 );
+
+        if (input->parameters().store().present()) {
+            simulation->setCheckpointing(input->parameters().store().get());
+            simulation->setSaveOutput(false);
+        }
+
+        return simulation;
 
     } catch (const xml_schema::exception& e) {
         spdlog::error("XML parsing error: {}", e.what());

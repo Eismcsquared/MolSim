@@ -981,6 +981,24 @@ sphere (const sphere_sequence& s)
   this->sphere_ = s;
 }
 
+const SimulationObjects::load_sequence& SimulationObjects::
+load () const
+{
+  return this->load_;
+}
+
+SimulationObjects::load_sequence& SimulationObjects::
+load ()
+{
+  return this->load_;
+}
+
+void SimulationObjects::
+load (const load_sequence& s)
+{
+  this->load_ = s;
+}
+
 
 // BoundaryConditionType
 // 
@@ -1862,6 +1880,36 @@ void SimulationParameters::
 linked_cell (::std::unique_ptr< linked_cell_type > x)
 {
   this->linked_cell_.set (std::move (x));
+}
+
+const SimulationParameters::store_optional& SimulationParameters::
+store () const
+{
+  return this->store_;
+}
+
+SimulationParameters::store_optional& SimulationParameters::
+store ()
+{
+  return this->store_;
+}
+
+void SimulationParameters::
+store (const store_type& x)
+{
+  this->store_.set (x);
+}
+
+void SimulationParameters::
+store (const store_optional& x)
+{
+  this->store_ = x;
+}
+
+void SimulationParameters::
+store (::std::unique_ptr< store_type > x)
+{
+  this->store_.set (std::move (x));
 }
 
 
@@ -3175,7 +3223,8 @@ SimulationObjects ()
 : ::xml_schema::type (),
   particle_ (this),
   cuboid_ (this),
-  sphere_ (this)
+  sphere_ (this),
+  load_ (this)
 {
 }
 
@@ -3186,7 +3235,8 @@ SimulationObjects (const SimulationObjects& x,
 : ::xml_schema::type (x, f, c),
   particle_ (x.particle_, f, this),
   cuboid_ (x.cuboid_, f, this),
-  sphere_ (x.sphere_, f, this)
+  sphere_ (x.sphere_, f, this),
+  load_ (x.load_, f, this)
 {
 }
 
@@ -3197,7 +3247,8 @@ SimulationObjects (const ::xercesc::DOMElement& e,
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
   particle_ (this),
   cuboid_ (this),
-  sphere_ (this)
+  sphere_ (this),
+  load_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -3249,6 +3300,17 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       continue;
     }
 
+    // load
+    //
+    if (n.name () == "load" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< load_type > r (
+        load_traits::create (i, f, this));
+
+      this->load_.push_back (::std::move (r));
+      continue;
+    }
+
     break;
   }
 }
@@ -3269,6 +3331,7 @@ operator= (const SimulationObjects& x)
     this->particle_ = x.particle_;
     this->cuboid_ = x.cuboid_;
     this->sphere_ = x.sphere_;
+    this->load_ = x.load_;
   }
 
   return *this;
@@ -4005,7 +4068,8 @@ SimulationParameters ()
   g_ (this),
   dimension_ (this),
   thermostat_ (this),
-  linked_cell_ (this)
+  linked_cell_ (this),
+  store_ (this)
 {
 }
 
@@ -4023,7 +4087,8 @@ SimulationParameters (const SimulationParameters& x,
   g_ (x.g_, f, this),
   dimension_ (x.dimension_, f, this),
   thermostat_ (x.thermostat_, f, this),
-  linked_cell_ (x.linked_cell_, f, this)
+  linked_cell_ (x.linked_cell_, f, this),
+  store_ (x.store_, f, this)
 {
 }
 
@@ -4041,7 +4106,8 @@ SimulationParameters (const ::xercesc::DOMElement& e,
   g_ (this),
   dimension_ (this),
   thermostat_ (this),
-  linked_cell_ (this)
+  linked_cell_ (this),
+  store_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -4194,6 +4260,20 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // store
+    //
+    if (n.name () == "store" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< store_type > r (
+        store_traits::create (i, f, this));
+
+      if (!this->store_)
+      {
+        this->store_.set (::std::move (r));
+        continue;
+      }
+    }
+
     break;
   }
 }
@@ -4221,6 +4301,7 @@ operator= (const SimulationParameters& x)
     this->dimension_ = x.dimension_;
     this->thermostat_ = x.thermostat_;
     this->linked_cell_ = x.linked_cell_;
+    this->store_ = x.store_;
   }
 
   return *this;
@@ -5129,6 +5210,20 @@ operator<< (::xercesc::DOMElement& e, const SimulationObjects& i)
 
     s << *b;
   }
+
+  // load
+  //
+  for (SimulationObjects::load_const_iterator
+       b (i.load ().begin ()), n (i.load ().end ());
+       b != n; ++b)
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "load",
+        e));
+
+    s << *b;
+  }
 }
 
 void
@@ -5481,6 +5576,18 @@ operator<< (::xercesc::DOMElement& e, const SimulationParameters& i)
         e));
 
     s << *i.linked_cell ();
+  }
+
+  // store
+  //
+  if (i.store ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "store",
+        e));
+
+    s << *i.store ();
   }
 }
 

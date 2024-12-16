@@ -82,6 +82,13 @@
             <xs:element name="particle" type="ParticleType"/>
             <xs:element name="cuboid" type="CuboidType"/>
             <xs:element name="sphere" type="SphereType"/>
+            <xs:element name="load" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>
+                        File name for loading particles from files.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
         </xs:choice>
     </xs:complexType>
 
@@ -228,6 +235,13 @@
                 <xs:annotation>
                     <xs:documentation>
                         Optional. If provided, the linked cell algorithm is applied.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="store" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        File name for saving the final state.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>

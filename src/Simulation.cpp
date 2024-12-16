@@ -69,6 +69,10 @@ bool Simulation::isSaveOutput() const {
     return saveOutput;
 }
 
+std::string Simulation::getCheckpointing() const {
+    return checkpointing;
+}
+
 bool Simulation::isNewton3() const {
     return newton3;
 }

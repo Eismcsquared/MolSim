@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include <string>
+#include <filesystem>
 #include "inputReader/XMLReader.h"
+#include "inputReader/StateReader.h"
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
 #include "container/DirectSumContainer.h"
@@ -219,5 +221,47 @@ TEST_F(XMLReaderTest, InitialTemperature) {
     }
 }
 
+// Test whether the checkpointing unit is correctly integrated into the xml reader and the simulation itself.
+TEST_F(XMLReaderTest, Checkpointing) {
+    test_logger->info("XMLReaderTest - checkpointing test");
+    inputFile = "../tests/test_cases/checkpointing.xml";
+    simulation = XMLReader::readXML(particles, inputFile);
+
+    EXPECT_EQ(2, simulation->getContainer()->getParticleNumber());
+
+    std::vector<Particle> ref;
+    ref.emplace_back(std::array<double, 3>{7, 7, 3}, std::array<double, 3>{-1, 2, 0.5}, 1, 1, 5, 1.2);
+    ref.emplace_back(std::array<double, 3>{7, 8, 3}, std::array<double, 3>{1, 0.5, 0.5}, 3.5, 2, 4, 1.1);
+
+    LennardJonesForce lj;
+    std::array<double, 3> force01 = lj.force(ref[0], ref[1]);
+    ref[0].setF(-1 * force01);
+    ref[1].setF(force01);
+
+    EXPECT_EQ(ref[0], particles[0]);
+    EXPECT_EQ(ref[0], particles[0]);
+    EXPECT_EQ("../tests/test_cases/checkpointing_out.txt", simulation->getCheckpointing());
+
+    simulation->run();
+
+    std::vector<Particle> loadedParticles;
+
+    StateReader::loadState(loadedParticles, "../tests/test_cases/checkpointing_out.txt");
+
+    loadedParticles[0].setF(-1 * force01);
+    loadedParticles[1].setF(force01);
+
+    EXPECT_EQ(2, loadedParticles.size());
+    EXPECT_EQ(particles[0], loadedParticles[0]);
+    EXPECT_EQ(particles[1], loadedParticles[1]);
+
+    std::filesystem::remove("../tests/test_cases/checkpointing_out.txt");
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("XMLReaderTest - checkpointing test failed");
+    } else {
+        test_logger->info("XMLReaderTest - checkpointing test passed");
+    }
+}
 
 
