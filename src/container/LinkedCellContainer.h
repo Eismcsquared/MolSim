@@ -211,6 +211,12 @@ public:
      */
     void addCluster(const Cluster &cluster) override;
 
+    /**
+     * Provide a string representation of the linked cell container.
+     * @return A string representation of the container.
+     */
+    std::string toString() override;
+
     bool operator==(const LinkedCellContainer &other) const;
 };
 

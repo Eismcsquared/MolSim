@@ -183,7 +183,7 @@ public:
      * Provide a string representation of a container.
      * @return A string representation of the container.
      */
-    std::string toString();
+    virtual std::string toString();
 
     /**
      * Compare the current container with another container based on the positions, velocities and forces of particles in the container.

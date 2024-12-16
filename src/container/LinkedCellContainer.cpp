@@ -386,4 +386,13 @@ const std::array<BoundaryCondition, 6> &LinkedCellContainer::getBoundaryConditio
     return boundaryConditions;
 }
 
+std::string LinkedCellContainer::toString() {
+    std::stringstream buf;
+    buf << ParticleContainer::toString();
+    buf << "Domain size: " << domainSize << std::endl;
+    buf << "Cutoff radius: " << cutoff << std::endl;
+    buf << "Boundary conditions: " << boundaryConditions << std::endl;
+    return buf.str();
+}
+
 
