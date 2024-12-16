@@ -180,6 +180,7 @@
 
     <xs:complexType name="SimulationParameters">
         <xs:sequence>
+            <xs:element name="start_time" type="xs:double" minOccurs="0" default="0"/>
             <xs:element name="end_time" type="PositiveDouble" minOccurs="0" default="5"/>
             <xs:element name="delta_t" type="PositiveDouble" minOccurs="0" default="0.0002"/>
             <xs:element name="frequency" type="xs:positiveInteger" minOccurs="0" default="10">
@@ -189,7 +190,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="output" type="xs:string" minOccurs="0" default="MD_vtk">
+            <xs:element name="output" type="xs:string" minOccurs="0" default="">
                 <xs:annotation>
                     <xs:documentation>
                         The name of the output file.

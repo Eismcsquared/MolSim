@@ -40,10 +40,11 @@ TEST_F(XMLReaderTest, Assigment1Input) {
     EXPECT_EQ(ref, *(simulation->getContainer()));
     EXPECT_NEAR(1000, simulation->getEndTime(), 1e-12);
     EXPECT_NEAR(0.014, simulation->getDeltaT(), 1e-12);
-    EXPECT_EQ("MD_vtk", simulation->getOutputFile());
+    EXPECT_EQ("", simulation->getOutputFile());
     EXPECT_EQ("vtu", simulation->getOutputFormat());
     EXPECT_EQ(10, simulation->getOutputFrequency());
     EXPECT_FLOAT_EQ(0, simulation->getContainer()->getG());
+    EXPECT_FALSE(simulation->isSaveOutput());
     EXPECT_FALSE(simulation->getContainer()->getThermostat());
     if(::testing::Test::HasFailure()) {
         test_logger->info("XMLReader - Assignment 1 input test failed\n\n");
@@ -72,6 +73,7 @@ TEST_F(XMLReaderTest, Assigment2Input) {
     EXPECT_EQ("xyz", simulation->getOutputFormat());
     EXPECT_EQ(15, simulation->getOutputFrequency());
     EXPECT_FLOAT_EQ(0, simulation->getContainer()->getG());
+    EXPECT_TRUE(simulation->isSaveOutput());
     EXPECT_FALSE(simulation->getContainer()->getThermostat());
     if(::testing::Test::HasFailure()) {
         test_logger->info("XMLReader - Assignment 2 input test failed\n\n");
@@ -104,7 +106,7 @@ TEST_F(XMLReaderTest, Assigment3Input) {
     }
 }
 
-// Test whether the input file for the fallig drop simulation is correctly parsed. The Brownian motion is set to 0 for test purpose.
+// Test whether the input file for the falling drop simulation is correctly parsed. The Brownian motion is set to 0 for test purpose.
 TEST_F(XMLReaderTest, FallingDropInput) {
     test_logger->info("XMLReader - Falling drop input test");
     inputFile = "../tests/test_cases/falling_drop.xml";

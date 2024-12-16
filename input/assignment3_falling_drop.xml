@@ -20,6 +20,7 @@
     <parameters>
         <end_time>10</end_time>
         <delta_t>0.00005</delta_t>
+        <output>fd3</output>
         <frequency>100</frequency>
         <linked_cell>
             <domain_size>

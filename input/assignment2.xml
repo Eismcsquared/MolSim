@@ -39,5 +39,6 @@
     <parameters>
         <end_time>5</end_time>
         <delta_t>0.0002</delta_t>
+        <output>assignment2</output>
     </parameters>
 </simulation>

@@ -57,6 +57,7 @@
     <parameters>
         <end_time>1000</end_time>
         <delta_t>0.014</delta_t>
+        <output>assignment1</output>
         <force>gravitation</force>
         <dimension>3</dimension>
     </parameters>

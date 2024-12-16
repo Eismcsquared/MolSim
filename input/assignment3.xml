@@ -39,6 +39,7 @@
     <parameters>
         <end_time>20</end_time>
         <delta_t>0.0005</delta_t>
+        <output>assignment3</output>
         <linked_cell>
             <domain_size>
                 <x>180</x>

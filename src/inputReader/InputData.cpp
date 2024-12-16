@@ -1546,6 +1546,36 @@ max_delta (::std::unique_ptr< max_delta_type > x)
 // SimulationParameters
 // 
 
+const SimulationParameters::start_time_optional& SimulationParameters::
+start_time () const
+{
+  return this->start_time_;
+}
+
+SimulationParameters::start_time_optional& SimulationParameters::
+start_time ()
+{
+  return this->start_time_;
+}
+
+void SimulationParameters::
+start_time (const start_time_type& x)
+{
+  this->start_time_.set (x);
+}
+
+void SimulationParameters::
+start_time (const start_time_optional& x)
+{
+  this->start_time_ = x;
+}
+
+SimulationParameters::start_time_type SimulationParameters::
+start_time_default_value ()
+{
+  return start_time_type (0.0);
+}
+
 const SimulationParameters::end_time_optional& SimulationParameters::
 end_time () const
 {
@@ -4048,7 +4078,7 @@ ThermostatsType::
 //
 
 const SimulationParameters::output_type SimulationParameters::output_default_value_ (
-  "MD_vtk");
+  "");
 
 const SimulationParameters::format_type SimulationParameters::format_default_value_ (
   "vtu");
@@ -4059,6 +4089,7 @@ const SimulationParameters::force_type SimulationParameters::force_default_value
 SimulationParameters::
 SimulationParameters ()
 : ::xml_schema::type (),
+  start_time_ (this),
   end_time_ (this),
   delta_t_ (this),
   frequency_ (this),
@@ -4078,6 +4109,7 @@ SimulationParameters (const SimulationParameters& x,
                       ::xml_schema::flags f,
                       ::xml_schema::container* c)
 : ::xml_schema::type (x, f, c),
+  start_time_ (x.start_time_, f, this),
   end_time_ (x.end_time_, f, this),
   delta_t_ (x.delta_t_, f, this),
   frequency_ (x.frequency_, f, this),
@@ -4097,6 +4129,7 @@ SimulationParameters (const ::xercesc::DOMElement& e,
                       ::xml_schema::flags f,
                       ::xml_schema::container* c)
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  start_time_ (this),
   end_time_ (this),
   delta_t_ (this),
   frequency_ (this),
@@ -4125,6 +4158,17 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     const ::xercesc::DOMElement& i (p.cur_element ());
     const ::xsd::cxx::xml::qualified_name< char > n (
       ::xsd::cxx::xml::dom::name< char > (i));
+
+    // start_time
+    //
+    if (n.name () == "start_time" && n.namespace_ ().empty ())
+    {
+      if (!this->start_time_)
+      {
+        this->start_time_.set (start_time_traits::create (i, f, this));
+        continue;
+      }
+    }
 
     // end_time
     //
@@ -4291,6 +4335,7 @@ operator= (const SimulationParameters& x)
   if (this != &x)
   {
     static_cast< ::xml_schema::type& > (*this) = x;
+    this->start_time_ = x.start_time_;
     this->end_time_ = x.end_time_;
     this->delta_t_ = x.delta_t_;
     this->frequency_ = x.frequency_;
@@ -5457,6 +5502,18 @@ void
 operator<< (::xercesc::DOMElement& e, const SimulationParameters& i)
 {
   e << static_cast< const ::xml_schema::type& > (i);
+
+  // start_time
+  //
+  if (i.start_time ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "start_time",
+        e));
+
+    s << ::xml_schema::as_double(*i.start_time ());
+  }
 
   // end_time
   //

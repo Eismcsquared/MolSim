@@ -5642,6 +5642,79 @@ class SimulationParameters: public ::xml_schema::type
 {
   public:
   /**
+   * @name start_time
+   *
+   * @brief Accessor and modifier functions for the %start_time
+   * optional element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::xml_schema::double_ start_time_type;
+
+  /**
+   * @brief Element optional container type.
+   */
+  typedef ::xsd::cxx::tree::optional< start_time_type > start_time_optional;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< start_time_type, char, ::xsd::cxx::tree::schema_type::double_ > start_time_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element
+   * container.
+   *
+   * @return A constant reference to the optional container.
+   */
+  const start_time_optional&
+  start_time () const;
+
+  /**
+   * @brief Return a read-write reference to the element container.
+   *
+   * @return A reference to the optional container.
+   */
+  start_time_optional&
+  start_time ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  start_time (const start_time_type& x);
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x An optional container with the new value to set.
+   *
+   * If the value is present in @a x then this function makes a copy 
+   * of this value and sets it as the new value of the element.
+   * Otherwise the element container is set the 'not present' state.
+   */
+  void
+  start_time (const start_time_optional& x);
+
+  /**
+   * @brief Return the default value for the element.
+   *
+   * @return The element's default value.
+   */
+  static start_time_type
+  start_time_default_value ();
+
+  //@}
+
+  /**
    * @name end_time
    *
    * @brief Accessor and modifier functions for the %end_time
@@ -6621,6 +6694,7 @@ class SimulationParameters: public ::xml_schema::type
          ::xml_schema::flags);
 
   protected:
+  start_time_optional start_time_;
   end_time_optional end_time_;
   delta_t_optional delta_t_;
   frequency_optional frequency_;
