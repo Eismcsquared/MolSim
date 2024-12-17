@@ -38,5 +38,4 @@ TEST_F(StateReaderTest, ReloadState) {
     } else {
         test_logger->info("StateReaderTest - Reload states test passed\n\n");
     }
-
 }
