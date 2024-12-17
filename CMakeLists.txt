@@ -45,8 +45,8 @@ set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -pg")
 
 #set the build type to release -O3 flag is used for optimization
 set(CMAKE_BUILD_TYPE Release)
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -pg")
-set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -pg")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 - pg")
+set(CMAKE_EXE_LINKER_FLAGS_RELASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -pg") 
 
 target_link_libraries(MolSim
         # stuff that is used in headers and source files
@@ -54,7 +54,7 @@ target_link_libraries(MolSim
             xerces-c
             spdlog::spdlog
             fmt::fmt
-)
+)   
 
 # activate all compiler warnings. Clean up your code :P
 # depending on the compiler different flags are used
@@ -73,7 +73,7 @@ include(gtest)
 include (fmt)
 include(xsd)
 include(GoogleTest)
-#include(xcerces)
+include(xcerces)
 #testfiles 
 file(GLOB_RECURSE MY_TESTS
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp"
