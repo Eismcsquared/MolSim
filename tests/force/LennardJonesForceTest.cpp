@@ -8,7 +8,6 @@
 #include "body/Particle.h"
 #include "container/DirectSumContainer.h"
 #include "force/GravitationalForce.h"
-#include "inputReader/FileReader.h"
 
 class LennardJonesForceTest : public ::testing::Test {
 protected:

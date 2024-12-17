@@ -13,8 +13,8 @@ std::array<double, 3> LennardJonesForce::force(Particle& particle1, Particle& pa
 
     std::array<double, 3> r_21 = particle1.getX() - particle2.getX();
     double rSquared = ArrayUtils::L2NormSquare(r_21);
-    double a = pow(pow(sigma, 2) / rSquared, 3);
-    double factor = 24 * epsilon / rSquared * (a - 2 * pow(a, 2));
+    double a = pow(sigma * sigma / rSquared, 3);
+    double factor = 24 * epsilon / rSquared * (a - 2 * a * a);
     return factor * r_21;
 }
 

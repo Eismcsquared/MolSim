@@ -27,5 +27,5 @@ void StateWriter::saveState(std::vector<Particle> &particles, std::string fileNa
     }
 
     outFile.close();
-    spdlog::info("The state of the system is successfully saved to {}", fileName);
+    spdlog::trace("The state of the system is successfully saved to {}", fileName);
 }
