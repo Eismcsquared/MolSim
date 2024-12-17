@@ -1,4 +1,5 @@
 #include <spdlog/spdlog.h>
+#include <iomanip>
 #include "StateWriter.h"
 
 
@@ -9,6 +10,7 @@ void StateWriter::saveState(std::vector<Particle> &particles, std::string fileNa
         std::exit(-1);
     }
 
+    outFile << std::setprecision(std::numeric_limits<double>::digits10 + 1);
     for (Particle &p: particles) {
         if (p.isInDomain()) {
             for (double xi: p.getX()) {
