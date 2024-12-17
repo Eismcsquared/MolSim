@@ -33,6 +33,10 @@ void printHelp();
 
 
 int main(int argc, char *argsv[]) {
+
+    std::ios::sync_with_stdio(false);
+    std::cout.tie(nullptr);
+    
     spdlog::set_level(spdlog::level::info);
     spdlog::stdout_color_mt("console"); // Create color multithreaded logger
 

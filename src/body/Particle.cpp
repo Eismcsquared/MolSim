@@ -1,6 +1,5 @@
 #include "Particle.h"
 
-#include <iostream>
 #include "utils/ArrayUtils.h"
 #include "spdlog/spdlog.h"
 

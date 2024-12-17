@@ -21,9 +21,9 @@
     </objects>
     <parameters>
         <end_time>40</end_time>
-        <delta_t>0.0005</delta_t>
+        <delta_t>0.00005</delta_t>
         <output>fd4</output>
-        <frequency>20</frequency>
+        <frequency>200</frequency>
         <g>-12.44</g>
         <linked_cell>
             <domain_size>
