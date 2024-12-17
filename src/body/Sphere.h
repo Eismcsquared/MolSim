@@ -48,13 +48,13 @@ public:
             for (int j = -radius; j <= radius; ++j) {
                 if (dimension == 2) {
                     std::array<double, 3> pos = x + std::array<double, 3> {i * distance, j * distance, 0};
-                    if(ArrayUtils::L2Norm(x - pos) <= radius * distance) {
+                    if(ArrayUtils::L2NormSquare(x - pos) <= pow(radius * distance, 2)) {
                         particles.emplace_back(pos, v + maxwellBoltzmannDistributedVelocity(avgVelocityBrownian, dimension), m, type, epsilon, sigma);
                     }
                 } else {
                     for (int k = -radius; k <= radius; ++k) {
                         std::array<double, 3> pos = x + std::array<double, 3> {i * distance, j * distance, k * distance};
-                        if(ArrayUtils::L2Norm(x - pos) <= radius * distance) {
+                        if(ArrayUtils::L2NormSquare(x - pos) <= pow(radius * distance, 2)) {
                             particles.emplace_back(pos, v + maxwellBoltzmannDistributedVelocity(avgVelocityBrownian, dimension), m, type, epsilon, sigma);
                         }
                     }

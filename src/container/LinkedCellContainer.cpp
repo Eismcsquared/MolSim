@@ -108,10 +108,10 @@ void LinkedCellContainer::updateF() {
             for(unsigned long k = j + 1; k < pointCellParticles.size(); ++k){
 
                 //////////////////////////////////////////////////////////
-                double dist = ArrayUtils::L2Norm(particles[pointCellParticles[j]].getX() - particles[pointCellParticles[k]].getX());
+                double distSquare = ArrayUtils::L2NormSquare(particles[pointCellParticles[j]].getX() - particles[pointCellParticles[k]].getX());
 
                 // if the distance is greater than the cutoff, skip the calculation
-                if(dist > cutoff) continue;
+                if(distSquare > pow(cutoff, 2)) continue;
 
                 std::array<double, 3> forceIJ = force->force(particles[pointCellParticles[j]], particles[pointCellParticles[k]]);
 
@@ -151,9 +151,10 @@ void LinkedCellContainer::updateFCells(int c1, int c2){
         for (int j : v2) {
 
             for (std::array<double, 3> offset: offsets) {
-                double dist = ArrayUtils::L2Norm(particles[i].getX() + offset - particles[j].getX());
+
+                double distSquare = ArrayUtils::L2NormSquare(particles[i].getX() + offset - particles[j].getX());
                 // if the distance is greater than the cutoff, skip the calculation
-                if(dist <= cutoff) {
+                if(distSquare <= pow(cutoff, 2)) {
 
                     std::array<double, 3> pos = particles[i].getX();
                     particles[i].setX(pos + offset);

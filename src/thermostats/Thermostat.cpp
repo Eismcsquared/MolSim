@@ -27,9 +27,10 @@ void Thermostat::apply(std::vector<Particle> &particles) const {
     // apply thermostat
 
     std::array<double, 3> meanVel = meanVelocity(particles);
+    double beta = sqrt(TNew / T);
     for (Particle &p: particles) {
         if (p.isInDomain()) {
-            std::array<double, 3> newV = meanVel + sqrt(TNew / T) * (p.getV() - meanVel);
+            std::array<double, 3> newV = meanVel + beta * (p.getV() - meanVel);
             p.setV(newV);
         }
     }
@@ -64,7 +65,7 @@ double Thermostat::temperature(std::vector<Particle> &particles, int dimension) 
     int particleNumber = 0;
     for (Particle &p: particles) {
         if (p.isInDomain()) {
-            E_kin += pow(ArrayUtils::L2Norm(p.getV() - meanVel), 2) / (2 * p.getM());
+            E_kin += ArrayUtils::L2NormSquare(p.getV() - meanVel) / (2 * p.getM());
             particleNumber++;
         }
     }

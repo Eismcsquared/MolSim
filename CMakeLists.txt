@@ -37,17 +37,6 @@ target_include_directories(MolSim
 
 )
 
-#set the build type to debug
-set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -pg")
-set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -pg")
-
-
-#set the build type to release -O3 flag is used for optimization
-set(CMAKE_BUILD_TYPE Release)
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 - pg")
-set(CMAKE_EXE_LINKER_FLAGS_RELASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -pg") 
-
 target_link_libraries(MolSim
         # stuff that is used in headers and source files
         PUBLIC
@@ -73,7 +62,7 @@ include(gtest)
 include (fmt)
 include(xsd)
 include(GoogleTest)
-include(xcerces)
+
 #testfiles 
 file(GLOB_RECURSE MY_TESTS
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp"
