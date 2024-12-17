@@ -74,7 +74,6 @@ include(gtest)
 include (fmt)
 include(xsd)
 include(GoogleTest)
-include(xcerces)
 
 #testfiles 
 file(GLOB_RECURSE MY_TESTS
