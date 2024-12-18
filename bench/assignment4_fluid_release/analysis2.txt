@@ -1,0 +1,1544 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 41.85    213.90   213.90 712793759     0.00     0.00  LinkedCellContainer::updateFCells(int, int)
+ 31.90    376.98   163.07 4876557003     0.00     0.00  LennardJonesForce::force(Particle&, Particle&)
+  8.19    418.84    41.86                             _init
+  6.40    451.54    32.70    30001     0.00     0.01  LinkedCellContainer::updateF()
+  4.03    472.12    20.58    12500     0.00     0.00  Particle::Particle(std::array<double, 3ul>, std::array<double, 3ul>, double, int, double, double)
+  1.27    478.62     6.50    30000     0.00     0.00  LinkedCellContainer::updateX(double)
+  1.26    485.05     6.43 717749646     0.00     0.00  LinkedCellContainer::updateV(double)
+  0.78    489.04     3.99 751916551     0.00     0.00  Particle::getV() const
+  0.75    492.89     3.85 750416551     0.00     0.00  LinkedCellContainer::getCellIndex(std::array<double, 3ul>)
+  0.72    496.57     3.68 375779051     0.00     0.00  Particle::setV(std::array<double, 3ul>)
+  0.71    500.22     3.65  1512500     0.00     0.00  Particle::isInDomain() const
+  0.67    503.62     3.40 1163191914     0.00     0.00  Particle::getEpsilon() const
+  0.46    505.98     2.36 1163191914     0.00     0.00  Particle::getSigma() const
+  0.30    507.53     1.55        1     1.55     1.55  LennardJonesForce::~LennardJonesForce()
+  0.18    508.44     0.91    19158     0.00     0.00  Cell::Cell(std::array<double, 3ul>, std::array<double, 3ul>, std::set<int, std::less<int>, std::allocator<int> >&)
+  0.08    508.85     0.41 10128126506     0.00     0.00  Particle::setF(std::array<double, 3ul>)
+  0.07    509.19     0.34   180000     0.00     0.00  LinkedCellContainer::updateHalo(Direction, BoundaryCondition, double)
+  0.06    509.52     0.33 17219769622     0.00     0.00  Particle::getX() const
+  0.06    509.82     0.30        1     0.30     1.39  LinkedCellContainer::LinkedCellContainer(std::vector<Particle, std::allocator<Particle> >&, std::unique_ptr<Force, std::default_delete<Force> >&, std::array<double, 3ul>, double, std::array<BoundaryCondition, 6ul>)
+  0.06    510.11     0.29 375000000     0.00     0.00  Particle::getOldF() const
+  0.05    510.35     0.24                             Cell::getPosition() const
+  0.04    510.57     0.22 7241632473     0.00     0.00  Particle::setX(std::array<double, 3ul>)
+  0.04    510.75     0.18 10878530557     0.00     0.00  Particle::getF() const
+  0.04    510.93     0.18    19158     0.00     0.00  LinkedCellContainer::getNeighborCells(int)
+  0.03    511.09     0.16   553655     0.00     0.00  Cell::removeIndex(int)
+  0.01    511.15     0.06 750416551     0.00     0.00  Cell::getSize() const
+  0.00    511.17     0.02       30     0.00     0.12  Thermostat::apply(std::vector<Particle, std::allocator<Particle> >&) const
+  0.00    511.18     0.01 1125804051     0.00     0.00  Particle::getM() const
+  0.00    511.19     0.01 181806060     0.00     0.00  Cell::getNeighbours() const
+  0.00    511.19     0.00 2020253578     0.00     0.00  Cell::getParticleIndices() const
+  0.00    511.19     0.00 412860000     0.00     0.00  Cell::clear()
+  0.00    511.19     0.00 375012500     0.00     0.00  Particle::setOldF(std::array<double, 3ul>)
+  0.00    511.19     0.00   970206     0.00     0.00  Cell::addIndex(int)
+  0.00    511.19     0.00    30000     0.00     0.00  void spdlog::logger::log_<int&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, int&)
+  0.00    511.19     0.00    30000     0.00     0.00  Thermostat::getPeriode() const
+  0.00    511.19     0.00    28883     0.00     0.00  Particle::~Particle()
+  0.00    511.19     0.00    16383     0.00     0.00  Particle::Particle(Particle const&)
+  0.00    511.19     0.00    12500     0.00     0.00  Particle::getType() const
+  0.00    511.19     0.00     6060     0.00     0.00  Sphere::createParticles(std::vector<Particle, std::allocator<Particle> >&) const
+  0.00    511.19     0.00      115     0.00     0.00  void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&)
+  0.00    511.19     0.00      111     0.00     0.00  bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*)
+  0.00    511.19     0.00      108     0.00     0.00  std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose()
+  0.00    511.19     0.00       60     0.00     0.03  Thermostat::meanVelocity(std::vector<Particle, std::allocator<Particle> >&)
+  0.00    511.19     0.00       59     0.00     0.00  xsd::cxx::xml::char_utf8_transcoder<char>::to[abi:cxx11](char16_t const*, unsigned long)
+  0.00    511.19     0.00       35     0.00     0.00  xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&)
+  0.00    511.19     0.00       35     0.00     0.00  std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > xsd::cxx::xml::transcode<char>(char16_t const*)
+  0.00    511.19     0.00       30     0.00     0.06  Thermostat::temperature(std::vector<Particle, std::allocator<Particle> >&, int)
+  0.00    511.19     0.00       28     0.00     0.00  xsd::cxx::tree::_type::~_type()
+  0.00    511.19     0.00       26     0.00     0.00  xsd::cxx::tree::_type::_type(xsd::cxx::tree::_type const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00       25     0.00     0.00  xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00       24     0.00     0.00  std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > xsd::cxx::tree::text_content<char>(xercesc_3_3::DOMElement const&)
+  0.00    511.19     0.00       22     0.00     0.00  InputData::parameters()
+  0.00    511.19     0.00       16     0.00     0.00  PositiveIntVector3::PositiveIntVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00       15     0.00     0.00  SimulationParameters::~SimulationParameters()
+  0.00    511.19     0.00       13     0.00     0.00  PositiveDouble::~PositiveDouble()
+  0.00    511.19     0.00       12     0.00     0.00  xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >::string(char const*)
+  0.00    511.19     0.00       10     0.00     0.00  BoundaryConditionType::_xsd_BoundaryConditionType_convert() const
+  0.00    511.19     0.00        8     0.00     0.00  BoundaryConditionType::~BoundaryConditionType()
+  0.00    511.19     0.00        8     0.00     0.00  xsd::cxx::tree::traits<PositiveDouble, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        6     0.00     0.00  BoundaryConditionType::BoundaryConditionType(BoundaryConditionType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        6     0.00     0.00  xsd::cxx::tree::one<PositiveDouble, false>::set(std::unique_ptr<PositiveDouble, std::default_delete<PositiveDouble> >)
+  0.00    511.19     0.00        6     0.00     0.00  xsd::cxx::tree::optional<BoundaryConditionType, false>::optional(xsd::cxx::tree::optional<BoundaryConditionType, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        5     0.00     0.00  PositiveDouble::~PositiveDouble()
+  0.00    511.19     0.00        5     0.00     0.00  xsd::cxx::tree::one<PositiveDouble, false>::one(xsd::cxx::tree::one<PositiveDouble, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        4     0.00     0.00  SimulationParameters::thermostat()
+  0.00    511.19     0.00        4     0.00     0.00  SimulationParameters::linked_cell()
+  0.00    511.19     0.00        4     0.00     0.00  xsd::cxx::tree::traits<BoundaryConditionType, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        4     0.00     0.00  xsd::cxx::tree::optional<BoundaryConditionType, false>::set(std::unique_ptr<BoundaryConditionType, std::default_delete<BoundaryConditionType> >)
+  0.00    511.19     0.00        4     0.00     0.00  InputData::objects()
+  0.00    511.19     0.00        3     0.00     0.00  CuboidType::size()
+  0.00    511.19     0.00        3     0.00     0.00  CuboidType::position()
+  0.00    511.19     0.00        3     0.00     0.00  CuboidType::velocity()
+  0.00    511.19     0.00        3     0.00     0.00  PositiveDouble::PositiveDouble(PositiveDouble const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        3     0.00     0.00  ThermostatsType::~ThermostatsType()
+  0.00    511.19     0.00        3     0.00     0.00  xsd::cxx::tree::optional<PositiveDouble, false>::optional(xsd::cxx::tree::optional<PositiveDouble, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        3     0.00     0.00  void spdlog::logger::info<double>(fmt::v10::basic_format_string<char, fmt::v10::type_identity<double>::type>, double&&)
+  0.00    511.19     0.00        3     0.00     0.00  void spdlog::logger::log_<double>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, double&&)
+  0.00    511.19     0.00        3     0.00     0.00  operator<<(xercesc_3_3::DOMElement&, PositiveDouble const&)
+  0.00    511.19     0.00        3     0.00     0.00  frame_dummy
+  0.00    511.19     0.00        2     0.00     0.00  CuboidType::mass()
+  0.00    511.19     0.00        2     0.00     0.00  CuboidType::sigma()
+  0.00    511.19     0.00        2     0.00     0.00  CuboidType::epsilon()
+  0.00    511.19     0.00        2     0.00     0.00  CuboidType::~CuboidType()
+  0.00    511.19     0.00        2     0.00     0.00  Simulation::setSaveOutput(bool)
+  0.00    511.19     0.00        2     0.00     0.00  DoubleVector3::x()
+  0.00    511.19     0.00        2     0.00     0.00  DoubleVector3::y()
+  0.00    511.19     0.00        2     0.00     0.00  DoubleVector3::z()
+  0.00    511.19     0.00        2     0.00     0.00  DoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags)
+  0.00    511.19     0.00        2     0.00     0.00  ThermostatsType::initial_T()
+  0.00    511.19     0.00        2     0.00     0.00  ThermostatsType::~ThermostatsType()
+  0.00    511.19     0.00        2     0.00     0.00  BoundaryCondition3::up()
+  0.00    511.19     0.00        2     0.00     0.00  BoundaryCondition3::down()
+  0.00    511.19     0.00        2     0.00     0.00  BoundaryCondition3::left()
+  0.00    511.19     0.00        2     0.00     0.00  BoundaryCondition3::right()
+  0.00    511.19     0.00        2     0.00     0.00  BoundaryCondition3::~BoundaryCondition3()
+  0.00    511.19     0.00        2     0.00     0.00  SimulationParameters::g()
+  0.00    511.19     0.00        2     0.00     0.00  SimulationParameters::force()
+  0.00    511.19     0.00        2     0.00     0.00  SimulationParameters::store()
+  0.00    511.19     0.00        2     0.00     0.00  SimulationParameters::delta_t()
+  0.00    511.19     0.00        2     0.00     0.00  SimulationParameters::end_time()
+  0.00    511.19     0.00        2     0.00     0.00  PositiveDoubleVector3::z_default_value()
+  0.00    511.19     0.00        2     0.00     0.00  PositiveDoubleVector3::~PositiveDoubleVector3()
+  0.00    511.19     0.00        2     0.00     0.00  xsd::cxx::tree::one<DoubleVector3, false>::set(std::unique_ptr<DoubleVector3, std::default_delete<DoubleVector3> >)
+  0.00    511.19     0.00        2     0.00     0.00  xsd::cxx::tree::one<DoubleVector3, false>::one(xsd::cxx::tree::one<DoubleVector3, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        2     0.00     0.00  xsd::cxx::tree::traits<DoubleVector3, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        2     0.00     0.00  xsd::cxx::tree::optional<PositiveDouble, false>::set(std::unique_ptr<PositiveDouble, std::default_delete<PositiveDouble> >)
+  0.00    511.19     0.00        2     0.00     0.00  void spdlog::logger::info<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(fmt::v10::basic_format_string<char, fmt::v10::type_identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>::type>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00    511.19     0.00        2     0.00     0.00  void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00    511.19     0.00        2     0.00     0.00  ForceType::_xsd_ForceType_convert() const
+  0.00    511.19     0.00        2     0.00     0.78  std::unique_ptr<Simulation, std::default_delete<Simulation> >::~unique_ptr()
+  0.00    511.19     0.00        1     0.00     0.00  simulation(xercesc_3_3::InputSource&, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&)
+  0.00    511.19     0.00        1     0.00     0.00  simulation(std::istream&, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&)
+  0.00    511.19     0.00        1     0.00     0.00  simulation(std::unique_ptr<xercesc_3_3::DOMDocument, xsd::cxx::xml::dom::deleter<xercesc_3_3::DOMDocument> >, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&)
+  0.00    511.19     0.00        1     0.00     0.00  CuboidType::type()
+  0.00    511.19     0.00        1     0.00     0.00  CuboidType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags)
+  0.00    511.19     0.00        1     0.00     0.00  CuboidType::distance()
+  0.00    511.19     0.00        1     0.00     0.00  CuboidType::CuboidType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        1     0.00     0.00  CuboidType::CuboidType(CuboidType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        1     0.00     0.00  CuboidType::~CuboidType()
+  0.00    511.19     0.00        1     0.00     0.00  Simulation::setCheckpointingFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00    511.19     0.00        1     0.00     0.00  Simulation::run()
+  0.00    511.19     0.00        1     0.00     0.00  Simulation::Simulation(std::unique_ptr<ParticleContainer, std::default_delete<ParticleContainer> >&, double, double, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, unsigned int)
+  0.00    511.19     0.00        1     0.00     0.00  Thermostat::Thermostat(double, int, double, int)
+  0.00    511.19     0.00        1     0.00     0.03  StateWriter::saveState(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+  0.00    511.19     0.00        1     0.00     0.00  ParticleType::type_default_value()
+  0.00    511.19     0.00        1     0.00     0.00  DoubleVector3::z_default_value()
+  0.00    511.19     0.00        1     0.00     0.00  LinkedCellType::domain_size()
+  0.00    511.19     0.00        1     0.00     0.00  LinkedCellType::cutoff_radius()
+  0.00    511.19     0.00        1     0.00     0.00  LinkedCellType::boundary_condition()
+  0.00    511.19     0.00        1     0.00     0.00  LinkedCellType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags)
+  0.00    511.19     0.00        1     0.00     0.00  LinkedCellType::LinkedCellType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        1     0.00     0.00  LinkedCellType::~LinkedCellType()
+  0.00    511.19     0.00        1     0.00     0.00  ThermostatsType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags)
+  0.00    511.19     0.00        1     0.00     0.00  ThermostatsType::periode()
+  0.00    511.19     0.00        1     0.00     0.00  ThermostatsType::target_T()
+  0.00    511.19     0.00        1     0.00     0.00  ThermostatsType::max_delta()
+  0.00    511.19     0.00        1     0.00     0.00  ThermostatsType::ThermostatsType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        1     0.00     0.00  ThermostatsType::ThermostatsType(ThermostatsType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        1     0.00     0.00  ParticleContainer::setThermostat(std::unique_ptr<Thermostat, std::default_delete<Thermostat> >&)
+  0.00    511.19     0.00        1     0.00     0.00  ParticleContainer::setG(double)
+  0.00    511.19     0.00        1     0.00   445.57  ParticleContainer::simulate(double, double, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned int, bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00    511.19     0.00        1     0.00     0.00  ParticleContainer::ParticleContainer(std::vector<Particle, std::allocator<Particle> >&, std::unique_ptr<Force, std::default_delete<Force> >&)
+  0.00    511.19     0.00        1     0.00     0.00  SimulationObjects::load()
+  0.00    511.19     0.00        1     0.00     0.00  SimulationObjects::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags)
+  0.00    511.19     0.00        1     0.00     0.00  SimulationObjects::cuboid()
+  0.00    511.19     0.00        1     0.00     0.00  SimulationObjects::sphere()
+  0.00    511.19     0.00        1     0.00     0.00  SimulationObjects::particle()
+  0.00    511.19     0.00        1     0.00     0.00  SimulationObjects::SimulationObjects(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        1     0.00     0.00  BoundaryCondition3::back_default_value()
+  0.00    511.19     0.00        1     0.00     0.00  BoundaryCondition3::front_default_value()
+  0.00    511.19     0.00        1     0.00     0.00  BoundaryCondition3::back()
+  0.00    511.19     0.00        1     0.00     0.00  BoundaryCondition3::front()
+  0.00    511.19     0.00        1     0.00     0.00  BoundaryCondition3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags)
+  0.00    511.19     0.00        1     0.00     0.00  BoundaryCondition3::BoundaryCondition3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        1     0.00     0.00  BoundaryCondition3::BoundaryCondition3(BoundaryCondition3 const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        1     0.00     0.00  BoundaryCondition3::~BoundaryCondition3()
+  0.00    511.19     0.00        1     0.00     0.00  PositiveIntVector3::z_default_value()
+  0.00    511.19     0.00        1     0.00     0.00  PositiveIntVector3::x()
+  0.00    511.19     0.00        1     0.00     0.00  PositiveIntVector3::y()
+  0.00    511.19     0.00        1     0.00     0.00  PositiveIntVector3::z()
+  0.00    511.19     0.00        1     0.00     0.00  PositiveIntVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags)
+  0.00    511.19     0.00        1     0.00     1.55  LinkedCellContainer::~LinkedCellContainer()
+  0.00    511.19     0.00        1     0.00     0.00  SimulationParameters::format_default_value()
+  0.00    511.19     0.00        1     0.00     0.00  SimulationParameters::output_default_value()
+  0.00    511.19     0.00        1     0.00     0.00  SimulationParameters::dimension_default_value()
+  0.00    511.19     0.00        1     0.00     0.00  SimulationParameters::frequency_default_value()
+  0.00    511.19     0.00        1     0.00     0.00  SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags)
+  0.00    511.19     0.00        1     0.00     0.00  SimulationParameters::format()
+  0.00    511.19     0.00        1     0.00     0.00  SimulationParameters::output()
+  0.00    511.19     0.00        1     0.00     0.00  SimulationParameters::dimension()
+  0.00    511.19     0.00        1     0.00     0.00  SimulationParameters::frequency()
+  0.00    511.19     0.00        1     0.00     0.00  SimulationParameters::SimulationParameters(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        1     0.00     0.00  SimulationParameters::~SimulationParameters()
+  0.00    511.19     0.00        1     0.00     0.00  PositiveDoubleVector3::x()
+  0.00    511.19     0.00        1     0.00     0.00  PositiveDoubleVector3::y()
+  0.00    511.19     0.00        1     0.00     0.00  PositiveDoubleVector3::z()
+  0.00    511.19     0.00        1     0.00     0.00  PositiveDoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags)
+  0.00    511.19     0.00        1     0.00     0.00  PositiveDoubleVector3::PositiveDoubleVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        1     0.00     0.00  PositiveDoubleVector3::PositiveDoubleVector3(PositiveDoubleVector3 const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        1     0.00     0.00  fmt::v10::appender fmt::v10::vformat_to<fmt::v10::appender, 0>(fmt::v10::appender, fmt::v10::basic_string_view<char>, fmt::v10::basic_format_args<fmt::v10::basic_format_context<fmt::v10::appender, char> >)
+  0.00    511.19     0.00        1     0.00     0.00  std::unique_ptr<xercesc_3_3::DOMDocument, xsd::cxx::xml::dom::deleter<xercesc_3_3::DOMDocument> > xsd::cxx::xml::dom::parse<char>(xercesc_3_3::InputSource&, xercesc_3_3::DOMErrorHandler&, xsd::cxx::xml::properties<char> const&, unsigned long)
+  0.00    511.19     0.00        1     0.00     0.00  xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type>::simple_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        1     0.00     0.00  xsd::cxx::tree::one<SimulationObjects, false>::set(std::unique_ptr<SimulationObjects, std::default_delete<SimulationObjects> >)
+  0.00    511.19     0.00        1     0.00     0.00  xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >::~string()
+  0.00    511.19     0.00        1     0.00     0.00  xsd::cxx::tree::optional<xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >, false>::set(std::unique_ptr<xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >, std::default_delete<xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> > > >)
+  0.00    511.19     0.00        1     0.00     0.00  Cuboid::Cuboid(std::array<double, 3ul> const&, std::array<double, 3ul> const&, std::array<unsigned int, 3ul> const&, double, double, double, int, int, double, double)
+  0.00    511.19     0.00        1     0.00     0.00  Cluster::Cluster(std::array<double, 3ul> const&, std::array<double, 3ul> const&, double, double, double, int, int, double, double)
+  0.00    511.19     0.00        1     0.00     0.00  Dimension::~Dimension()
+  0.00    511.19     0.00        1     0.00     0.00  ForceType::ForceType(ForceType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        1     0.00     0.00  ForceType::ForceType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        1     0.00     0.00  ForceType::~ForceType()
+  0.00    511.19     0.00        1     0.00     0.00  InputData::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags)
+  0.00    511.19     0.00        1     0.00     0.00  InputData::InputData(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  0.00    511.19     0.00        1     0.00     0.00  InputData::~InputData()
+  0.00    511.19     0.00        1     0.00    21.97  XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+  0.00    511.19     0.00        1     0.00     0.00  Simulation::getEndTime() const
+  0.00    511.19     0.00        1     0.00     0.00  Simulation::getOutputFile[abi:cxx11]() const
+  0.00    511.19     0.00        1     0.00     0.00  Simulation::getOutputFormat[abi:cxx11]() const
+  0.00    511.19     0.00        1     0.00     0.00  Simulation::getDeltaT() const
+  0.00    511.19     0.00        1     0.00     0.00  BoundaryCondition3::_clone(xsd::cxx::tree::flags, xsd::cxx::tree::_type*) const
+  0.00    511.19     0.00        1     0.00     0.00  std::__uniq_ptr_impl<Simulation, std::default_delete<Simulation> >::reset(Simulation*)
+  0.00    511.19     0.00        1     0.00     0.00  std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release()
+  0.00    511.19     0.00        1     0.00     0.00  std::vector<Particle, std::allocator<Particle> >::~vector()
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2024 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.00% of 511.19 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]     91.8    0.00  469.09                 main [1]
+                0.00  445.57       1/1           ParticleContainer::simulate(double, double, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned int, bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+                0.00   21.97       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+                0.00    1.55       2/2           std::unique_ptr<Simulation, std::default_delete<Simulation> >::~unique_ptr() [20]
+                0.00    0.00       3/3           frame_dummy [38]
+                0.00    0.00       3/108         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() [56]
+                0.00    0.00       3/3           void spdlog::logger::info<double>(fmt::v10::basic_format_string<char, fmt::v10::type_identity<double>::type>, double&&) [88]
+                0.00    0.00       2/2           void spdlog::logger::info<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(fmt::v10::basic_format_string<char, fmt::v10::type_identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>::type>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [118]
+                0.00    0.00       1/1           std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release() [208]
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Simulation, std::default_delete<Simulation> >::reset(Simulation*) [207]
+                0.00    0.00       1/1           std::vector<Particle, std::allocator<Particle> >::~vector() [209]
+                0.00    0.00       1/2           Simulation::setSaveOutput(bool) [95]
+                0.00    0.00       1/1           Simulation::getEndTime() const [202]
+                0.00    0.00       1/1           Simulation::getDeltaT() const [205]
+                0.00    0.00       1/1           Simulation::getOutputFile[abi:cxx11]() const [203]
+                0.00    0.00       1/1           Simulation::getOutputFormat[abi:cxx11]() const [204]
+                0.00    0.00       1/1           Simulation::run() [131]
+-----------------------------------------------
+                0.00  445.57       1/1           main [1]
+[2]     87.2    0.00  445.57       1         ParticleContainer::simulate(double, double, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned int, bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+               32.70  396.24   30001/30001       LinkedCellContainer::updateF() [3]
+                6.50    6.45   30000/30000       LinkedCellContainer::updateX(double) [9]
+                0.02    3.63      30/30          Thermostat::apply(std::vector<Particle, std::allocator<Particle> >&) const [14]
+                0.00    0.03       1/1           StateWriter::saveState(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [35]
+                0.00    0.00   30000/717749646     LinkedCellContainer::updateV(double) [10]
+                0.00    0.00   30000/30000       void spdlog::logger::log_<int&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, int&) [48]
+                0.00    0.00   30000/30000       Thermostat::getPeriode() const [49]
+-----------------------------------------------
+               32.70  396.24   30001/30001       ParticleContainer::simulate(double, double, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned int, bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[3]     83.9   32.70  396.24   30001         LinkedCellContainer::updateF() [3]
+              213.90  119.70 712793759/712793759     LinkedCellContainer::updateFCells(int, int) [4]
+               48.27    1.72 1443442792/4876557003     LennardJonesForce::force(Particle&, Particle&) [5]
+                6.43    5.96 717683922/717749646     LinkedCellContainer::updateV(double) [10]
+                0.13    0.00 3261898084/10128126506     Particle::setF(std::array<double, 3ul>) [25]
+                0.06    0.00 2979134350/17219769622     Particle::getX() const [27]
+                0.05    0.00 3261898084/10878530557     Particle::getF() const [31]
+                0.01    0.00 181806060/181806060     Cell::getNeighbours() const [36]
+                0.00    0.00 375012500/1125804051     Particle::getM() const [37]
+                0.00    0.00 375012500/375012500     Particle::setOldF(std::array<double, 3ul>) [46]
+                0.00    0.00 181806060/2020253578     Cell::getParticleIndices() const [44]
+-----------------------------------------------
+              213.90  119.70 712793759/712793759     LinkedCellContainer::updateF() [3]
+[4]     65.3  213.90  119.70 712793759         LinkedCellContainer::updateFCells(int, int) [4]
+              114.80    4.09 3433114211/4876557003     LennardJonesForce::force(Particle&, Particle&) [5]
+                0.28    0.00 6866228422/10128126506     Particle::setF(std::array<double, 3ul>) [25]
+                0.21    0.00 6866228422/7241632473     Particle::setX(std::array<double, 3ul>) [30]
+                0.21    0.00 10788847393/17219769622     Particle::getX() const [27]
+                0.11    0.00 6866228422/10878530557     Particle::getF() const [31]
+                0.00    0.00 1425587518/2020253578     Cell::getParticleIndices() const [44]
+-----------------------------------------------
+               48.27    1.72 1443442792/4876557003     LinkedCellContainer::updateF() [3]
+              114.80    4.09 3433114211/4876557003     LinkedCellContainer::updateFCells(int, int) [4]
+[5]     33.0  163.07    5.80 4876557003         LennardJonesForce::force(Particle&, Particle&) [5]
+                3.40    0.00 1163179414/1163191914     Particle::getEpsilon() const [16]
+                2.36    0.00 1163179414/1163191914     Particle::getSigma() const [17]
+                0.04    0.00 2326358828/17219769622     Particle::getX() const [27]
+-----------------------------------------------
+                                                 <spontaneous>
+[6]      8.2   41.86    0.00                 _init [6]
+-----------------------------------------------
+                0.00   21.97       1/1           main [1]
+[7]      4.3    0.00   21.97       1         XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+               20.58    0.00   12500/12500       Particle::Particle(std::array<double, 3ul>, std::array<double, 3ul>, double, int, double, double) [8]
+                0.30    1.09       1/1           LinkedCellContainer::LinkedCellContainer(std::vector<Particle, std::allocator<Particle> >&, std::unique_ptr<Force, std::default_delete<Force> >&, std::array<double, 3ul>, double, std::array<BoundaryCondition, 6ul>) [23]
+                0.00    0.00   16383/16383       Particle::Particle(Particle const&) [51]
+                0.00    0.00   16383/28883       Particle::~Particle() [50]
+                0.00    0.00      22/22          InputData::parameters() [64]
+                0.00    0.00       6/6           BoundaryConditionType::BoundaryConditionType(BoundaryConditionType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [72]
+                0.00    0.00       6/10          BoundaryConditionType::_xsd_BoundaryConditionType_convert() const [69]
+                0.00    0.00       5/5           PositiveDouble::~PositiveDouble() [75]
+                0.00    0.00       4/4           InputData::objects() [81]
+                0.00    0.00       4/4           SimulationParameters::thermostat() [77]
+                0.00    0.00       4/4           SimulationParameters::linked_cell() [78]
+                0.00    0.00       3/3           CuboidType::position() [83]
+                0.00    0.00       3/3           CuboidType::velocity() [84]
+                0.00    0.00       3/3           CuboidType::size() [82]
+                0.00    0.00       3/28          xsd::cxx::tree::_type::~_type() [60]
+                0.00    0.00       3/3           PositiveDouble::PositiveDouble(PositiveDouble const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [85]
+                0.00    0.00       2/2           DoubleVector3::z() [98]
+                0.00    0.00       2/2           PositiveDoubleVector3::z_default_value() [112]
+                0.00    0.00       2/2           CuboidType::epsilon() [93]
+                0.00    0.00       2/2           CuboidType::sigma() [92]
+                0.00    0.00       2/2           ThermostatsType::initial_T() [100]
+                0.00    0.00       2/2           CuboidType::mass() [91]
+                0.00    0.00       2/2           DoubleVector3::x() [96]
+                0.00    0.00       2/2           DoubleVector3::y() [97]
+                0.00    0.00       2/2           SimulationParameters::force() [108]
+                0.00    0.00       2/2           BoundaryCondition3::left() [104]
+                0.00    0.00       2/2           BoundaryCondition3::right() [105]
+                0.00    0.00       2/2           BoundaryCondition3::down() [103]
+                0.00    0.00       2/2           BoundaryCondition3::up() [102]
+                0.00    0.00       2/2           SimulationParameters::g() [107]
+                0.00    0.00       2/2           SimulationParameters::end_time() [111]
+                0.00    0.00       2/2           SimulationParameters::delta_t() [110]
+                0.00    0.00       2/2           SimulationParameters::store() [109]
+                0.00    0.00       1/1           simulation(std::istream&, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&) [122]
+                0.00    0.00       1/1           SimulationObjects::particle() [155]
+                0.00    0.00       1/1           SimulationParameters::dimension() [177]
+                0.00    0.00       1/1           Dimension::~Dimension() [195]
+                0.00    0.00       1/1           SimulationObjects::cuboid() [153]
+                0.00    0.00       1/1           CuboidType::CuboidType(CuboidType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [128]
+                0.00    0.00       1/1           PositiveIntVector3::z() [168]
+                0.00    0.00       1/1           CuboidType::type() [124]
+                0.00    0.00       1/1           CuboidType::distance() [126]
+                0.00    0.00       1/1           PositiveIntVector3::x() [166]
+                0.00    0.00       1/1           PositiveIntVector3::y() [167]
+                0.00    0.00       1/1           Cuboid::Cuboid(std::array<double, 3ul> const&, std::array<double, 3ul> const&, std::array<unsigned int, 3ul> const&, double, double, double, int, int, double, double) [193]
+                0.00    0.00       1/2           CuboidType::~CuboidType() [94]
+                0.00    0.00       1/1           SimulationObjects::sphere() [154]
+                0.00    0.00       1/1           PositiveIntVector3::z_default_value() [165]
+                0.00    0.00       1/1           DoubleVector3::z_default_value() [135]
+                0.00    0.00       1/1           ParticleType::type_default_value() [134]
+                0.00    0.00       1/1           SimulationParameters::dimension_default_value() [172]
+                0.00    0.00       1/1           SimulationObjects::load() [151]
+                0.00    0.00       1/1           ForceType::ForceType(ForceType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [196]
+                0.00    0.00       1/2           ForceType::_xsd_ForceType_convert() const [120]
+                0.00    0.00       1/1           LinkedCellType::domain_size() [136]
+                0.00    0.00       1/1           PositiveDoubleVector3::PositiveDoubleVector3(PositiveDoubleVector3 const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [186]
+                0.00    0.00       1/1           LinkedCellType::cutoff_radius() [137]
+                0.00    0.00       1/1           LinkedCellType::boundary_condition() [138]
+                0.00    0.00       1/1           BoundaryCondition3::_clone(xsd::cxx::tree::flags, xsd::cxx::tree::_type*) const [206]
+                0.00    0.00       1/1           BoundaryCondition3::back() [159]
+                0.00    0.00       1/1           BoundaryCondition3::front() [160]
+                0.00    0.00       1/1           PositiveDoubleVector3::z() [183]
+                0.00    0.00       1/1           PositiveDoubleVector3::x() [181]
+                0.00    0.00       1/1           PositiveDoubleVector3::y() [182]
+                0.00    0.00       1/1           BoundaryCondition3::~BoundaryCondition3() [164]
+                0.00    0.00       1/2           PositiveDoubleVector3::~PositiveDoubleVector3() [113]
+                0.00    0.00       1/1           BoundaryCondition3::back_default_value() [157]
+                0.00    0.00       1/1           BoundaryCondition3::front_default_value() [158]
+                0.00    0.00       1/1           ParticleContainer::setG(double) [149]
+                0.00    0.00       1/1           ThermostatsType::target_T() [144]
+                0.00    0.00       1/1           ThermostatsType::ThermostatsType(ThermostatsType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [147]
+                0.00    0.00       1/1           ThermostatsType::max_delta() [145]
+                0.00    0.00       1/1           ThermostatsType::periode() [143]
+                0.00    0.00       1/1           Thermostat::Thermostat(double, int, double, int) [133]
+                0.00    0.00       1/1           ParticleContainer::setThermostat(std::unique_ptr<Thermostat, std::default_delete<Thermostat> >&) [148]
+                0.00    0.00       1/2           ThermostatsType::~ThermostatsType() [101]
+                0.00    0.00       1/1           SimulationParameters::output() [176]
+                0.00    0.00       1/1           SimulationParameters::format() [175]
+                0.00    0.00       1/1           SimulationParameters::frequency() [178]
+                0.00    0.00       1/1           Simulation::Simulation(std::unique_ptr<ParticleContainer, std::default_delete<ParticleContainer> >&, double, double, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, unsigned int) [132]
+                0.00    0.00       1/2           Simulation::setSaveOutput(bool) [95]
+                0.00    0.00       1/1           Simulation::setCheckpointingFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [130]
+                0.00    0.00       1/1           InputData::~InputData() [201]
+                0.00    0.00       1/1           SimulationParameters::frequency_default_value() [173]
+                0.00    0.00       1/1           SimulationParameters::format_default_value() [170]
+                0.00    0.00       1/1           SimulationParameters::output_default_value() [171]
+-----------------------------------------------
+               20.58    0.00   12500/12500       XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[8]      4.0   20.58    0.00   12500         Particle::Particle(std::array<double, 3ul>, std::array<double, 3ul>, double, int, double, double) [8]
+-----------------------------------------------
+                6.50    6.45   30000/30000       ParticleContainer::simulate(double, double, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned int, bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[9]      2.5    6.50    6.45   30000         LinkedCellContainer::updateX(double) [9]
+                3.85    0.06 750000000/750416551     LinkedCellContainer::getCellIndex(std::array<double, 3ul>) [12]
+                1.99    0.00 375000000/751916551     Particle::getV() const [11]
+                0.34    0.01  180000/180000      LinkedCellContainer::updateHalo(Direction, BoundaryCondition, double) [26]
+                0.16    0.00  553655/553655      Cell::removeIndex(int) [33]
+                0.02    0.00 1125000000/17219769622     Particle::getX() const [27]
+                0.01    0.00 375000000/7241632473     Particle::setX(std::array<double, 3ul>) [30]
+                0.01    0.00 375000000/10878530557     Particle::getF() const [31]
+                0.00    0.00 375000000/1125804051     Particle::getM() const [37]
+                0.00    0.00  553655/970206      Cell::addIndex(int) [47]
+-----------------------------------------------
+                             708023600             LinkedCellContainer::updateV(double) [10]
+                0.00    0.00   17862/717749646     LinkedCellContainer::LinkedCellContainer(std::vector<Particle, std::allocator<Particle> >&, std::unique_ptr<Force, std::default_delete<Force> >&, std::array<double, 3ul>, double, std::array<BoundaryCondition, 6ul>) [23]
+                0.00    0.00   17862/717749646     LinkedCellContainer::~LinkedCellContainer() [21]
+                0.00    0.00   30000/717749646     ParticleContainer::simulate(double, double, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned int, bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+                6.43    5.96 717683922/717749646     LinkedCellContainer::updateF() [3]
+[10]     2.4    6.43    5.96 717749646+708023600 LinkedCellContainer::updateV(double) [10]
+                3.67    0.00 375000000/375779051     Particle::setV(std::array<double, 3ul>) [13]
+                1.99    0.00 375000000/751916551     Particle::getV() const [11]
+                0.29    0.00 375000000/375000000     Particle::getOldF() const [28]
+                0.01    0.00 375000000/10878530557     Particle::getF() const [31]
+                0.00    0.00 375000000/1125804051     Particle::getM() const [37]
+                             708023600             LinkedCellContainer::updateV(double) [10]
+-----------------------------------------------
+                0.00    0.00   12500/751916551     StateWriter::saveState(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [35]
+                0.00    0.00  375000/751916551     Thermostat::temperature(std::vector<Particle, std::allocator<Particle> >&, int) [18]
+                0.00    0.00  375000/751916551     Thermostat::apply(std::vector<Particle, std::allocator<Particle> >&) const [14]
+                0.00    0.00  404051/751916551     LinkedCellContainer::updateHalo(Direction, BoundaryCondition, double) [26]
+                0.00    0.00  750000/751916551     Thermostat::meanVelocity(std::vector<Particle, std::allocator<Particle> >&) [19]
+                1.99    0.00 375000000/751916551     LinkedCellContainer::updateV(double) [10]
+                1.99    0.00 375000000/751916551     LinkedCellContainer::updateX(double) [9]
+[11]     0.8    3.99    0.00 751916551         Particle::getV() const [11]
+-----------------------------------------------
+                0.00    0.00   12500/750416551     LinkedCellContainer::LinkedCellContainer(std::vector<Particle, std::allocator<Particle> >&, std::unique_ptr<Force, std::default_delete<Force> >&, std::array<double, 3ul>, double, std::array<BoundaryCondition, 6ul>) [23]
+                0.00    0.00  404051/750416551     LinkedCellContainer::updateHalo(Direction, BoundaryCondition, double) [26]
+                3.85    0.06 750000000/750416551     LinkedCellContainer::updateX(double) [9]
+[12]     0.8    3.85    0.06 750416551         LinkedCellContainer::getCellIndex(std::array<double, 3ul>) [12]
+                0.06    0.00 750416551/750416551     Cell::getSize() const [34]
+-----------------------------------------------
+                0.00    0.00  375000/375779051     Thermostat::apply(std::vector<Particle, std::allocator<Particle> >&) const [14]
+                0.00    0.00  404051/375779051     LinkedCellContainer::updateHalo(Direction, BoundaryCondition, double) [26]
+                3.67    0.00 375000000/375779051     LinkedCellContainer::updateV(double) [10]
+[13]     0.7    3.68    0.00 375779051         Particle::setV(std::array<double, 3ul>) [13]
+-----------------------------------------------
+                0.02    3.63      30/30          ParticleContainer::simulate(double, double, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned int, bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[14]     0.7    0.02    3.63      30         Thermostat::apply(std::vector<Particle, std::allocator<Particle> >&) const [14]
+                0.00    1.81      30/30          Thermostat::temperature(std::vector<Particle, std::allocator<Particle> >&, int) [18]
+                0.00    0.91      30/60          Thermostat::meanVelocity(std::vector<Particle, std::allocator<Particle> >&) [19]
+                0.90    0.00  375000/1512500     Particle::isInDomain() const [15]
+                0.00    0.00  375000/375779051     Particle::setV(std::array<double, 3ul>) [13]
+                0.00    0.00  375000/751916551     Particle::getV() const [11]
+-----------------------------------------------
+                0.03    0.00   12500/1512500     StateWriter::saveState(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [35]
+                0.90    0.00  375000/1512500     Thermostat::temperature(std::vector<Particle, std::allocator<Particle> >&, int) [18]
+                0.90    0.00  375000/1512500     Thermostat::apply(std::vector<Particle, std::allocator<Particle> >&) const [14]
+                1.81    0.00  750000/1512500     Thermostat::meanVelocity(std::vector<Particle, std::allocator<Particle> >&) [19]
+[15]     0.7    3.65    0.00 1512500         Particle::isInDomain() const [15]
+-----------------------------------------------
+                0.00    0.00   12500/1163191914     StateWriter::saveState(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [35]
+                3.40    0.00 1163179414/1163191914     LennardJonesForce::force(Particle&, Particle&) [5]
+[16]     0.7    3.40    0.00 1163191914         Particle::getEpsilon() const [16]
+-----------------------------------------------
+                0.00    0.00   12500/1163191914     StateWriter::saveState(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [35]
+                2.36    0.00 1163179414/1163191914     LennardJonesForce::force(Particle&, Particle&) [5]
+[17]     0.5    2.36    0.00 1163191914         Particle::getSigma() const [17]
+-----------------------------------------------
+                0.00    1.81      30/30          Thermostat::apply(std::vector<Particle, std::allocator<Particle> >&) const [14]
+[18]     0.4    0.00    1.81      30         Thermostat::temperature(std::vector<Particle, std::allocator<Particle> >&, int) [18]
+                0.00    0.91      30/60          Thermostat::meanVelocity(std::vector<Particle, std::allocator<Particle> >&) [19]
+                0.90    0.00  375000/1512500     Particle::isInDomain() const [15]
+                0.00    0.00  375000/751916551     Particle::getV() const [11]
+                0.00    0.00  375000/1125804051     Particle::getM() const [37]
+-----------------------------------------------
+                0.00    0.91      30/60          Thermostat::temperature(std::vector<Particle, std::allocator<Particle> >&, int) [18]
+                0.00    0.91      30/60          Thermostat::apply(std::vector<Particle, std::allocator<Particle> >&) const [14]
+[19]     0.4    0.00    1.81      60         Thermostat::meanVelocity(std::vector<Particle, std::allocator<Particle> >&) [19]
+                1.81    0.00  750000/1512500     Particle::isInDomain() const [15]
+                0.00    0.00  750000/751916551     Particle::getV() const [11]
+-----------------------------------------------
+                0.00    1.55       2/2           main [1]
+[20]     0.3    0.00    1.55       2         std::unique_ptr<Simulation, std::default_delete<Simulation> >::~unique_ptr() [20]
+                0.00    1.55       1/1           LinkedCellContainer::~LinkedCellContainer() [21]
+-----------------------------------------------
+                0.00    1.55       1/1           std::unique_ptr<Simulation, std::default_delete<Simulation> >::~unique_ptr() [20]
+[21]     0.3    0.00    1.55       1         LinkedCellContainer::~LinkedCellContainer() [21]
+                1.55    0.00       1/1           LennardJonesForce::~LennardJonesForce() [22]
+                0.00    0.00   17862/717749646     LinkedCellContainer::updateV(double) [10]
+-----------------------------------------------
+                1.55    0.00       1/1           LinkedCellContainer::~LinkedCellContainer() [21]
+[22]     0.3    1.55    0.00       1         LennardJonesForce::~LennardJonesForce() [22]
+-----------------------------------------------
+                0.30    1.09       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[23]     0.3    0.30    1.09       1         LinkedCellContainer::LinkedCellContainer(std::vector<Particle, std::allocator<Particle> >&, std::unique_ptr<Force, std::default_delete<Force> >&, std::array<double, 3ul>, double, std::array<BoundaryCondition, 6ul>) [23]
+                0.91    0.00   19158/19158       Cell::Cell(std::array<double, 3ul>, std::array<double, 3ul>, std::set<int, std::less<int>, std::allocator<int> >&) [24]
+                0.18    0.00   19158/19158       LinkedCellContainer::getNeighborCells(int) [32]
+                0.00    0.00   17862/717749646     LinkedCellContainer::updateV(double) [10]
+                0.00    0.00   12500/750416551     LinkedCellContainer::getCellIndex(std::array<double, 3ul>) [12]
+                0.00    0.00   12500/17219769622     Particle::getX() const [27]
+                0.00    0.00   12500/970206      Cell::addIndex(int) [47]
+                0.00    0.00       1/1           ParticleContainer::ParticleContainer(std::vector<Particle, std::allocator<Particle> >&, std::unique_ptr<Force, std::default_delete<Force> >&) [150]
+-----------------------------------------------
+                0.91    0.00   19158/19158       LinkedCellContainer::LinkedCellContainer(std::vector<Particle, std::allocator<Particle> >&, std::unique_ptr<Force, std::default_delete<Force> >&, std::array<double, 3ul>, double, std::array<BoundaryCondition, 6ul>) [23]
+[24]     0.2    0.91    0.00   19158         Cell::Cell(std::array<double, 3ul>, std::array<double, 3ul>, std::set<int, std::less<int>, std::allocator<int> >&) [24]
+                0.00    0.00    6060/6060        Sphere::createParticles(std::vector<Particle, std::allocator<Particle> >&) const [53]
+-----------------------------------------------
+                0.13    0.00 3261898084/10128126506     LinkedCellContainer::updateF() [3]
+                0.28    0.00 6866228422/10128126506     LinkedCellContainer::updateFCells(int, int) [4]
+[25]     0.1    0.41    0.00 10128126506         Particle::setF(std::array<double, 3ul>) [25]
+-----------------------------------------------
+                0.34    0.01  180000/180000      LinkedCellContainer::updateX(double) [9]
+[26]     0.1    0.34    0.01  180000         LinkedCellContainer::updateHalo(Direction, BoundaryCondition, double) [26]
+                0.00    0.00  404051/375779051     Particle::setV(std::array<double, 3ul>) [13]
+                0.00    0.00  404051/751916551     Particle::getV() const [11]
+                0.00    0.00  404051/750416551     LinkedCellContainer::getCellIndex(std::array<double, 3ul>) [12]
+                0.00    0.00  404051/7241632473     Particle::setX(std::array<double, 3ul>) [30]
+                0.00    0.00  404051/17219769622     Particle::getX() const [27]
+                0.00    0.00  404051/10878530557     Particle::getF() const [31]
+                0.00    0.00  404051/1125804051     Particle::getM() const [37]
+                0.00    0.00 412860000/2020253578     Cell::getParticleIndices() const [44]
+                0.00    0.00 412860000/412860000     Cell::clear() [45]
+                0.00    0.00  404051/970206      Cell::addIndex(int) [47]
+-----------------------------------------------
+                0.00    0.00   12500/17219769622     LinkedCellContainer::LinkedCellContainer(std::vector<Particle, std::allocator<Particle> >&, std::unique_ptr<Force, std::default_delete<Force> >&, std::array<double, 3ul>, double, std::array<BoundaryCondition, 6ul>) [23]
+                0.00    0.00   12500/17219769622     StateWriter::saveState(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [35]
+                0.00    0.00  404051/17219769622     LinkedCellContainer::updateHalo(Direction, BoundaryCondition, double) [26]
+                0.02    0.00 1125000000/17219769622     LinkedCellContainer::updateX(double) [9]
+                0.04    0.00 2326358828/17219769622     LennardJonesForce::force(Particle&, Particle&) [5]
+                0.06    0.00 2979134350/17219769622     LinkedCellContainer::updateF() [3]
+                0.21    0.00 10788847393/17219769622     LinkedCellContainer::updateFCells(int, int) [4]
+[27]     0.1    0.33    0.00 17219769622         Particle::getX() const [27]
+-----------------------------------------------
+                0.29    0.00 375000000/375000000     LinkedCellContainer::updateV(double) [10]
+[28]     0.1    0.29    0.00 375000000         Particle::getOldF() const [28]
+-----------------------------------------------
+                                                 <spontaneous>
+[29]     0.0    0.24    0.00                 Cell::getPosition() const [29]
+-----------------------------------------------
+                0.00    0.00  404051/7241632473     LinkedCellContainer::updateHalo(Direction, BoundaryCondition, double) [26]
+                0.01    0.00 375000000/7241632473     LinkedCellContainer::updateX(double) [9]
+                0.21    0.00 6866228422/7241632473     LinkedCellContainer::updateFCells(int, int) [4]
+[30]     0.0    0.22    0.00 7241632473         Particle::setX(std::array<double, 3ul>) [30]
+-----------------------------------------------
+                0.00    0.00  404051/10878530557     LinkedCellContainer::updateHalo(Direction, BoundaryCondition, double) [26]
+                0.01    0.00 375000000/10878530557     LinkedCellContainer::updateV(double) [10]
+                0.01    0.00 375000000/10878530557     LinkedCellContainer::updateX(double) [9]
+                0.05    0.00 3261898084/10878530557     LinkedCellContainer::updateF() [3]
+                0.11    0.00 6866228422/10878530557     LinkedCellContainer::updateFCells(int, int) [4]
+[31]     0.0    0.18    0.00 10878530557         Particle::getF() const [31]
+-----------------------------------------------
+                0.18    0.00   19158/19158       LinkedCellContainer::LinkedCellContainer(std::vector<Particle, std::allocator<Particle> >&, std::unique_ptr<Force, std::default_delete<Force> >&, std::array<double, 3ul>, double, std::array<BoundaryCondition, 6ul>) [23]
+[32]     0.0    0.18    0.00   19158         LinkedCellContainer::getNeighborCells(int) [32]
+-----------------------------------------------
+                0.16    0.00  553655/553655      LinkedCellContainer::updateX(double) [9]
+[33]     0.0    0.16    0.00  553655         Cell::removeIndex(int) [33]
+-----------------------------------------------
+                0.06    0.00 750416551/750416551     LinkedCellContainer::getCellIndex(std::array<double, 3ul>) [12]
+[34]     0.0    0.06    0.00 750416551         Cell::getSize() const [34]
+-----------------------------------------------
+                0.00    0.03       1/1           ParticleContainer::simulate(double, double, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned int, bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[35]     0.0    0.00    0.03       1         StateWriter::saveState(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [35]
+                0.03    0.00   12500/1512500     Particle::isInDomain() const [15]
+                0.00    0.00   12500/751916551     Particle::getV() const [11]
+                0.00    0.00   12500/1163191914     Particle::getEpsilon() const [16]
+                0.00    0.00   12500/1163191914     Particle::getSigma() const [17]
+                0.00    0.00   12500/17219769622     Particle::getX() const [27]
+                0.00    0.00   12500/1125804051     Particle::getM() const [37]
+                0.00    0.00   12500/12500       Particle::getType() const [52]
+-----------------------------------------------
+                0.01    0.00 181806060/181806060     LinkedCellContainer::updateF() [3]
+[36]     0.0    0.01    0.00 181806060         Cell::getNeighbours() const [36]
+-----------------------------------------------
+                0.00    0.00   12500/1125804051     StateWriter::saveState(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [35]
+                0.00    0.00  375000/1125804051     Thermostat::temperature(std::vector<Particle, std::allocator<Particle> >&, int) [18]
+                0.00    0.00  404051/1125804051     LinkedCellContainer::updateHalo(Direction, BoundaryCondition, double) [26]
+                0.00    0.00 375000000/1125804051     LinkedCellContainer::updateV(double) [10]
+                0.00    0.00 375000000/1125804051     LinkedCellContainer::updateX(double) [9]
+                0.00    0.00 375012500/1125804051     LinkedCellContainer::updateF() [3]
+[37]     0.0    0.01    0.00 1125804051         Particle::getM() const [37]
+-----------------------------------------------
+                0.00    0.00       3/3           main [1]
+[38]     0.0    0.00    0.00       3         frame_dummy [38]
+-----------------------------------------------
+                0.00    0.00 181806060/2020253578     LinkedCellContainer::updateF() [3]
+                0.00    0.00 412860000/2020253578     LinkedCellContainer::updateHalo(Direction, BoundaryCondition, double) [26]
+                0.00    0.00 1425587518/2020253578     LinkedCellContainer::updateFCells(int, int) [4]
+[44]     0.0    0.00    0.00 2020253578         Cell::getParticleIndices() const [44]
+-----------------------------------------------
+                0.00    0.00 412860000/412860000     LinkedCellContainer::updateHalo(Direction, BoundaryCondition, double) [26]
+[45]     0.0    0.00    0.00 412860000         Cell::clear() [45]
+-----------------------------------------------
+                0.00    0.00 375012500/375012500     LinkedCellContainer::updateF() [3]
+[46]     0.0    0.00    0.00 375012500         Particle::setOldF(std::array<double, 3ul>) [46]
+-----------------------------------------------
+                0.00    0.00   12500/970206      LinkedCellContainer::LinkedCellContainer(std::vector<Particle, std::allocator<Particle> >&, std::unique_ptr<Force, std::default_delete<Force> >&, std::array<double, 3ul>, double, std::array<BoundaryCondition, 6ul>) [23]
+                0.00    0.00  404051/970206      LinkedCellContainer::updateHalo(Direction, BoundaryCondition, double) [26]
+                0.00    0.00  553655/970206      LinkedCellContainer::updateX(double) [9]
+[47]     0.0    0.00    0.00  970206         Cell::addIndex(int) [47]
+-----------------------------------------------
+                0.00    0.00   30000/30000       ParticleContainer::simulate(double, double, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned int, bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[48]     0.0    0.00    0.00   30000         void spdlog::logger::log_<int&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, int&) [48]
+-----------------------------------------------
+                0.00    0.00   30000/30000       ParticleContainer::simulate(double, double, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned int, bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[49]     0.0    0.00    0.00   30000         Thermostat::getPeriode() const [49]
+-----------------------------------------------
+                0.00    0.00   12500/28883       std::vector<Particle, std::allocator<Particle> >::~vector() [209]
+                0.00    0.00   16383/28883       XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[50]     0.0    0.00    0.00   28883         Particle::~Particle() [50]
+-----------------------------------------------
+                0.00    0.00   16383/16383       XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[51]     0.0    0.00    0.00   16383         Particle::Particle(Particle const&) [51]
+-----------------------------------------------
+                0.00    0.00   12500/12500       StateWriter::saveState(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [35]
+[52]     0.0    0.00    0.00   12500         Particle::getType() const [52]
+-----------------------------------------------
+                               23600             Sphere::createParticles(std::vector<Particle, std::allocator<Particle> >&) const [53]
+                0.00    0.00    6060/6060        Cell::Cell(std::array<double, 3ul>, std::array<double, 3ul>, std::set<int, std::less<int>, std::allocator<int> >&) [24]
+[53]     0.0    0.00    0.00    6060+23600   Sphere::createParticles(std::vector<Particle, std::allocator<Particle> >&) const [53]
+                               23600             Sphere::createParticles(std::vector<Particle, std::allocator<Particle> >&) const [53]
+-----------------------------------------------
+                0.00    0.00       1/115         PositiveIntVector3::PositiveIntVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [65]
+                0.00    0.00       1/115         PositiveDoubleVector3::PositiveDoubleVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [185]
+                0.00    0.00       1/115         ThermostatsType::ThermostatsType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [146]
+                0.00    0.00       1/115         CuboidType::CuboidType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [127]
+                0.00    0.00       1/115         SimulationObjects::SimulationObjects(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [156]
+                0.00    0.00       1/115         BoundaryCondition3::BoundaryCondition3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [162]
+                0.00    0.00       1/115         LinkedCellType::LinkedCellType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [140]
+                0.00    0.00       1/115         SimulationParameters::SimulationParameters(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [179]
+                0.00    0.00       1/115         InputData::InputData(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [200]
+                0.00    0.00       2/115         PositiveIntVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [169]
+                0.00    0.00       2/115         PositiveDoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [184]
+                0.00    0.00       2/115         ThermostatsType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [142]
+                0.00    0.00       2/115         SimulationObjects::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [152]
+                0.00    0.00       2/115         InputData::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [199]
+                0.00    0.00       2/115         xsd::cxx::tree::traits<DoubleVector3, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [116]
+                0.00    0.00       3/115         ThermostatsType::~ThermostatsType() [86]
+                0.00    0.00       3/115         LinkedCellType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [139]
+                0.00    0.00       4/115         DoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [99]
+                0.00    0.00       4/115         BoundaryCondition3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [161]
+                0.00    0.00       4/115         xsd::cxx::tree::optional<BoundaryConditionType, false>::optional(xsd::cxx::tree::optional<BoundaryConditionType, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [74]
+                0.00    0.00       7/115         CuboidType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [125]
+                0.00    0.00       7/115         SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [174]
+                0.00    0.00      12/115         xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >::string(char const*) [68]
+                0.00    0.00      15/115         SimulationParameters::~SimulationParameters() [66]
+                0.00    0.00      35/115         xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&) [58]
+[54]     0.0    0.00    0.00     115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+-----------------------------------------------
+                0.00    0.00       1/111         PositiveIntVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [169]
+                0.00    0.00       2/111         DoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [99]
+                0.00    0.00       2/111         SimulationObjects::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [152]
+                0.00    0.00       2/111         simulation(std::unique_ptr<xercesc_3_3::DOMDocument, xsd::cxx::xml::dom::deleter<xercesc_3_3::DOMDocument> >, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&) [123]
+                0.00    0.00       3/111         PositiveDoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [184]
+                0.00    0.00       3/111         InputData::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [199]
+                0.00    0.00       4/111         ThermostatsType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [142]
+                0.00    0.00       6/111         LinkedCellType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [139]
+                0.00    0.00      10/111         BoundaryCondition3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [161]
+                0.00    0.00      32/111         CuboidType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [125]
+                0.00    0.00      46/111         SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [174]
+[55]     0.0    0.00    0.00     111         bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [55]
+-----------------------------------------------
+                0.00    0.00       2/108         SimulationObjects::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [152]
+                0.00    0.00       2/108         xsd::cxx::xml::char_utf8_transcoder<char>::to[abi:cxx11](char16_t const*, unsigned long) [57]
+                0.00    0.00       3/108         main [1]
+                0.00    0.00       4/108         PositiveIntVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [169]
+                0.00    0.00       4/108         PositiveDoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [184]
+                0.00    0.00       4/108         ThermostatsType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [142]
+                0.00    0.00       4/108         InputData::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [199]
+                0.00    0.00       6/108         LinkedCellType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [139]
+                0.00    0.00       8/108         DoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [99]
+                0.00    0.00       8/108         BoundaryCondition3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [161]
+                0.00    0.00      14/108         CuboidType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [125]
+                0.00    0.00      14/108         SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [174]
+                0.00    0.00      35/108         xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&) [58]
+[56]     0.0    0.00    0.00     108         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() [56]
+-----------------------------------------------
+                0.00    0.00      24/59          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > xsd::cxx::tree::text_content<char>(xercesc_3_3::DOMElement const&) [63]
+                0.00    0.00      35/59          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > xsd::cxx::xml::transcode<char>(char16_t const*) [59]
+[57]     0.0    0.00    0.00      59         xsd::cxx::xml::char_utf8_transcoder<char>::to[abi:cxx11](char16_t const*, unsigned long) [57]
+                0.00    0.00       2/108         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() [56]
+-----------------------------------------------
+                0.00    0.00       1/35          SimulationObjects::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [152]
+                0.00    0.00       1/35          simulation(std::unique_ptr<xercesc_3_3::DOMDocument, xsd::cxx::xml::dom::deleter<xercesc_3_3::DOMDocument> >, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&) [123]
+                0.00    0.00       2/35          PositiveIntVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [169]
+                0.00    0.00       2/35          PositiveDoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [184]
+                0.00    0.00       2/35          ThermostatsType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [142]
+                0.00    0.00       2/35          InputData::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [199]
+                0.00    0.00       3/35          LinkedCellType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [139]
+                0.00    0.00       4/35          DoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [99]
+                0.00    0.00       4/35          BoundaryCondition3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [161]
+                0.00    0.00       7/35          CuboidType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [125]
+                0.00    0.00       7/35          SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [174]
+[58]     0.0    0.00    0.00      35         xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&) [58]
+                0.00    0.00      35/35          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > xsd::cxx::xml::transcode<char>(char16_t const*) [59]
+                0.00    0.00      35/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00      35/108         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() [56]
+-----------------------------------------------
+                0.00    0.00      35/35          xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&) [58]
+[59]     0.0    0.00    0.00      35         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > xsd::cxx::xml::transcode<char>(char16_t const*) [59]
+                0.00    0.00      35/59          xsd::cxx::xml::char_utf8_transcoder<char>::to[abi:cxx11](char16_t const*, unsigned long) [57]
+-----------------------------------------------
+                0.00    0.00       1/28          BoundaryCondition3::~BoundaryCondition3() [164]
+                0.00    0.00       1/28          CuboidType::~CuboidType() [129]
+                0.00    0.00       1/28          xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >::~string() [191]
+                0.00    0.00       1/28          ForceType::~ForceType() [198]
+                0.00    0.00       2/28          LinkedCellType::~LinkedCellType() [141]
+                0.00    0.00       2/28          SimulationParameters::~SimulationParameters() [180]
+                0.00    0.00       3/28          InputData::~InputData() [201]
+                0.00    0.00       3/28          XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+                0.00    0.00       6/28          CuboidType::~CuboidType() [94]
+                0.00    0.00       8/28          BoundaryConditionType::~BoundaryConditionType() [70]
+[60]     0.0    0.00    0.00      28         xsd::cxx::tree::_type::~_type() [60]
+-----------------------------------------------
+                0.00    0.00       1/26          ForceType::ForceType(ForceType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [196]
+                0.00    0.00       1/26          PositiveDoubleVector3::PositiveDoubleVector3(PositiveDoubleVector3 const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [186]
+                0.00    0.00       1/26          ThermostatsType::ThermostatsType(ThermostatsType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [147]
+                0.00    0.00       1/26          BoundaryCondition3::BoundaryCondition3(BoundaryCondition3 const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [163]
+                0.00    0.00       2/26          CuboidType::CuboidType(CuboidType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [128]
+                0.00    0.00       2/26          xsd::cxx::tree::one<DoubleVector3, false>::one(xsd::cxx::tree::one<DoubleVector3, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [115]
+                0.00    0.00       3/26          PositiveDouble::PositiveDouble(PositiveDouble const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [85]
+                0.00    0.00       4/26          xsd::cxx::tree::optional<BoundaryConditionType, false>::optional(xsd::cxx::tree::optional<BoundaryConditionType, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [74]
+                0.00    0.00       5/26          xsd::cxx::tree::one<PositiveDouble, false>::one(xsd::cxx::tree::one<PositiveDouble, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [76]
+                0.00    0.00       6/26          BoundaryConditionType::BoundaryConditionType(BoundaryConditionType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [72]
+[61]     0.0    0.00    0.00      26         xsd::cxx::tree::_type::_type(xsd::cxx::tree::_type const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [61]
+-----------------------------------------------
+                0.00    0.00       1/25          PositiveIntVector3::PositiveIntVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [65]
+                0.00    0.00       1/25          ForceType::ForceType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [197]
+                0.00    0.00       1/25          PositiveDoubleVector3::PositiveDoubleVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [185]
+                0.00    0.00       1/25          ThermostatsType::ThermostatsType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [146]
+                0.00    0.00       1/25          CuboidType::CuboidType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [127]
+                0.00    0.00       1/25          SimulationObjects::SimulationObjects(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [156]
+                0.00    0.00       1/25          BoundaryCondition3::BoundaryCondition3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [162]
+                0.00    0.00       1/25          LinkedCellType::LinkedCellType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [140]
+                0.00    0.00       1/25          SimulationParameters::SimulationParameters(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [179]
+                0.00    0.00       1/25          InputData::InputData(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [200]
+                0.00    0.00       1/25          xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type>::simple_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [189]
+                0.00    0.00       2/25          xsd::cxx::tree::traits<DoubleVector3, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [116]
+                0.00    0.00       4/25          xsd::cxx::tree::traits<BoundaryConditionType, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [79]
+                0.00    0.00       8/25          xsd::cxx::tree::traits<PositiveDouble, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [71]
+[62]     0.0    0.00    0.00      25         xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [62]
+-----------------------------------------------
+                0.00    0.00       1/24          ForceType::ForceType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [197]
+                0.00    0.00       1/24          SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [174]
+                0.00    0.00       3/24          operator<<(xercesc_3_3::DOMElement&, PositiveDouble const&) [90]
+                0.00    0.00       4/24          xsd::cxx::tree::traits<BoundaryConditionType, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [79]
+                0.00    0.00      15/24          PositiveIntVector3::PositiveIntVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [65]
+[63]     0.0    0.00    0.00      24         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > xsd::cxx::tree::text_content<char>(xercesc_3_3::DOMElement const&) [63]
+                0.00    0.00      24/59          xsd::cxx::xml::char_utf8_transcoder<char>::to[abi:cxx11](char16_t const*, unsigned long) [57]
+-----------------------------------------------
+                0.00    0.00      22/22          XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[64]     0.0    0.00    0.00      22         InputData::parameters() [64]
+-----------------------------------------------
+                0.00    0.00       1/16          SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [174]
+                0.00    0.00       3/16          CuboidType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [125]
+                0.00    0.00       4/16          DoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [99]
+                0.00    0.00       8/16          xsd::cxx::tree::traits<PositiveDouble, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [71]
+[65]     0.0    0.00    0.00      16         PositiveIntVector3::PositiveIntVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [65]
+                0.00    0.00      15/24          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > xsd::cxx::tree::text_content<char>(xercesc_3_3::DOMElement const&) [63]
+                0.00    0.00      15/15          SimulationParameters::~SimulationParameters() [66]
+                0.00    0.00       1/25          xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [62]
+                0.00    0.00       1/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       1/1           PositiveIntVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [169]
+-----------------------------------------------
+                0.00    0.00      15/15          PositiveIntVector3::PositiveIntVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [65]
+[66]     0.0    0.00    0.00      15         SimulationParameters::~SimulationParameters() [66]
+                0.00    0.00      15/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+-----------------------------------------------
+                0.00    0.00       1/13          LinkedCellType::~LinkedCellType() [141]
+                0.00    0.00       2/13          ThermostatsType::~ThermostatsType() [101]
+                0.00    0.00       2/13          SimulationParameters::~SimulationParameters() [180]
+                0.00    0.00       4/13          PositiveDoubleVector3::~PositiveDoubleVector3() [113]
+                0.00    0.00       4/13          CuboidType::~CuboidType() [94]
+[67]     0.0    0.00    0.00      13         PositiveDouble::~PositiveDouble() [67]
+-----------------------------------------------
+                0.00    0.00       3/12          _GLOBAL__sub_I__ZN15DataArrayList_tC2Ev [210]
+                0.00    0.00       9/12          _GLOBAL__sub_I__ZNK13DoubleVector31xEv [211]
+[68]     0.0    0.00    0.00      12         xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >::string(char const*) [68]
+                0.00    0.00      12/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+-----------------------------------------------
+                0.00    0.00       4/10          xsd::cxx::tree::traits<BoundaryConditionType, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [79]
+                0.00    0.00       6/10          XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[69]     0.0    0.00    0.00      10         BoundaryConditionType::_xsd_BoundaryConditionType_convert() const [69]
+-----------------------------------------------
+                0.00    0.00       8/8           BoundaryCondition3::~BoundaryCondition3() [106]
+[70]     0.0    0.00    0.00       8         BoundaryConditionType::~BoundaryConditionType() [70]
+                0.00    0.00       8/28          xsd::cxx::tree::_type::~_type() [60]
+-----------------------------------------------
+                0.00    0.00       1/8           ThermostatsType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [142]
+                0.00    0.00       1/8           LinkedCellType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [139]
+                0.00    0.00       2/8           PositiveDoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [184]
+                0.00    0.00       2/8           CuboidType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [125]
+                0.00    0.00       2/8           SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [174]
+[71]     0.0    0.00    0.00       8         xsd::cxx::tree::traits<PositiveDouble, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [71]
+                0.00    0.00       8/25          xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [62]
+                0.00    0.00       8/16          PositiveIntVector3::PositiveIntVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [65]
+-----------------------------------------------
+                0.00    0.00       6/6           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[72]     0.0    0.00    0.00       6         BoundaryConditionType::BoundaryConditionType(BoundaryConditionType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [72]
+                0.00    0.00       6/26          xsd::cxx::tree::_type::_type(xsd::cxx::tree::_type const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [61]
+-----------------------------------------------
+                0.00    0.00       1/6           ThermostatsType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [142]
+                0.00    0.00       1/6           LinkedCellType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [139]
+                0.00    0.00       2/6           PositiveDoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [184]
+                0.00    0.00       2/6           CuboidType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [125]
+[73]     0.0    0.00    0.00       6         xsd::cxx::tree::one<PositiveDouble, false>::set(std::unique_ptr<PositiveDouble, std::default_delete<PositiveDouble> >) [73]
+-----------------------------------------------
+                0.00    0.00       6/6           BoundaryCondition3::BoundaryCondition3(BoundaryCondition3 const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [163]
+[74]     0.0    0.00    0.00       6         xsd::cxx::tree::optional<BoundaryConditionType, false>::optional(xsd::cxx::tree::optional<BoundaryConditionType, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [74]
+                0.00    0.00       4/26          xsd::cxx::tree::_type::_type(xsd::cxx::tree::_type const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [61]
+                0.00    0.00       4/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+-----------------------------------------------
+                0.00    0.00       5/5           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[75]     0.0    0.00    0.00       5         PositiveDouble::~PositiveDouble() [75]
+-----------------------------------------------
+                0.00    0.00       1/5           ThermostatsType::ThermostatsType(ThermostatsType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [147]
+                0.00    0.00       2/5           PositiveDoubleVector3::PositiveDoubleVector3(PositiveDoubleVector3 const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [186]
+                0.00    0.00       2/5           CuboidType::CuboidType(CuboidType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [128]
+[76]     0.0    0.00    0.00       5         xsd::cxx::tree::one<PositiveDouble, false>::one(xsd::cxx::tree::one<PositiveDouble, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [76]
+                0.00    0.00       5/26          xsd::cxx::tree::_type::_type(xsd::cxx::tree::_type const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [61]
+-----------------------------------------------
+                0.00    0.00       4/4           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[77]     0.0    0.00    0.00       4         SimulationParameters::thermostat() [77]
+-----------------------------------------------
+                0.00    0.00       4/4           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[78]     0.0    0.00    0.00       4         SimulationParameters::linked_cell() [78]
+-----------------------------------------------
+                0.00    0.00       4/4           BoundaryCondition3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [161]
+[79]     0.0    0.00    0.00       4         xsd::cxx::tree::traits<BoundaryConditionType, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [79]
+                0.00    0.00       4/25          xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [62]
+                0.00    0.00       4/24          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > xsd::cxx::tree::text_content<char>(xercesc_3_3::DOMElement const&) [63]
+                0.00    0.00       4/10          BoundaryConditionType::_xsd_BoundaryConditionType_convert() const [69]
+-----------------------------------------------
+                0.00    0.00       4/4           BoundaryCondition3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [161]
+[80]     0.0    0.00    0.00       4         xsd::cxx::tree::optional<BoundaryConditionType, false>::set(std::unique_ptr<BoundaryConditionType, std::default_delete<BoundaryConditionType> >) [80]
+-----------------------------------------------
+                0.00    0.00       4/4           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[81]     0.0    0.00    0.00       4         InputData::objects() [81]
+-----------------------------------------------
+                0.00    0.00       3/3           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[82]     0.0    0.00    0.00       3         CuboidType::size() [82]
+-----------------------------------------------
+                0.00    0.00       3/3           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[83]     0.0    0.00    0.00       3         CuboidType::position() [83]
+-----------------------------------------------
+                0.00    0.00       3/3           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[84]     0.0    0.00    0.00       3         CuboidType::velocity() [84]
+-----------------------------------------------
+                0.00    0.00       3/3           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[85]     0.0    0.00    0.00       3         PositiveDouble::PositiveDouble(PositiveDouble const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [85]
+                0.00    0.00       3/26          xsd::cxx::tree::_type::_type(xsd::cxx::tree::_type const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [61]
+-----------------------------------------------
+                0.00    0.00       3/3           operator<<(xercesc_3_3::DOMElement&, PositiveDouble const&) [90]
+[86]     0.0    0.00    0.00       3         ThermostatsType::~ThermostatsType() [86]
+                0.00    0.00       3/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+-----------------------------------------------
+                0.00    0.00       1/3           PositiveDoubleVector3::PositiveDoubleVector3(PositiveDoubleVector3 const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [186]
+                0.00    0.00       2/3           ThermostatsType::ThermostatsType(ThermostatsType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [147]
+[87]     0.0    0.00    0.00       3         xsd::cxx::tree::optional<PositiveDouble, false>::optional(xsd::cxx::tree::optional<PositiveDouble, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [87]
+-----------------------------------------------
+                0.00    0.00       3/3           main [1]
+[88]     0.0    0.00    0.00       3         void spdlog::logger::info<double>(fmt::v10::basic_format_string<char, fmt::v10::type_identity<double>::type>, double&&) [88]
+                0.00    0.00       3/3           void spdlog::logger::log_<double>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, double&&) [89]
+-----------------------------------------------
+                0.00    0.00       3/3           void spdlog::logger::info<double>(fmt::v10::basic_format_string<char, fmt::v10::type_identity<double>::type>, double&&) [88]
+[89]     0.0    0.00    0.00       3         void spdlog::logger::log_<double>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, double&&) [89]
+                0.00    0.00       1/1           fmt::v10::appender fmt::v10::vformat_to<fmt::v10::appender, 0>(fmt::v10::appender, fmt::v10::basic_string_view<char>, fmt::v10::basic_format_args<fmt::v10::basic_format_context<fmt::v10::appender, char> >) [187]
+-----------------------------------------------
+                0.00    0.00       1/3           ThermostatsType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [142]
+                0.00    0.00       2/3           PositiveIntVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [169]
+[90]     0.0    0.00    0.00       3         operator<<(xercesc_3_3::DOMElement&, PositiveDouble const&) [90]
+                0.00    0.00       3/24          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > xsd::cxx::tree::text_content<char>(xercesc_3_3::DOMElement const&) [63]
+                0.00    0.00       3/3           ThermostatsType::~ThermostatsType() [86]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[91]     0.0    0.00    0.00       2         CuboidType::mass() [91]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[92]     0.0    0.00    0.00       2         CuboidType::sigma() [92]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[93]     0.0    0.00    0.00       2         CuboidType::epsilon() [93]
+-----------------------------------------------
+                0.00    0.00       1/2           CuboidType::~CuboidType() [129]
+                0.00    0.00       1/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[94]     0.0    0.00    0.00       2         CuboidType::~CuboidType() [94]
+                0.00    0.00       6/28          xsd::cxx::tree::_type::~_type() [60]
+                0.00    0.00       4/13          PositiveDouble::~PositiveDouble() [67]
+-----------------------------------------------
+                0.00    0.00       1/2           main [1]
+                0.00    0.00       1/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[95]     0.0    0.00    0.00       2         Simulation::setSaveOutput(bool) [95]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[96]     0.0    0.00    0.00       2         DoubleVector3::x() [96]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[97]     0.0    0.00    0.00       2         DoubleVector3::y() [97]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[98]     0.0    0.00    0.00       2         DoubleVector3::z() [98]
+-----------------------------------------------
+                0.00    0.00       2/2           xsd::cxx::tree::traits<DoubleVector3, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [116]
+[99]     0.0    0.00    0.00       2         DoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [99]
+                0.00    0.00       8/108         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() [56]
+                0.00    0.00       4/35          xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&) [58]
+                0.00    0.00       4/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       4/16          PositiveIntVector3::PositiveIntVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [65]
+                0.00    0.00       2/111         bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [55]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[100]    0.0    0.00    0.00       2         ThermostatsType::initial_T() [100]
+-----------------------------------------------
+                0.00    0.00       1/2           SimulationParameters::~SimulationParameters() [180]
+                0.00    0.00       1/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[101]    0.0    0.00    0.00       2         ThermostatsType::~ThermostatsType() [101]
+                0.00    0.00       2/13          PositiveDouble::~PositiveDouble() [67]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[102]    0.0    0.00    0.00       2         BoundaryCondition3::up() [102]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[103]    0.0    0.00    0.00       2         BoundaryCondition3::down() [103]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[104]    0.0    0.00    0.00       2         BoundaryCondition3::left() [104]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[105]    0.0    0.00    0.00       2         BoundaryCondition3::right() [105]
+-----------------------------------------------
+                0.00    0.00       1/2           BoundaryCondition3::~BoundaryCondition3() [164]
+                0.00    0.00       1/2           LinkedCellType::~LinkedCellType() [141]
+[106]    0.0    0.00    0.00       2         BoundaryCondition3::~BoundaryCondition3() [106]
+                0.00    0.00       8/8           BoundaryConditionType::~BoundaryConditionType() [70]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[107]    0.0    0.00    0.00       2         SimulationParameters::g() [107]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[108]    0.0    0.00    0.00       2         SimulationParameters::force() [108]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[109]    0.0    0.00    0.00       2         SimulationParameters::store() [109]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[110]    0.0    0.00    0.00       2         SimulationParameters::delta_t() [110]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[111]    0.0    0.00    0.00       2         SimulationParameters::end_time() [111]
+-----------------------------------------------
+                0.00    0.00       2/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[112]    0.0    0.00    0.00       2         PositiveDoubleVector3::z_default_value() [112]
+-----------------------------------------------
+                0.00    0.00       1/2           LinkedCellType::~LinkedCellType() [141]
+                0.00    0.00       1/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[113]    0.0    0.00    0.00       2         PositiveDoubleVector3::~PositiveDoubleVector3() [113]
+                0.00    0.00       4/13          PositiveDouble::~PositiveDouble() [67]
+-----------------------------------------------
+                0.00    0.00       2/2           CuboidType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [125]
+[114]    0.0    0.00    0.00       2         xsd::cxx::tree::one<DoubleVector3, false>::set(std::unique_ptr<DoubleVector3, std::default_delete<DoubleVector3> >) [114]
+-----------------------------------------------
+                0.00    0.00       2/2           CuboidType::CuboidType(CuboidType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [128]
+[115]    0.0    0.00    0.00       2         xsd::cxx::tree::one<DoubleVector3, false>::one(xsd::cxx::tree::one<DoubleVector3, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [115]
+                0.00    0.00       2/26          xsd::cxx::tree::_type::_type(xsd::cxx::tree::_type const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [61]
+-----------------------------------------------
+                0.00    0.00       2/2           CuboidType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [125]
+[116]    0.0    0.00    0.00       2         xsd::cxx::tree::traits<DoubleVector3, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [116]
+                0.00    0.00       2/25          xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [62]
+                0.00    0.00       2/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       2/2           DoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [99]
+-----------------------------------------------
+                0.00    0.00       2/2           SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [174]
+[117]    0.0    0.00    0.00       2         xsd::cxx::tree::optional<PositiveDouble, false>::set(std::unique_ptr<PositiveDouble, std::default_delete<PositiveDouble> >) [117]
+-----------------------------------------------
+                0.00    0.00       2/2           main [1]
+[118]    0.0    0.00    0.00       2         void spdlog::logger::info<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(fmt::v10::basic_format_string<char, fmt::v10::type_identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>::type>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [118]
+                0.00    0.00       2/2           void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [119]
+-----------------------------------------------
+                0.00    0.00       2/2           void spdlog::logger::info<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(fmt::v10::basic_format_string<char, fmt::v10::type_identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>::type>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [118]
+[119]    0.0    0.00    0.00       2         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [119]
+-----------------------------------------------
+                0.00    0.00       1/2           ForceType::ForceType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [197]
+                0.00    0.00       1/2           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[120]    0.0    0.00    0.00       2         ForceType::_xsd_ForceType_convert() const [120]
+-----------------------------------------------
+                0.00    0.00       1/1           simulation(std::istream&, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&) [122]
+[121]    0.0    0.00    0.00       1         simulation(xercesc_3_3::InputSource&, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&) [121]
+                0.00    0.00       1/1           std::unique_ptr<xercesc_3_3::DOMDocument, xsd::cxx::xml::dom::deleter<xercesc_3_3::DOMDocument> > xsd::cxx::xml::dom::parse<char>(xercesc_3_3::InputSource&, xercesc_3_3::DOMErrorHandler&, xsd::cxx::xml::properties<char> const&, unsigned long) [188]
+                0.00    0.00       1/1           simulation(std::unique_ptr<xercesc_3_3::DOMDocument, xsd::cxx::xml::dom::deleter<xercesc_3_3::DOMDocument> >, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&) [123]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[122]    0.0    0.00    0.00       1         simulation(std::istream&, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&) [122]
+                0.00    0.00       1/1           simulation(xercesc_3_3::InputSource&, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&) [121]
+-----------------------------------------------
+                0.00    0.00       1/1           simulation(xercesc_3_3::InputSource&, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&) [121]
+[123]    0.0    0.00    0.00       1         simulation(std::unique_ptr<xercesc_3_3::DOMDocument, xsd::cxx::xml::dom::deleter<xercesc_3_3::DOMDocument> >, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&) [123]
+                0.00    0.00       2/111         bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [55]
+                0.00    0.00       1/35          xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&) [58]
+                0.00    0.00       1/1           InputData::InputData(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [200]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[124]    0.0    0.00    0.00       1         CuboidType::type() [124]
+-----------------------------------------------
+                0.00    0.00       1/1           CuboidType::CuboidType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [127]
+[125]    0.0    0.00    0.00       1         CuboidType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [125]
+                0.00    0.00      32/111         bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [55]
+                0.00    0.00      14/108         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() [56]
+                0.00    0.00       7/35          xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&) [58]
+                0.00    0.00       7/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       3/16          PositiveIntVector3::PositiveIntVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [65]
+                0.00    0.00       2/2           xsd::cxx::tree::traits<DoubleVector3, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [116]
+                0.00    0.00       2/8           xsd::cxx::tree::traits<PositiveDouble, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [71]
+                0.00    0.00       2/2           xsd::cxx::tree::one<DoubleVector3, false>::set(std::unique_ptr<DoubleVector3, std::default_delete<DoubleVector3> >) [114]
+                0.00    0.00       2/6           xsd::cxx::tree::one<PositiveDouble, false>::set(std::unique_ptr<PositiveDouble, std::default_delete<PositiveDouble> >) [73]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[126]    0.0    0.00    0.00       1         CuboidType::distance() [126]
+-----------------------------------------------
+                0.00    0.00       1/1           SimulationObjects::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [152]
+[127]    0.0    0.00    0.00       1         CuboidType::CuboidType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [127]
+                0.00    0.00       1/25          xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [62]
+                0.00    0.00       1/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       1/1           CuboidType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [125]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[128]    0.0    0.00    0.00       1         CuboidType::CuboidType(CuboidType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [128]
+                0.00    0.00       2/26          xsd::cxx::tree::_type::_type(xsd::cxx::tree::_type const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [61]
+                0.00    0.00       2/2           xsd::cxx::tree::one<DoubleVector3, false>::one(xsd::cxx::tree::one<DoubleVector3, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [115]
+                0.00    0.00       2/5           xsd::cxx::tree::one<PositiveDouble, false>::one(xsd::cxx::tree::one<PositiveDouble, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [76]
+-----------------------------------------------
+                0.00    0.00       1/1           InputData::~InputData() [201]
+[129]    0.0    0.00    0.00       1         CuboidType::~CuboidType() [129]
+                0.00    0.00       1/28          xsd::cxx::tree::_type::~_type() [60]
+                0.00    0.00       1/2           CuboidType::~CuboidType() [94]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[130]    0.0    0.00    0.00       1         Simulation::setCheckpointingFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [130]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[131]    0.0    0.00    0.00       1         Simulation::run() [131]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[132]    0.0    0.00    0.00       1         Simulation::Simulation(std::unique_ptr<ParticleContainer, std::default_delete<ParticleContainer> >&, double, double, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, unsigned int) [132]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[133]    0.0    0.00    0.00       1         Thermostat::Thermostat(double, int, double, int) [133]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[134]    0.0    0.00    0.00       1         ParticleType::type_default_value() [134]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[135]    0.0    0.00    0.00       1         DoubleVector3::z_default_value() [135]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[136]    0.0    0.00    0.00       1         LinkedCellType::domain_size() [136]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[137]    0.0    0.00    0.00       1         LinkedCellType::cutoff_radius() [137]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[138]    0.0    0.00    0.00       1         LinkedCellType::boundary_condition() [138]
+-----------------------------------------------
+                0.00    0.00       1/1           LinkedCellType::LinkedCellType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [140]
+[139]    0.0    0.00    0.00       1         LinkedCellType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [139]
+                0.00    0.00       6/111         bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [55]
+                0.00    0.00       6/108         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() [56]
+                0.00    0.00       3/35          xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&) [58]
+                0.00    0.00       3/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       1/1           BoundaryCondition3::BoundaryCondition3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [162]
+                0.00    0.00       1/1           PositiveDoubleVector3::PositiveDoubleVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [185]
+                0.00    0.00       1/8           xsd::cxx::tree::traits<PositiveDouble, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [71]
+                0.00    0.00       1/6           xsd::cxx::tree::one<PositiveDouble, false>::set(std::unique_ptr<PositiveDouble, std::default_delete<PositiveDouble> >) [73]
+-----------------------------------------------
+                0.00    0.00       1/1           SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [174]
+[140]    0.0    0.00    0.00       1         LinkedCellType::LinkedCellType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [140]
+                0.00    0.00       1/25          xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [62]
+                0.00    0.00       1/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       1/1           LinkedCellType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [139]
+-----------------------------------------------
+                0.00    0.00       1/1           SimulationParameters::~SimulationParameters() [180]
+[141]    0.0    0.00    0.00       1         LinkedCellType::~LinkedCellType() [141]
+                0.00    0.00       2/28          xsd::cxx::tree::_type::~_type() [60]
+                0.00    0.00       1/2           BoundaryCondition3::~BoundaryCondition3() [106]
+                0.00    0.00       1/13          PositiveDouble::~PositiveDouble() [67]
+                0.00    0.00       1/2           PositiveDoubleVector3::~PositiveDoubleVector3() [113]
+-----------------------------------------------
+                0.00    0.00       1/1           ThermostatsType::ThermostatsType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [146]
+[142]    0.0    0.00    0.00       1         ThermostatsType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [142]
+                0.00    0.00       4/111         bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [55]
+                0.00    0.00       4/108         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() [56]
+                0.00    0.00       2/35          xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&) [58]
+                0.00    0.00       2/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       1/8           xsd::cxx::tree::traits<PositiveDouble, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [71]
+                0.00    0.00       1/3           operator<<(xercesc_3_3::DOMElement&, PositiveDouble const&) [90]
+                0.00    0.00       1/6           xsd::cxx::tree::one<PositiveDouble, false>::set(std::unique_ptr<PositiveDouble, std::default_delete<PositiveDouble> >) [73]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[143]    0.0    0.00    0.00       1         ThermostatsType::periode() [143]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[144]    0.0    0.00    0.00       1         ThermostatsType::target_T() [144]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[145]    0.0    0.00    0.00       1         ThermostatsType::max_delta() [145]
+-----------------------------------------------
+                0.00    0.00       1/1           SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [174]
+[146]    0.0    0.00    0.00       1         ThermostatsType::ThermostatsType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [146]
+                0.00    0.00       1/25          xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [62]
+                0.00    0.00       1/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       1/1           ThermostatsType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [142]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[147]    0.0    0.00    0.00       1         ThermostatsType::ThermostatsType(ThermostatsType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [147]
+                0.00    0.00       2/3           xsd::cxx::tree::optional<PositiveDouble, false>::optional(xsd::cxx::tree::optional<PositiveDouble, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [87]
+                0.00    0.00       1/26          xsd::cxx::tree::_type::_type(xsd::cxx::tree::_type const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [61]
+                0.00    0.00       1/5           xsd::cxx::tree::one<PositiveDouble, false>::one(xsd::cxx::tree::one<PositiveDouble, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [76]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[148]    0.0    0.00    0.00       1         ParticleContainer::setThermostat(std::unique_ptr<Thermostat, std::default_delete<Thermostat> >&) [148]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[149]    0.0    0.00    0.00       1         ParticleContainer::setG(double) [149]
+-----------------------------------------------
+                0.00    0.00       1/1           LinkedCellContainer::LinkedCellContainer(std::vector<Particle, std::allocator<Particle> >&, std::unique_ptr<Force, std::default_delete<Force> >&, std::array<double, 3ul>, double, std::array<BoundaryCondition, 6ul>) [23]
+[150]    0.0    0.00    0.00       1         ParticleContainer::ParticleContainer(std::vector<Particle, std::allocator<Particle> >&, std::unique_ptr<Force, std::default_delete<Force> >&) [150]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[151]    0.0    0.00    0.00       1         SimulationObjects::load() [151]
+-----------------------------------------------
+                0.00    0.00       1/1           SimulationObjects::SimulationObjects(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [156]
+[152]    0.0    0.00    0.00       1         SimulationObjects::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [152]
+                0.00    0.00       2/111         bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [55]
+                0.00    0.00       2/108         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() [56]
+                0.00    0.00       2/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       1/35          xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&) [58]
+                0.00    0.00       1/1           CuboidType::CuboidType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [127]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[153]    0.0    0.00    0.00       1         SimulationObjects::cuboid() [153]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[154]    0.0    0.00    0.00       1         SimulationObjects::sphere() [154]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[155]    0.0    0.00    0.00       1         SimulationObjects::particle() [155]
+-----------------------------------------------
+                0.00    0.00       1/1           InputData::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [199]
+[156]    0.0    0.00    0.00       1         SimulationObjects::SimulationObjects(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [156]
+                0.00    0.00       1/25          xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [62]
+                0.00    0.00       1/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       1/1           SimulationObjects::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [152]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[157]    0.0    0.00    0.00       1         BoundaryCondition3::back_default_value() [157]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[158]    0.0    0.00    0.00       1         BoundaryCondition3::front_default_value() [158]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[159]    0.0    0.00    0.00       1         BoundaryCondition3::back() [159]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[160]    0.0    0.00    0.00       1         BoundaryCondition3::front() [160]
+-----------------------------------------------
+                0.00    0.00       1/1           BoundaryCondition3::BoundaryCondition3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [162]
+[161]    0.0    0.00    0.00       1         BoundaryCondition3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [161]
+                0.00    0.00      10/111         bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [55]
+                0.00    0.00       8/108         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() [56]
+                0.00    0.00       4/35          xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&) [58]
+                0.00    0.00       4/4           xsd::cxx::tree::traits<BoundaryConditionType, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [79]
+                0.00    0.00       4/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       4/4           xsd::cxx::tree::optional<BoundaryConditionType, false>::set(std::unique_ptr<BoundaryConditionType, std::default_delete<BoundaryConditionType> >) [80]
+-----------------------------------------------
+                0.00    0.00       1/1           LinkedCellType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [139]
+[162]    0.0    0.00    0.00       1         BoundaryCondition3::BoundaryCondition3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [162]
+                0.00    0.00       1/25          xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [62]
+                0.00    0.00       1/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       1/1           BoundaryCondition3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [161]
+-----------------------------------------------
+                0.00    0.00       1/1           BoundaryCondition3::_clone(xsd::cxx::tree::flags, xsd::cxx::tree::_type*) const [206]
+[163]    0.0    0.00    0.00       1         BoundaryCondition3::BoundaryCondition3(BoundaryCondition3 const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [163]
+                0.00    0.00       6/6           xsd::cxx::tree::optional<BoundaryConditionType, false>::optional(xsd::cxx::tree::optional<BoundaryConditionType, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [74]
+                0.00    0.00       1/26          xsd::cxx::tree::_type::_type(xsd::cxx::tree::_type const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [61]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[164]    0.0    0.00    0.00       1         BoundaryCondition3::~BoundaryCondition3() [164]
+                0.00    0.00       1/28          xsd::cxx::tree::_type::~_type() [60]
+                0.00    0.00       1/2           BoundaryCondition3::~BoundaryCondition3() [106]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[165]    0.0    0.00    0.00       1         PositiveIntVector3::z_default_value() [165]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[166]    0.0    0.00    0.00       1         PositiveIntVector3::x() [166]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[167]    0.0    0.00    0.00       1         PositiveIntVector3::y() [167]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[168]    0.0    0.00    0.00       1         PositiveIntVector3::z() [168]
+-----------------------------------------------
+                0.00    0.00       1/1           PositiveIntVector3::PositiveIntVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [65]
+[169]    0.0    0.00    0.00       1         PositiveIntVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [169]
+                0.00    0.00       4/108         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() [56]
+                0.00    0.00       2/35          xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&) [58]
+                0.00    0.00       2/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       2/3           operator<<(xercesc_3_3::DOMElement&, PositiveDouble const&) [90]
+                0.00    0.00       1/111         bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [55]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[170]    0.0    0.00    0.00       1         SimulationParameters::format_default_value() [170]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[171]    0.0    0.00    0.00       1         SimulationParameters::output_default_value() [171]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[172]    0.0    0.00    0.00       1         SimulationParameters::dimension_default_value() [172]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[173]    0.0    0.00    0.00       1         SimulationParameters::frequency_default_value() [173]
+-----------------------------------------------
+                0.00    0.00       1/1           SimulationParameters::SimulationParameters(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [179]
+[174]    0.0    0.00    0.00       1         SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [174]
+                0.00    0.00      46/111         bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [55]
+                0.00    0.00      14/108         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() [56]
+                0.00    0.00       7/35          xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&) [58]
+                0.00    0.00       7/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       2/8           xsd::cxx::tree::traits<PositiveDouble, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [71]
+                0.00    0.00       2/2           xsd::cxx::tree::optional<PositiveDouble, false>::set(std::unique_ptr<PositiveDouble, std::default_delete<PositiveDouble> >) [117]
+                0.00    0.00       1/1           xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type>::simple_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [189]
+                0.00    0.00       1/24          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > xsd::cxx::tree::text_content<char>(xercesc_3_3::DOMElement const&) [63]
+                0.00    0.00       1/1           ThermostatsType::ThermostatsType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [146]
+                0.00    0.00       1/1           LinkedCellType::LinkedCellType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [140]
+                0.00    0.00       1/1           ForceType::ForceType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [197]
+                0.00    0.00       1/1           xsd::cxx::tree::optional<xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >, false>::set(std::unique_ptr<xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >, std::default_delete<xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> > > >) [192]
+                0.00    0.00       1/16          PositiveIntVector3::PositiveIntVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [65]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[175]    0.0    0.00    0.00       1         SimulationParameters::format() [175]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[176]    0.0    0.00    0.00       1         SimulationParameters::output() [176]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[177]    0.0    0.00    0.00       1         SimulationParameters::dimension() [177]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[178]    0.0    0.00    0.00       1         SimulationParameters::frequency() [178]
+-----------------------------------------------
+                0.00    0.00       1/1           InputData::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [199]
+[179]    0.0    0.00    0.00       1         SimulationParameters::SimulationParameters(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [179]
+                0.00    0.00       1/25          xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [62]
+                0.00    0.00       1/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       1/1           SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [174]
+-----------------------------------------------
+                0.00    0.00       1/1           InputData::~InputData() [201]
+[180]    0.0    0.00    0.00       1         SimulationParameters::~SimulationParameters() [180]
+                0.00    0.00       2/28          xsd::cxx::tree::_type::~_type() [60]
+                0.00    0.00       2/13          PositiveDouble::~PositiveDouble() [67]
+                0.00    0.00       1/1           xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >::~string() [191]
+                0.00    0.00       1/1           LinkedCellType::~LinkedCellType() [141]
+                0.00    0.00       1/2           ThermostatsType::~ThermostatsType() [101]
+                0.00    0.00       1/1           ForceType::~ForceType() [198]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[181]    0.0    0.00    0.00       1         PositiveDoubleVector3::x() [181]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[182]    0.0    0.00    0.00       1         PositiveDoubleVector3::y() [182]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[183]    0.0    0.00    0.00       1         PositiveDoubleVector3::z() [183]
+-----------------------------------------------
+                0.00    0.00       1/1           PositiveDoubleVector3::PositiveDoubleVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [185]
+[184]    0.0    0.00    0.00       1         PositiveDoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [184]
+                0.00    0.00       4/108         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() [56]
+                0.00    0.00       3/111         bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [55]
+                0.00    0.00       2/35          xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&) [58]
+                0.00    0.00       2/8           xsd::cxx::tree::traits<PositiveDouble, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [71]
+                0.00    0.00       2/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       2/6           xsd::cxx::tree::one<PositiveDouble, false>::set(std::unique_ptr<PositiveDouble, std::default_delete<PositiveDouble> >) [73]
+-----------------------------------------------
+                0.00    0.00       1/1           LinkedCellType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [139]
+[185]    0.0    0.00    0.00       1         PositiveDoubleVector3::PositiveDoubleVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [185]
+                0.00    0.00       1/25          xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [62]
+                0.00    0.00       1/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       1/1           PositiveDoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [184]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[186]    0.0    0.00    0.00       1         PositiveDoubleVector3::PositiveDoubleVector3(PositiveDoubleVector3 const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [186]
+                0.00    0.00       2/5           xsd::cxx::tree::one<PositiveDouble, false>::one(xsd::cxx::tree::one<PositiveDouble, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [76]
+                0.00    0.00       1/26          xsd::cxx::tree::_type::_type(xsd::cxx::tree::_type const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [61]
+                0.00    0.00       1/3           xsd::cxx::tree::optional<PositiveDouble, false>::optional(xsd::cxx::tree::optional<PositiveDouble, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [87]
+-----------------------------------------------
+                0.00    0.00       1/1           void spdlog::logger::log_<double>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, double&&) [89]
+[187]    0.0    0.00    0.00       1         fmt::v10::appender fmt::v10::vformat_to<fmt::v10::appender, 0>(fmt::v10::appender, fmt::v10::basic_string_view<char>, fmt::v10::basic_format_args<fmt::v10::basic_format_context<fmt::v10::appender, char> >) [187]
+-----------------------------------------------
+                0.00    0.00       1/1           simulation(xercesc_3_3::InputSource&, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&) [121]
+[188]    0.0    0.00    0.00       1         std::unique_ptr<xercesc_3_3::DOMDocument, xsd::cxx::xml::dom::deleter<xercesc_3_3::DOMDocument> > xsd::cxx::xml::dom::parse<char>(xercesc_3_3::InputSource&, xercesc_3_3::DOMErrorHandler&, xsd::cxx::xml::properties<char> const&, unsigned long) [188]
+-----------------------------------------------
+                0.00    0.00       1/1           SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [174]
+[189]    0.0    0.00    0.00       1         xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type>::simple_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [189]
+                0.00    0.00       1/25          xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [62]
+-----------------------------------------------
+                0.00    0.00       1/1           InputData::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [199]
+[190]    0.0    0.00    0.00       1         xsd::cxx::tree::one<SimulationObjects, false>::set(std::unique_ptr<SimulationObjects, std::default_delete<SimulationObjects> >) [190]
+-----------------------------------------------
+                0.00    0.00       1/1           SimulationParameters::~SimulationParameters() [180]
+[191]    0.0    0.00    0.00       1         xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >::~string() [191]
+                0.00    0.00       1/28          xsd::cxx::tree::_type::~_type() [60]
+-----------------------------------------------
+                0.00    0.00       1/1           SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [174]
+[192]    0.0    0.00    0.00       1         xsd::cxx::tree::optional<xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >, false>::set(std::unique_ptr<xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >, std::default_delete<xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> > > >) [192]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[193]    0.0    0.00    0.00       1         Cuboid::Cuboid(std::array<double, 3ul> const&, std::array<double, 3ul> const&, std::array<unsigned int, 3ul> const&, double, double, double, int, int, double, double) [193]
+                0.00    0.00       1/1           Cluster::Cluster(std::array<double, 3ul> const&, std::array<double, 3ul> const&, double, double, double, int, int, double, double) [194]
+-----------------------------------------------
+                0.00    0.00       1/1           Cuboid::Cuboid(std::array<double, 3ul> const&, std::array<double, 3ul> const&, std::array<unsigned int, 3ul> const&, double, double, double, int, int, double, double) [193]
+[194]    0.0    0.00    0.00       1         Cluster::Cluster(std::array<double, 3ul> const&, std::array<double, 3ul> const&, double, double, double, int, int, double, double) [194]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[195]    0.0    0.00    0.00       1         Dimension::~Dimension() [195]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[196]    0.0    0.00    0.00       1         ForceType::ForceType(ForceType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [196]
+                0.00    0.00       1/26          xsd::cxx::tree::_type::_type(xsd::cxx::tree::_type const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [61]
+-----------------------------------------------
+                0.00    0.00       1/1           SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [174]
+[197]    0.0    0.00    0.00       1         ForceType::ForceType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [197]
+                0.00    0.00       1/25          xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [62]
+                0.00    0.00       1/24          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > xsd::cxx::tree::text_content<char>(xercesc_3_3::DOMElement const&) [63]
+                0.00    0.00       1/2           ForceType::_xsd_ForceType_convert() const [120]
+-----------------------------------------------
+                0.00    0.00       1/1           SimulationParameters::~SimulationParameters() [180]
+[198]    0.0    0.00    0.00       1         ForceType::~ForceType() [198]
+                0.00    0.00       1/28          xsd::cxx::tree::_type::~_type() [60]
+-----------------------------------------------
+                0.00    0.00       1/1           InputData::InputData(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [200]
+[199]    0.0    0.00    0.00       1         InputData::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [199]
+                0.00    0.00       4/108         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() [56]
+                0.00    0.00       3/111         bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [55]
+                0.00    0.00       2/35          xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&) [58]
+                0.00    0.00       2/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       1/1           SimulationObjects::SimulationObjects(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [156]
+                0.00    0.00       1/1           SimulationParameters::SimulationParameters(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [179]
+                0.00    0.00       1/1           xsd::cxx::tree::one<SimulationObjects, false>::set(std::unique_ptr<SimulationObjects, std::default_delete<SimulationObjects> >) [190]
+-----------------------------------------------
+                0.00    0.00       1/1           simulation(std::unique_ptr<xercesc_3_3::DOMDocument, xsd::cxx::xml::dom::deleter<xercesc_3_3::DOMDocument> >, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&) [123]
+[200]    0.0    0.00    0.00       1         InputData::InputData(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [200]
+                0.00    0.00       1/25          xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [62]
+                0.00    0.00       1/115         void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [54]
+                0.00    0.00       1/1           InputData::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [199]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[201]    0.0    0.00    0.00       1         InputData::~InputData() [201]
+                0.00    0.00       3/28          xsd::cxx::tree::_type::~_type() [60]
+                0.00    0.00       1/1           SimulationParameters::~SimulationParameters() [180]
+                0.00    0.00       1/1           CuboidType::~CuboidType() [129]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[202]    0.0    0.00    0.00       1         Simulation::getEndTime() const [202]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[203]    0.0    0.00    0.00       1         Simulation::getOutputFile[abi:cxx11]() const [203]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[204]    0.0    0.00    0.00       1         Simulation::getOutputFormat[abi:cxx11]() const [204]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[205]    0.0    0.00    0.00       1         Simulation::getDeltaT() const [205]
+-----------------------------------------------
+                0.00    0.00       1/1           XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [7]
+[206]    0.0    0.00    0.00       1         BoundaryCondition3::_clone(xsd::cxx::tree::flags, xsd::cxx::tree::_type*) const [206]
+                0.00    0.00       1/1           BoundaryCondition3::BoundaryCondition3(BoundaryCondition3 const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [163]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[207]    0.0    0.00    0.00       1         std::__uniq_ptr_impl<Simulation, std::default_delete<Simulation> >::reset(Simulation*) [207]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[208]    0.0    0.00    0.00       1         std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release() [208]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[209]    0.0    0.00    0.00       1         std::vector<Particle, std::allocator<Particle> >::~vector() [209]
+                0.00    0.00   12500/28883       Particle::~Particle() [50]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2024 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+ [121] simulation(xercesc_3_3::InputSource&, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&) [105] BoundaryCondition3::right() [79] xsd::cxx::tree::traits<BoundaryConditionType, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+ [122] simulation(std::istream&, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&) [162] BoundaryCondition3::BoundaryCondition3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [117] xsd::cxx::tree::optional<PositiveDouble, false>::set(std::unique_ptr<PositiveDouble, std::default_delete<PositiveDouble> >)
+ [123] simulation(std::unique_ptr<xercesc_3_3::DOMDocument, xsd::cxx::xml::dom::deleter<xercesc_3_3::DOMDocument> >, xsd::cxx::tree::flags, xsd::cxx::tree::properties<char> const&) [163] BoundaryCondition3::BoundaryCondition3(BoundaryCondition3 const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [87] xsd::cxx::tree::optional<PositiveDouble, false>::optional(xsd::cxx::tree::optional<PositiveDouble, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  [91] CuboidType::mass()    [164] BoundaryCondition3::~BoundaryCondition3() [80] xsd::cxx::tree::optional<BoundaryConditionType, false>::set(std::unique_ptr<BoundaryConditionType, std::default_delete<BoundaryConditionType> >)
+  [82] CuboidType::size()    [106] BoundaryCondition3::~BoundaryCondition3() [74] xsd::cxx::tree::optional<BoundaryConditionType, false>::optional(xsd::cxx::tree::optional<BoundaryConditionType, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+ [124] CuboidType::type()    [165] PositiveIntVector3::z_default_value() [192] xsd::cxx::tree::optional<xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >, false>::set(std::unique_ptr<xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >, std::default_delete<xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> > > >)
+ [125] CuboidType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [166] PositiveIntVector3::x() [33] Cell::removeIndex(int)
+  [92] CuboidType::sigma()   [167] PositiveIntVector3::y() [45] Cell::clear()
+  [93] CuboidType::epsilon() [168] PositiveIntVector3::z() [47] Cell::addIndex(int)
+ [126] CuboidType::distance() [169] PositiveIntVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [24] Cell::Cell(std::array<double, 3ul>, std::array<double, 3ul>, std::set<int, std::less<int>, std::allocator<int> >&)
+  [83] CuboidType::position() [65] PositiveIntVector3::PositiveIntVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [193] Cuboid::Cuboid(std::array<double, 3ul> const&, std::array<double, 3ul> const&, std::array<unsigned int, 3ul> const&, double, double, double, int, int, double, double)
+  [84] CuboidType::velocity() [26] LinkedCellContainer::updateHalo(Direction, BoundaryCondition, double) [118] void spdlog::logger::info<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(fmt::v10::basic_format_string<char, fmt::v10::type_identity<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>::type>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+ [127] CuboidType::CuboidType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [12] LinkedCellContainer::getCellIndex(std::array<double, 3ul>) [88] void spdlog::logger::info<double>(fmt::v10::basic_format_string<char, fmt::v10::type_identity<double>::type>, double&&)
+ [128] CuboidType::CuboidType(CuboidType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [4] LinkedCellContainer::updateFCells(int, int) [119] void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+ [129] CuboidType::~CuboidType() [32] LinkedCellContainer::getNeighborCells(int) [54] void spdlog::logger::log_<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&)
+  [94] CuboidType::~CuboidType() [3] LinkedCellContainer::updateF() [48] void spdlog::logger::log_<int&>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, int&)
+  [95] Simulation::setSaveOutput(bool) [10] LinkedCellContainer::updateV(double) [89] void spdlog::logger::log_<double>(spdlog::source_loc, spdlog::level::level_enum, fmt::v10::basic_string_view<char>, double&&)
+ [130] Simulation::setCheckpointingFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [9] LinkedCellContainer::updateX(double) [194] Cluster::Cluster(std::array<double, 3ul> const&, std::array<double, 3ul> const&, double, double, double, int, int, double, double)
+ [131] Simulation::run()      [23] LinkedCellContainer::LinkedCellContainer(std::vector<Particle, std::allocator<Particle> >&, std::unique_ptr<Force, std::default_delete<Force> >&, std::array<double, 3ul>, double, std::array<BoundaryCondition, 6ul>) [25] Particle::setF(std::array<double, 3ul>)
+ [132] Simulation::Simulation(std::unique_ptr<ParticleContainer, std::default_delete<ParticleContainer> >&, double, double, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, unsigned int) [21] LinkedCellContainer::~LinkedCellContainer() [13] Particle::setV(std::array<double, 3ul>)
+  [18] Thermostat::temperature(std::vector<Particle, std::allocator<Particle> >&, int) [77] SimulationParameters::thermostat() [30] Particle::setX(std::array<double, 3ul>)
+  [19] Thermostat::meanVelocity(std::vector<Particle, std::allocator<Particle> >&) [78] SimulationParameters::linked_cell() [46] Particle::setOldF(std::array<double, 3ul>)
+ [133] Thermostat::Thermostat(double, int, double, int) [107] SimulationParameters::g() [51] Particle::Particle(Particle const&)
+  [35] StateWriter::saveState(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [170] SimulationParameters::format_default_value() [8] Particle::Particle(std::array<double, 3ul>, std::array<double, 3ul>, double, int, double, double)
+ [134] ParticleType::type_default_value() [171] SimulationParameters::output_default_value() [50] Particle::~Particle()
+ [135] DoubleVector3::z_default_value() [172] SimulationParameters::dimension_default_value() [195] Dimension::~Dimension()
+  [96] DoubleVector3::x()    [173] SimulationParameters::frequency_default_value() [196] ForceType::ForceType(ForceType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  [97] DoubleVector3::y()    [108] SimulationParameters::force() [197] ForceType::ForceType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+  [98] DoubleVector3::z()    [174] SimulationParameters::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [198] ForceType::~ForceType()
+  [99] DoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [109] SimulationParameters::store() [64] InputData::parameters()
+ [136] LinkedCellType::domain_size() [175] SimulationParameters::format() [199] InputData::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags)
+ [137] LinkedCellType::cutoff_radius() [176] SimulationParameters::output() [81] InputData::objects()
+ [138] LinkedCellType::boundary_condition() [110] SimulationParameters::delta_t() [200] InputData::InputData(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
+ [139] LinkedCellType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [111] SimulationParameters::end_time() [201] InputData::~InputData()
+ [140] LinkedCellType::LinkedCellType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [177] SimulationParameters::dimension() [7] XMLReader::readXML(std::vector<Particle, std::allocator<Particle> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+ [141] LinkedCellType::~LinkedCellType() [178] SimulationParameters::frequency() [202] Simulation::getEndTime() const
+  [85] PositiveDouble::PositiveDouble(PositiveDouble const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [179] SimulationParameters::SimulationParameters(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [203] Simulation::getOutputFile[abi:cxx11]() const
+  [67] PositiveDouble::~PositiveDouble() [66] SimulationParameters::~SimulationParameters() [204] Simulation::getOutputFormat[abi:cxx11]() const
+  [75] PositiveDouble::~PositiveDouble() [180] SimulationParameters::~SimulationParameters() [205] Simulation::getDeltaT() const
+ [142] ThermostatsType::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [72] BoundaryConditionType::BoundaryConditionType(BoundaryConditionType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [49] Thermostat::getPeriode() const
+ [143] ThermostatsType::periode() [70] BoundaryConditionType::~BoundaryConditionType() [14] Thermostat::apply(std::vector<Particle, std::allocator<Particle> >&) const
+ [144] ThermostatsType::target_T() [112] PositiveDoubleVector3::z_default_value() [206] BoundaryCondition3::_clone(xsd::cxx::tree::flags, xsd::cxx::tree::_type*) const
+ [100] ThermostatsType::initial_T() [181] PositiveDoubleVector3::x() [69] BoundaryConditionType::_xsd_BoundaryConditionType_convert() const
+ [145] ThermostatsType::max_delta() [182] PositiveDoubleVector3::y() [29] Cell::getPosition() const
+ [146] ThermostatsType::ThermostatsType(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [183] PositiveDoubleVector3::z() [36] Cell::getNeighbours() const
+ [147] ThermostatsType::ThermostatsType(ThermostatsType const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [184] PositiveDoubleVector3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [44] Cell::getParticleIndices() const
+  [86] ThermostatsType::~ThermostatsType() [185] PositiveDoubleVector3::PositiveDoubleVector3(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [34] Cell::getSize() const
+ [101] ThermostatsType::~ThermostatsType() [186] PositiveDoubleVector3::PositiveDoubleVector3(PositiveDoubleVector3 const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [53] Sphere::createParticles(std::vector<Particle, std::allocator<Particle> >&) const
+   [5] LennardJonesForce::force(Particle&, Particle&) [113] PositiveDoubleVector3::~PositiveDoubleVector3() [16] Particle::getEpsilon() const
+  [22] LennardJonesForce::~LennardJonesForce() [187] fmt::v10::appender fmt::v10::vformat_to<fmt::v10::appender, 0>(fmt::v10::appender, fmt::v10::basic_string_view<char>, fmt::v10::basic_format_args<fmt::v10::basic_format_context<fmt::v10::appender, char> >) [15] Particle::isInDomain() const
+ [148] ParticleContainer::setThermostat(std::unique_ptr<Thermostat, std::default_delete<Thermostat> >&) [57] xsd::cxx::xml::char_utf8_transcoder<char>::to[abi:cxx11](char16_t const*, unsigned long) [31] Particle::getF() const
+ [149] ParticleContainer::setG(double) [58] xsd::cxx::xml::qualified_name<char> xsd::cxx::xml::dom::name<char>(xercesc_3_3::DOMElement const&) [37] Particle::getM() const
+   [2] ParticleContainer::simulate(double, double, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned int, bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [188] std::unique_ptr<xercesc_3_3::DOMDocument, xsd::cxx::xml::dom::deleter<xercesc_3_3::DOMDocument> > xsd::cxx::xml::dom::parse<char>(xercesc_3_3::InputSource&, xercesc_3_3::DOMErrorHandler&, xsd::cxx::xml::properties<char> const&, unsigned long) [11] Particle::getV() const
+ [150] ParticleContainer::ParticleContainer(std::vector<Particle, std::allocator<Particle> >&, std::unique_ptr<Force, std::default_delete<Force> >&) [59] std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > xsd::cxx::xml::transcode<char>(char16_t const*) [27] Particle::getX() const
+ [151] SimulationObjects::load() [189] xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type>::simple_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [28] Particle::getOldF() const
+ [152] SimulationObjects::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [63] std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > xsd::cxx::tree::text_content<char>(xercesc_3_3::DOMElement const&) [52] Particle::getType() const
+ [153] SimulationObjects::cuboid() [114] xsd::cxx::tree::one<DoubleVector3, false>::set(std::unique_ptr<DoubleVector3, std::default_delete<DoubleVector3> >) [17] Particle::getSigma() const
+ [154] SimulationObjects::sphere() [115] xsd::cxx::tree::one<DoubleVector3, false>::one(xsd::cxx::tree::one<DoubleVector3, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [120] ForceType::_xsd_ForceType_convert() const
+ [155] SimulationObjects::particle() [73] xsd::cxx::tree::one<PositiveDouble, false>::set(std::unique_ptr<PositiveDouble, std::default_delete<PositiveDouble> >) [20] std::unique_ptr<Simulation, std::default_delete<Simulation> >::~unique_ptr()
+ [156] SimulationObjects::SimulationObjects(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [76] xsd::cxx::tree::one<PositiveDouble, false>::one(xsd::cxx::tree::one<PositiveDouble, false> const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [207] std::__uniq_ptr_impl<Simulation, std::default_delete<Simulation> >::reset(Simulation*)
+ [157] BoundaryCondition3::back_default_value() [190] xsd::cxx::tree::one<SimulationObjects, false>::set(std::unique_ptr<SimulationObjects, std::default_delete<SimulationObjects> >) [208] std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release()
+ [158] BoundaryCondition3::front_default_value() [62] xsd::cxx::tree::_type::_type(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [209] std::vector<Particle, std::allocator<Particle> >::~vector()
+ [102] BoundaryCondition3::up() [61] xsd::cxx::tree::_type::_type(xsd::cxx::tree::_type const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [56] std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose()
+ [159] BoundaryCondition3::back() [60] xsd::cxx::tree::_type::~_type() [55] bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*)
+ [103] BoundaryCondition3::down() [68] xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >::string(char const*) [90] operator<<(xercesc_3_3::DOMElement&, PositiveDouble const&)
+ [104] BoundaryCondition3::left() [191] xsd::cxx::tree::string<char, xsd::cxx::tree::simple_type<char, xsd::cxx::tree::_type> >::~string() [6] _init (crti.S)
+ [160] BoundaryCondition3::front() [116] xsd::cxx::tree::traits<DoubleVector3, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*) [38] frame_dummy
+ [161] BoundaryCondition3::parse(xsd::cxx::xml::dom::parser<char>&, xsd::cxx::tree::flags) [71] xsd::cxx::tree::traits<PositiveDouble, char, (xsd::cxx::tree::schema_type::value)0>::create(xercesc_3_3::DOMElement const&, xsd::cxx::tree::flags, xsd::cxx::tree::_type*)
