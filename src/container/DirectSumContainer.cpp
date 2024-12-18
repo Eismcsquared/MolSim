@@ -1,8 +1,6 @@
 #include <vector>
 #include <array>
 #include <filesystem>
-#include "outputWriter/XYZWriter.h"
-#include "outputWriter/VTKWriter.h"
 #include "utils/ArrayUtils.h"
 #include "body/Particle.h"
 #include "DirectSumContainer.h"

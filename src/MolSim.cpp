@@ -9,7 +9,6 @@
 #include <getopt.h>
 #include <cstdlib>
 #include <vector>
-#include <chrono>
 #include <memory>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
@@ -36,7 +35,7 @@ int main(int argc, char *argsv[]) {
 
     std::ios::sync_with_stdio(false);
     std::cout.tie(nullptr);
-    
+
     spdlog::set_level(spdlog::level::info);
     spdlog::stdout_color_mt("console"); // Create color multithreaded logger
 
