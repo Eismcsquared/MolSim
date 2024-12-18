@@ -132,7 +132,24 @@ public:
      * @param positions The position that should be tested.
      * @return The index of the cell that contains the given position.
      */
-    int getCellIndex(std::array<double, 3> positions);
+    inline int getCellIndex(std::array<double, 3> positions) {
+
+        std::array<double, 3> cellSize = cells[0].getSize();
+        // Check if the position is within the domain + halo region
+        if(positions[0] < -cellSize[0] || positions[0] >= domainSize[0] + cellSize[0] || positions[1] < -cellSize[1] ||
+           positions[1] >= domainSize[1] + cellSize[1] || positions[2] < -cellSize[2] || positions[2] >= domainSize[2] + cellSize[2]){
+            return -1;
+        }
+
+        int idxX = std::floor(positions[0] / cellSize[0]);
+        int idxY = std::floor(positions[1] / cellSize[1]);
+        int idxZ = std::floor(positions[2] / cellSize[2]);
+
+        // Calculate the linear cell index
+        int cellIndex = get1DIndex({idxX, idxY, idxZ});
+
+        return cellIndex;
+    }
 
     /**
      * @brief Convert 3D cell index to 1D cell index.

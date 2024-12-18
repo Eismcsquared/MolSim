@@ -230,25 +230,6 @@ std::set<int> LinkedCellContainer::getNeighborCells(int cellIndex) {
 }
 
 
-int LinkedCellContainer::getCellIndex(std::array<double, 3> positions) {
-
-    std::array<double, 3> cellSize = cells[0].getSize();
-    // Check if the position is within the domain + halo region
-    if(positions[0] < -cellSize[0] || positions[0] >= domainSize[0] + cellSize[0] || positions[1] < -cellSize[1] ||
-    positions[1] >= domainSize[1] + cellSize[1] || positions[2] < -cellSize[2] || positions[2] >= domainSize[2] + cellSize[2]){
-        return -1;
-    }
-
-    int idxX = std::floor(positions[0] / cellSize[0]);
-    int idxY = std::floor(positions[1] / cellSize[1]);
-    int idxZ = std::floor(positions[2] / cellSize[2]);
-
-    // Calculate the linear cell index
-    int cellIndex = get1DIndex({idxX, idxY, idxZ});
-
-    return cellIndex;
-}
-
 int LinkedCellContainer::get1DIndex(std::array<int, 3> index3D) {
     return (index3D[2] + 1) * (nCells[0] + 2) * (nCells[1] + 2) + (index3D[1] + 1) * (nCells[0] + 2) + index3D[0] + 1;
 }

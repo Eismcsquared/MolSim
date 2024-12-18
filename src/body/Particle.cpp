@@ -40,33 +40,6 @@ Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, dou
 
 Particle::~Particle() { spdlog::trace("Particle destructed!"); }
 
-const std::array<double, 3> &Particle::getX() const { return x; }
-
-const std::array<double, 3> &Particle::getV() const { return v; }
-
-const std::array<double, 3> &Particle::getF() const { return f; }
-
-const std::array<double, 3> &Particle::getOldF() const { return old_f; }
-
-double Particle::getM() const { return m; }
-
-int Particle::getType() const { return type; }
-
-bool Particle::isInDomain() const {return inDomain;}
-
-double Particle::getEpsilon() const {return epsilon;}
-
-double Particle::getSigma() const {return sigma;}
-
-
-///////////////////////////////////////////////////
-void Particle::setX(std::array<double, 3> x_arg) {x = x_arg; }
-void Particle::setV(std::array<double, 3> v_arg) {v = v_arg; }
-void Particle::setF(std::array<double, 3> f_arg) {f = f_arg; }
-void Particle::setOldF(std::array<double, 3> oldf_arg) {old_f = oldf_arg; }
-void Particle::setM(double marg) { m = marg; }
-void Particle::setType(int type_arg) { type = type_arg; }
-///////////////////////////////////////////////////
 
 void Particle::removeFromDomain() {
     inDomain = false;

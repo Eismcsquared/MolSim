@@ -82,86 +82,86 @@ public:
      * The getter for the position of a particle.
      * @return the position of the particle.
      */
-    const std::array<double, 3> &getX() const;
+    inline const std::array<double, 3> &getX() const { return x; };
 
     /**
      * The getter for the velocity of a particle.
      * @return the velocity of the particle.
      */
-    const std::array<double, 3> &getV() const;
+    inline const std::array<double, 3> &getV() const { return v; };
 
     /**
      * The getter for the force acting on a particle.
      * @return the force acting on the particle.
      */
-    const std::array<double, 3> &getF() const;
+    inline const std::array<double, 3> &getF() const { return f; };
 
     /**
      * The getter for the force acting on a particle in the previous time step.
      * @return the force acting on the particle in the previous time step.
      */
-    const std::array<double, 3> &getOldF() const;
+    inline const std::array<double, 3> &getOldF() const { return old_f; };
 
     /**
      * The getter for the mass of a particle.
      * @return the mass of the particle.
      */
-    double getM() const;
+    inline double getM() const { return m; };
 
     /**
      * The getter for the type of a particle.
      * @return the type of the particle.
      */
-    int getType() const;
+    inline int getType() const { return type; };
 
     /**
      * Determine whether the particle is in the domain of simulation.
      * @return True if the particle is in domain.
      */
-    bool isInDomain() const;
+    inline bool isInDomain() const { return inDomain; };
 
     /**
      * Getter for the parameter epsilon.
      * @return The parameter epsilon.
      */
-    double getEpsilon() const;
+    inline double getEpsilon() const { return epsilon; };
 
     /**
      * Getter for the parameter sigma.
      * @return The parameter sigma.
      */
-    double getSigma() const;
+    inline double getSigma() const { return sigma; };
 
     /**
      * The setter for the position of a particle.
      * @param x_arg: The new position of the particle.
      */
-    void setX(std::array<double, 3> x_arg);
+    inline void setX(std::array<double, 3> x_arg) { this->x = x_arg; };
     /**
      * The setter for the velocity of a particle.
      * @param v_arg: The new position of the particle.
      */
-    void setV(std::array<double,3> v_arg);
+    inline void setV(std::array<double,3> v_arg) { this->v = v_arg; };
     /**
      * The setter for the force acting on a particle.
      * @param f_arg: The new force acting on the particle.
      */
-    void setF(std::array<double,3> f_arg);
+    inline void setF(std::array<double,3> f_arg) { this->f = f_arg; };
     /**
      * The setter for the force acting on a particle in the previous time step.
      * @param oldf_arg: The new position of the particle in the previous time step.
      */
-    void setOldF(std::array<double,3> oldf_arg);
+    inline void setOldF(std::array<double,3> oldf_arg) { this->old_f = oldf_arg; };
     /**
      * The setter for the mass of a particle.
      * @param m_arg: The new mass of the particle.
      */
-    void setM(double m_arg);
+    inline void setM(double m_arg) { this->m = m_arg; };
     /**
      * The setter for the type of a particle.
      * @param type: The new type of the particle.
      */
-    void setType(int type);
+    inline void setType(int type) { this->type = type; };
 
     /**
      * Remove the particle from the domain.
