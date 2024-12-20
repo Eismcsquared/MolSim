@@ -1,7 +1,5 @@
-#include <cmath>
-#include "GravitationalForce.h"
-#include "Particle.h"
-#include "utils/ArrayUtils.h"
+#include "GravitationalForce.h" 
+
 
 GravitationalForce::GravitationalForce(double g): g(g) {}
 
@@ -12,6 +10,5 @@ std::array<double, 3> GravitationalForce::force(Particle& particle1, Particle& p
     double factor = g * particle1.getM() * particle2.getM() / pow(r, 3);
     return factor * (particle1.getX() - particle2.getX());
 }
-
 GravitationalForce::~GravitationalForce() = default;
 

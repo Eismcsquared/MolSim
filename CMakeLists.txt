@@ -60,6 +60,8 @@ include(doxygen)
 include(spdlog)
 include(gtest)
 include (fmt)
+include(xsd)
+include(GoogleTest)
 
 #testfiles 
 file(GLOB_RECURSE MY_TESTS
@@ -81,6 +83,6 @@ target_link_libraries(tests PRIVATE GTest::gtest_main spdlog::spdlog gmock MolSi
 
 set_property(TARGET tests PROPERTY ENVIRONMENT "GTEST_COLOR=1")
 
-add_test(NAME tests COMMAND tests)
+gtest_discover_tests(tests)
 
 enable_testing()

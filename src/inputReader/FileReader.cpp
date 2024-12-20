@@ -6,18 +6,18 @@
  */
 
 #include "FileReader.h"
-#include "Cuboid.h"
+#include "body/Cuboid.h"
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <spdlog/spdlog.h>
+#include "spdlog/spdlog.h"
 
 FileReader::FileReader() = default;
 
 FileReader::~FileReader() = default;
 
-void FileReader::readFile(std::vector<Particle> &particles, char *filename) {
+void FileReader::readFile(std::vector<Particle> &particles, std::string filename) {
     std::array<double, 3> x;
     std::array<double, 3> v;
     double m;
@@ -54,7 +54,7 @@ void FileReader::readFile(std::vector<Particle> &particles, char *filename) {
             }
             if (datastream.eof()) {
                 spdlog::error("Error reading file: eof reached unexpectedly reading from line {}", i);
-                exit(-1);
+                std::exit(-1);
             }
             datastream >> m;
             if (datastream.eof()) {
@@ -67,7 +67,7 @@ void FileReader::readFile(std::vector<Particle> &particles, char *filename) {
                 }
                 datastream >> distance;
                 datastream >> avgV;
-                Cuboid cuboid(x, v, n, m, distance, avgV);
+                Cuboid cuboid(x, v, n, m, distance, avgV, 3);
                 cuboid.createParticles(particles);
             }
         }

@@ -3,31 +3,33 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include "Logger.h"
-#include "FileReader.h"
+#include "inputReader/FileReader.h"
 #include "utils/ArrayUtils.h"
-#include "Particle.h"
-#include "ParticleContainer.h"
-#include "LennardJonesForce.h"
+#include "body/Particle.h"
+#include "container/DirectSumContainer.h"
+#include "force/LennardJonesForce.h"
 
 class CuboidTest : public ::testing::Test {
 protected:
-    std::vector<Particle> particles;
-    ParticleContainer *pc;
-    Cuboid cuboid = Cuboid({0, 10, 0}, {0, 0, 0}, {2, 4, 3}, 1, 1, 0);
+    std::unique_ptr<std::vector<Particle>> particles;
+    std::unique_ptr<DirectSumContainer> pc;
+    std::unique_ptr<Force> f;
+    Cuboid cuboid = Cuboid({0, 10, 0}, {0, 0, 0}, {2, 4, 3}, 1, 1, 0, 3);
     char* testfile = const_cast<char*>("../tests/test_cases/two_cuboid.txt");
 
 
     void SetUp() override {
+        particles = std::make_unique<std::vector<Particle>>();
         FileReader fileReader;
-        fileReader.readFile(particles, testfile);
-        pc = new ParticleContainer(particles, new LennardJonesForce(),true);
+        fileReader.readFile(*particles, testfile);
+        f = std::make_unique<LennardJonesForce>();
+        pc = std::make_unique<DirectSumContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);
-        test_logger -> info("Particle Container created");
+        test_logger -> info("ParticleContainer created");
     }
 
     void TearDown() override {
-        test_logger->info("Particle Container deleted\n\n");
-        delete pc;
+        test_logger->info("ParticleContainer deleted\n\n");
     }
 };
 
@@ -50,20 +52,21 @@ TEST_F(CuboidTest, CreateParticle) {
 // Test whether the extended input format is recognized correctly.
 TEST_F(CuboidTest, ReadCuboids) {
     test_logger->info("Cuboid - read file test");
-    std::vector<Particle> ps;
+    std::unique_ptr<std::vector<Particle>> ps = std::make_unique<std::vector<Particle>>();
     std::array<double, 3> x = {0, 0, 0};
     std::array<double, 3> v = {0, 0, 0};
-    ps.emplace_back(x, v, 1);
+    ps->emplace_back(x, v, 1);
     v = {1.5, -1.5, 0};
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 2; ++j) {
             for (int k = 0; k < 1; ++k) {
                 x = {static_cast<double>(6 + i), static_cast<double>(j), static_cast<double>(k)};
-                ps.emplace_back(x, v, 1);
+                ps->emplace_back(x, v, 1);
             }
         }
     }
-    ParticleContainer reference(ps, new LennardJonesForce(),true);
+    std::unique_ptr<Force> ref_f = std::make_unique<LennardJonesForce>();
+    DirectSumContainer reference(ps, ref_f);
     ASSERT_EQ(reference, *pc) << "Cuboid - read file test failed";
     test_logger->info("Cuboid - read file test passed");
 }
@@ -71,17 +74,17 @@ TEST_F(CuboidTest, ReadCuboids) {
 // Test whether the method addCuboid correctly adds a cuboid to the container
 TEST_F(CuboidTest, AddCuboid) {
     test_logger->info("Cuboid - add cuboid test");
-    std::vector<Particle> ps;
-    pc->addCuboid(cuboid);
+    std::unique_ptr<std::vector<Particle>> ps = std::make_unique<std::vector<Particle>>();
+    pc->addCluster(cuboid);
     std::array<double, 3> x = {0, 0, 0};
     std::array<double, 3> v = {0, 0, 0};
-    ps.emplace_back(x, v, 1);
+    ps->emplace_back(x, v, 1);
     v = {1.5, -1.5, 0};
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 2; ++j) {
             for (int k = 0; k < 1; ++k) {
                 x = {static_cast<double>(6 + i), static_cast<double>(j), static_cast<double>(k)};
-                ps.emplace_back(x, v, 1);
+                ps->emplace_back(x, v, 1);
             }
         }
     }
@@ -90,11 +93,12 @@ TEST_F(CuboidTest, AddCuboid) {
         for (int j = 0; j < 4; ++j) {
             for (int k = 0; k < 3; ++k) {
                 x = {static_cast<double>(i), static_cast<double>(10 + j), static_cast<double>(k)};
-                ps.emplace_back(x, v, 1);
+                ps->emplace_back(x, v, 1);
             }
         }
     }
-    ParticleContainer reference(ps, new LennardJonesForce(),true);
+    std::unique_ptr<Force> ref_f = std::make_unique<LennardJonesForce>();
+    DirectSumContainer reference(ps, ref_f);
     ASSERT_EQ(reference, *pc) << "Cuboid - read file test failed";
     test_logger->info("Cuboid - read file test filed");
 }
@@ -106,7 +110,7 @@ TEST_F(CuboidTest, AddCuboid) {
 // analytically. The result is 3.
 TEST_F(CuboidTest, BrownianMotion) {
     test_logger->info("Cuboid - Brownian motion test");
-    Cuboid c = Cuboid({0, 0, 0}, {0, 0, 0}, {100, 100, 100}, 1, 1, 1); // 1000000 particles should produce statistically significant results
+    Cuboid c = Cuboid({0, 0, 0}, {0, 0, 0}, {100, 100, 100}, 1, 1, 1, 3); // 1000000 particles should produce statistically significant results
     std::vector<Particle> ps;
     c.createParticles(ps);
     double averageSpeedSquare = 0;

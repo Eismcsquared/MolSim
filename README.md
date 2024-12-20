@@ -60,6 +60,8 @@ Comments are mark with "#" at the beginning of a line and are only allowed at th
 Note: Only possible if the project was built with the option
 `-DBUILD_DOCUMENTATION=ON`
 
+### Run tests
+`ctest` or `./tests`
 ### Assignments
 
 For simulations required in the individuell work sheets, run the following commands.<br>
@@ -68,4 +70,12 @@ For simulations required in the individuell work sheets, run the following comma
   `./MolSim ../input/eingabe-sonne.txt -d 0.014 -e 1000 -g`<br>
 - Assignment 2:
   `./MolSim ../input/assignment2.txt -d 0.0002 -e 5 -l`<br>
+- Assignment 3 - Collision:
+  `./MolSim ../input/assignment3.xml`
+- Assignment 3 - Falling drop:
+  `./MolSim ../input/falling_drop.xml`
+
+### Benchmark
+Comparison: Linked cell algorithm vs. Direct sum algorithm for different number of particles. 
+![](src/images/ds_vs_lc.png)
 

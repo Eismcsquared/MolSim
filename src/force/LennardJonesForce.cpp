@@ -1,5 +1,5 @@
 #include "LennardJonesForce.h"
-#include "utils/ArrayUtils.h"
+#include "spdlog/spdlog.h"
 
 LennardJonesForce::LennardJonesForce(double epsilon, double sigma): epsilon(epsilon), sigma(sigma) {}
 LennardJonesForce::LennardJonesForce(): epsilon(5), sigma(1) {}
@@ -10,5 +10,6 @@ std::array<double, 3> LennardJonesForce::force(Particle& particle1, Particle& pa
     double factor = 24 * epsilon / pow(r, 2) * (a - 2 * pow(a, 2));
     return factor * (particle1.getX() - particle2.getX());
 }
+
 
 LennardJonesForce::~LennardJonesForce() = default;
