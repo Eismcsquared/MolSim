@@ -37,7 +37,9 @@ Options:
 `-h | --help` = Print help message.<br>
 
 
-Input file format:<br>
+### Input file format
+
+#### Plain text input
 
 The first line specify the number of data sets. Each of the following line is interpreted as a data set, that either represents a single particle or a cuboid of particles. Each data set consists of the following data, seperated by white spaces:<br>
 
@@ -52,6 +54,10 @@ For a cuboid of particles, The spatial coordinates specified above are interpret
 - The average velocity of the Brownian motion
 
 Comments are mark with "#" at the beginning of a line and are only allowed at the beginning of the file.
+
+#### XML file input
+
+The XML input scheme is defined in `src/inputReader/InputData.xsd`. Note that the plain text input format does not support all parameters that are supported by the XML scheme. Hence, the XML input format is preferred.
 
 ### Generate Doxygen Documentations
 

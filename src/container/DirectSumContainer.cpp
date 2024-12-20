@@ -1,6 +1,5 @@
 #include <vector>
 #include <array>
-#include <filesystem>
 #include "utils/ArrayUtils.h"
 #include "body/Particle.h"
 #include "DirectSumContainer.h"
