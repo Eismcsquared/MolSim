@@ -8,11 +8,11 @@ const std::vector<int> &Cell::getParticleIndices() const {
     return particleIndices;
 }
 
-const std::array<double, 3> Cell::getPosition() const {
+const std::array<double, 3> &Cell::getPosition() const {
     return position;
 }
 
-const std::array<double, 3> Cell::getSize() const {
+const std::array<double, 3> &Cell::getSize() const {
     return size;
 }
 

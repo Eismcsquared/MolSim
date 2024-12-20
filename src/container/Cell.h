@@ -40,12 +40,12 @@ public:
     * The getter for the position of a cell.
     * @return The position of the cell.
     */
-    const std::array<double, 3> getPosition() const;
+    const std::array<double, 3> &getPosition() const;
    /**
     * The getter for the size of a cell.
     * @return The size of the cell.
     */
-    const std::array<double, 3> getSize() const;
+    const std::array<double, 3> &getSize() const;
    /**
     * The getter for the particles' indices in a cell.
     * @return The particles' indices in the cell as a vector.

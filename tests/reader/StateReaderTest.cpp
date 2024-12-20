@@ -20,6 +20,8 @@ protected:
 
 };
 
+
+// Test whether the state reader loads the state of particles correctly.
 TEST_F(StateReaderTest, ReloadState) {
     test_logger->info("StateReaderTest - Reload states test");
 

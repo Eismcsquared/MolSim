@@ -3,7 +3,6 @@
 #include <vector>
 #include <spdlog/spdlog.h>
 #include <limits>
-#include <iostream>
 #include "XMLReader.h"
 #include "inputReader/InputData.h"
 #include "container/LinkedCellContainer.h"
