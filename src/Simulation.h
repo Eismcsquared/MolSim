@@ -91,13 +91,13 @@ public:
 
     /**
      * Setter for the time step.
-     * @param endTime The new time step.
+     * @param deltaT The new time step.
      */
     void setDeltaT(double deltaT);
 
     /**
      * Setter for the format of the output.
-     * @param endTime The new output format, either "vtu" or "xyz".
+     * @param outputFormat The new output format, either "vtu" or "xyz".
      */
     void setOutputFormat(const std::string &outputFormat);
 
