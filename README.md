@@ -88,5 +88,8 @@ For simulations required in the individuell work sheets, run the following comma
 
 ### Benchmark
 Comparison: Linked cell algorithm vs. Direct sum algorithm for different number of particles. 
+![](src/images/ds_vs_lc.png)
+
+Comparison: Run time and molecular updates per second before and after optimizations. The measurements are based on the input assignment4.xml and run on Linux cluster.
 ![](src/images/assignment4_task2.png)
 
