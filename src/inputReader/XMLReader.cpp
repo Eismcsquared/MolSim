@@ -164,6 +164,10 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
             container = std::make_unique<DirectSumContainer>(particles, force);
         }
 
+        if (input->parameters().start_time().present()) {
+            container->setT(input->parameters().start_time().get());
+        }
+
         if (input->parameters().g().present()) {
             OptionalDoubleVector3 g = input->parameters().g().get();
             double gx = g.x().present() ? g.x().get() : OptionalDoubleVector3::x_default_value();
@@ -185,7 +189,6 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
             container->setThermostat(thermostat);
         }
 
-        double start_time = input->parameters().start_time().present() ? input->parameters().start_time().get() : SimulationParameters::start_time_default_value();
         double end_time = input->parameters().end_time().present() ? input->parameters().end_time().get() : SimulationParameters::end_time_default_value();
         double delta_t = input->parameters().delta_t().present() ? input->parameters().delta_t().get() : SimulationParameters::delta_t_default_value();
         std::string output = input->parameters().output().present() ? input->parameters().output().get() : SimulationParameters::output_default_value();
@@ -194,7 +197,6 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
 
         std::unique_ptr<Simulation> simulation =  std::make_unique<Simulation>(
                     container,
-                    start_time,
                     end_time,
                     delta_t,
                     output,

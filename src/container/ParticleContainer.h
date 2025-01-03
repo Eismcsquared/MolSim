@@ -73,6 +73,11 @@ protected:
       * The thermostat that adjusts the temperature of the system.
       */
     std::unique_ptr<Thermostat> thermostat;
+
+    /**
+     * The current time.
+     */
+    double t;
 public:
     /**
     * Construct a particle container.
@@ -98,10 +103,16 @@ public:
     std::vector<Particle>& getParticles() const;
 
     /**
+     * The getter for the current time.
+     * @return The current time.
+     */
+    double getT() const;
+
+    /**
      * Setter for the force.
      * @param f
      */
-    void setF(std::unique_ptr<Force> &f);
+    void setForce(std::unique_ptr<Force> &f);
 
     /**
      * Setter for the gravitational acceleration.
@@ -114,6 +125,12 @@ public:
      * @param thermostat A unique pointer to the thermostat.
      */
     void setThermostat(std::unique_ptr<Thermostat> &thermostat);
+
+    /**
+     * Setter for the time.
+     * @param t The new time.
+     */
+    void setT(double t);
 
     /**
      * Update the position of particles by a time step.
@@ -164,7 +181,6 @@ public:
 
     /**
      * Simulate the system of particles.
-     * @param start_time The start time of the simulation.
      * @param end_time The duration of the simulation.
      * @param delta_t The time step of the simulation.
      * @param out_name The name of the output file.
@@ -172,7 +188,7 @@ public:
      * @param output_frequency THe frequency of the output, in number of time steps.
      * @param save_output Output is activated if this flag is set.
      */
-    void simulate(double start_time, double end_time, double delta_t, const std::string& out_name,
+    void simulate(double end_time, double delta_t, const std::string& out_name,
                           const std::string& output_format, unsigned int output_frequency,
                           bool save_output);
 

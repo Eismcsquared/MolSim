@@ -8,7 +8,7 @@ ParticleContainer::ParticleContainer(std::vector<Particle> &particles, std::uniq
 
 ParticleContainer::ParticleContainer(std::vector<Particle> &particles,
                                              std::unique_ptr<Force> &f_ptr, std::array<double, 3> g) :
-        particles(particles), force(std::move(f_ptr)), g(g), particleNumber(particles.size()) {
+        particles(particles), force(std::move(f_ptr)), g(g), particleNumber(particles.size()), t(0) {
 
     for (Particle &p: particles) {
         if (!p.isInDomain()) {
@@ -30,11 +30,15 @@ std::array<double, 3> ParticleContainer::getG() const {
     return g;
 }
 
+double ParticleContainer::getT() const {
+    return t;
+}
+
 std::unique_ptr<Thermostat> &ParticleContainer::getThermostat(){
     return thermostat;
 }
 
-void ParticleContainer::setF(std::unique_ptr<Force> &f) {
+void ParticleContainer::setForce(std::unique_ptr<Force> &f) {
     this->force = std::move(f);
 }
 
@@ -45,6 +49,10 @@ void ParticleContainer::setG(std::array<double, 3> g) {
 
 void ParticleContainer::setThermostat(std::unique_ptr<Thermostat> &thermostat) {
     ParticleContainer::thermostat = std::move(thermostat);
+}
+
+void ParticleContainer::setT(double t) {
+    this->t = t;
 }
 
 void ParticleContainer::addParticle(const Particle &particle) {
@@ -60,9 +68,9 @@ void ParticleContainer::addCluster(const Cluster &cluster) {
     particleNumber += particles.size() - sizeOld;
 }
 
-void ParticleContainer::simulate(double start_time, double end_time, double delta_t, const std::string &out_name, const std::string &output_format,
+void ParticleContainer::simulate(double end_time, double delta_t, const std::string &out_name, const std::string &output_format,
                                  unsigned int output_frequency, bool save_output) {
-    int start_iteration = static_cast<int>(std::round(start_time / delta_t));
+    int start_iteration = static_cast<int>(std::round(t / delta_t));
     int end_iteration = static_cast<int>(std::round(end_time / delta_t));
 
     // compute initial forces.
@@ -92,6 +100,8 @@ void ParticleContainer::simulate(double start_time, double end_time, double delt
         if (thermostat && iteration % thermostat->getPeriode() == 0) {
             thermostat->apply(particles);
         }
+
+        t += delta_t;
 
         // Stop the timer
         auto end = std::chrono::high_resolution_clock::now();

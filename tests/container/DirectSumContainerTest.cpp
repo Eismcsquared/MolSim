@@ -132,7 +132,7 @@ TEST_F(DirectSumContainerTest, Analytical) {
     double pi = 3.14159265358979323846;
     double end_t = pi / 8 + 0.25;
     double delta_t = 1e-6;
-    pc->simulate(0, end_t, delta_t, "", "vtu", 10, false);
+    pc->simulate(end_t, delta_t, "", "vtu", 10, false);
     std::vector<Particle> ref_vec;
     std::array<double, 3> x_1 = {0.25, 0, 0}; // expected position of particle 1
     std::array<double, 3> x_2 = {0.75, 0, 0}; // expected position of particle 2

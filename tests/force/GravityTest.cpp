@@ -34,13 +34,13 @@ TEST_F(GravityTest, OneParticle) {
     test_logger->info("GravityTest - One particle test");
 
     directSum->addParticle(Particle({1, 1, 0.5}, {2, 3, 0}, 1));
-    directSum->simulate(0, 0.5, 1e-5, "", "vtu", 10, false);
+    directSum->simulate(0.5, 1e-5, "", "vtu", 10, false);
 
     EXPECT_LE(ArrayUtils::L2Norm(directSum->getParticles()[0].getX() - std::array<double, 3>{2, 1.25, 0.5}), 1e-5);
     EXPECT_LE(ArrayUtils::L2Norm(directSum->getParticles()[0].getV() - std::array<double, 3>{2, -2, 0}), 1e-5);
 
     linkedCell->addParticle(Particle({1, 1, 0.5}, {2, 3, 0}, 1));
-    linkedCell->simulate(0, 0.5, 1e-5, "", "vtu", 10, false);
+    linkedCell->simulate(0.5, 1e-5, "", "vtu", 10, false);
 
     EXPECT_LE(ArrayUtils::L2Norm(linkedCell->getParticles()[0].getX() - std::array<double, 3>{2, 1.25, 0.5}), 1e-5);
     EXPECT_LE(ArrayUtils::L2Norm(linkedCell->getParticles()[0].getV() - std::array<double, 3>{2, -2, 0}), 1e-5);
@@ -103,7 +103,7 @@ TEST_F(GravityTest, ManyBody) {
     double energyBefore = potentialEnergy(directSum->getParticles(), gravitation) + kineticEnergy(directSum->getParticles()) +
             gravitationalPotential(directSum->getParticles(), -10);
 
-    directSum->simulate(0, 1, 1e-4, "", "vtu", 10, false);
+    directSum->simulate(1, 1e-4, "", "vtu", 10, false);
 
     double energyAfter = potentialEnergy(directSum->getParticles(), gravitation) + kineticEnergy(directSum->getParticles()) +
                           gravitationalPotential(directSum->getParticles(), -10);
@@ -120,7 +120,7 @@ TEST_F(GravityTest, ManyBody) {
     energyBefore = potentialEnergy(linkedCell->getParticles(), LennardJonesCutoff) + kineticEnergy(linkedCell->getParticles()) +
                           gravitationalPotential(linkedCell->getParticles(), -10);
 
-    linkedCell->simulate(0, 1, 1e-5, "", "vtu", 10, false);
+    linkedCell->simulate(1, 1e-5, "", "vtu", 10, false);
 
     energyAfter = potentialEnergy(linkedCell->getParticles(), LennardJonesCutoff) + kineticEnergy(linkedCell->getParticles()) +
                          gravitationalPotential(linkedCell->getParticles(), -10);

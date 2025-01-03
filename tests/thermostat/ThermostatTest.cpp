@@ -185,21 +185,21 @@ TEST_F(ThermostatTest, IntegrationContainer) {
     std::unique_ptr<Thermostat> cooling = std::make_unique<Thermostat>(10, 5, 7, 3);
 
     container.setThermostat(holdingConstant);
-    container.simulate(0, 5e-5, 1e-5, "", "vtu", 10, false);
+    container.simulate(5e-5, 1e-5, "", "vtu", 10, false);
     EXPECT_FLOAT_EQ(25, Thermostat::temperature(particles, 3));
 
     // gradual heating
     container.setThermostat(heating);
-    container.simulate(0, 2e-4, 1e-5, "", "vtu", 10, false);
+    container.simulate(2.5e-4, 1e-5, "", "vtu", 10, false);
     EXPECT_NEAR(37, Thermostat::temperature(particles, 3), 1e-2);
-    container.simulate(0, 4e-4, 1e-5, "", "vtu", 10, false);
+    container.simulate(6.5e-4, 1e-5, "", "vtu", 10, false);
     EXPECT_FLOAT_EQ(50, Thermostat::temperature(particles, 3));
 
     // gradual cooling
     container.setThermostat(cooling);
-    container.simulate(0, 2e-4, 1e-5, "", "vtu", 10, false);
+    container.simulate(8.5e-4, 1e-5, "", "vtu", 10, false);
     EXPECT_NEAR(22, Thermostat::temperature(particles, 3), 1e-2);
-    container.simulate(0, 4e-4, 1e-5, "", "vtu", 10, false);
+    container.simulate(1.25e-3, 1e-5, "", "vtu", 10, false);
     EXPECT_FLOAT_EQ(10, Thermostat::temperature(particles, 3));
 
     if (::testing::Test::HasFailure()) {
