@@ -23,8 +23,6 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
     try {
         std::unique_ptr<InputData> input(simulation(file, xsd::cxx::tree::flags::dont_validate));
 
-
-
         for (auto p: input->objects().particle()) {
             double r_z = p.position().z().present() ? p.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
             double v_z = p.velocity().z().present() ? p.velocity().z().get() : DoubleVector3::z_default_value();
@@ -167,7 +165,11 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
         }
 
         if (input->parameters().g().present()) {
-            container->setG(input->parameters().g().get());
+            OptionalDoubleVector3 g = input->parameters().g().get();
+            double gx = g.x().present() ? g.x().get() : OptionalDoubleVector3::x_default_value();
+            double gy = g.y().present() ? g.y().get() : OptionalDoubleVector3::y_default_value();
+            double gz = g.z().present() ? g.z().get() : OptionalDoubleVector3::z_default_value();
+            container->setG({gx, gy, gz});
         }
 
         if (input->parameters().thermostat().present()) {

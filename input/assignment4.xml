@@ -44,7 +44,9 @@
         <output>assignment4</output>4   
         <frequency>20</frequency>
         <force>Lennard-Jones</force>
-        <g>-12.44</g>
+        <g>
+            <y>-12.44</y>
+        </g>
         <thermostat>
             <initial_T>40</initial_T>
             <periode>1000</periode>

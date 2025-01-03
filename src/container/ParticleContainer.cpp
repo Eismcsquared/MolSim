@@ -4,10 +4,10 @@
 #include "outputWriter/StateWriter.h"
 
 ParticleContainer::ParticleContainer(std::vector<Particle> &particles, std::unique_ptr<Force> &f_ptr) :
-        ParticleContainer(particles, f_ptr, 0) {}
+        ParticleContainer(particles, f_ptr, {0, 0, 0}) {}
 
 ParticleContainer::ParticleContainer(std::vector<Particle> &particles,
-                                             std::unique_ptr<Force> &f_ptr, double g) :
+                                             std::unique_ptr<Force> &f_ptr, std::array<double, 3> g) :
         particles(particles), force(std::move(f_ptr)), g(g), particleNumber(particles.size()) {
 
     for (Particle &p: particles) {
@@ -26,7 +26,7 @@ std::vector<Particle> &ParticleContainer::getParticles() const {
     return particles;
 }
 
-double ParticleContainer::getG() const {
+std::array<double, 3> ParticleContainer::getG() const {
     return g;
 }
 
@@ -39,7 +39,7 @@ void ParticleContainer::setF(std::unique_ptr<Force> &f) {
 }
 
 
-void ParticleContainer::setG(double g) {
+void ParticleContainer::setG(std::array<double, 3> g) {
     ParticleContainer::g = g;
 }
 

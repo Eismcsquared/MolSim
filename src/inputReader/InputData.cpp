@@ -118,6 +118,100 @@ z_default_value ()
 }
 
 
+// OptionalDoubleVector3
+// 
+
+const OptionalDoubleVector3::x_optional& OptionalDoubleVector3::
+x () const
+{
+  return this->x_;
+}
+
+OptionalDoubleVector3::x_optional& OptionalDoubleVector3::
+x ()
+{
+  return this->x_;
+}
+
+void OptionalDoubleVector3::
+x (const x_type& x)
+{
+  this->x_.set (x);
+}
+
+void OptionalDoubleVector3::
+x (const x_optional& x)
+{
+  this->x_ = x;
+}
+
+OptionalDoubleVector3::x_type OptionalDoubleVector3::
+x_default_value ()
+{
+  return x_type (0.0);
+}
+
+const OptionalDoubleVector3::y_optional& OptionalDoubleVector3::
+y () const
+{
+  return this->y_;
+}
+
+OptionalDoubleVector3::y_optional& OptionalDoubleVector3::
+y ()
+{
+  return this->y_;
+}
+
+void OptionalDoubleVector3::
+y (const y_type& x)
+{
+  this->y_.set (x);
+}
+
+void OptionalDoubleVector3::
+y (const y_optional& x)
+{
+  this->y_ = x;
+}
+
+OptionalDoubleVector3::y_type OptionalDoubleVector3::
+y_default_value ()
+{
+  return y_type (0.0);
+}
+
+const OptionalDoubleVector3::z_optional& OptionalDoubleVector3::
+z () const
+{
+  return this->z_;
+}
+
+OptionalDoubleVector3::z_optional& OptionalDoubleVector3::
+z ()
+{
+  return this->z_;
+}
+
+void OptionalDoubleVector3::
+z (const z_type& x)
+{
+  this->z_.set (x);
+}
+
+void OptionalDoubleVector3::
+z (const z_optional& x)
+{
+  this->z_ = x;
+}
+
+OptionalDoubleVector3::z_type OptionalDoubleVector3::
+z_default_value ()
+{
+  return z_type (0.0);
+}
+
+
 // PositiveIntVector3
 // 
 
@@ -1810,10 +1904,10 @@ g (const g_optional& x)
   this->g_ = x;
 }
 
-SimulationParameters::g_type SimulationParameters::
-g_default_value ()
+void SimulationParameters::
+g (::std::unique_ptr< g_type > x)
 {
-  return g_type (0.0);
+  this->g_.set (std::move (x));
 }
 
 const SimulationParameters::dimension_optional& SimulationParameters::
@@ -2229,6 +2323,118 @@ operator= (const DoubleVector3& x)
 
 DoubleVector3::
 ~DoubleVector3 ()
+{
+}
+
+// OptionalDoubleVector3
+//
+
+OptionalDoubleVector3::
+OptionalDoubleVector3 ()
+: ::xml_schema::type (),
+  x_ (this),
+  y_ (this),
+  z_ (this)
+{
+}
+
+OptionalDoubleVector3::
+OptionalDoubleVector3 (const OptionalDoubleVector3& x,
+                       ::xml_schema::flags f,
+                       ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  x_ (x.x_, f, this),
+  y_ (x.y_, f, this),
+  z_ (x.z_, f, this)
+{
+}
+
+OptionalDoubleVector3::
+OptionalDoubleVector3 (const ::xercesc::DOMElement& e,
+                       ::xml_schema::flags f,
+                       ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  x_ (this),
+  y_ (this),
+  z_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
+}
+
+void OptionalDoubleVector3::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    // x
+    //
+    if (n.name () == "x" && n.namespace_ ().empty ())
+    {
+      if (!this->x_)
+      {
+        this->x_.set (x_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // y
+    //
+    if (n.name () == "y" && n.namespace_ ().empty ())
+    {
+      if (!this->y_)
+      {
+        this->y_.set (y_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // z
+    //
+    if (n.name () == "z" && n.namespace_ ().empty ())
+    {
+      if (!this->z_)
+      {
+        this->z_.set (z_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    break;
+  }
+}
+
+OptionalDoubleVector3* OptionalDoubleVector3::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class OptionalDoubleVector3 (*this, f, c);
+}
+
+OptionalDoubleVector3& OptionalDoubleVector3::
+operator= (const OptionalDoubleVector3& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->x_ = x.x_;
+    this->y_ = x.y_;
+    this->z_ = x.z_;
+  }
+
+  return *this;
+}
+
+OptionalDoubleVector3::
+~OptionalDoubleVector3 ()
 {
 }
 
@@ -4255,9 +4461,12 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     //
     if (n.name () == "g" && n.namespace_ ().empty ())
     {
+      ::std::unique_ptr< g_type > r (
+        g_traits::create (i, f, this));
+
       if (!this->g_)
       {
-        this->g_.set (g_traits::create (i, f, this));
+        this->g_.set (::std::move (r));
         continue;
       }
     }
@@ -4821,6 +5030,48 @@ operator<< (::xercesc::DOMElement& e, const DoubleVector3& i)
         e));
 
     s << ::xml_schema::as_double(i.y ());
+  }
+
+  // z
+  //
+  if (i.z ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "z",
+        e));
+
+    s << ::xml_schema::as_double(*i.z ());
+  }
+}
+
+void
+operator<< (::xercesc::DOMElement& e, const OptionalDoubleVector3& i)
+{
+  e << static_cast< const ::xml_schema::type& > (i);
+
+  // x
+  //
+  if (i.x ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "x",
+        e));
+
+    s << ::xml_schema::as_double(*i.x ());
+  }
+
+  // y
+  //
+  if (i.y ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "y",
+        e));
+
+    s << ::xml_schema::as_double(*i.y ());
   }
 
   // z
@@ -5596,7 +5847,7 @@ operator<< (::xercesc::DOMElement& e, const SimulationParameters& i)
         "g",
         e));
 
-    s << ::xml_schema::as_double(*i.g ());
+    s << *i.g ();
   }
 
   // dimension

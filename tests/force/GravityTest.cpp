@@ -24,8 +24,8 @@ protected:
         directSum = std::make_unique<DirectSumContainer>(particles1, g);
         linkedCell = std::make_unique<LinkedCellContainer>(particles2, l, std::array<double, 3>{15, 15, 1}, 3,
                                                            std::array<BoundaryCondition, 6>{REFLECTING, REFLECTING, REFLECTING, REFLECTING, REFLECTING, REFLECTING});
-        directSum->setG(-10);
-        linkedCell->setG(-10);
+        directSum->setG({0, -10, 0});
+        linkedCell->setG({0, -10, 0});
     }
 };
 

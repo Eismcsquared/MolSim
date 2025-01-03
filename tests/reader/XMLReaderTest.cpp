@@ -44,7 +44,7 @@ TEST_F(XMLReaderTest, Assigment1Input) {
     EXPECT_EQ("", simulation->getOutputFile());
     EXPECT_EQ("vtu", simulation->getOutputFormat());
     EXPECT_EQ(10, simulation->getOutputFrequency());
-    EXPECT_FLOAT_EQ(0, simulation->getContainer()->getG());
+    EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(simulation->getContainer()->getG()));
     EXPECT_FALSE(simulation->isSaveOutput());
     EXPECT_FALSE(simulation->getContainer()->getThermostat());
     if(::testing::Test::HasFailure()) {
@@ -74,7 +74,7 @@ TEST_F(XMLReaderTest, Assigment2Input) {
     EXPECT_EQ("a2", simulation->getOutputFile());
     EXPECT_EQ("xyz", simulation->getOutputFormat());
     EXPECT_EQ(15, simulation->getOutputFrequency());
-    EXPECT_FLOAT_EQ(0, simulation->getContainer()->getG());
+    EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(simulation->getContainer()->getG()));
     EXPECT_TRUE(simulation->isSaveOutput());
     EXPECT_FALSE(simulation->getContainer()->getThermostat());
     if(::testing::Test::HasFailure()) {
@@ -164,7 +164,8 @@ TEST_F(XMLReaderTest, Assignment4Input) {
     EXPECT_FLOAT_EQ(40, simulation->getContainer()->getThermostat()->getTargetT());
     EXPECT_FLOAT_EQ(std::numeric_limits<double>::infinity(), simulation->getContainer()->getThermostat()->getMaxDelta());
     EXPECT_EQ(2, simulation->getContainer()->getThermostat()->getDimension());
-    EXPECT_FLOAT_EQ(-12.44, simulation->getContainer()->getG());
+    EXPECT_FLOAT_EQ(-12.44, simulation->getContainer()->getG()[1]);
+    EXPECT_FLOAT_EQ(12.44, ArrayUtils::L2Norm(simulation->getContainer()->getG()));
 
     // Test whether the parameters epsilon, sigma and the type of particles are read correcly as well.
     for (Particle &p: particles) {

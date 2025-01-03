@@ -24,7 +24,9 @@
         <delta_t>0.0005</delta_t>
         <output>fd4</output>
         <frequency>20</frequency>
-        <g>-12.44</g>
+        <g>
+            <y>-12.44</y>
+        </g>
         <linked_cell>
             <domain_size>
                 <x>303</x>

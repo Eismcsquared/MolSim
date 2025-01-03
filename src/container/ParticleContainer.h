@@ -60,19 +60,19 @@ protected:
     std::unique_ptr<Force> force;
 
     /**
-     * The gravitational acceleration (in y-direction) acting on all particles.
+     * The gravitational acceleration acting on all particles.
      */
-     double g;
+    std::array<double, 3> g;
 
      /**
       * The number of particles in domain.
       */
-     unsigned long particleNumber;
+    unsigned long particleNumber;
 
      /**
       * The thermostat that adjusts the temperature of the system.
       */
-     std::unique_ptr<Thermostat> thermostat;
+    std::unique_ptr<Thermostat> thermostat;
 public:
     /**
     * Construct a particle container.
@@ -85,9 +85,9 @@ public:
     * Construct a particle container.
     * @param particles: The particles to store.
     * @param f_ptr: The force objects that defines the force between two particles.
-    * @param g: The gravitational acceleration (applied in the y-direction).
+    * @param g: The gravitational acceleration.
     */
-    ParticleContainer(std::vector<Particle> &particles, std::unique_ptr<Force> &f_ptr, double g);
+    ParticleContainer(std::vector<Particle> &particles, std::unique_ptr<Force> &f_ptr, std::array<double, 3> g);
 
     virtual ~ParticleContainer() = default;
 
@@ -107,7 +107,7 @@ public:
      * Setter for the gravitational acceleration.
      * @param g
      */
-    void setG(double g);
+    void setG(std::array<double, 3> g);
 
     /**
      * Setter for the thermostat.
@@ -135,7 +135,7 @@ public:
      * Getter for the gravitational acceleration.
      * @return The value of g.
      */
-    double getG() const;
+    std::array<double, 3> getG() const;
 
     /**
      * Getter for the thermostat.

@@ -87,7 +87,7 @@ void LinkedCellContainer::updateF() {
     for(int i: domainCells){
         for (int p_idx: cells[i].getParticleIndices()) {
             particles[p_idx].setOldF(particles[p_idx].getF());
-            particles[p_idx].setF({0, particles[p_idx].getM() * g, 0}); // reset the force
+            particles[p_idx].setF(particles[p_idx].getM() * g); // reset the force
         }
     }
 
