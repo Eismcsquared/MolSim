@@ -20,10 +20,10 @@ DirectSumContainer::~DirectSumContainer(){
 
 void DirectSumContainer::updateF() {
 
-    std::vector<std::array<double, 3>> newForces;
-    newForces.reserve(particles.size());
-    for (const auto & particle : particles) {
-        newForces.push_back(particle.getM() * g);
+
+    for (auto &particle : particles) {
+        particle.setOldF(particle.getF());
+        particle.setF(particle.getM() * g);
     }
     for (unsigned long i = 0; i < particles.size(); ++i) {
         for (unsigned long j = i + 1; j < particles.size(); ++j) {
@@ -32,29 +32,23 @@ void DirectSumContainer::updateF() {
             std::array<double, 3> forceIJ = force->force(particles[i], particles[j]);
 
             // update forces using the third Newton axiom
-            newForces[i] = newForces[i] - forceIJ;
-            newForces[j] = newForces[j] + forceIJ;
+            particles[i].addForce(-1 * forceIJ);
+            particles[j].addForce(forceIJ);
         }
-    }
-    for (unsigned long i = 0; i < particles.size(); ++i) {
-        particles[i].setOldF(particles[i].getF());
-        particles[i].setF(newForces[i]);
     }
 }
 
 
 void DirectSumContainer::updateX(double delta_t){
-    for (auto & particle : particles) {
-        std::array<double, 3> vec = particle.getX() + delta_t * (particle.getV() + (delta_t / (2 * particle.getM())) * particle.getF());
-        particle.setX(vec);
+    for (auto &particle : particles) {
+        particle.updateX(delta_t);
   }
 }
 
 
 void DirectSumContainer::updateV(double delta_t){
-    for (auto &p : particles) {
-        std::array<double, 3> vec = p.getV() + (delta_t / (2 * p.getM())) * (p.getF() + p.getOldF());
-        p.setV(vec);
+    for (auto &particle : particles) {
+        particle.updateV(delta_t);
     }
 }
 

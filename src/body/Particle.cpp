@@ -85,6 +85,24 @@ bool Particle::operator==(const Particle &other) const {
     return type == other.type;
 }
 
+void Particle::updateX(double deltaT) {
+    if (inDomain) {
+        x = x + deltaT * v + (deltaT * deltaT / (2 * m)) * f;
+    }
+}
+
+void Particle::updateV(double deltaT) {
+    if (inDomain) {
+        v = v + (deltaT / (2 * m)) * (f + old_f);
+    }
+}
+
+void Particle::addForce(std::array<double, 3> force) {
+    if (inDomain) {
+        f = f + force;
+    }
+}
+
 
 std::ostream &operator<<(std::ostream &stream, Particle &p) {
   stream << p.toString();

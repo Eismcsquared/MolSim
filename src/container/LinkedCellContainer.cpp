@@ -76,8 +76,7 @@ LinkedCellContainer::LinkedCellContainer(std::vector<Particle>& particles, std::
 void LinkedCellContainer::updateV(double delta_t) {
     for (int i: domainCells) {
         for (int p: cells[i].getParticleIndices()) {
-            std::array<double, 3> vec = particles[p].getV() + (delta_t / (2 * particles[p].getM())) * (particles[p].getF() + particles[p].getOldF());
-            particles[p].setV(vec);
+            particles[p].updateV(delta_t);
         }
     }
 }
@@ -115,8 +114,8 @@ void LinkedCellContainer::updateF() {
 
                 std::array<double, 3> forceIJ = force->force(particles[pointCellParticles[j]], particles[pointCellParticles[k]]);
 
-                particles[pointCellParticles[j]].setF(particles[pointCellParticles[j]].getF() - forceIJ);
-                particles[pointCellParticles[k]].setF(particles[pointCellParticles[k]].getF() + forceIJ);
+                particles[pointCellParticles[j]].addForce(-1 * forceIJ);
+                particles[pointCellParticles[k]].addForce(forceIJ);
             }
         }
         
@@ -157,13 +156,13 @@ void LinkedCellContainer::updateFCells(int c1, int c2){
                 if(distSquare <= cutoff * cutoff) {
 
                     std::array<double, 3> pos = particles[i].getX();
+
                     particles[i].setX(pos + offset);
-
                     std::array<double, 3> forceIJ = force->force(particles[i], particles[j]);
-
                     particles[i].setX(pos);
-                    particles[i].setF(particles[i].getF() - forceIJ);
-                    particles[j].setF(particles[j].getF() + forceIJ);
+
+                    particles[i].addForce( -1 * forceIJ);
+                    particles[j].addForce(forceIJ);
                 }
             }
         }
@@ -177,8 +176,7 @@ void LinkedCellContainer::updateX(double delta_t){
         if (particles[i].isInDomain()) {
             int cellidx_before = getCellIndex(particles[i].getX());
 
-            std::array<double, 3> vec = particles[i].getX() + delta_t * (particles[i].getV() + (delta_t / (2 * particles[i].getM())) * particles[i].getF());
-            particles[i].setX(vec);
+            particles[i].updateX(delta_t);
 
             int cellidx_after = getCellIndex(particles[i].getX());
 

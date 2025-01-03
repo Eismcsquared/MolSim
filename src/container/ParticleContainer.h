@@ -127,7 +127,7 @@ public:
     virtual void updateV(double delta_t) = 0;
 
     /**
-     * Update the force between all particles with the Newton's third law applied.
+     * Update the force between all particles.
      */
     virtual void updateF() = 0;
 

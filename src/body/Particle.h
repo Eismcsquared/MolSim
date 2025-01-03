@@ -176,7 +176,29 @@ public:
      */
     bool operator==(const Particle &other) const;
 
+    /**
+     * Provide a string representation of the particle including, its position, velocity, force and type.
+     * @return A string representation of the particle.
+     */
     std::string toString() const;
+
+    /**
+     * Update the position of the particle according to Velocity-Störmer-Verlet.
+     * @param deltaT The time step of the update.
+     */
+    virtual void updateX(double deltaT);
+
+    /**
+     * Update the velocity of the particle according to Velocity-Störmer-Verlet.
+     * @param deltaT The time step of the update.
+     */
+    virtual void updateV(double deltaT);
+
+    /**
+     * Add force to the particles.
+     * @param force The force to be added as an array.
+     */
+    virtual void addForce(std::array<double, 3> force);
 
 };
 
