@@ -44,6 +44,15 @@ public:
 };
 
 /**
+ * @brief Represents external forces acting on single particles until a certain time.
+ */
+struct ConstantForce{
+    int particleIndex;
+    std::array<double, 3> f;
+    double untilTime;
+};
+
+/**
  * @brief The abstract class that represents a container for particles. Subclasses implement the concrete way to manage particles.
  */
 class ParticleContainer {
@@ -78,6 +87,12 @@ protected:
      * The current time.
      */
     double t;
+
+    /**
+     * External forces acting on single particles until a certain time.
+     */
+    std::vector<ConstantForce> externalForces;
+
 public:
     /**
     * Construct a particle container.
@@ -101,6 +116,24 @@ public:
      * @return The particles in the container as a vector.
      */
     std::vector<Particle>& getParticles() const;
+
+    /**
+     * Getter for the gravitational acceleration.
+     * @return The value of g.
+     */
+    std::array<double, 3> getG() const;
+
+    /**
+     * Getter for the thermostat.
+     * @return The thermostat.
+     */
+    std::unique_ptr<Thermostat> &getThermostat();
+
+    /**
+     * Determine the number of particles in a container.
+     * @return The number of particles contained in the container.
+     */
+    unsigned long getParticleNumber() const;
 
     /**
      * The getter for the current time.
@@ -149,22 +182,9 @@ public:
     virtual void updateF() = 0;
 
     /**
-     * Getter for the gravitational acceleration.
-     * @return The value of g.
+     * Set the old force of particles to their current force and reset their force to the sum of external forces.
      */
-    std::array<double, 3> getG() const;
-
-    /**
-     * Getter for the thermostat.
-     * @return The thermostat.
-     */
-    std::unique_ptr<Thermostat> &getThermostat();
-
-    /**
-     * Determine the number of particles in a container.
-     * @return The number of particles contained in the container.
-     */
-    unsigned long getParticleNumber() const;
+    void resetF();
 
     /**
      * Add a particle to the container

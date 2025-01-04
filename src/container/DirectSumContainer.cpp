@@ -20,11 +20,8 @@ DirectSumContainer::~DirectSumContainer(){
 
 void DirectSumContainer::updateF() {
 
+    resetF();
 
-    for (auto &particle : particles) {
-        particle.setOldF(particle.getF());
-        particle.setF(particle.getM() * g);
-    }
     for (unsigned long i = 0; i < particles.size(); ++i) {
         for (unsigned long j = i + 1; j < particles.size(); ++j) {
 

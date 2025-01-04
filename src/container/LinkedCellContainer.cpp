@@ -83,12 +83,7 @@ void LinkedCellContainer::updateV(double delta_t) {
 
 void LinkedCellContainer::updateF() {
 
-    for(int i: domainCells){
-        for (int p_idx: cells[i].getParticleIndices()) {
-            particles[p_idx].setOldF(particles[p_idx].getF());
-            particles[p_idx].setF(particles[p_idx].getM() * g); // reset the force
-        }
-    }
+    resetF();
 
     for(int i: domainCells){
         std::vector<int> pointCellParticles = cells[i].getParticleIndices();

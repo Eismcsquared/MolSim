@@ -100,17 +100,41 @@ private:
 public:
     explicit Particle(int type = 0);
 
+    /**
+     * Copy constructor.
+     * @param other The particle to be copied.
+     */
     Particle(const Particle &other);
 
+    /**
+     * Constructor.
+     * @param x_arg The position of the particle.
+     * @param v_arg The velocity of the particle.
+     * @param m_arg The mass of the particle.
+     * @param type The type of the particle.
+     */
     Particle(
       // for visualization, we need always 3 coordinates
       // -> in case of 2d, we use only the first and the second
         std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg,
         int type = 0);
 
+    /**
+     * Constructor.
+     * @param x_arg The position of the particle.
+     * @param v_arg The velocity of the particle.
+     * @param m_arg The mass of the particle.
+     * @param type The type of the particle.
+     * @param epsilon The parameter epsilon of the Lennard-Jones potential.
+     * @param sigma The parameter sigma of the Lennard-Jones potential.
+     * @param stationary The flag that marks the particle as stationary.
+     */
     Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, int type,
             double epsilon, double sigma, bool stationary = false);
 
+    /**
+     * Destructor.
+     */
     virtual ~Particle();
 
     /**
@@ -233,6 +257,18 @@ public:
      * @param type The new type of the particle.
      */
     inline void setType(int type_arg) { this->type = type_arg; };
+
+    /**
+     * The setter for the stiffness constant.
+     * @param k_arg The new stiffness constant.
+     */
+    inline void setK(double k_arg) { this->k = k_arg; }
+
+    /**
+     * The setter for the average bond length.
+     * @param r0_arg The new average bond length.
+     */
+    inline void setR0(double r0_arg) { this->r0 = r0_arg; }
 
     /**
      * Add a particle to the neighbours of the current particle.

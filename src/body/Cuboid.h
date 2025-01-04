@@ -7,7 +7,7 @@
  * @brief This class represents a cuboid consisting of particles.
  */
 class Cuboid : public Cluster {
-private:
+protected:
     /**
      * The number of particles in x, y and z direction.
      */

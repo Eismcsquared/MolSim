@@ -55,6 +55,20 @@ void ParticleContainer::setT(double t) {
     this->t = t;
 }
 
+void ParticleContainer::resetF() {
+    for (Particle &particle: particles) {
+        if (particle.isInDomain()) {
+            particle.setOldF(particle.getF());
+            particle.setF(particle.getM() * g);
+        }
+    }
+    for (auto externalForce: externalForces) {
+        if (t < externalForce.untilTime && particles[externalForce.particleIndex].isInDomain()) {
+            particles[externalForce.particleIndex].addForce(externalForce.f);
+        }
+    }
+}
+
 void ParticleContainer::addParticle(const Particle &particle) {
     if (particle.isInDomain()) {
         this->particles.push_back(particle);
