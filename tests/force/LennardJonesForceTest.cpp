@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include <vector>
-#include "spdlog/spdlog.h"
-#include "spdlog/sinks/basic_file_sink.h"
-#include "spdlog/fmt/ostr.h"
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/fmt/ostr.h>
 #include "force/LennardJonesForce.h"
 #include "force/Force.h"
 #include "body/Particle.h"

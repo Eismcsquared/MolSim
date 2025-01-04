@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <vector>
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 #include "container/LinkedCellContainer.h"
 #include "force/LennardJonesForce.h"
 

@@ -23,7 +23,7 @@ protected:
 
 // Test whether the state reader loads the state of particles correctly.
 TEST_F(StateReaderTest, ReloadState) {
-    test_logger->info("StateReaderTest - Reload states test");
+    test_logger->info("StateReader - Reload states test");
 
     std::filesystem::remove(fileName);
     StateWriter::saveState(particles, fileName);
@@ -36,8 +36,8 @@ TEST_F(StateReaderTest, ReloadState) {
     }
     std::filesystem::remove(fileName);
     if (::testing::Test::HasFailure()) {
-        test_logger->info("StateReaderTest - Reload states test failed\n\n");
+        test_logger->info("StateReader - Reload states test failed\n\n");
     } else {
-        test_logger->info("StateReaderTest - Reload states test passed\n\n");
+        test_logger->info("StateReader - Reload states test passed\n\n");
     }
 }

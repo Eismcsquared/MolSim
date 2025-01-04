@@ -16,6 +16,16 @@ class Particle {
 
 private:
     /**
+     * The number of particles that have been created.
+     */
+    inline static int numberParticles = 0;
+
+    /**
+     * The identity of the particle, used for identifying neighboring particles in a membrane.
+     */
+    const int id;
+
+    /**
     * Position of the particle
     */
     std::array<double, 3> x;
@@ -77,6 +87,12 @@ public:
             double epsilon, double sigma);
 
     virtual ~Particle();
+
+    /**
+     * The getter for the identity.
+     * @return The id of the particle.
+     */
+    inline const int getId() {return id;}
 
     /**
      * The getter for the position of a particle.
@@ -169,12 +185,19 @@ public:
     void removeFromDomain();
 
     /**
-     * @brief Compare two particles based on their position, velocity, current force and type, under consideration of a
+     * Compare two particles based on their position, velocity, current force and type, under consideration of a
      * relative error up to 1e-5 and an absolute error up to 1e-12.
      * @param other: The Particle to be compared with this.
      * @return
      */
     bool operator==(const Particle &other) const;
+
+    /**
+     * Compare both particles based on their identities.
+     * @param other The particle to be compared with.
+     * @return True if the both particles have the same identity.
+     */
+    inline bool is(const Particle &other) { return id == other.id; }
 
     /**
      * Provide a string representation of the particle including, its position, velocity, force and type.

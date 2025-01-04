@@ -3,15 +3,16 @@
 #include "utils/ArrayUtils.h"
 #include "spdlog/spdlog.h"
 
-Particle::Particle(int type_arg) {
+Particle::Particle(int type_arg): id(numberParticles) {
   type = type_arg;
   spdlog::trace("Particle generated!");
   f = {0., 0., 0.};
   old_f = {0., 0., 0.};
   inDomain = true;
+  numberParticles++;
 }
 
-Particle::Particle(const Particle &other) {
+Particle::Particle(const Particle &other): id(other.id) {
   x = other.x;
   v = other.v;
   f = other.f;
@@ -25,17 +26,14 @@ Particle::Particle(const Particle &other) {
 }
 
 Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg,
-                   double m_arg, int type_arg) : x(x_arg), v(v_arg), f{0., 0., 0.}, old_f{0., 0., 0.}, m(m_arg), type(type_arg), inDomain(
-        true), epsilon(5), sigma(1) {
-  spdlog::trace("Particle generated!");
-}
-
+                   double m_arg, int type_arg) : Particle(x_arg, v_arg, m_arg, 0, 5, 1) {}
 
 
 Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, int type, double epsilon,
-                   double sigma): x(x_arg), v(v_arg), f{0., 0., 0.}, old_f{0., 0., 0.}, m(m_arg), type(type), inDomain(
+                   double sigma): id(numberParticles), x(x_arg), v(v_arg), f{0., 0., 0.}, old_f{0., 0., 0.}, m(m_arg), type(type), inDomain(
         true), epsilon(epsilon), sigma(sigma){
-
+    numberParticles++;
+    spdlog::trace("Particle generated!");
 }
 
 Particle::~Particle() { spdlog::trace("Particle destructed!"); }

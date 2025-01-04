@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <vector>
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 #include "container/LinkedCellContainer.h"
 #include "force/LennardJonesForce.h"
 
@@ -33,7 +33,7 @@ protected:
 
 // Test whether the helper function temperature computes the temperature correctly, which will be used in the tests.
 TEST_F(ThermostatTest, Temperature) {
-    test_logger->info("ThermostatTest - Temperature computation test");
+    test_logger->info("Thermostat - Temperature computation test");
 
     Thermostat thermostat2D(10, 1, 10, 2);
     Thermostat thermostat3D(10, 1, 10, 3);
@@ -42,16 +42,16 @@ TEST_F(ThermostatTest, Temperature) {
     EXPECT_NEAR(25, Thermostat::temperature(particles2, 3), .25);
 
     if (::testing::Test::HasFailure()) {
-        test_logger->info("ThermostatTest - Temperature computation test failed\n\n");
+        test_logger->info("Thermostat - Temperature computation test failed\n\n");
     } else {
-        test_logger->info("ThermostatTest - Temperature computation test passed\n\n");
+        test_logger->info("Thermostat - Temperature computation test passed\n\n");
     }
 }
 
 // Test the heating process by the thermostats, both cases maxDelta > target_T - initial_T and maxDelta < target_T - initial_T are considered.
 TEST_F(ThermostatTest, Heating) {
 
-    test_logger->info("ThermostatTest - Heating test");
+    test_logger->info("Thermostat - Heating test");
 
     Thermostat heater2D(84, 1, std::numeric_limits<double>::infinity(), 2);
     Thermostat gradualHeater2D(30, 1, 7, 2);
@@ -88,15 +88,15 @@ TEST_F(ThermostatTest, Heating) {
     EXPECT_FLOAT_EQ(40, Thermostat::temperature(particles2, 3));
 
     if (::testing::Test::HasFailure()) {
-        test_logger->info("ThermostatTest - Heating test failed\n\n");
+        test_logger->info("Thermostat - Heating test failed\n\n");
     } else {
-        test_logger->info("ThermostatTest - Heating test passed\n\n");
+        test_logger->info("Thermostat - Heating test passed\n\n");
     }
 }
 
 // Test the cooling process by the thermostats, both cases maxDelta > initial_T - target_T and maxDelta < initial_T - target_T are considered.
 TEST_F(ThermostatTest, Cooling) {
-    test_logger->info("ThermostatTest - Cooling test");
+    test_logger->info("Thermostat - Cooling test");
 
     Thermostat heater2D(7, 1, std::numeric_limits<double>::infinity(), 2);
     Thermostat gradualHeater2D(10, 1, 7, 2);
@@ -133,15 +133,15 @@ TEST_F(ThermostatTest, Cooling) {
     EXPECT_FLOAT_EQ(15, Thermostat::temperature(particles2, 3));
 
     if (::testing::Test::HasFailure()) {
-        test_logger->info("ThermostatTest - Cooling test failed\n\n");
+        test_logger->info("Thermostat - Cooling test failed\n\n");
     } else {
-        test_logger->info("ThermostatTest - Cooling test passed\n\n");
+        test_logger->info("Thermostat - Cooling test passed\n\n");
     }
 }
 
 // Test the thermostat holding temperature constant.
 TEST_F(ThermostatTest, HoldingConstant) {
-    test_logger->info("ThermostatTest - Holding temperature constant test");
+    test_logger->info("Thermostat - Holding temperature constant test");
 
     Thermostat heater2D(21, 1, std::numeric_limits<double>::infinity(), 2);
 
@@ -162,15 +162,15 @@ TEST_F(ThermostatTest, HoldingConstant) {
     EXPECT_FLOAT_EQ(25, Thermostat::temperature(particles2, 3));
 
     if (::testing::Test::HasFailure()) {
-        test_logger->info("ThermostatTest - Holding temperature constant test failed\n\n");
+        test_logger->info("Thermostat - Holding temperature constant test failed\n\n");
     } else {
-        test_logger->info("ThermostatTest - Holding temperature constant test passed\n\n");
+        test_logger->info("Thermostat - Holding temperature constant test passed\n\n");
     }
 }
 
 // Test the integration of thermostats into particle containers.
 TEST_F(ThermostatTest, IntegrationContainer) {
-    test_logger->info("ThermostatTest - Holding temperature constant test");
+    test_logger->info("Thermostat - Holding temperature constant test");
 
     std::vector<Particle> particles;
     Cuboid cuboid1({10, 10, 10}, {0, 0, 0}, {10, 10, 10}, 1, pow(2, 1.0 / 6), 5, 3);
@@ -203,9 +203,9 @@ TEST_F(ThermostatTest, IntegrationContainer) {
     EXPECT_FLOAT_EQ(10, Thermostat::temperature(particles, 3));
 
     if (::testing::Test::HasFailure()) {
-        test_logger->info("ThermostatTest - Holding temperature constant test failed\n\n");
+        test_logger->info("Thermostat - Holding temperature constant test failed\n\n");
     } else {
-        test_logger->info("ThermostatTest - Holding temperature constant test passed\n\n");
+        test_logger->info("Thermostat - Holding temperature constant test passed\n\n");
     }
 
 }
