@@ -6,9 +6,10 @@
  */
 
 #pragma once
-
+#include <vector>
 #include <array>
 #include <string>
+#include "utils/ArrayUtils.h"
 /**
  * @brief Class that represents a particle. A particle object contains information about its current position, velocity and mass. Moreover, it stores the force acting on it in the current and the previous time step, which is necessary for update via Velocity-Störmer-Verlet.
  */
@@ -71,6 +72,30 @@ private:
      */
     double sigma;
 
+    /**
+     * The id of the neighbours of the particle.
+     */
+    std::vector<int> neighbours;
+
+    /**
+     * The id of the diagonal neighbours of the particle.
+     */
+    std::vector<int> diagonalNeighbours;
+
+    /**
+     * Stiffness of the membrane.
+     */
+    double k;
+
+    /**
+     * Average bond length.
+     */
+    double r0;
+
+    /**
+     * Mark a particle as stationary (e.g. for walls)
+     */
+    const bool stationary;
 
 public:
     explicit Particle(int type = 0);
@@ -84,7 +109,7 @@ public:
         int type = 0);
 
     Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, int type,
-            double epsilon, double sigma);
+            double epsilon, double sigma, bool stationary = false);
 
     virtual ~Particle();
 
@@ -149,35 +174,81 @@ public:
     inline double getSigma() const { return sigma; };
 
     /**
+     * Getter for the stiffness constant.
+     * @return The stiffness constant.
+     */
+    inline double getK() const { return k; };
+
+    /**
+     * Getter for the average bond length.
+     * @return Te average bond length.
+     */
+    inline double getR0() const { return r0; };
+
+    /**
+     * Determine whether a particle is a direct neighbour of the current particle.
+     * @param other The particle that should be tested on neighbourhood.
+     * @return True, if the given particle is a direct neighbour.
+     */
+    inline bool isNeighbour(const Particle &other) {
+        return std::find(neighbours.begin(), neighbours.end(), other.id) != neighbours.end();
+    }
+
+    /**
+     * Determine whether a particle is a diagonal neighbour of the current particle.
+     * @param other The particle that should be tested on diagonal neighbourhood.
+     * @return True, if the given particle is a diagonal neighbour.
+     */
+    inline bool isDiagonalNeighbour(const Particle &other) {
+        return std::find(diagonalNeighbours.begin(), diagonalNeighbours.end(), other.id) != diagonalNeighbours.end();
+    }
+
+    /**
      * The setter for the position of a particle.
-     * @param x_arg: The new position of the particle.
+     * @param x_arg The new position of the particle.
      */
     inline void setX(std::array<double, 3> x_arg) { this->x = x_arg; };
     /**
      * The setter for the velocity of a particle.
-     * @param v_arg: The new position of the particle.
+     * @param v_arg The new position of the particle.
      */
     inline void setV(std::array<double,3> v_arg) { this->v = v_arg; };
     /**
      * The setter for the force acting on a particle.
-     * @param f_arg: The new force acting on the particle.
+     * @param f_arg The new force acting on the particle.
      */
     inline void setF(std::array<double,3> f_arg) { this->f = f_arg; };
     /**
      * The setter for the force acting on a particle in the previous time step.
-     * @param oldf_arg: The new position of the particle in the previous time step.
+     * @param oldf_arg The new position of the particle in the previous time step.
      */
     inline void setOldF(std::array<double,3> oldf_arg) { this->old_f = oldf_arg; };
     /**
      * The setter for the mass of a particle.
-     * @param m_arg: The new mass of the particle.
+     * @param m_arg The new mass of the particle.
      */
     inline void setM(double m_arg) { this->m = m_arg; };
     /**
      * The setter for the type of a particle.
-     * @param type: The new type of the particle.
+     * @param type The new type of the particle.
      */
-    inline void setType(int type) { this->type = type; };
+    inline void setType(int type_arg) { this->type = type_arg; };
+
+    /**
+     * Add a particle to the neighbours of the current particle.
+     * @param other The particle to be added.
+     */
+    inline void addNeighbour(const Particle &other) {
+        neighbours.push_back(other.id);
+    }
+
+    /**
+     * Add a particle to the diagonal neighbours of the current particle.
+     * @param other The particle to be added.
+     */
+    inline void addDiagonalNeighbour(const Particle &other) {
+        diagonalNeighbours.push_back(other.id);
+    }
 
     /**
      * Remove the particle from the domain.
@@ -209,19 +280,31 @@ public:
      * Update the position of the particle according to Velocity-Störmer-Verlet.
      * @param deltaT The time step of the update.
      */
-    virtual void updateX(double deltaT);
+    inline void updateX(double deltaT) {
+        if (inDomain && !stationary) {
+            x = x + deltaT * v + (deltaT * deltaT / (2 * m)) * f;
+        }
+    }
 
     /**
      * Update the velocity of the particle according to Velocity-Störmer-Verlet.
      * @param deltaT The time step of the update.
      */
-    virtual void updateV(double deltaT);
+    inline void updateV(double deltaT) {
+        if (inDomain && !stationary) {
+            v = v + (deltaT / (2 * m)) * (f + old_f);
+        }
+    }
 
     /**
      * Add force to the particles.
      * @param force The force to be added as an array.
      */
-    virtual void addForce(std::array<double, 3> force);
+    inline void addForce(std::array<double, 3> force) {
+        if (inDomain && !stationary) {
+            f = f + force;
+        }
+    }
 
 };
 

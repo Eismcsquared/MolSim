@@ -3,7 +3,7 @@
 #include "utils/ArrayUtils.h"
 #include "spdlog/spdlog.h"
 
-Particle::Particle(int type_arg): id(numberParticles) {
+Particle::Particle(int type_arg): id(numberParticles), stationary(false) {
   type = type_arg;
   spdlog::trace("Particle generated!");
   f = {0., 0., 0.};
@@ -12,7 +12,7 @@ Particle::Particle(int type_arg): id(numberParticles) {
   numberParticles++;
 }
 
-Particle::Particle(const Particle &other): id(other.id) {
+Particle::Particle(const Particle &other): id(other.id), stationary(false) {
   x = other.x;
   v = other.v;
   f = other.f;
@@ -30,8 +30,8 @@ Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg,
 
 
 Particle::Particle(std::array<double, 3> x_arg, std::array<double, 3> v_arg, double m_arg, int type, double epsilon,
-                   double sigma): id(numberParticles), x(x_arg), v(v_arg), f{0., 0., 0.}, old_f{0., 0., 0.}, m(m_arg), type(type), inDomain(
-        true), epsilon(epsilon), sigma(sigma){
+                   double sigma, bool stationary): id(numberParticles), x(x_arg), v(v_arg), f{0., 0., 0.}, old_f{0., 0., 0.}, m(m_arg), type(type), inDomain(
+        true), epsilon(epsilon), sigma(sigma), stationary(stationary){
     numberParticles++;
     spdlog::trace("Particle generated!");
 }
@@ -82,25 +82,6 @@ bool Particle::operator==(const Particle &other) const {
     }
     return type == other.type;
 }
-
-void Particle::updateX(double deltaT) {
-    if (inDomain) {
-        x = x + deltaT * v + (deltaT * deltaT / (2 * m)) * f;
-    }
-}
-
-void Particle::updateV(double deltaT) {
-    if (inDomain) {
-        v = v + (deltaT / (2 * m)) * (f + old_f);
-    }
-}
-
-void Particle::addForce(std::array<double, 3> force) {
-    if (inDomain) {
-        f = f + force;
-    }
-}
-
 
 std::ostream &operator<<(std::ostream &stream, Particle &p) {
   stream << p.toString();
