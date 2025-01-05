@@ -38,13 +38,16 @@ std::unique_ptr<Thermostat> &ParticleContainer::getThermostat(){
     return thermostat;
 }
 
-void ParticleContainer::setForce(std::unique_ptr<Force> &f) {
-    this->force = std::move(f);
+const std::vector<ConstantForce> &ParticleContainer::getExternalForces() const {
+    return externalForces;
 }
-
 
 void ParticleContainer::setG(std::array<double, 3> g) {
     ParticleContainer::g = g;
+}
+
+void ParticleContainer::setForce(std::unique_ptr<Force> &f) {
+    this->force = std::move(f);
 }
 
 void ParticleContainer::setThermostat(std::unique_ptr<Thermostat> &thermostat) {

@@ -21,4 +21,10 @@ TEST_F(ParticleTest, IDTest) {
     EXPECT_TRUE(p1.is(p1_copy));
     Particle p3(2);
     EXPECT_EQ(id0 + 3, p3.getId());
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("Particle - ID test failed");
+    } else {
+        test_logger->info("Particle - ID test passed");
+    }
 }

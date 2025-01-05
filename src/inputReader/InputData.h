@@ -4126,6 +4126,8 @@ class ExternalForceType: public ::xml_schema::type
    *
    * @brief Accessor and modifier functions for the %index
    * sequence element.
+   *
+   * The 2D index of the particle within a membrane, starting with 1.
    */
   //@{
 

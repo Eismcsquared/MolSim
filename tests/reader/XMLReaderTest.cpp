@@ -262,4 +262,49 @@ TEST_F(XMLReaderTest, Checkpointing) {
     }
 }
 
+// Test whether membranes and external forces are read correctly.
+TEST_F(XMLReaderTest, Membrane) {
+    test_logger->info("XMLReader - Membrane test");
+    inputFile = "../tests/test_cases/membrane.xml";
+    simulation = XMLReader::readXML(particles, inputFile);
+
+    EXPECT_EQ(100, simulation->getContainer()->getParticleNumber());
+    for (Particle &particle1 : simulation->getContainer()->getParticles()) {
+        EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(particle1.getV() - std::array<double, 3>{0, 2, 0}));
+        EXPECT_FLOAT_EQ(2, particle1.getM());
+        EXPECT_FLOAT_EQ(3, particle1.getEpsilon());
+        EXPECT_FLOAT_EQ(1.2, particle1.getSigma());
+        EXPECT_FLOAT_EQ(100, particle1.getK());
+        EXPECT_FLOAT_EQ(1, particle1.getR0());
+        for (Particle &particle2 : simulation->getContainer()->getParticles()) {
+            if (std::abs(ArrayUtils::L2NormSquare(particle1.getX() - particle2.getX()) - 25) < 1e-12) {
+                EXPECT_TRUE(particle1.isNeighbour(particle2));
+            } else {
+                EXPECT_FALSE(particle1.isNeighbour(particle2));
+            }
+            if (std::abs(ArrayUtils::L2NormSquare(particle1.getX() - particle2.getX()) - 50) < 1e-12) {
+                EXPECT_TRUE(particle1.isDiagonalNeighbour(particle2));
+            } else {
+                EXPECT_FALSE(particle1.isDiagonalNeighbour(particle2));
+            }
+        }
+    }
+    auto ef = simulation->getContainer()->getExternalForces();
+    EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(simulation->getContainer()->getParticles()[ef[0].particleIndex].getX() - std::array<double, 3>{3, 0, 1}));
+    EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(ef[0].f - std::array<double, 3>{3, 2, 1}));
+    EXPECT_FLOAT_EQ(15, ef[0].untilTime);
+    EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(simulation->getContainer()->getParticles()[ef[1].particleIndex].getX() - std::array<double, 3>{23, 10, 1}));
+    EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(ef[1].f - std::array<double, 3>{3, 2, 1}));
+    EXPECT_FLOAT_EQ(15, ef[1].untilTime);
+    EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(simulation->getContainer()->getParticles()[ef[2].particleIndex].getX() - std::array<double, 3>{48, 45, 1}));
+    EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(ef[2].f - std::array<double, 3>{0, 1, 2}));
+    EXPECT_FLOAT_EQ(20, ef[2].untilTime);
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("XMLReader - Membrane test failed");
+    } else {
+        test_logger->info("XMLReader - Membrane test passed");
+    }
+}
+
 

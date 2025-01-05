@@ -95,7 +95,13 @@
 
     <xs:complexType name="ExternalForceType">
         <xs:sequence>
-            <xs:element name="index" type="PositiveIntVector2" maxOccurs="unbounded"/>
+            <xs:element name="index" type="PositiveIntVector2" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        The 2D index of the particle within a membrane, starting with 1.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
             <xs:element name="force" type="DoubleVector3"/>
             <xs:element name="until" type="PositiveDouble"/>
         </xs:sequence>

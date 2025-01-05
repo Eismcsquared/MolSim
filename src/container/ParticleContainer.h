@@ -142,6 +142,11 @@ public:
     double getT() const;
 
     /**
+     * The getter for the external forces.
+     * @return The external forces.
+     */
+    const std::vector<ConstantForce> &getExternalForces() const;
+    /**
      * Setter for the force.
      * @param f
      */

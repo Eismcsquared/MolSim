@@ -207,7 +207,7 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
             for (auto ef: m.external_force()) {
                 double fz = ef.force().z().present() ? ef.force().z().get() : DoubleVector3::z_default_value();
                 for (auto index: ef.index()) {
-                    container->addExternalForce(oldSize + index.x() * m.size().y() + index.y(), {ef.force().x(), ef.force().y(), fz}, ef.until());
+                    container->addExternalForce(oldSize + (index.x() - 1) * m.size().y() + (index.y() - 1), {ef.force().x(), ef.force().y(), fz}, ef.until());
                 }
             }
         }
