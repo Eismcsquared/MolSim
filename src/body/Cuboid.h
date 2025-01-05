@@ -1,3 +1,5 @@
+#pragma once
+
 #include <array>
 #include <vector>
 #include "Particle.h"
@@ -36,6 +38,7 @@ public:
      * @param distance The distance between neighbouring particles.
      * @param avgVelocityBrownian The average velocity of the Brownian motion.
      * @param dimension The dimension of the Brownian motion.
+     * @param type The type of the particles.
      * @param epsilon The parameter epsilon of the Lennard-Jones potential.
      * @param sigma The parameter sigma of the Lennard-Jones potential.
      */

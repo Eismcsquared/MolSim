@@ -198,6 +198,13 @@ public:
      */
     virtual void addCluster(const Cluster &cluster);
 
+    /**
+     * Add an external force on a specific particle.
+     * @param particleIndex The index of the particle the force should be applied on.
+     * @param f The force as an array.
+     * @param until The time until which the force is applied.
+     */
+    void addExternalForce(int particleIndex, const std::array<double, 3> f, double until);
 
     /**
      * Simulate the system of particles.

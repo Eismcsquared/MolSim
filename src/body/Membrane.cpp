@@ -1,8 +1,9 @@
 #include "Membrane.h"
 
-Membrane::Membrane(std::array<double, 3> &x, std::array<double, 3> &v, std::array<unsigned int, 2> &n, double m,
-                   double distance, double avgVelocityBrownian, int dimension, double k, double r0):
-        Cuboid(x, v, {n[0], n[1], 0}, m, distance, avgVelocityBrownian, dimension), k(k), r0(r0){
+Membrane::Membrane(const std::array<double, 3> &x, const std::array<double, 3> &v, const std::array<unsigned int, 2> &n, double m,
+                   double distance, double avgVelocityBrownian, int dimension, int type, double epsilon, double sigma,
+                   double k, double r0):
+        Cuboid(x, v, {n[0], n[1], 0}, m, distance, avgVelocityBrownian, dimension, type, epsilon, sigma), k(k), r0(r0){
 
 }
 

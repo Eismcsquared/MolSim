@@ -236,8 +236,8 @@ TEST_F(XMLReaderTest, Checkpointing) {
 
 
     std::vector<Particle> ref;
-    ref.emplace_back(std::array<double, 3>{7, 7, 3}, std::array<double, 3>{-1, 2, 0.5}, 1, 1, 5, 1.2);
     ref.emplace_back(std::array<double, 3>{7, 8, 3}, std::array<double, 3>{1, 0.5, 0.5}, 3.5, 2, 4, 1.1);
+    ref.emplace_back(std::array<double, 3>{7, 7, 3}, std::array<double, 3>{-1, 2, 0.5}, 1, 1, 5, 1.2);
 
     EXPECT_EQ(ref[0], particles[0]);
     EXPECT_EQ(ref[1], particles[1]);

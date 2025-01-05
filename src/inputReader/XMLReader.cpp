@@ -11,6 +11,7 @@
 #include "force/LennardJonesForce.h"
 #include "container/DirectSumContainer.h"
 #include "body/Sphere.h"
+#include "body/Membrane.h"
 #include "inputReader/StateReader.h"
 
 std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles, std::string fileName) {
@@ -23,92 +24,8 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
     try {
         std::unique_ptr<InputData> input(simulation(file, xsd::cxx::tree::flags::dont_validate));
 
-        for (auto p: input->objects().particle()) {
-            double r_z = p.position().z().present() ? p.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
-            double v_z = p.velocity().z().present() ? p.velocity().z().get() : DoubleVector3::z_default_value();
-            int type = p.type().present() ? p.type().get() : ParticleType::type_default_value();
-            double epsilon = p.epsilon().present() ? p.epsilon().get() : ParticleType::epsilon_default_value();
-            double sigma = p.sigma().present() ? p.sigma().get() : ParticleType::sigma_default_value();
-            particles.emplace_back(
-                        std::array<double, 3>{p.position().x(), p.position().y(), r_z},
-                        std::array<double, 3>{p.velocity().x(), p.velocity().y(), v_z},
-                        p.mass(),
-                        type,
-                        epsilon,
-                        sigma
-                    );
-        }
-
-        int dimension = static_cast<int>(input->parameters().dimension().present() ? input->parameters().dimension().get() : InputData::parameters_type::dimension_default_value());
-
-        for (auto c : input->objects().cuboid()) {
-            double r_z = c.position().z().present() ? c.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
-            double v_z = c.velocity().z().present() ? c.velocity().z().get() : DoubleVector3::z_default_value();
-            unsigned int n_z = c.size().z().present() ? c.size().z().get() : PositiveIntVector3::z_default_value();
-            int type = c.type().present() ? c.type().get() : ParticleType::type_default_value();
-            double epsilon = c.epsilon().present() ? c.epsilon().get() : CuboidType::epsilon_default_value();
-            double sigma = c.sigma().present() ? c.sigma().get() : CuboidType::sigma_default_value();
-
-            double brown_vel;
-            if (input->parameters().thermostat().present()) {
-                brown_vel = sqrt(input->parameters().thermostat()->initial_T() / c.mass());
-            } else if (c.brown_velocity().present()) {
-                brown_vel = c.brown_velocity().get();
-            } else {
-                brown_vel = CuboidType::brown_velocity_default_value();
-            }
-
-            Cuboid cuboid(
-                        std::array<double, 3>{c.position().x(), c.position().y(), r_z},
-                        std::array<double, 3>{c.velocity().x(), c.velocity().y(), v_z},
-                        std::array<unsigned int, 3>{(unsigned int) c.size().x(), (unsigned int) c.size().y(), n_z},
-                        c.mass(),
-                        c.distance(),
-                        brown_vel,
-                        dimension,
-                        type,
-                        epsilon,
-                        sigma
-                    );
-
-            cuboid.createParticles(particles);
-
-        }
-
-        for (auto s : input->objects().sphere()) {
-            double r_z = s.center().z().present() ? s.center().z().get() : PositiveDoubleVector3::z_default_value() / 2;
-            double v_z = s.velocity().z().present() ? s.velocity().z().get() : DoubleVector3::z_default_value();
-            int radius = static_cast<int>(s.radius());
-            int type = s.type().present() ? s.type().get() : ParticleType::type_default_value();
-            double epsilon = s.epsilon().present() ? s.epsilon().get() : SphereType::epsilon_default_value();
-            double sigma = s.sigma().present() ? s.sigma().get() : SphereType::sigma_default_value();
-
-            double brown_vel;
-            if (input->parameters().thermostat().present()) {
-                brown_vel = sqrt(input->parameters().thermostat()->initial_T() / s.mass());
-            } else if (s.brown_velocity().present()) {
-                brown_vel = s.brown_velocity().get();
-            } else {
-                brown_vel = SphereType::brown_velocity_default_value();
-            }
-
-            Sphere sphere(
-                        std::array<double, 3>{s.center().x(), s.center().y(), r_z},
-                        std::array<double, 3>{s.velocity().x(), s.velocity().y(), v_z},
-                        radius,
-                        s.mass(),
-                        s.distance(),
-                        brown_vel,
-                        dimension,
-                        type,
-                        epsilon,
-                        sigma
-                    );
-            sphere.createParticles(particles);
-        }
-
-        for (auto f:  input->objects().load()) {
-            StateReader::loadState(particles, f);
+        for (auto checkpointingFile:  input->objects().load()) {
+            StateReader::loadState(particles, checkpointingFile);
         }
 
         std::unique_ptr<Force> force;
@@ -163,6 +80,138 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
         } else {
             container = std::make_unique<DirectSumContainer>(particles, force);
         }
+
+
+        for (auto p: input->objects().particle()) {
+            double r_z = p.position().z().present() ? p.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
+            double v_z = p.velocity().z().present() ? p.velocity().z().get() : DoubleVector3::z_default_value();
+            int type = p.type().present() ? p.type().get() : ParticleType::type_default_value();
+            double epsilon = p.epsilon().present() ? p.epsilon().get() : ParticleType::epsilon_default_value();
+            double sigma = p.sigma().present() ? p.sigma().get() : ParticleType::sigma_default_value();
+            container->addParticle(
+                    Particle(
+                        std::array<double, 3>{p.position().x(), p.position().y(), r_z},
+                        std::array<double, 3>{p.velocity().x(), p.velocity().y(), v_z},
+                        p.mass(),
+                        type,
+                        epsilon,
+                        sigma
+                    )
+            );
+        }
+
+        int dimension = static_cast<int>(input->parameters().dimension().present() ? input->parameters().dimension().get() : InputData::parameters_type::dimension_default_value());
+
+        for (auto c : input->objects().cuboid()) {
+            double r_z = c.position().z().present() ? c.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
+            double v_z = c.velocity().z().present() ? c.velocity().z().get() : DoubleVector3::z_default_value();
+            unsigned int n_z = c.size().z().present() ? c.size().z().get() : PositiveIntVector3::z_default_value();
+            int type = c.type().present() ? c.type().get() : ParticleType::type_default_value();
+            double epsilon = c.epsilon().present() ? c.epsilon().get() : CuboidType::epsilon_default_value();
+            double sigma = c.sigma().present() ? c.sigma().get() : CuboidType::sigma_default_value();
+
+            double brown_vel;
+            if (input->parameters().thermostat().present()) {
+                brown_vel = sqrt(input->parameters().thermostat()->initial_T() / c.mass());
+            } else if (c.brown_velocity().present()) {
+                brown_vel = c.brown_velocity().get();
+            } else {
+                brown_vel = CuboidType::brown_velocity_default_value();
+            }
+
+            Cuboid cuboid(
+                        std::array<double, 3>{c.position().x(), c.position().y(), r_z},
+                        std::array<double, 3>{c.velocity().x(), c.velocity().y(), v_z},
+                        std::array<unsigned int, 3>{(unsigned int) c.size().x(), (unsigned int) c.size().y(), n_z},
+                        c.mass(),
+                        c.distance(),
+                        brown_vel,
+                        dimension,
+                        type,
+                        epsilon,
+                        sigma
+                    );
+
+            container->addCluster(cuboid);
+
+        }
+
+        for (auto s : input->objects().sphere()) {
+            double r_z = s.center().z().present() ? s.center().z().get() : PositiveDoubleVector3::z_default_value() / 2;
+            double v_z = s.velocity().z().present() ? s.velocity().z().get() : DoubleVector3::z_default_value();
+            int radius = static_cast<int>(s.radius());
+            int type = s.type().present() ? s.type().get() : ParticleType::type_default_value();
+            double epsilon = s.epsilon().present() ? s.epsilon().get() : SphereType::epsilon_default_value();
+            double sigma = s.sigma().present() ? s.sigma().get() : SphereType::sigma_default_value();
+
+            double brown_vel;
+            if (input->parameters().thermostat().present()) {
+                brown_vel = sqrt(input->parameters().thermostat()->initial_T() / s.mass());
+            } else if (s.brown_velocity().present()) {
+                brown_vel = s.brown_velocity().get();
+            } else {
+                brown_vel = SphereType::brown_velocity_default_value();
+            }
+
+            Sphere sphere(
+                        std::array<double, 3>{s.center().x(), s.center().y(), r_z},
+                        std::array<double, 3>{s.velocity().x(), s.velocity().y(), v_z},
+                        radius,
+                        s.mass(),
+                        s.distance(),
+                        brown_vel,
+                        dimension,
+                        type,
+                        epsilon,
+                        sigma
+                    );
+            container->addCluster(sphere);
+        }
+
+        for (auto m : input->objects().membrane()) {
+            double r_z = m.position().z().present() ? m.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
+            double v_z = m.velocity().z().present() ? m.velocity().z().get() : DoubleVector3::z_default_value();
+            int type = m.type().present() ? m.type().get() : ParticleType::type_default_value();
+            double epsilon = m.epsilon().present() ? m.epsilon().get() : MembraneType::epsilon_default_value();
+            double sigma = m.sigma().present() ? m.sigma().get() : MembraneType::sigma_default_value();
+            double k = m.k().present() ? m.k().get() : MembraneType::k_default_value();
+            double r0 = m.r0().present() ? m.r0().get() : MembraneType::r0_default_value();
+            double brown_vel;
+            if (input->parameters().thermostat().present()) {
+                brown_vel = sqrt(input->parameters().thermostat()->initial_T() / m.mass());
+            } else if (m.brown_velocity().present()) {
+                brown_vel = m.brown_velocity().get();
+            } else {
+                brown_vel = CuboidType::brown_velocity_default_value();
+            }
+
+            Membrane membrane(
+                    std::array<double, 3>{m.position().x(), m.position().y(), r_z},
+                    std::array<double, 3>{m.velocity().x(), m.velocity().y(), v_z},
+                    std::array<unsigned int, 2>{static_cast<unsigned int>(m.size().x()), static_cast<unsigned int>(m.size().y())},
+                    m.mass(),
+                    m.distance(),
+                    brown_vel,
+                    dimension,
+                    type,
+                    epsilon,
+                    sigma,
+                    k,
+                    r0
+            );
+
+            unsigned int oldSize = particles.size();
+
+            container->addCluster(membrane);
+
+            for (auto ef: m.external_force()) {
+                double fz = ef.force().z().present() ? ef.force().z().get() : DoubleVector3::z_default_value();
+                for (auto index: ef.index()) {
+                    container->addExternalForce(oldSize + index.x() * m.size().y() + index.y(), {ef.force().x(), ef.force().y(), fz}, ef.until());
+                }
+            }
+        }
+
 
         if (input->parameters().start_time().present()) {
             container->setT(input->parameters().start_time().get());

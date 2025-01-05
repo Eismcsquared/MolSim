@@ -82,6 +82,10 @@ void ParticleContainer::addCluster(const Cluster &cluster) {
     particleNumber += particles.size() - sizeOld;
 }
 
+void ParticleContainer::addExternalForce(int particleIndex, const std::array<double, 3> f, double until) {
+    externalForces.push_back(ConstantForce{particleIndex, f, until});
+}
+
 void ParticleContainer::simulate(double end_time, double delta_t, const std::string &out_name, const std::string &output_format,
                                  unsigned int output_frequency, bool save_output) {
     int start_iteration = static_cast<int>(std::round(t / delta_t));

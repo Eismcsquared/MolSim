@@ -30,6 +30,13 @@
         </xs:sequence>
     </xs:complexType>
 
+    <xs:complexType name="PositiveIntVector2">
+        <xs:sequence>
+            <xs:element name="x" type="xs:positiveInteger"/>
+            <xs:element name="y" type="xs:positiveInteger"/>
+        </xs:sequence>
+    </xs:complexType>
+
     <xs:complexType name="PositiveIntVector3">
         <xs:sequence>
             <xs:element name="x" type="xs:positiveInteger"/>
@@ -66,8 +73,8 @@
             <xs:element name="distance" type="PositiveDouble"/>
             <xs:element name="brown_velocity" type="xs:double" minOccurs="0" default="0"/>
             <xs:element name="type" type="xs:int" minOccurs="0" default="0"/>
-            <xs:element name="epsilon" type="xs:double" minOccurs="0" default="5"/>
-            <xs:element name="sigma" type="xs:double" minOccurs="0" default="1"/>
+            <xs:element name="epsilon" type="PositiveDouble" minOccurs="0" default="5"/>
+            <xs:element name="sigma" type="PositiveDouble" minOccurs="0" default="1"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -80,8 +87,34 @@
             <xs:element name="distance" type="PositiveDouble"/>
             <xs:element name="brown_velocity" type="xs:double" minOccurs="0" default="0"/>
             <xs:element name="type" type="xs:int" minOccurs="0" default="0"/>
-            <xs:element name="epsilon" type="xs:double" minOccurs="0" default="5"/>
-            <xs:element name="sigma" type="xs:double" minOccurs="0" default="1"/>
+            <xs:element name="epsilon" type="PositiveDouble" minOccurs="0" default="5"/>
+            <xs:element name="sigma" type="PositiveDouble" minOccurs="0" default="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="ExternalForceType">
+        <xs:sequence>
+            <xs:element name="index" type="PositiveIntVector2" maxOccurs="unbounded"/>
+            <xs:element name="force" type="DoubleVector3"/>
+            <xs:element name="until" type="PositiveDouble"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MembraneType">
+        <xs:sequence>
+            <xs:element name="position" type="DoubleVector3"/>
+            <xs:element name="velocity" type="DoubleVector3"/>
+            <xs:element name="mass" type="PositiveDouble"/>
+            <xs:element name="size" type="PositiveIntVector2"/>
+            <xs:element name="distance" type="PositiveDouble"/>
+            <xs:element name="brown_velocity" type="xs:double" minOccurs="0" default="0"/>
+            <xs:element name="type" type="xs:int" minOccurs="0" default="0"/>
+            <xs:element name="epsilon" type="PositiveDouble" minOccurs="0" default="1"/>
+            <xs:element name="sigma" type="PositiveDouble" minOccurs="0" default="1"/>
+            <xs:element name="k" type="PositiveDouble" minOccurs="0" default="300"/>
+            <xs:element name="r0" type="PositiveDouble" minOccurs="0" default="2.2"/>
+            <xs:element name="external_force" type="ExternalForceType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -90,6 +123,7 @@
             <xs:element name="particle" type="ParticleType"/>
             <xs:element name="cuboid" type="CuboidType"/>
             <xs:element name="sphere" type="SphereType"/>
+            <xs:element name="membrane" type="MembraneType"/>
             <xs:element name="load" type="xs:string">
                 <xs:annotation>
                     <xs:documentation>
