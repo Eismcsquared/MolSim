@@ -53,7 +53,7 @@ TEST_F(MembraneForceTest, ForceCalculation) {
 
 // Test whether external forces are applied correctly to the corresponding particles until the specified time.
 TEST_F(MembraneForceTest, ExternalForce) {
-    test_logger->info("ExternalForce - Force calculation test");
+    test_logger->info("MembraneForce - External force test");
 
     Membrane m({1, 1, 1}, {0, 0, 0}, {3, 3}, 1, 1, 0, 3, 0, 5, 1, 10, 1);
     pc->addCluster(m);
@@ -119,8 +119,54 @@ TEST_F(MembraneForceTest, ExternalForce) {
     }
 
     if (::testing::Test::HasFailure()) {
-        test_logger->info("ExternalForce - Force calculation test failed\n\n");
+        test_logger->info("MembraneForce - External force test failed\n\n");
     } else {
-        test_logger->info("ExternalForce - Force calculation test passed\n\n");
+        test_logger->info("MembraneForce - External force test passed\n\n");
+    }
+}
+
+// Compare the simulation of a 1D chain consisting of three particles with its analytical solution.
+// With the following parameter:
+// x_1(0) = 1.5, x_2(0) = 2.5, x_3(0) = 5, v_1(0) = 0, v_2(0) = 0, v_3(0) = 0, r_0 = 2, k = 100, m = 1
+// The analytical solution is given as
+// x_1(t) = 1 + 0.25 * cos(10 * t) + 0.25 * cos(10 * sqrt(3) * t)
+// x_2(t) = 3 - 0.5 * cos(10 * sqrt(3) * t)
+// x_3(t) = 5 - 0.25 * cos(10 * t) + 0.25 * cos(10 * sqrt(3) * t)
+TEST_F(MembraneForceTest, Anaytical) {
+    test_logger->info("MembraneForce - Analytical test");
+
+    Particle p1({1.5, 1, 1}, {0, 0, 0}, 1);
+    Particle p2({2.5, 1, 1}, {0, 0, 0}, 1);
+    Particle p3({5, 1, 1}, {0, 0, 0}, 1);
+
+    p1.addNeighbour(p2);
+    p2.addNeighbour(p1);
+    p2.addNeighbour(p3);
+    p3.addNeighbour(p2);
+
+    pc->addParticle(p1);
+    pc->addParticle(p2);
+    pc->addParticle(p3);
+
+    for (Particle &p : pc->getParticles()) {
+        p.setK(100);
+        p.setR0(2);
+    }
+
+    auto solution1 = [](double t) { return 1 + 0.25 * std::cos(10 * t) + 0.25 * std::cos(10 * std::sqrt(3) * t); };
+    auto solution2 = [](double t) { return 3 - 0.5 * std::cos(10 * std::sqrt(3) * t); };
+    auto solution3 = [](double t) { return 5 - 0.25 * std::cos(10 * t) + 0.25 * std::cos(10 * std::sqrt(3) * t); };
+
+    for (int i = 1; i <= 10; ++i) {
+        pc->simulate(0.05 * i, 1e-5, "", "", 0, false);
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(pc->getParticles()[0].getX() - std::array<double, 3>{solution1(pc->getT()), 1, 1}), 1e-6);
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(pc->getParticles()[1].getX() - std::array<double, 3>{solution2(pc->getT()), 1, 1}), 1e-6);
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(pc->getParticles()[2].getX() - std::array<double, 3>{solution3(pc->getT()), 1, 1}), 1e-6);
+    }
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("MembraneForce - Analytical test failed\n\n");
+    } else {
+        test_logger->info("MembraneForce - Analytical test passed\n\n");
     }
 }
