@@ -2,7 +2,7 @@
 #include "LennardJonesForce.h"
 
 std::array<double, 3> MembraneForce::force(Particle &particle1, Particle &particle2) {
-    std::array<double, 3> r21 = particle1.getX() - particle1.getX();
+    std::array<double, 3> r21 = particle1.getX() - particle2.getX();
     std::array<double, 3> normalizedR21 = (1 / ArrayUtils::L2Norm(r21)) * r21;
     const double sqrt2 = 1.414213562373095;
     const double cbrt2 = 1.259921049894873;

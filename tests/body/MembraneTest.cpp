@@ -67,9 +67,9 @@ TEST_F(MembraneTest, CreateParticle) {
         }
 
         if (::testing::Test::HasFailure()) {
-            test_logger->info("Membrane - Create particles test failed");
+            test_logger->info("Membrane - Create particles test failed\n\n");
         } else {
-            test_logger->info("Membrane - Create particles test passed");
+            test_logger->info("Membrane - Create particles test passed\n\n");
         }
     }
 
