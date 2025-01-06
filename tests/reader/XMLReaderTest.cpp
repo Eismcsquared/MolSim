@@ -5,6 +5,7 @@
 #include "inputReader/StateReader.h"
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
+#include "force/MembraneForce.h"
 #include "container/DirectSumContainer.h"
 #include "container/LinkedCellContainer.h"
 #include "body/Sphere.h"
@@ -269,6 +270,7 @@ TEST_F(XMLReaderTest, Membrane) {
     simulation = XMLReader::readXML(particles, inputFile);
 
     EXPECT_EQ(100, simulation->getContainer()->getParticleNumber());
+    EXPECT_NO_THROW(dynamic_cast<MembraneForce&>(simulation->getContainer()->getForce()));
     for (Particle &particle1 : simulation->getContainer()->getParticles()) {
         EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(particle1.getV() - std::array<double, 3>{0, 2, 0}));
         EXPECT_FLOAT_EQ(2, particle1.getM());

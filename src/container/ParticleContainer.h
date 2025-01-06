@@ -118,6 +118,12 @@ public:
     std::vector<Particle>& getParticles() const;
 
     /**
+     *
+     * @return
+     */
+    Force &getForce() const;
+
+    /**
      * Getter for the gravitational acceleration.
      * @return The value of g.
      */

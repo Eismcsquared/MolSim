@@ -102,7 +102,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="force" type="DoubleVector3"/>
+            <xs:element name="force" type="OptionalDoubleVector3"/>
             <xs:element name="until" type="PositiveDouble"/>
         </xs:sequence>
     </xs:complexType>
@@ -199,6 +199,7 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="gravitation"/>
             <xs:enumeration value="Lennard-Jones"/>
+            <xs:enumeration value="membrane"/>
         </xs:restriction>
     </xs:simpleType>
 

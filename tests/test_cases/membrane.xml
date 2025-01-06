@@ -44,7 +44,6 @@
                     <y>10</y>
                 </index>
                 <force>
-                    <x>0</x>
                     <y>1</y>
                     <z>2</z>
                 </force>
@@ -55,6 +54,6 @@
     <parameters>
         <end_time>25</end_time>
         <delta_t>0.0005</delta_t>
-        <force>Lennard-Jones</force>
+        <force>membrane</force>
     </parameters>
 </simulation>

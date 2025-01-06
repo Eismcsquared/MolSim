@@ -9,6 +9,7 @@
 #include "force/Force.h"
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
+#include "force/MembraneForce.h"
 #include "container/DirectSumContainer.h"
 #include "body/Sphere.h"
 #include "body/Membrane.h"
@@ -37,6 +38,8 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
             case ForceType::value::Lennard_Jones:
                 force = std::make_unique<LennardJonesForce>();
                 break;
+            case ForceType::value::membrane:
+                force = std::make_unique<MembraneForce>();
         }
 
         std::unique_ptr<ParticleContainer> container;
@@ -205,9 +208,11 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
             container->addCluster(membrane);
 
             for (auto ef: m.external_force()) {
-                double fz = ef.force().z().present() ? ef.force().z().get() : DoubleVector3::z_default_value();
+                double fx = ef.force().x().present() ? ef.force().x().get() : OptionalDoubleVector3::x_default_value();
+                double fy = ef.force().y().present() ? ef.force().y().get() : OptionalDoubleVector3::y_default_value();
+                double fz = ef.force().z().present() ? ef.force().z().get() : OptionalDoubleVector3::z_default_value();
                 for (auto index: ef.index()) {
-                    container->addExternalForce(oldSize + (index.x() - 1) * m.size().y() + (index.y() - 1), {ef.force().x(), ef.force().y(), fz}, ef.until());
+                    container->addExternalForce(oldSize + (index.x() - 1) * m.size().y() + (index.y() - 1), {fx, fy, fz}, ef.until());
                 }
             }
         }

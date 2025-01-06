@@ -5002,11 +5002,11 @@ _xsd_ForceType_convert () const
   ::xsd::cxx::tree::enum_comparator< char > c (_xsd_ForceType_literals_);
   const value* i (::std::lower_bound (
                     _xsd_ForceType_indexes_,
-                    _xsd_ForceType_indexes_ + 2,
+                    _xsd_ForceType_indexes_ + 3,
                     *this,
                     c));
 
-  if (i == _xsd_ForceType_indexes_ + 2 || _xsd_ForceType_literals_[*i] != *this)
+  if (i == _xsd_ForceType_indexes_ + 3 || _xsd_ForceType_literals_[*i] != *this)
   {
     throw ::xsd::cxx::tree::unexpected_enumerator < char > (*this);
   }
@@ -5015,17 +5015,19 @@ _xsd_ForceType_convert () const
 }
 
 const char* const ForceType::
-_xsd_ForceType_literals_[2] =
+_xsd_ForceType_literals_[3] =
 {
   "gravitation",
-  "Lennard-Jones"
+  "Lennard-Jones",
+  "membrane"
 };
 
 const ForceType::value ForceType::
-_xsd_ForceType_indexes_[2] =
+_xsd_ForceType_indexes_[3] =
 {
   ::ForceType::Lennard_Jones,
-  ::ForceType::gravitation
+  ::ForceType::gravitation,
+  ::ForceType::membrane
 };
 
 // OutputFormatType

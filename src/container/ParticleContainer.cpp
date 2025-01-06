@@ -26,6 +26,10 @@ std::vector<Particle> &ParticleContainer::getParticles() const {
     return particles;
 }
 
+Force &ParticleContainer::getForce() const {
+    return *force;
+}
+
 std::array<double, 3> ParticleContainer::getG() const {
     return g;
 }
