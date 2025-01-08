@@ -158,7 +158,7 @@ TEST_F(MembraneForceTest, Anaytical) {
     auto solution3 = [](double t) { return 5 - 0.25 * std::cos(10 * t) + 0.25 * std::cos(10 * std::sqrt(3) * t); };
 
     for (int i = 1; i <= 10; ++i) {
-        pc->simulate(0.05 * i, 1e-5, "", "", 0, false);
+        pc->simulate(0.05 * i, 1e-5, "", "", 10, false);
         EXPECT_NEAR(0, ArrayUtils::L2Norm(pc->getParticles()[0].getX() - std::array<double, 3>{solution1(pc->getT()), 1, 1}), 1e-6);
         EXPECT_NEAR(0, ArrayUtils::L2Norm(pc->getParticles()[1].getX() - std::array<double, 3>{solution2(pc->getT()), 1, 1}), 1e-6);
         EXPECT_NEAR(0, ArrayUtils::L2Norm(pc->getParticles()[2].getX() - std::array<double, 3>{solution3(pc->getT()), 1, 1}), 1e-6);
