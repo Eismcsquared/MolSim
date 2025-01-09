@@ -47,7 +47,7 @@ public:
  * @brief Represents external forces acting on single particles until a certain time.
  */
 struct ConstantForce{
-    int particleIndex;
+    unsigned int particleIndex;
     std::array<double, 3> f;
     double untilTime;
 };
@@ -215,7 +215,7 @@ public:
      * @param f The force as an array.
      * @param until The time until which the force is applied.
      */
-    void addExternalForce(int particleIndex, const std::array<double, 3> f, double until);
+    void addExternalForce(unsigned int particleIndex, const std::array<double, 3> f, double until);
 
     /**
      * Simulate the system of particles.

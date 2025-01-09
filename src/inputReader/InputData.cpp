@@ -1498,6 +1498,208 @@ external_force (const external_force_sequence& s)
 }
 
 
+// WallType
+// 
+
+const WallType::position_type& WallType::
+position () const
+{
+  return this->position_.get ();
+}
+
+WallType::position_type& WallType::
+position ()
+{
+  return this->position_.get ();
+}
+
+void WallType::
+position (const position_type& x)
+{
+  this->position_.set (x);
+}
+
+void WallType::
+position (::std::unique_ptr< position_type > x)
+{
+  this->position_.set (std::move (x));
+}
+
+const WallType::mass_type& WallType::
+mass () const
+{
+  return this->mass_.get ();
+}
+
+WallType::mass_type& WallType::
+mass ()
+{
+  return this->mass_.get ();
+}
+
+void WallType::
+mass (const mass_type& x)
+{
+  this->mass_.set (x);
+}
+
+void WallType::
+mass (::std::unique_ptr< mass_type > x)
+{
+  this->mass_.set (std::move (x));
+}
+
+const WallType::size_type& WallType::
+size () const
+{
+  return this->size_.get ();
+}
+
+WallType::size_type& WallType::
+size ()
+{
+  return this->size_.get ();
+}
+
+void WallType::
+size (const size_type& x)
+{
+  this->size_.set (x);
+}
+
+void WallType::
+size (::std::unique_ptr< size_type > x)
+{
+  this->size_.set (std::move (x));
+}
+
+const WallType::distance_type& WallType::
+distance () const
+{
+  return this->distance_.get ();
+}
+
+WallType::distance_type& WallType::
+distance ()
+{
+  return this->distance_.get ();
+}
+
+void WallType::
+distance (const distance_type& x)
+{
+  this->distance_.set (x);
+}
+
+void WallType::
+distance (::std::unique_ptr< distance_type > x)
+{
+  this->distance_.set (std::move (x));
+}
+
+const WallType::type_optional& WallType::
+type () const
+{
+  return this->type_;
+}
+
+WallType::type_optional& WallType::
+type ()
+{
+  return this->type_;
+}
+
+void WallType::
+type (const type_type& x)
+{
+  this->type_.set (x);
+}
+
+void WallType::
+type (const type_optional& x)
+{
+  this->type_ = x;
+}
+
+WallType::type_type WallType::
+type_default_value ()
+{
+  return type_type (0);
+}
+
+const WallType::epsilon_optional& WallType::
+epsilon () const
+{
+  return this->epsilon_;
+}
+
+WallType::epsilon_optional& WallType::
+epsilon ()
+{
+  return this->epsilon_;
+}
+
+void WallType::
+epsilon (const epsilon_type& x)
+{
+  this->epsilon_.set (x);
+}
+
+void WallType::
+epsilon (const epsilon_optional& x)
+{
+  this->epsilon_ = x;
+}
+
+void WallType::
+epsilon (::std::unique_ptr< epsilon_type > x)
+{
+  this->epsilon_.set (std::move (x));
+}
+
+WallType::epsilon_type WallType::
+epsilon_default_value ()
+{
+  return epsilon_type (1.0);
+}
+
+const WallType::sigma_optional& WallType::
+sigma () const
+{
+  return this->sigma_;
+}
+
+WallType::sigma_optional& WallType::
+sigma ()
+{
+  return this->sigma_;
+}
+
+void WallType::
+sigma (const sigma_type& x)
+{
+  this->sigma_.set (x);
+}
+
+void WallType::
+sigma (const sigma_optional& x)
+{
+  this->sigma_ = x;
+}
+
+void WallType::
+sigma (::std::unique_ptr< sigma_type > x)
+{
+  this->sigma_.set (std::move (x));
+}
+
+WallType::sigma_type WallType::
+sigma_default_value ()
+{
+  return sigma_type (1.0);
+}
+
+
 // SimulationObjects
 // 
 
@@ -1571,6 +1773,24 @@ void SimulationObjects::
 membrane (const membrane_sequence& s)
 {
   this->membrane_ = s;
+}
+
+const SimulationObjects::wall_sequence& SimulationObjects::
+wall () const
+{
+  return this->wall_;
+}
+
+SimulationObjects::wall_sequence& SimulationObjects::
+wall ()
+{
+  return this->wall_;
+}
+
+void SimulationObjects::
+wall (const wall_sequence& s)
+{
+  this->wall_ = s;
 }
 
 const SimulationObjects::load_sequence& SimulationObjects::
@@ -4551,6 +4771,243 @@ MembraneType::
 {
 }
 
+// WallType
+//
+
+WallType::
+WallType (const position_type& position,
+          const mass_type& mass,
+          const size_type& size,
+          const distance_type& distance)
+: ::xml_schema::type (),
+  position_ (position, this),
+  mass_ (mass, this),
+  size_ (size, this),
+  distance_ (distance, this),
+  type_ (this),
+  epsilon_ (this),
+  sigma_ (this)
+{
+}
+
+WallType::
+WallType (::std::unique_ptr< position_type > position,
+          const mass_type& mass,
+          ::std::unique_ptr< size_type > size,
+          const distance_type& distance)
+: ::xml_schema::type (),
+  position_ (std::move (position), this),
+  mass_ (mass, this),
+  size_ (std::move (size), this),
+  distance_ (distance, this),
+  type_ (this),
+  epsilon_ (this),
+  sigma_ (this)
+{
+}
+
+WallType::
+WallType (const WallType& x,
+          ::xml_schema::flags f,
+          ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  position_ (x.position_, f, this),
+  mass_ (x.mass_, f, this),
+  size_ (x.size_, f, this),
+  distance_ (x.distance_, f, this),
+  type_ (x.type_, f, this),
+  epsilon_ (x.epsilon_, f, this),
+  sigma_ (x.sigma_, f, this)
+{
+}
+
+WallType::
+WallType (const ::xercesc::DOMElement& e,
+          ::xml_schema::flags f,
+          ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  position_ (this),
+  mass_ (this),
+  size_ (this),
+  distance_ (this),
+  type_ (this),
+  epsilon_ (this),
+  sigma_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
+}
+
+void WallType::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    // position
+    //
+    if (n.name () == "position" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< position_type > r (
+        position_traits::create (i, f, this));
+
+      if (!position_.present ())
+      {
+        this->position_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    // mass
+    //
+    if (n.name () == "mass" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< mass_type > r (
+        mass_traits::create (i, f, this));
+
+      if (!mass_.present ())
+      {
+        this->mass_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    // size
+    //
+    if (n.name () == "size" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< size_type > r (
+        size_traits::create (i, f, this));
+
+      if (!size_.present ())
+      {
+        this->size_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    // distance
+    //
+    if (n.name () == "distance" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< distance_type > r (
+        distance_traits::create (i, f, this));
+
+      if (!distance_.present ())
+      {
+        this->distance_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    // type
+    //
+    if (n.name () == "type" && n.namespace_ ().empty ())
+    {
+      if (!this->type_)
+      {
+        this->type_.set (type_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // epsilon
+    //
+    if (n.name () == "epsilon" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< epsilon_type > r (
+        epsilon_traits::create (i, f, this));
+
+      if (!this->epsilon_)
+      {
+        this->epsilon_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    // sigma
+    //
+    if (n.name () == "sigma" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< sigma_type > r (
+        sigma_traits::create (i, f, this));
+
+      if (!this->sigma_)
+      {
+        this->sigma_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    break;
+  }
+
+  if (!position_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "position",
+      "");
+  }
+
+  if (!mass_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "mass",
+      "");
+  }
+
+  if (!size_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "size",
+      "");
+  }
+
+  if (!distance_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "distance",
+      "");
+  }
+}
+
+WallType* WallType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class WallType (*this, f, c);
+}
+
+WallType& WallType::
+operator= (const WallType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->position_ = x.position_;
+    this->mass_ = x.mass_;
+    this->size_ = x.size_;
+    this->distance_ = x.distance_;
+    this->type_ = x.type_;
+    this->epsilon_ = x.epsilon_;
+    this->sigma_ = x.sigma_;
+  }
+
+  return *this;
+}
+
+WallType::
+~WallType ()
+{
+}
+
 // SimulationObjects
 //
 
@@ -4561,6 +5018,7 @@ SimulationObjects ()
   cuboid_ (this),
   sphere_ (this),
   membrane_ (this),
+  wall_ (this),
   load_ (this)
 {
 }
@@ -4574,6 +5032,7 @@ SimulationObjects (const SimulationObjects& x,
   cuboid_ (x.cuboid_, f, this),
   sphere_ (x.sphere_, f, this),
   membrane_ (x.membrane_, f, this),
+  wall_ (x.wall_, f, this),
   load_ (x.load_, f, this)
 {
 }
@@ -4587,6 +5046,7 @@ SimulationObjects (const ::xercesc::DOMElement& e,
   cuboid_ (this),
   sphere_ (this),
   membrane_ (this),
+  wall_ (this),
   load_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
@@ -4650,6 +5110,17 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       continue;
     }
 
+    // wall
+    //
+    if (n.name () == "wall" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< wall_type > r (
+        wall_traits::create (i, f, this));
+
+      this->wall_.push_back (::std::move (r));
+      continue;
+    }
+
     // load
     //
     if (n.name () == "load" && n.namespace_ ().empty ())
@@ -4682,6 +5153,7 @@ operator= (const SimulationObjects& x)
     this->cuboid_ = x.cuboid_;
     this->sphere_ = x.sphere_;
     this->membrane_ = x.membrane_;
+    this->wall_ = x.wall_;
     this->load_ = x.load_;
   }
 
@@ -6795,6 +7267,92 @@ operator<< (::xercesc::DOMElement& e, const MembraneType& i)
 }
 
 void
+operator<< (::xercesc::DOMElement& e, const WallType& i)
+{
+  e << static_cast< const ::xml_schema::type& > (i);
+
+  // position
+  //
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "position",
+        e));
+
+    s << i.position ();
+  }
+
+  // mass
+  //
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "mass",
+        e));
+
+    s << i.mass ();
+  }
+
+  // size
+  //
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "size",
+        e));
+
+    s << i.size ();
+  }
+
+  // distance
+  //
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "distance",
+        e));
+
+    s << i.distance ();
+  }
+
+  // type
+  //
+  if (i.type ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "type",
+        e));
+
+    s << *i.type ();
+  }
+
+  // epsilon
+  //
+  if (i.epsilon ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "epsilon",
+        e));
+
+    s << *i.epsilon ();
+  }
+
+  // sigma
+  //
+  if (i.sigma ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "sigma",
+        e));
+
+    s << *i.sigma ();
+  }
+}
+
+void
 operator<< (::xercesc::DOMElement& e, const SimulationObjects& i)
 {
   e << static_cast< const ::xml_schema::type& > (i);
@@ -6850,6 +7408,20 @@ operator<< (::xercesc::DOMElement& e, const SimulationObjects& i)
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "membrane",
+        e));
+
+    s << *b;
+  }
+
+  // wall
+  //
+  for (SimulationObjects::wall_const_iterator
+       b (i.wall ().begin ()), n (i.wall ().end ());
+       b != n; ++b)
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "wall",
         e));
 
     s << *b;

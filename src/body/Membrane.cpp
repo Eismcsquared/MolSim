@@ -8,13 +8,13 @@ Membrane::Membrane(const std::array<double, 3> &x, const std::array<double, 3> &
 }
 
 void Membrane::createParticles(std::vector<Particle> &particles) const {
-    unsigned long oldSize = particles.size();
+    unsigned int oldSize = particles.size();
     Cuboid::createParticles(particles);
-    for (unsigned long i = oldSize; i < particles.size(); ++i) {
+    for (unsigned int i = oldSize; i < particles.size(); ++i) {
         particles[i].setK(k);
         particles[i].setR0(r0);
-        int idxX = (i - oldSize) / N[1];
-        int idxY = (i - oldSize) % N[1];
+        unsigned int idxX = (i - oldSize) / N[1];
+        unsigned int idxY = (i - oldSize) % N[1];
         if (idxX > 0) {
             particles[i].addNeighbour(particles[i - N[1]]);
             if (idxY > 0) {

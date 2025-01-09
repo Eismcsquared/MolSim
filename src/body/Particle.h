@@ -141,7 +141,7 @@ public:
      * The getter for the identity.
      * @return The id of the particle.
      */
-    inline const int getId() {return id;}
+    inline const int getId() const {return id;}
 
     /**
      * The getter for the position of a particle.
@@ -208,6 +208,12 @@ public:
      * @return Te average bond length.
      */
     inline double getR0() const { return r0; };
+
+    /**
+     * Getter for the flag stationary.
+     * @return The flag stationary.
+     */
+    inline bool isStationary() const { return stationary; };
 
     /**
      * Determine whether a particle is a direct neighbour of the current particle.

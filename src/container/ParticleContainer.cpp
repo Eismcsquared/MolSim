@@ -89,7 +89,7 @@ void ParticleContainer::addCluster(const Cluster &cluster) {
     particleNumber += particles.size() - sizeOld;
 }
 
-void ParticleContainer::addExternalForce(int particleIndex, const std::array<double, 3> f, double until) {
+void ParticleContainer::addExternalForce(unsigned int particleIndex, const std::array<double, 3> f, double until) {
     externalForces.push_back(ConstantForce{particleIndex, f, until});
 }
 

@@ -124,12 +124,25 @@
         </xs:sequence>
     </xs:complexType>
 
+    <xs:complexType name="WallType">
+        <xs:sequence>
+            <xs:element name="position" type="DoubleVector3"/>
+            <xs:element name="mass" type="PositiveDouble"/>
+            <xs:element name="size" type="PositiveIntVector3"/>
+            <xs:element name="distance" type="PositiveDouble"/>
+            <xs:element name="type" type="xs:int" minOccurs="0" default="0"/>
+            <xs:element name="epsilon" type="PositiveDouble" minOccurs="0" default="1"/>
+            <xs:element name="sigma" type="PositiveDouble" minOccurs="0" default="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
     <xs:complexType name="SimulationObjects">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
             <xs:element name="particle" type="ParticleType"/>
             <xs:element name="cuboid" type="CuboidType"/>
             <xs:element name="sphere" type="SphereType"/>
             <xs:element name="membrane" type="MembraneType"/>
+            <xs:element name="wall" type="WallType"/>
             <xs:element name="load" type="xs:string">
                 <xs:annotation>
                     <xs:documentation>

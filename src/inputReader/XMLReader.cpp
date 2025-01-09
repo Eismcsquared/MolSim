@@ -217,6 +217,28 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
             }
         }
 
+        for (auto w : input->objects().wall()) {
+            double r_z = w.position().z().present() ? w.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
+            unsigned int n_z = w.size().z().present() ? w.size().z().get() : PositiveIntVector3::z_default_value();
+            int type = w.type().present() ? w.type().get() : ParticleType::type_default_value();
+            double epsilon = w.epsilon().present() ? w.epsilon().get() : MembraneType::epsilon_default_value();
+            double sigma = w.sigma().present() ? w.sigma().get() : MembraneType::sigma_default_value();
+            Cuboid wall(
+                    std::array<double, 3>{w.position().x(), w.position().y(), r_z},
+                    std::array<double, 3>{0, 0, 0},
+                    std::array<unsigned int, 3>{static_cast<unsigned int>(w.size().x()), static_cast<unsigned int>(w.size().y()), n_z},
+                    w.mass(),
+                    w.distance(),
+                    0,
+                    dimension,
+                    type,
+                    epsilon,
+                    sigma,
+                    true
+            );
+            container->addCluster(wall);
+        }
+
 
         if (input->parameters().start_time().present()) {
             container->setT(input->parameters().start_time().get());

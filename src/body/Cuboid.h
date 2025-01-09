@@ -15,6 +15,11 @@ protected:
      */
     std::array<unsigned int, 3> N;
 
+    /**
+     * Marks the cuboid as stationary (i.e. wall)
+     */
+    bool stationary;
+
 public:
     /**
      * Constructor. The parameters epsilon and sigma are set to 5 and 1 by default, respectively.
@@ -41,9 +46,11 @@ public:
      * @param type The type of the particles.
      * @param epsilon The parameter epsilon of the Lennard-Jones potential.
      * @param sigma The parameter sigma of the Lennard-Jones potential.
+     * @param stationary The flag that determines whether the cuboid is a wall.
      */
     Cuboid(const std::array<double, 3> &x, const std::array<double, 3> &v, const std::array<unsigned int, 3> &n,
-           double m, double distance, double avgVelocityBrownian, int dimension, int type, double epsilon, double sigma);
+           double m, double distance, double avgVelocityBrownian, int dimension, int type, double epsilon, double sigma,
+           bool stationary = false);
 
     /**
      * Create particles that belong to the cuboid and insert them into the given vector.
