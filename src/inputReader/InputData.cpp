@@ -437,22 +437,28 @@ position (::std::unique_ptr< position_type > x)
   this->position_.set (std::move (x));
 }
 
-const ParticleType::velocity_type& ParticleType::
+const ParticleType::velocity_optional& ParticleType::
 velocity () const
 {
-  return this->velocity_.get ();
+  return this->velocity_;
 }
 
-ParticleType::velocity_type& ParticleType::
+ParticleType::velocity_optional& ParticleType::
 velocity ()
 {
-  return this->velocity_.get ();
+  return this->velocity_;
 }
 
 void ParticleType::
 velocity (const velocity_type& x)
 {
   this->velocity_.set (x);
+}
+
+void ParticleType::
+velocity (const velocity_optional& x)
+{
+  this->velocity_ = x;
 }
 
 void ParticleType::
@@ -579,78 +585,6 @@ sigma_default_value ()
 // CuboidType
 // 
 
-const CuboidType::position_type& CuboidType::
-position () const
-{
-  return this->position_.get ();
-}
-
-CuboidType::position_type& CuboidType::
-position ()
-{
-  return this->position_.get ();
-}
-
-void CuboidType::
-position (const position_type& x)
-{
-  this->position_.set (x);
-}
-
-void CuboidType::
-position (::std::unique_ptr< position_type > x)
-{
-  this->position_.set (std::move (x));
-}
-
-const CuboidType::velocity_type& CuboidType::
-velocity () const
-{
-  return this->velocity_.get ();
-}
-
-CuboidType::velocity_type& CuboidType::
-velocity ()
-{
-  return this->velocity_.get ();
-}
-
-void CuboidType::
-velocity (const velocity_type& x)
-{
-  this->velocity_.set (x);
-}
-
-void CuboidType::
-velocity (::std::unique_ptr< velocity_type > x)
-{
-  this->velocity_.set (std::move (x));
-}
-
-const CuboidType::mass_type& CuboidType::
-mass () const
-{
-  return this->mass_.get ();
-}
-
-CuboidType::mass_type& CuboidType::
-mass ()
-{
-  return this->mass_.get ();
-}
-
-void CuboidType::
-mass (const mass_type& x)
-{
-  this->mass_.set (x);
-}
-
-void CuboidType::
-mass (::std::unique_ptr< mass_type > x)
-{
-  this->mass_.set (std::move (x));
-}
-
 const CuboidType::size_type& CuboidType::
 size () const
 {
@@ -729,183 +663,9 @@ brown_velocity_default_value ()
   return brown_velocity_type (0.0);
 }
 
-const CuboidType::type_optional& CuboidType::
-type () const
-{
-  return this->type_;
-}
-
-CuboidType::type_optional& CuboidType::
-type ()
-{
-  return this->type_;
-}
-
-void CuboidType::
-type (const type_type& x)
-{
-  this->type_.set (x);
-}
-
-void CuboidType::
-type (const type_optional& x)
-{
-  this->type_ = x;
-}
-
-CuboidType::type_type CuboidType::
-type_default_value ()
-{
-  return type_type (0);
-}
-
-const CuboidType::epsilon_optional& CuboidType::
-epsilon () const
-{
-  return this->epsilon_;
-}
-
-CuboidType::epsilon_optional& CuboidType::
-epsilon ()
-{
-  return this->epsilon_;
-}
-
-void CuboidType::
-epsilon (const epsilon_type& x)
-{
-  this->epsilon_.set (x);
-}
-
-void CuboidType::
-epsilon (const epsilon_optional& x)
-{
-  this->epsilon_ = x;
-}
-
-void CuboidType::
-epsilon (::std::unique_ptr< epsilon_type > x)
-{
-  this->epsilon_.set (std::move (x));
-}
-
-CuboidType::epsilon_type CuboidType::
-epsilon_default_value ()
-{
-  return epsilon_type (5.0);
-}
-
-const CuboidType::sigma_optional& CuboidType::
-sigma () const
-{
-  return this->sigma_;
-}
-
-CuboidType::sigma_optional& CuboidType::
-sigma ()
-{
-  return this->sigma_;
-}
-
-void CuboidType::
-sigma (const sigma_type& x)
-{
-  this->sigma_.set (x);
-}
-
-void CuboidType::
-sigma (const sigma_optional& x)
-{
-  this->sigma_ = x;
-}
-
-void CuboidType::
-sigma (::std::unique_ptr< sigma_type > x)
-{
-  this->sigma_.set (std::move (x));
-}
-
-CuboidType::sigma_type CuboidType::
-sigma_default_value ()
-{
-  return sigma_type (1.0);
-}
-
 
 // SphereType
 // 
-
-const SphereType::center_type& SphereType::
-center () const
-{
-  return this->center_.get ();
-}
-
-SphereType::center_type& SphereType::
-center ()
-{
-  return this->center_.get ();
-}
-
-void SphereType::
-center (const center_type& x)
-{
-  this->center_.set (x);
-}
-
-void SphereType::
-center (::std::unique_ptr< center_type > x)
-{
-  this->center_.set (std::move (x));
-}
-
-const SphereType::velocity_type& SphereType::
-velocity () const
-{
-  return this->velocity_.get ();
-}
-
-SphereType::velocity_type& SphereType::
-velocity ()
-{
-  return this->velocity_.get ();
-}
-
-void SphereType::
-velocity (const velocity_type& x)
-{
-  this->velocity_.set (x);
-}
-
-void SphereType::
-velocity (::std::unique_ptr< velocity_type > x)
-{
-  this->velocity_.set (std::move (x));
-}
-
-const SphereType::mass_type& SphereType::
-mass () const
-{
-  return this->mass_.get ();
-}
-
-SphereType::mass_type& SphereType::
-mass ()
-{
-  return this->mass_.get ();
-}
-
-void SphereType::
-mass (const mass_type& x)
-{
-  this->mass_.set (x);
-}
-
-void SphereType::
-mass (::std::unique_ptr< mass_type > x)
-{
-  this->mass_.set (std::move (x));
-}
 
 const SphereType::radius_type& SphereType::
 radius () const
@@ -977,108 +737,6 @@ SphereType::brown_velocity_type SphereType::
 brown_velocity_default_value ()
 {
   return brown_velocity_type (0.0);
-}
-
-const SphereType::type_optional& SphereType::
-type () const
-{
-  return this->type_;
-}
-
-SphereType::type_optional& SphereType::
-type ()
-{
-  return this->type_;
-}
-
-void SphereType::
-type (const type_type& x)
-{
-  this->type_.set (x);
-}
-
-void SphereType::
-type (const type_optional& x)
-{
-  this->type_ = x;
-}
-
-SphereType::type_type SphereType::
-type_default_value ()
-{
-  return type_type (0);
-}
-
-const SphereType::epsilon_optional& SphereType::
-epsilon () const
-{
-  return this->epsilon_;
-}
-
-SphereType::epsilon_optional& SphereType::
-epsilon ()
-{
-  return this->epsilon_;
-}
-
-void SphereType::
-epsilon (const epsilon_type& x)
-{
-  this->epsilon_.set (x);
-}
-
-void SphereType::
-epsilon (const epsilon_optional& x)
-{
-  this->epsilon_ = x;
-}
-
-void SphereType::
-epsilon (::std::unique_ptr< epsilon_type > x)
-{
-  this->epsilon_.set (std::move (x));
-}
-
-SphereType::epsilon_type SphereType::
-epsilon_default_value ()
-{
-  return epsilon_type (5.0);
-}
-
-const SphereType::sigma_optional& SphereType::
-sigma () const
-{
-  return this->sigma_;
-}
-
-SphereType::sigma_optional& SphereType::
-sigma ()
-{
-  return this->sigma_;
-}
-
-void SphereType::
-sigma (const sigma_type& x)
-{
-  this->sigma_.set (x);
-}
-
-void SphereType::
-sigma (const sigma_optional& x)
-{
-  this->sigma_ = x;
-}
-
-void SphereType::
-sigma (::std::unique_ptr< sigma_type > x)
-{
-  this->sigma_.set (std::move (x));
-}
-
-SphereType::sigma_type SphereType::
-sigma_default_value ()
-{
-  return sigma_type (1.0);
 }
 
 
@@ -1154,78 +812,6 @@ until (::std::unique_ptr< until_type > x)
 
 // MembraneType
 // 
-
-const MembraneType::position_type& MembraneType::
-position () const
-{
-  return this->position_.get ();
-}
-
-MembraneType::position_type& MembraneType::
-position ()
-{
-  return this->position_.get ();
-}
-
-void MembraneType::
-position (const position_type& x)
-{
-  this->position_.set (x);
-}
-
-void MembraneType::
-position (::std::unique_ptr< position_type > x)
-{
-  this->position_.set (std::move (x));
-}
-
-const MembraneType::velocity_type& MembraneType::
-velocity () const
-{
-  return this->velocity_.get ();
-}
-
-MembraneType::velocity_type& MembraneType::
-velocity ()
-{
-  return this->velocity_.get ();
-}
-
-void MembraneType::
-velocity (const velocity_type& x)
-{
-  this->velocity_.set (x);
-}
-
-void MembraneType::
-velocity (::std::unique_ptr< velocity_type > x)
-{
-  this->velocity_.set (std::move (x));
-}
-
-const MembraneType::mass_type& MembraneType::
-mass () const
-{
-  return this->mass_.get ();
-}
-
-MembraneType::mass_type& MembraneType::
-mass ()
-{
-  return this->mass_.get ();
-}
-
-void MembraneType::
-mass (const mass_type& x)
-{
-  this->mass_.set (x);
-}
-
-void MembraneType::
-mass (::std::unique_ptr< mass_type > x)
-{
-  this->mass_.set (std::move (x));
-}
 
 const MembraneType::size_type& MembraneType::
 size () const
@@ -1303,108 +889,6 @@ MembraneType::brown_velocity_type MembraneType::
 brown_velocity_default_value ()
 {
   return brown_velocity_type (0.0);
-}
-
-const MembraneType::type_optional& MembraneType::
-type () const
-{
-  return this->type_;
-}
-
-MembraneType::type_optional& MembraneType::
-type ()
-{
-  return this->type_;
-}
-
-void MembraneType::
-type (const type_type& x)
-{
-  this->type_.set (x);
-}
-
-void MembraneType::
-type (const type_optional& x)
-{
-  this->type_ = x;
-}
-
-MembraneType::type_type MembraneType::
-type_default_value ()
-{
-  return type_type (0);
-}
-
-const MembraneType::epsilon_optional& MembraneType::
-epsilon () const
-{
-  return this->epsilon_;
-}
-
-MembraneType::epsilon_optional& MembraneType::
-epsilon ()
-{
-  return this->epsilon_;
-}
-
-void MembraneType::
-epsilon (const epsilon_type& x)
-{
-  this->epsilon_.set (x);
-}
-
-void MembraneType::
-epsilon (const epsilon_optional& x)
-{
-  this->epsilon_ = x;
-}
-
-void MembraneType::
-epsilon (::std::unique_ptr< epsilon_type > x)
-{
-  this->epsilon_.set (std::move (x));
-}
-
-MembraneType::epsilon_type MembraneType::
-epsilon_default_value ()
-{
-  return epsilon_type (1.0);
-}
-
-const MembraneType::sigma_optional& MembraneType::
-sigma () const
-{
-  return this->sigma_;
-}
-
-MembraneType::sigma_optional& MembraneType::
-sigma ()
-{
-  return this->sigma_;
-}
-
-void MembraneType::
-sigma (const sigma_type& x)
-{
-  this->sigma_.set (x);
-}
-
-void MembraneType::
-sigma (const sigma_optional& x)
-{
-  this->sigma_ = x;
-}
-
-void MembraneType::
-sigma (::std::unique_ptr< sigma_type > x)
-{
-  this->sigma_.set (std::move (x));
-}
-
-MembraneType::sigma_type MembraneType::
-sigma_default_value ()
-{
-  return sigma_type (1.0);
 }
 
 const MembraneType::k_optional& MembraneType::
@@ -1501,54 +985,6 @@ external_force (const external_force_sequence& s)
 // WallType
 // 
 
-const WallType::position_type& WallType::
-position () const
-{
-  return this->position_.get ();
-}
-
-WallType::position_type& WallType::
-position ()
-{
-  return this->position_.get ();
-}
-
-void WallType::
-position (const position_type& x)
-{
-  this->position_.set (x);
-}
-
-void WallType::
-position (::std::unique_ptr< position_type > x)
-{
-  this->position_.set (std::move (x));
-}
-
-const WallType::mass_type& WallType::
-mass () const
-{
-  return this->mass_.get ();
-}
-
-WallType::mass_type& WallType::
-mass ()
-{
-  return this->mass_.get ();
-}
-
-void WallType::
-mass (const mass_type& x)
-{
-  this->mass_.set (x);
-}
-
-void WallType::
-mass (::std::unique_ptr< mass_type > x)
-{
-  this->mass_.set (std::move (x));
-}
-
 const WallType::size_type& WallType::
 size () const
 {
@@ -1595,108 +1031,6 @@ void WallType::
 distance (::std::unique_ptr< distance_type > x)
 {
   this->distance_.set (std::move (x));
-}
-
-const WallType::type_optional& WallType::
-type () const
-{
-  return this->type_;
-}
-
-WallType::type_optional& WallType::
-type ()
-{
-  return this->type_;
-}
-
-void WallType::
-type (const type_type& x)
-{
-  this->type_.set (x);
-}
-
-void WallType::
-type (const type_optional& x)
-{
-  this->type_ = x;
-}
-
-WallType::type_type WallType::
-type_default_value ()
-{
-  return type_type (0);
-}
-
-const WallType::epsilon_optional& WallType::
-epsilon () const
-{
-  return this->epsilon_;
-}
-
-WallType::epsilon_optional& WallType::
-epsilon ()
-{
-  return this->epsilon_;
-}
-
-void WallType::
-epsilon (const epsilon_type& x)
-{
-  this->epsilon_.set (x);
-}
-
-void WallType::
-epsilon (const epsilon_optional& x)
-{
-  this->epsilon_ = x;
-}
-
-void WallType::
-epsilon (::std::unique_ptr< epsilon_type > x)
-{
-  this->epsilon_.set (std::move (x));
-}
-
-WallType::epsilon_type WallType::
-epsilon_default_value ()
-{
-  return epsilon_type (1.0);
-}
-
-const WallType::sigma_optional& WallType::
-sigma () const
-{
-  return this->sigma_;
-}
-
-WallType::sigma_optional& WallType::
-sigma ()
-{
-  return this->sigma_;
-}
-
-void WallType::
-sigma (const sigma_type& x)
-{
-  this->sigma_.set (x);
-}
-
-void WallType::
-sigma (const sigma_optional& x)
-{
-  this->sigma_ = x;
-}
-
-void WallType::
-sigma (::std::unique_ptr< sigma_type > x)
-{
-  this->sigma_.set (std::move (x));
-}
-
-WallType::sigma_type WallType::
-sigma_default_value ()
-{
-  return sigma_type (1.0);
 }
 
 
@@ -3536,11 +2870,10 @@ PositiveDoubleVector3::
 
 ParticleType::
 ParticleType (const position_type& position,
-              const velocity_type& velocity,
               const mass_type& mass)
 : ::xml_schema::type (),
   position_ (position, this),
-  velocity_ (velocity, this),
+  velocity_ (this),
   mass_ (mass, this),
   type_ (this),
   epsilon_ (this),
@@ -3550,11 +2883,10 @@ ParticleType (const position_type& position,
 
 ParticleType::
 ParticleType (::std::unique_ptr< position_type > position,
-              ::std::unique_ptr< velocity_type > velocity,
               const mass_type& mass)
 : ::xml_schema::type (),
   position_ (std::move (position), this),
-  velocity_ (std::move (velocity), this),
+  velocity_ (this),
   mass_ (mass, this),
   type_ (this),
   epsilon_ (this),
@@ -3626,7 +2958,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       ::std::unique_ptr< velocity_type > r (
         velocity_traits::create (i, f, this));
 
-      if (!velocity_.present ())
+      if (!this->velocity_)
       {
         this->velocity_.set (::std::move (r));
         continue;
@@ -3690,13 +3022,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "");
   }
 
-  if (!velocity_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "velocity",
-      "");
-  }
-
   if (!mass_.present ())
   {
     throw ::xsd::cxx::tree::expected_element< char > (
@@ -3739,39 +3064,27 @@ ParticleType::
 
 CuboidType::
 CuboidType (const position_type& position,
-            const velocity_type& velocity,
             const mass_type& mass,
             const size_type& size,
             const distance_type& distance)
-: ::xml_schema::type (),
-  position_ (position, this),
-  velocity_ (velocity, this),
-  mass_ (mass, this),
+: ::ParticleType (position,
+                  mass),
   size_ (size, this),
   distance_ (distance, this),
-  brown_velocity_ (this),
-  type_ (this),
-  epsilon_ (this),
-  sigma_ (this)
+  brown_velocity_ (this)
 {
 }
 
 CuboidType::
 CuboidType (::std::unique_ptr< position_type > position,
-            ::std::unique_ptr< velocity_type > velocity,
             const mass_type& mass,
             ::std::unique_ptr< size_type > size,
             const distance_type& distance)
-: ::xml_schema::type (),
-  position_ (std::move (position), this),
-  velocity_ (std::move (velocity), this),
-  mass_ (mass, this),
+: ::ParticleType (std::move (position),
+                  mass),
   size_ (std::move (size), this),
   distance_ (distance, this),
-  brown_velocity_ (this),
-  type_ (this),
-  epsilon_ (this),
-  sigma_ (this)
+  brown_velocity_ (this)
 {
 }
 
@@ -3779,16 +3092,10 @@ CuboidType::
 CuboidType (const CuboidType& x,
             ::xml_schema::flags f,
             ::xml_schema::container* c)
-: ::xml_schema::type (x, f, c),
-  position_ (x.position_, f, this),
-  velocity_ (x.velocity_, f, this),
-  mass_ (x.mass_, f, this),
+: ::ParticleType (x, f, c),
   size_ (x.size_, f, this),
   distance_ (x.distance_, f, this),
-  brown_velocity_ (x.brown_velocity_, f, this),
-  type_ (x.type_, f, this),
-  epsilon_ (x.epsilon_, f, this),
-  sigma_ (x.sigma_, f, this)
+  brown_velocity_ (x.brown_velocity_, f, this)
 {
 }
 
@@ -3796,16 +3103,10 @@ CuboidType::
 CuboidType (const ::xercesc::DOMElement& e,
             ::xml_schema::flags f,
             ::xml_schema::container* c)
-: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
-  position_ (this),
-  velocity_ (this),
-  mass_ (this),
+: ::ParticleType (e, f | ::xml_schema::flags::base, c),
   size_ (this),
   distance_ (this),
-  brown_velocity_ (this),
-  type_ (this),
-  epsilon_ (this),
-  sigma_ (this)
+  brown_velocity_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -3818,53 +3119,13 @@ void CuboidType::
 parse (::xsd::cxx::xml::dom::parser< char >& p,
        ::xml_schema::flags f)
 {
+  this->::ParticleType::parse (p, f);
+
   for (; p.more_content (); p.next_content (false))
   {
     const ::xercesc::DOMElement& i (p.cur_element ());
     const ::xsd::cxx::xml::qualified_name< char > n (
       ::xsd::cxx::xml::dom::name< char > (i));
-
-    // position
-    //
-    if (n.name () == "position" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< position_type > r (
-        position_traits::create (i, f, this));
-
-      if (!position_.present ())
-      {
-        this->position_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    // velocity
-    //
-    if (n.name () == "velocity" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< velocity_type > r (
-        velocity_traits::create (i, f, this));
-
-      if (!velocity_.present ())
-      {
-        this->velocity_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    // mass
-    //
-    if (n.name () == "mass" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< mass_type > r (
-        mass_traits::create (i, f, this));
-
-      if (!mass_.present ())
-      {
-        this->mass_.set (::std::move (r));
-        continue;
-      }
-    }
 
     // size
     //
@@ -3905,67 +3166,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // type
-    //
-    if (n.name () == "type" && n.namespace_ ().empty ())
-    {
-      if (!this->type_)
-      {
-        this->type_.set (type_traits::create (i, f, this));
-        continue;
-      }
-    }
-
-    // epsilon
-    //
-    if (n.name () == "epsilon" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< epsilon_type > r (
-        epsilon_traits::create (i, f, this));
-
-      if (!this->epsilon_)
-      {
-        this->epsilon_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    // sigma
-    //
-    if (n.name () == "sigma" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< sigma_type > r (
-        sigma_traits::create (i, f, this));
-
-      if (!this->sigma_)
-      {
-        this->sigma_.set (::std::move (r));
-        continue;
-      }
-    }
-
     break;
-  }
-
-  if (!position_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "position",
-      "");
-  }
-
-  if (!velocity_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "velocity",
-      "");
-  }
-
-  if (!mass_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "mass",
-      "");
   }
 
   if (!size_.present ())
@@ -3995,16 +3196,10 @@ operator= (const CuboidType& x)
 {
   if (this != &x)
   {
-    static_cast< ::xml_schema::type& > (*this) = x;
-    this->position_ = x.position_;
-    this->velocity_ = x.velocity_;
-    this->mass_ = x.mass_;
+    static_cast< ::ParticleType& > (*this) = x;
     this->size_ = x.size_;
     this->distance_ = x.distance_;
     this->brown_velocity_ = x.brown_velocity_;
-    this->type_ = x.type_;
-    this->epsilon_ = x.epsilon_;
-    this->sigma_ = x.sigma_;
   }
 
   return *this;
@@ -4019,40 +3214,28 @@ CuboidType::
 //
 
 SphereType::
-SphereType (const center_type& center,
-            const velocity_type& velocity,
+SphereType (const position_type& position,
             const mass_type& mass,
             const radius_type& radius,
             const distance_type& distance)
-: ::xml_schema::type (),
-  center_ (center, this),
-  velocity_ (velocity, this),
-  mass_ (mass, this),
+: ::ParticleType (position,
+                  mass),
   radius_ (radius, this),
   distance_ (distance, this),
-  brown_velocity_ (this),
-  type_ (this),
-  epsilon_ (this),
-  sigma_ (this)
+  brown_velocity_ (this)
 {
 }
 
 SphereType::
-SphereType (::std::unique_ptr< center_type > center,
-            ::std::unique_ptr< velocity_type > velocity,
+SphereType (::std::unique_ptr< position_type > position,
             const mass_type& mass,
             const radius_type& radius,
             const distance_type& distance)
-: ::xml_schema::type (),
-  center_ (std::move (center), this),
-  velocity_ (std::move (velocity), this),
-  mass_ (mass, this),
+: ::ParticleType (std::move (position),
+                  mass),
   radius_ (radius, this),
   distance_ (distance, this),
-  brown_velocity_ (this),
-  type_ (this),
-  epsilon_ (this),
-  sigma_ (this)
+  brown_velocity_ (this)
 {
 }
 
@@ -4060,16 +3243,10 @@ SphereType::
 SphereType (const SphereType& x,
             ::xml_schema::flags f,
             ::xml_schema::container* c)
-: ::xml_schema::type (x, f, c),
-  center_ (x.center_, f, this),
-  velocity_ (x.velocity_, f, this),
-  mass_ (x.mass_, f, this),
+: ::ParticleType (x, f, c),
   radius_ (x.radius_, f, this),
   distance_ (x.distance_, f, this),
-  brown_velocity_ (x.brown_velocity_, f, this),
-  type_ (x.type_, f, this),
-  epsilon_ (x.epsilon_, f, this),
-  sigma_ (x.sigma_, f, this)
+  brown_velocity_ (x.brown_velocity_, f, this)
 {
 }
 
@@ -4077,16 +3254,10 @@ SphereType::
 SphereType (const ::xercesc::DOMElement& e,
             ::xml_schema::flags f,
             ::xml_schema::container* c)
-: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
-  center_ (this),
-  velocity_ (this),
-  mass_ (this),
+: ::ParticleType (e, f | ::xml_schema::flags::base, c),
   radius_ (this),
   distance_ (this),
-  brown_velocity_ (this),
-  type_ (this),
-  epsilon_ (this),
-  sigma_ (this)
+  brown_velocity_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -4099,53 +3270,13 @@ void SphereType::
 parse (::xsd::cxx::xml::dom::parser< char >& p,
        ::xml_schema::flags f)
 {
+  this->::ParticleType::parse (p, f);
+
   for (; p.more_content (); p.next_content (false))
   {
     const ::xercesc::DOMElement& i (p.cur_element ());
     const ::xsd::cxx::xml::qualified_name< char > n (
       ::xsd::cxx::xml::dom::name< char > (i));
-
-    // center
-    //
-    if (n.name () == "center" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< center_type > r (
-        center_traits::create (i, f, this));
-
-      if (!center_.present ())
-      {
-        this->center_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    // velocity
-    //
-    if (n.name () == "velocity" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< velocity_type > r (
-        velocity_traits::create (i, f, this));
-
-      if (!velocity_.present ())
-      {
-        this->velocity_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    // mass
-    //
-    if (n.name () == "mass" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< mass_type > r (
-        mass_traits::create (i, f, this));
-
-      if (!mass_.present ())
-      {
-        this->mass_.set (::std::move (r));
-        continue;
-      }
-    }
 
     // radius
     //
@@ -4183,67 +3314,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // type
-    //
-    if (n.name () == "type" && n.namespace_ ().empty ())
-    {
-      if (!this->type_)
-      {
-        this->type_.set (type_traits::create (i, f, this));
-        continue;
-      }
-    }
-
-    // epsilon
-    //
-    if (n.name () == "epsilon" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< epsilon_type > r (
-        epsilon_traits::create (i, f, this));
-
-      if (!this->epsilon_)
-      {
-        this->epsilon_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    // sigma
-    //
-    if (n.name () == "sigma" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< sigma_type > r (
-        sigma_traits::create (i, f, this));
-
-      if (!this->sigma_)
-      {
-        this->sigma_.set (::std::move (r));
-        continue;
-      }
-    }
-
     break;
-  }
-
-  if (!center_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "center",
-      "");
-  }
-
-  if (!velocity_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "velocity",
-      "");
-  }
-
-  if (!mass_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "mass",
-      "");
   }
 
   if (!radius_.present ())
@@ -4273,16 +3344,10 @@ operator= (const SphereType& x)
 {
   if (this != &x)
   {
-    static_cast< ::xml_schema::type& > (*this) = x;
-    this->center_ = x.center_;
-    this->velocity_ = x.velocity_;
-    this->mass_ = x.mass_;
+    static_cast< ::ParticleType& > (*this) = x;
     this->radius_ = x.radius_;
     this->distance_ = x.distance_;
     this->brown_velocity_ = x.brown_velocity_;
-    this->type_ = x.type_;
-    this->epsilon_ = x.epsilon_;
-    this->sigma_ = x.sigma_;
   }
 
   return *this;
@@ -4441,20 +3506,14 @@ ExternalForceType::
 
 MembraneType::
 MembraneType (const position_type& position,
-              const velocity_type& velocity,
               const mass_type& mass,
               const size_type& size,
               const distance_type& distance)
-: ::xml_schema::type (),
-  position_ (position, this),
-  velocity_ (velocity, this),
-  mass_ (mass, this),
+: ::ParticleType (position,
+                  mass),
   size_ (size, this),
   distance_ (distance, this),
   brown_velocity_ (this),
-  type_ (this),
-  epsilon_ (this),
-  sigma_ (this),
   k_ (this),
   r0_ (this),
   external_force_ (this)
@@ -4463,20 +3522,14 @@ MembraneType (const position_type& position,
 
 MembraneType::
 MembraneType (::std::unique_ptr< position_type > position,
-              ::std::unique_ptr< velocity_type > velocity,
               const mass_type& mass,
               ::std::unique_ptr< size_type > size,
               const distance_type& distance)
-: ::xml_schema::type (),
-  position_ (std::move (position), this),
-  velocity_ (std::move (velocity), this),
-  mass_ (mass, this),
+: ::ParticleType (std::move (position),
+                  mass),
   size_ (std::move (size), this),
   distance_ (distance, this),
   brown_velocity_ (this),
-  type_ (this),
-  epsilon_ (this),
-  sigma_ (this),
   k_ (this),
   r0_ (this),
   external_force_ (this)
@@ -4487,16 +3540,10 @@ MembraneType::
 MembraneType (const MembraneType& x,
               ::xml_schema::flags f,
               ::xml_schema::container* c)
-: ::xml_schema::type (x, f, c),
-  position_ (x.position_, f, this),
-  velocity_ (x.velocity_, f, this),
-  mass_ (x.mass_, f, this),
+: ::ParticleType (x, f, c),
   size_ (x.size_, f, this),
   distance_ (x.distance_, f, this),
   brown_velocity_ (x.brown_velocity_, f, this),
-  type_ (x.type_, f, this),
-  epsilon_ (x.epsilon_, f, this),
-  sigma_ (x.sigma_, f, this),
   k_ (x.k_, f, this),
   r0_ (x.r0_, f, this),
   external_force_ (x.external_force_, f, this)
@@ -4507,16 +3554,10 @@ MembraneType::
 MembraneType (const ::xercesc::DOMElement& e,
               ::xml_schema::flags f,
               ::xml_schema::container* c)
-: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
-  position_ (this),
-  velocity_ (this),
-  mass_ (this),
+: ::ParticleType (e, f | ::xml_schema::flags::base, c),
   size_ (this),
   distance_ (this),
   brown_velocity_ (this),
-  type_ (this),
-  epsilon_ (this),
-  sigma_ (this),
   k_ (this),
   r0_ (this),
   external_force_ (this)
@@ -4532,53 +3573,13 @@ void MembraneType::
 parse (::xsd::cxx::xml::dom::parser< char >& p,
        ::xml_schema::flags f)
 {
+  this->::ParticleType::parse (p, f);
+
   for (; p.more_content (); p.next_content (false))
   {
     const ::xercesc::DOMElement& i (p.cur_element ());
     const ::xsd::cxx::xml::qualified_name< char > n (
       ::xsd::cxx::xml::dom::name< char > (i));
-
-    // position
-    //
-    if (n.name () == "position" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< position_type > r (
-        position_traits::create (i, f, this));
-
-      if (!position_.present ())
-      {
-        this->position_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    // velocity
-    //
-    if (n.name () == "velocity" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< velocity_type > r (
-        velocity_traits::create (i, f, this));
-
-      if (!velocity_.present ())
-      {
-        this->velocity_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    // mass
-    //
-    if (n.name () == "mass" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< mass_type > r (
-        mass_traits::create (i, f, this));
-
-      if (!mass_.present ())
-      {
-        this->mass_.set (::std::move (r));
-        continue;
-      }
-    }
 
     // size
     //
@@ -4615,45 +3616,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       if (!this->brown_velocity_)
       {
         this->brown_velocity_.set (brown_velocity_traits::create (i, f, this));
-        continue;
-      }
-    }
-
-    // type
-    //
-    if (n.name () == "type" && n.namespace_ ().empty ())
-    {
-      if (!this->type_)
-      {
-        this->type_.set (type_traits::create (i, f, this));
-        continue;
-      }
-    }
-
-    // epsilon
-    //
-    if (n.name () == "epsilon" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< epsilon_type > r (
-        epsilon_traits::create (i, f, this));
-
-      if (!this->epsilon_)
-      {
-        this->epsilon_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    // sigma
-    //
-    if (n.name () == "sigma" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< sigma_type > r (
-        sigma_traits::create (i, f, this));
-
-      if (!this->sigma_)
-      {
-        this->sigma_.set (::std::move (r));
         continue;
       }
     }
@@ -4700,27 +3662,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     break;
   }
 
-  if (!position_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "position",
-      "");
-  }
-
-  if (!velocity_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "velocity",
-      "");
-  }
-
-  if (!mass_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "mass",
-      "");
-  }
-
   if (!size_.present ())
   {
     throw ::xsd::cxx::tree::expected_element< char > (
@@ -4748,16 +3689,10 @@ operator= (const MembraneType& x)
 {
   if (this != &x)
   {
-    static_cast< ::xml_schema::type& > (*this) = x;
-    this->position_ = x.position_;
-    this->velocity_ = x.velocity_;
-    this->mass_ = x.mass_;
+    static_cast< ::ParticleType& > (*this) = x;
     this->size_ = x.size_;
     this->distance_ = x.distance_;
     this->brown_velocity_ = x.brown_velocity_;
-    this->type_ = x.type_;
-    this->epsilon_ = x.epsilon_;
-    this->sigma_ = x.sigma_;
     this->k_ = x.k_;
     this->r0_ = x.r0_;
     this->external_force_ = x.external_force_;
@@ -4779,14 +3714,10 @@ WallType (const position_type& position,
           const mass_type& mass,
           const size_type& size,
           const distance_type& distance)
-: ::xml_schema::type (),
-  position_ (position, this),
-  mass_ (mass, this),
+: ::ParticleType (position,
+                  mass),
   size_ (size, this),
-  distance_ (distance, this),
-  type_ (this),
-  epsilon_ (this),
-  sigma_ (this)
+  distance_ (distance, this)
 {
 }
 
@@ -4795,14 +3726,10 @@ WallType (::std::unique_ptr< position_type > position,
           const mass_type& mass,
           ::std::unique_ptr< size_type > size,
           const distance_type& distance)
-: ::xml_schema::type (),
-  position_ (std::move (position), this),
-  mass_ (mass, this),
+: ::ParticleType (std::move (position),
+                  mass),
   size_ (std::move (size), this),
-  distance_ (distance, this),
-  type_ (this),
-  epsilon_ (this),
-  sigma_ (this)
+  distance_ (distance, this)
 {
 }
 
@@ -4810,14 +3737,9 @@ WallType::
 WallType (const WallType& x,
           ::xml_schema::flags f,
           ::xml_schema::container* c)
-: ::xml_schema::type (x, f, c),
-  position_ (x.position_, f, this),
-  mass_ (x.mass_, f, this),
+: ::ParticleType (x, f, c),
   size_ (x.size_, f, this),
-  distance_ (x.distance_, f, this),
-  type_ (x.type_, f, this),
-  epsilon_ (x.epsilon_, f, this),
-  sigma_ (x.sigma_, f, this)
+  distance_ (x.distance_, f, this)
 {
 }
 
@@ -4825,14 +3747,9 @@ WallType::
 WallType (const ::xercesc::DOMElement& e,
           ::xml_schema::flags f,
           ::xml_schema::container* c)
-: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
-  position_ (this),
-  mass_ (this),
+: ::ParticleType (e, f | ::xml_schema::flags::base, c),
   size_ (this),
-  distance_ (this),
-  type_ (this),
-  epsilon_ (this),
-  sigma_ (this)
+  distance_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -4845,39 +3762,13 @@ void WallType::
 parse (::xsd::cxx::xml::dom::parser< char >& p,
        ::xml_schema::flags f)
 {
+  this->::ParticleType::parse (p, f);
+
   for (; p.more_content (); p.next_content (false))
   {
     const ::xercesc::DOMElement& i (p.cur_element ());
     const ::xsd::cxx::xml::qualified_name< char > n (
       ::xsd::cxx::xml::dom::name< char > (i));
-
-    // position
-    //
-    if (n.name () == "position" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< position_type > r (
-        position_traits::create (i, f, this));
-
-      if (!position_.present ())
-      {
-        this->position_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    // mass
-    //
-    if (n.name () == "mass" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< mass_type > r (
-        mass_traits::create (i, f, this));
-
-      if (!mass_.present ())
-      {
-        this->mass_.set (::std::move (r));
-        continue;
-      }
-    }
 
     // size
     //
@@ -4907,60 +3798,7 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // type
-    //
-    if (n.name () == "type" && n.namespace_ ().empty ())
-    {
-      if (!this->type_)
-      {
-        this->type_.set (type_traits::create (i, f, this));
-        continue;
-      }
-    }
-
-    // epsilon
-    //
-    if (n.name () == "epsilon" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< epsilon_type > r (
-        epsilon_traits::create (i, f, this));
-
-      if (!this->epsilon_)
-      {
-        this->epsilon_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    // sigma
-    //
-    if (n.name () == "sigma" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< sigma_type > r (
-        sigma_traits::create (i, f, this));
-
-      if (!this->sigma_)
-      {
-        this->sigma_.set (::std::move (r));
-        continue;
-      }
-    }
-
     break;
-  }
-
-  if (!position_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "position",
-      "");
-  }
-
-  if (!mass_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "mass",
-      "");
   }
 
   if (!size_.present ())
@@ -4990,14 +3828,9 @@ operator= (const WallType& x)
 {
   if (this != &x)
   {
-    static_cast< ::xml_schema::type& > (*this) = x;
-    this->position_ = x.position_;
-    this->mass_ = x.mass_;
+    static_cast< ::ParticleType& > (*this) = x;
     this->size_ = x.size_;
     this->distance_ = x.distance_;
-    this->type_ = x.type_;
-    this->epsilon_ = x.epsilon_;
-    this->sigma_ = x.sigma_;
   }
 
   return *this;
@@ -6802,13 +5635,14 @@ operator<< (::xercesc::DOMElement& e, const ParticleType& i)
 
   // velocity
   //
+  if (i.velocity ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
         "velocity",
         e));
 
-    s << i.velocity ();
+    s << *i.velocity ();
   }
 
   // mass
@@ -6862,40 +5696,7 @@ operator<< (::xercesc::DOMElement& e, const ParticleType& i)
 void
 operator<< (::xercesc::DOMElement& e, const CuboidType& i)
 {
-  e << static_cast< const ::xml_schema::type& > (i);
-
-  // position
-  //
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "position",
-        e));
-
-    s << i.position ();
-  }
-
-  // velocity
-  //
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "velocity",
-        e));
-
-    s << i.velocity ();
-  }
-
-  // mass
-  //
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "mass",
-        e));
-
-    s << i.mass ();
-  }
+  e << static_cast< const ::ParticleType& > (i);
 
   // size
   //
@@ -6930,81 +5731,12 @@ operator<< (::xercesc::DOMElement& e, const CuboidType& i)
 
     s << ::xml_schema::as_double(*i.brown_velocity ());
   }
-
-  // type
-  //
-  if (i.type ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "type",
-        e));
-
-    s << *i.type ();
-  }
-
-  // epsilon
-  //
-  if (i.epsilon ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "epsilon",
-        e));
-
-    s << *i.epsilon ();
-  }
-
-  // sigma
-  //
-  if (i.sigma ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "sigma",
-        e));
-
-    s << *i.sigma ();
-  }
 }
 
 void
 operator<< (::xercesc::DOMElement& e, const SphereType& i)
 {
-  e << static_cast< const ::xml_schema::type& > (i);
-
-  // center
-  //
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "center",
-        e));
-
-    s << i.center ();
-  }
-
-  // velocity
-  //
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "velocity",
-        e));
-
-    s << i.velocity ();
-  }
-
-  // mass
-  //
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "mass",
-        e));
-
-    s << i.mass ();
-  }
+  e << static_cast< const ::ParticleType& > (i);
 
   // radius
   //
@@ -7038,42 +5770,6 @@ operator<< (::xercesc::DOMElement& e, const SphereType& i)
         e));
 
     s << ::xml_schema::as_double(*i.brown_velocity ());
-  }
-
-  // type
-  //
-  if (i.type ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "type",
-        e));
-
-    s << *i.type ();
-  }
-
-  // epsilon
-  //
-  if (i.epsilon ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "epsilon",
-        e));
-
-    s << *i.epsilon ();
-  }
-
-  // sigma
-  //
-  if (i.sigma ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "sigma",
-        e));
-
-    s << *i.sigma ();
   }
 }
 
@@ -7122,40 +5818,7 @@ operator<< (::xercesc::DOMElement& e, const ExternalForceType& i)
 void
 operator<< (::xercesc::DOMElement& e, const MembraneType& i)
 {
-  e << static_cast< const ::xml_schema::type& > (i);
-
-  // position
-  //
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "position",
-        e));
-
-    s << i.position ();
-  }
-
-  // velocity
-  //
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "velocity",
-        e));
-
-    s << i.velocity ();
-  }
-
-  // mass
-  //
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "mass",
-        e));
-
-    s << i.mass ();
-  }
+  e << static_cast< const ::ParticleType& > (i);
 
   // size
   //
@@ -7189,42 +5852,6 @@ operator<< (::xercesc::DOMElement& e, const MembraneType& i)
         e));
 
     s << ::xml_schema::as_double(*i.brown_velocity ());
-  }
-
-  // type
-  //
-  if (i.type ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "type",
-        e));
-
-    s << *i.type ();
-  }
-
-  // epsilon
-  //
-  if (i.epsilon ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "epsilon",
-        e));
-
-    s << *i.epsilon ();
-  }
-
-  // sigma
-  //
-  if (i.sigma ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "sigma",
-        e));
-
-    s << *i.sigma ();
   }
 
   // k
@@ -7269,29 +5896,7 @@ operator<< (::xercesc::DOMElement& e, const MembraneType& i)
 void
 operator<< (::xercesc::DOMElement& e, const WallType& i)
 {
-  e << static_cast< const ::xml_schema::type& > (i);
-
-  // position
-  //
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "position",
-        e));
-
-    s << i.position ();
-  }
-
-  // mass
-  //
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "mass",
-        e));
-
-    s << i.mass ();
-  }
+  e << static_cast< const ::ParticleType& > (i);
 
   // size
   //
@@ -7313,42 +5918,6 @@ operator<< (::xercesc::DOMElement& e, const WallType& i)
         e));
 
     s << i.distance ();
-  }
-
-  // type
-  //
-  if (i.type ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "type",
-        e));
-
-    s << *i.type ();
-  }
-
-  // epsilon
-  //
-  if (i.epsilon ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "epsilon",
-        e));
-
-    s << *i.epsilon ();
-  }
-
-  // sigma
-  //
-  if (i.sigma ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "sigma",
-        e));
-
-    s << *i.sigma ();
   }
 }
 

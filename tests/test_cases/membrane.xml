@@ -13,13 +13,13 @@
                 <z>0</z>
             </velocity>
             <mass>2</mass>
+            <epsilon>3</epsilon>
+            <sigma>1.2</sigma>
             <size>
                 <x>10</x>
                 <y>10</y>
             </size>
             <distance>5</distance>
-            <epsilon>3</epsilon>
-            <sigma>1.2</sigma>
             <k>100</k>
             <r0>1</r0>
             <external_force>

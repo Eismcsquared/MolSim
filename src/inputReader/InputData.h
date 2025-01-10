@@ -2241,7 +2241,7 @@ class ParticleType: public ::xml_schema::type
    * @name velocity
    *
    * @brief Accessor and modifier functions for the %velocity
-   * required element.
+   * optional element.
    */
   //@{
 
@@ -2251,24 +2251,30 @@ class ParticleType: public ::xml_schema::type
   typedef ::DoubleVector3 velocity_type;
 
   /**
+   * @brief Element optional container type.
+   */
+  typedef ::xsd::cxx::tree::optional< velocity_type > velocity_optional;
+
+  /**
    * @brief Element traits type.
    */
   typedef ::xsd::cxx::tree::traits< velocity_type, char > velocity_traits;
 
   /**
-   * @brief Return a read-only (constant) reference to the element.
+   * @brief Return a read-only (constant) reference to the element
+   * container.
    *
-   * @return A constant reference to the element.
+   * @return A constant reference to the optional container.
    */
-  const velocity_type&
+  const velocity_optional&
   velocity () const;
 
   /**
-   * @brief Return a read-write reference to the element.
+   * @brief Return a read-write reference to the element container.
    *
-   * @return A reference to the element.
+   * @return A reference to the optional container.
    */
-  velocity_type&
+  velocity_optional&
   velocity ();
 
   /**
@@ -2283,12 +2289,24 @@ class ParticleType: public ::xml_schema::type
   velocity (const velocity_type& x);
 
   /**
+   * @brief Set the element value.
+   *
+   * @param x An optional container with the new value to set.
+   *
+   * If the value is present in @a x then this function makes a copy 
+   * of this value and sets it as the new value of the element.
+   * Otherwise the element container is set the 'not present' state.
+   */
+  void
+  velocity (const velocity_optional& x);
+
+  /**
    * @brief Set the element value without copying.
    *
    * @param p A new value to use.
    *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
+   * This function will try to use the passed value directly instead
+   * of making a copy.
    */
   void
   velocity (::std::unique_ptr< velocity_type > p);
@@ -2582,7 +2600,6 @@ class ParticleType: public ::xml_schema::type
    * initializers for required elements and attributes.
    */
   ParticleType (const position_type&,
-                const velocity_type&,
                 const mass_type&);
 
   /**
@@ -2594,7 +2611,6 @@ class ParticleType: public ::xml_schema::type
    * instead of making copies.
    */
   ParticleType (::std::unique_ptr< position_type >,
-                ::std::unique_ptr< velocity_type >,
                 const mass_type&);
 
   /**
@@ -2668,7 +2684,7 @@ class ParticleType: public ::xml_schema::type
 
   protected:
   ::xsd::cxx::tree::one< position_type > position_;
-  ::xsd::cxx::tree::one< velocity_type > velocity_;
+  velocity_optional velocity_;
   ::xsd::cxx::tree::one< mass_type > mass_;
   type_optional type_;
   epsilon_optional epsilon_;
@@ -2682,183 +2698,9 @@ class ParticleType: public ::xml_schema::type
  *
  * @nosubgrouping
  */
-class CuboidType: public ::xml_schema::type
+class CuboidType: public ::ParticleType
 {
   public:
-  /**
-   * @name position
-   *
-   * @brief Accessor and modifier functions for the %position
-   * required element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::DoubleVector3 position_type;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< position_type, char > position_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element.
-   *
-   * @return A constant reference to the element.
-   */
-  const position_type&
-  position () const;
-
-  /**
-   * @brief Return a read-write reference to the element.
-   *
-   * @return A reference to the element.
-   */
-  position_type&
-  position ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  position (const position_type& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  position (::std::unique_ptr< position_type > p);
-
-  //@}
-
-  /**
-   * @name velocity
-   *
-   * @brief Accessor and modifier functions for the %velocity
-   * required element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::DoubleVector3 velocity_type;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< velocity_type, char > velocity_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element.
-   *
-   * @return A constant reference to the element.
-   */
-  const velocity_type&
-  velocity () const;
-
-  /**
-   * @brief Return a read-write reference to the element.
-   *
-   * @return A reference to the element.
-   */
-  velocity_type&
-  velocity ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  velocity (const velocity_type& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  velocity (::std::unique_ptr< velocity_type > p);
-
-  //@}
-
-  /**
-   * @name mass
-   *
-   * @brief Accessor and modifier functions for the %mass
-   * required element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::PositiveDouble mass_type;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< mass_type, char > mass_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element.
-   *
-   * @return A constant reference to the element.
-   */
-  const mass_type&
-  mass () const;
-
-  /**
-   * @brief Return a read-write reference to the element.
-   *
-   * @return A reference to the element.
-   */
-  mass_type&
-  mass ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  mass (const mass_type& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  mass (::std::unique_ptr< mass_type > p);
-
-  //@}
-
   /**
    * @name size
    *
@@ -3049,247 +2891,6 @@ class CuboidType: public ::xml_schema::type
   //@}
 
   /**
-   * @name type
-   *
-   * @brief Accessor and modifier functions for the %type
-   * optional element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::xml_schema::int_ type_type;
-
-  /**
-   * @brief Element optional container type.
-   */
-  typedef ::xsd::cxx::tree::optional< type_type > type_optional;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< type_type, char > type_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element
-   * container.
-   *
-   * @return A constant reference to the optional container.
-   */
-  const type_optional&
-  type () const;
-
-  /**
-   * @brief Return a read-write reference to the element container.
-   *
-   * @return A reference to the optional container.
-   */
-  type_optional&
-  type ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  type (const type_type& x);
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x An optional container with the new value to set.
-   *
-   * If the value is present in @a x then this function makes a copy 
-   * of this value and sets it as the new value of the element.
-   * Otherwise the element container is set the 'not present' state.
-   */
-  void
-  type (const type_optional& x);
-
-  /**
-   * @brief Return the default value for the element.
-   *
-   * @return The element's default value.
-   */
-  static type_type
-  type_default_value ();
-
-  //@}
-
-  /**
-   * @name epsilon
-   *
-   * @brief Accessor and modifier functions for the %epsilon
-   * optional element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::PositiveDouble epsilon_type;
-
-  /**
-   * @brief Element optional container type.
-   */
-  typedef ::xsd::cxx::tree::optional< epsilon_type > epsilon_optional;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< epsilon_type, char > epsilon_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element
-   * container.
-   *
-   * @return A constant reference to the optional container.
-   */
-  const epsilon_optional&
-  epsilon () const;
-
-  /**
-   * @brief Return a read-write reference to the element container.
-   *
-   * @return A reference to the optional container.
-   */
-  epsilon_optional&
-  epsilon ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  epsilon (const epsilon_type& x);
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x An optional container with the new value to set.
-   *
-   * If the value is present in @a x then this function makes a copy 
-   * of this value and sets it as the new value of the element.
-   * Otherwise the element container is set the 'not present' state.
-   */
-  void
-  epsilon (const epsilon_optional& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly instead
-   * of making a copy.
-   */
-  void
-  epsilon (::std::unique_ptr< epsilon_type > p);
-
-  /**
-   * @brief Return the default value for the element.
-   *
-   * @return The element's default value.
-   */
-  static epsilon_type
-  epsilon_default_value ();
-
-  //@}
-
-  /**
-   * @name sigma
-   *
-   * @brief Accessor and modifier functions for the %sigma
-   * optional element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::PositiveDouble sigma_type;
-
-  /**
-   * @brief Element optional container type.
-   */
-  typedef ::xsd::cxx::tree::optional< sigma_type > sigma_optional;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< sigma_type, char > sigma_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element
-   * container.
-   *
-   * @return A constant reference to the optional container.
-   */
-  const sigma_optional&
-  sigma () const;
-
-  /**
-   * @brief Return a read-write reference to the element container.
-   *
-   * @return A reference to the optional container.
-   */
-  sigma_optional&
-  sigma ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  sigma (const sigma_type& x);
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x An optional container with the new value to set.
-   *
-   * If the value is present in @a x then this function makes a copy 
-   * of this value and sets it as the new value of the element.
-   * Otherwise the element container is set the 'not present' state.
-   */
-  void
-  sigma (const sigma_optional& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly instead
-   * of making a copy.
-   */
-  void
-  sigma (::std::unique_ptr< sigma_type > p);
-
-  /**
-   * @brief Return the default value for the element.
-   *
-   * @return The element's default value.
-   */
-  static sigma_type
-  sigma_default_value ();
-
-  //@}
-
-  /**
    * @name Constructors
    */
   //@{
@@ -3299,7 +2900,6 @@ class CuboidType: public ::xml_schema::type
    * initializers for required elements and attributes.
    */
   CuboidType (const position_type&,
-              const velocity_type&,
               const mass_type&,
               const size_type&,
               const distance_type&);
@@ -3313,7 +2913,6 @@ class CuboidType: public ::xml_schema::type
    * instead of making copies.
    */
   CuboidType (::std::unique_ptr< position_type >,
-              ::std::unique_ptr< velocity_type >,
               const mass_type&,
               ::std::unique_ptr< size_type >,
               const distance_type&);
@@ -3388,15 +2987,9 @@ class CuboidType: public ::xml_schema::type
          ::xml_schema::flags);
 
   protected:
-  ::xsd::cxx::tree::one< position_type > position_;
-  ::xsd::cxx::tree::one< velocity_type > velocity_;
-  ::xsd::cxx::tree::one< mass_type > mass_;
   ::xsd::cxx::tree::one< size_type > size_;
   ::xsd::cxx::tree::one< distance_type > distance_;
   brown_velocity_optional brown_velocity_;
-  type_optional type_;
-  epsilon_optional epsilon_;
-  sigma_optional sigma_;
 
   //@endcond
 };
@@ -3406,183 +2999,9 @@ class CuboidType: public ::xml_schema::type
  *
  * @nosubgrouping
  */
-class SphereType: public ::xml_schema::type
+class SphereType: public ::ParticleType
 {
   public:
-  /**
-   * @name center
-   *
-   * @brief Accessor and modifier functions for the %center
-   * required element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::DoubleVector3 center_type;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< center_type, char > center_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element.
-   *
-   * @return A constant reference to the element.
-   */
-  const center_type&
-  center () const;
-
-  /**
-   * @brief Return a read-write reference to the element.
-   *
-   * @return A reference to the element.
-   */
-  center_type&
-  center ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  center (const center_type& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  center (::std::unique_ptr< center_type > p);
-
-  //@}
-
-  /**
-   * @name velocity
-   *
-   * @brief Accessor and modifier functions for the %velocity
-   * required element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::DoubleVector3 velocity_type;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< velocity_type, char > velocity_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element.
-   *
-   * @return A constant reference to the element.
-   */
-  const velocity_type&
-  velocity () const;
-
-  /**
-   * @brief Return a read-write reference to the element.
-   *
-   * @return A reference to the element.
-   */
-  velocity_type&
-  velocity ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  velocity (const velocity_type& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  velocity (::std::unique_ptr< velocity_type > p);
-
-  //@}
-
-  /**
-   * @name mass
-   *
-   * @brief Accessor and modifier functions for the %mass
-   * required element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::PositiveDouble mass_type;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< mass_type, char > mass_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element.
-   *
-   * @return A constant reference to the element.
-   */
-  const mass_type&
-  mass () const;
-
-  /**
-   * @brief Return a read-write reference to the element.
-   *
-   * @return A reference to the element.
-   */
-  mass_type&
-  mass ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  mass (const mass_type& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  mass (::std::unique_ptr< mass_type > p);
-
-  //@}
-
   /**
    * @name radius
    *
@@ -3762,247 +3181,6 @@ class SphereType: public ::xml_schema::type
   //@}
 
   /**
-   * @name type
-   *
-   * @brief Accessor and modifier functions for the %type
-   * optional element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::xml_schema::int_ type_type;
-
-  /**
-   * @brief Element optional container type.
-   */
-  typedef ::xsd::cxx::tree::optional< type_type > type_optional;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< type_type, char > type_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element
-   * container.
-   *
-   * @return A constant reference to the optional container.
-   */
-  const type_optional&
-  type () const;
-
-  /**
-   * @brief Return a read-write reference to the element container.
-   *
-   * @return A reference to the optional container.
-   */
-  type_optional&
-  type ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  type (const type_type& x);
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x An optional container with the new value to set.
-   *
-   * If the value is present in @a x then this function makes a copy 
-   * of this value and sets it as the new value of the element.
-   * Otherwise the element container is set the 'not present' state.
-   */
-  void
-  type (const type_optional& x);
-
-  /**
-   * @brief Return the default value for the element.
-   *
-   * @return The element's default value.
-   */
-  static type_type
-  type_default_value ();
-
-  //@}
-
-  /**
-   * @name epsilon
-   *
-   * @brief Accessor and modifier functions for the %epsilon
-   * optional element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::PositiveDouble epsilon_type;
-
-  /**
-   * @brief Element optional container type.
-   */
-  typedef ::xsd::cxx::tree::optional< epsilon_type > epsilon_optional;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< epsilon_type, char > epsilon_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element
-   * container.
-   *
-   * @return A constant reference to the optional container.
-   */
-  const epsilon_optional&
-  epsilon () const;
-
-  /**
-   * @brief Return a read-write reference to the element container.
-   *
-   * @return A reference to the optional container.
-   */
-  epsilon_optional&
-  epsilon ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  epsilon (const epsilon_type& x);
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x An optional container with the new value to set.
-   *
-   * If the value is present in @a x then this function makes a copy 
-   * of this value and sets it as the new value of the element.
-   * Otherwise the element container is set the 'not present' state.
-   */
-  void
-  epsilon (const epsilon_optional& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly instead
-   * of making a copy.
-   */
-  void
-  epsilon (::std::unique_ptr< epsilon_type > p);
-
-  /**
-   * @brief Return the default value for the element.
-   *
-   * @return The element's default value.
-   */
-  static epsilon_type
-  epsilon_default_value ();
-
-  //@}
-
-  /**
-   * @name sigma
-   *
-   * @brief Accessor and modifier functions for the %sigma
-   * optional element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::PositiveDouble sigma_type;
-
-  /**
-   * @brief Element optional container type.
-   */
-  typedef ::xsd::cxx::tree::optional< sigma_type > sigma_optional;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< sigma_type, char > sigma_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element
-   * container.
-   *
-   * @return A constant reference to the optional container.
-   */
-  const sigma_optional&
-  sigma () const;
-
-  /**
-   * @brief Return a read-write reference to the element container.
-   *
-   * @return A reference to the optional container.
-   */
-  sigma_optional&
-  sigma ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  sigma (const sigma_type& x);
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x An optional container with the new value to set.
-   *
-   * If the value is present in @a x then this function makes a copy 
-   * of this value and sets it as the new value of the element.
-   * Otherwise the element container is set the 'not present' state.
-   */
-  void
-  sigma (const sigma_optional& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly instead
-   * of making a copy.
-   */
-  void
-  sigma (::std::unique_ptr< sigma_type > p);
-
-  /**
-   * @brief Return the default value for the element.
-   *
-   * @return The element's default value.
-   */
-  static sigma_type
-  sigma_default_value ();
-
-  //@}
-
-  /**
    * @name Constructors
    */
   //@{
@@ -4011,8 +3189,7 @@ class SphereType: public ::xml_schema::type
    * @brief Create an instance from the ultimate base and
    * initializers for required elements and attributes.
    */
-  SphereType (const center_type&,
-              const velocity_type&,
+  SphereType (const position_type&,
               const mass_type&,
               const radius_type&,
               const distance_type&);
@@ -4025,8 +3202,7 @@ class SphereType: public ::xml_schema::type
    * This constructor will try to use the passed values directly
    * instead of making copies.
    */
-  SphereType (::std::unique_ptr< center_type >,
-              ::std::unique_ptr< velocity_type >,
+  SphereType (::std::unique_ptr< position_type >,
               const mass_type&,
               const radius_type&,
               const distance_type&);
@@ -4101,15 +3277,9 @@ class SphereType: public ::xml_schema::type
          ::xml_schema::flags);
 
   protected:
-  ::xsd::cxx::tree::one< center_type > center_;
-  ::xsd::cxx::tree::one< velocity_type > velocity_;
-  ::xsd::cxx::tree::one< mass_type > mass_;
   ::xsd::cxx::tree::one< radius_type > radius_;
   ::xsd::cxx::tree::one< distance_type > distance_;
   brown_velocity_optional brown_velocity_;
-  type_optional type_;
-  epsilon_optional epsilon_;
-  sigma_optional sigma_;
 
   //@endcond
 };
@@ -4409,183 +3579,9 @@ class ExternalForceType: public ::xml_schema::type
  *
  * @nosubgrouping
  */
-class MembraneType: public ::xml_schema::type
+class MembraneType: public ::ParticleType
 {
   public:
-  /**
-   * @name position
-   *
-   * @brief Accessor and modifier functions for the %position
-   * required element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::DoubleVector3 position_type;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< position_type, char > position_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element.
-   *
-   * @return A constant reference to the element.
-   */
-  const position_type&
-  position () const;
-
-  /**
-   * @brief Return a read-write reference to the element.
-   *
-   * @return A reference to the element.
-   */
-  position_type&
-  position ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  position (const position_type& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  position (::std::unique_ptr< position_type > p);
-
-  //@}
-
-  /**
-   * @name velocity
-   *
-   * @brief Accessor and modifier functions for the %velocity
-   * required element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::DoubleVector3 velocity_type;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< velocity_type, char > velocity_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element.
-   *
-   * @return A constant reference to the element.
-   */
-  const velocity_type&
-  velocity () const;
-
-  /**
-   * @brief Return a read-write reference to the element.
-   *
-   * @return A reference to the element.
-   */
-  velocity_type&
-  velocity ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  velocity (const velocity_type& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  velocity (::std::unique_ptr< velocity_type > p);
-
-  //@}
-
-  /**
-   * @name mass
-   *
-   * @brief Accessor and modifier functions for the %mass
-   * required element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::PositiveDouble mass_type;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< mass_type, char > mass_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element.
-   *
-   * @return A constant reference to the element.
-   */
-  const mass_type&
-  mass () const;
-
-  /**
-   * @brief Return a read-write reference to the element.
-   *
-   * @return A reference to the element.
-   */
-  mass_type&
-  mass ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  mass (const mass_type& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  mass (::std::unique_ptr< mass_type > p);
-
-  //@}
-
   /**
    * @name size
    *
@@ -4772,247 +3768,6 @@ class MembraneType: public ::xml_schema::type
    */
   static brown_velocity_type
   brown_velocity_default_value ();
-
-  //@}
-
-  /**
-   * @name type
-   *
-   * @brief Accessor and modifier functions for the %type
-   * optional element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::xml_schema::int_ type_type;
-
-  /**
-   * @brief Element optional container type.
-   */
-  typedef ::xsd::cxx::tree::optional< type_type > type_optional;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< type_type, char > type_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element
-   * container.
-   *
-   * @return A constant reference to the optional container.
-   */
-  const type_optional&
-  type () const;
-
-  /**
-   * @brief Return a read-write reference to the element container.
-   *
-   * @return A reference to the optional container.
-   */
-  type_optional&
-  type ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  type (const type_type& x);
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x An optional container with the new value to set.
-   *
-   * If the value is present in @a x then this function makes a copy 
-   * of this value and sets it as the new value of the element.
-   * Otherwise the element container is set the 'not present' state.
-   */
-  void
-  type (const type_optional& x);
-
-  /**
-   * @brief Return the default value for the element.
-   *
-   * @return The element's default value.
-   */
-  static type_type
-  type_default_value ();
-
-  //@}
-
-  /**
-   * @name epsilon
-   *
-   * @brief Accessor and modifier functions for the %epsilon
-   * optional element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::PositiveDouble epsilon_type;
-
-  /**
-   * @brief Element optional container type.
-   */
-  typedef ::xsd::cxx::tree::optional< epsilon_type > epsilon_optional;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< epsilon_type, char > epsilon_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element
-   * container.
-   *
-   * @return A constant reference to the optional container.
-   */
-  const epsilon_optional&
-  epsilon () const;
-
-  /**
-   * @brief Return a read-write reference to the element container.
-   *
-   * @return A reference to the optional container.
-   */
-  epsilon_optional&
-  epsilon ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  epsilon (const epsilon_type& x);
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x An optional container with the new value to set.
-   *
-   * If the value is present in @a x then this function makes a copy 
-   * of this value and sets it as the new value of the element.
-   * Otherwise the element container is set the 'not present' state.
-   */
-  void
-  epsilon (const epsilon_optional& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly instead
-   * of making a copy.
-   */
-  void
-  epsilon (::std::unique_ptr< epsilon_type > p);
-
-  /**
-   * @brief Return the default value for the element.
-   *
-   * @return The element's default value.
-   */
-  static epsilon_type
-  epsilon_default_value ();
-
-  //@}
-
-  /**
-   * @name sigma
-   *
-   * @brief Accessor and modifier functions for the %sigma
-   * optional element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::PositiveDouble sigma_type;
-
-  /**
-   * @brief Element optional container type.
-   */
-  typedef ::xsd::cxx::tree::optional< sigma_type > sigma_optional;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< sigma_type, char > sigma_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element
-   * container.
-   *
-   * @return A constant reference to the optional container.
-   */
-  const sigma_optional&
-  sigma () const;
-
-  /**
-   * @brief Return a read-write reference to the element container.
-   *
-   * @return A reference to the optional container.
-   */
-  sigma_optional&
-  sigma ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  sigma (const sigma_type& x);
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x An optional container with the new value to set.
-   *
-   * If the value is present in @a x then this function makes a copy 
-   * of this value and sets it as the new value of the element.
-   * Otherwise the element container is set the 'not present' state.
-   */
-  void
-  sigma (const sigma_optional& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly instead
-   * of making a copy.
-   */
-  void
-  sigma (::std::unique_ptr< sigma_type > p);
-
-  /**
-   * @brief Return the default value for the element.
-   *
-   * @return The element's default value.
-   */
-  static sigma_type
-  sigma_default_value ();
 
   //@}
 
@@ -5258,7 +4013,6 @@ class MembraneType: public ::xml_schema::type
    * initializers for required elements and attributes.
    */
   MembraneType (const position_type&,
-                const velocity_type&,
                 const mass_type&,
                 const size_type&,
                 const distance_type&);
@@ -5272,7 +4026,6 @@ class MembraneType: public ::xml_schema::type
    * instead of making copies.
    */
   MembraneType (::std::unique_ptr< position_type >,
-                ::std::unique_ptr< velocity_type >,
                 const mass_type&,
                 ::std::unique_ptr< size_type >,
                 const distance_type&);
@@ -5347,15 +4100,9 @@ class MembraneType: public ::xml_schema::type
          ::xml_schema::flags);
 
   protected:
-  ::xsd::cxx::tree::one< position_type > position_;
-  ::xsd::cxx::tree::one< velocity_type > velocity_;
-  ::xsd::cxx::tree::one< mass_type > mass_;
   ::xsd::cxx::tree::one< size_type > size_;
   ::xsd::cxx::tree::one< distance_type > distance_;
   brown_velocity_optional brown_velocity_;
-  type_optional type_;
-  epsilon_optional epsilon_;
-  sigma_optional sigma_;
   k_optional k_;
   r0_optional r0_;
   external_force_sequence external_force_;
@@ -5368,125 +4115,9 @@ class MembraneType: public ::xml_schema::type
  *
  * @nosubgrouping
  */
-class WallType: public ::xml_schema::type
+class WallType: public ::ParticleType
 {
   public:
-  /**
-   * @name position
-   *
-   * @brief Accessor and modifier functions for the %position
-   * required element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::DoubleVector3 position_type;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< position_type, char > position_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element.
-   *
-   * @return A constant reference to the element.
-   */
-  const position_type&
-  position () const;
-
-  /**
-   * @brief Return a read-write reference to the element.
-   *
-   * @return A reference to the element.
-   */
-  position_type&
-  position ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  position (const position_type& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  position (::std::unique_ptr< position_type > p);
-
-  //@}
-
-  /**
-   * @name mass
-   *
-   * @brief Accessor and modifier functions for the %mass
-   * required element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::PositiveDouble mass_type;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< mass_type, char > mass_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element.
-   *
-   * @return A constant reference to the element.
-   */
-  const mass_type&
-  mass () const;
-
-  /**
-   * @brief Return a read-write reference to the element.
-   *
-   * @return A reference to the element.
-   */
-  mass_type&
-  mass ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  mass (const mass_type& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly
-   * instead of making a copy.
-   */
-  void
-  mass (::std::unique_ptr< mass_type > p);
-
-  //@}
-
   /**
    * @name size
    *
@@ -5604,247 +4235,6 @@ class WallType: public ::xml_schema::type
   //@}
 
   /**
-   * @name type
-   *
-   * @brief Accessor and modifier functions for the %type
-   * optional element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::xml_schema::int_ type_type;
-
-  /**
-   * @brief Element optional container type.
-   */
-  typedef ::xsd::cxx::tree::optional< type_type > type_optional;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< type_type, char > type_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element
-   * container.
-   *
-   * @return A constant reference to the optional container.
-   */
-  const type_optional&
-  type () const;
-
-  /**
-   * @brief Return a read-write reference to the element container.
-   *
-   * @return A reference to the optional container.
-   */
-  type_optional&
-  type ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  type (const type_type& x);
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x An optional container with the new value to set.
-   *
-   * If the value is present in @a x then this function makes a copy 
-   * of this value and sets it as the new value of the element.
-   * Otherwise the element container is set the 'not present' state.
-   */
-  void
-  type (const type_optional& x);
-
-  /**
-   * @brief Return the default value for the element.
-   *
-   * @return The element's default value.
-   */
-  static type_type
-  type_default_value ();
-
-  //@}
-
-  /**
-   * @name epsilon
-   *
-   * @brief Accessor and modifier functions for the %epsilon
-   * optional element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::PositiveDouble epsilon_type;
-
-  /**
-   * @brief Element optional container type.
-   */
-  typedef ::xsd::cxx::tree::optional< epsilon_type > epsilon_optional;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< epsilon_type, char > epsilon_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element
-   * container.
-   *
-   * @return A constant reference to the optional container.
-   */
-  const epsilon_optional&
-  epsilon () const;
-
-  /**
-   * @brief Return a read-write reference to the element container.
-   *
-   * @return A reference to the optional container.
-   */
-  epsilon_optional&
-  epsilon ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  epsilon (const epsilon_type& x);
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x An optional container with the new value to set.
-   *
-   * If the value is present in @a x then this function makes a copy 
-   * of this value and sets it as the new value of the element.
-   * Otherwise the element container is set the 'not present' state.
-   */
-  void
-  epsilon (const epsilon_optional& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly instead
-   * of making a copy.
-   */
-  void
-  epsilon (::std::unique_ptr< epsilon_type > p);
-
-  /**
-   * @brief Return the default value for the element.
-   *
-   * @return The element's default value.
-   */
-  static epsilon_type
-  epsilon_default_value ();
-
-  //@}
-
-  /**
-   * @name sigma
-   *
-   * @brief Accessor and modifier functions for the %sigma
-   * optional element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::PositiveDouble sigma_type;
-
-  /**
-   * @brief Element optional container type.
-   */
-  typedef ::xsd::cxx::tree::optional< sigma_type > sigma_optional;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< sigma_type, char > sigma_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element
-   * container.
-   *
-   * @return A constant reference to the optional container.
-   */
-  const sigma_optional&
-  sigma () const;
-
-  /**
-   * @brief Return a read-write reference to the element container.
-   *
-   * @return A reference to the optional container.
-   */
-  sigma_optional&
-  sigma ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  sigma (const sigma_type& x);
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x An optional container with the new value to set.
-   *
-   * If the value is present in @a x then this function makes a copy 
-   * of this value and sets it as the new value of the element.
-   * Otherwise the element container is set the 'not present' state.
-   */
-  void
-  sigma (const sigma_optional& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly instead
-   * of making a copy.
-   */
-  void
-  sigma (::std::unique_ptr< sigma_type > p);
-
-  /**
-   * @brief Return the default value for the element.
-   *
-   * @return The element's default value.
-   */
-  static sigma_type
-  sigma_default_value ();
-
-  //@}
-
-  /**
    * @name Constructors
    */
   //@{
@@ -5941,13 +4331,8 @@ class WallType: public ::xml_schema::type
          ::xml_schema::flags);
 
   protected:
-  ::xsd::cxx::tree::one< position_type > position_;
-  ::xsd::cxx::tree::one< mass_type > mass_;
   ::xsd::cxx::tree::one< size_type > size_;
   ::xsd::cxx::tree::one< distance_type > distance_;
-  type_optional type_;
-  epsilon_optional epsilon_;
-  sigma_optional sigma_;
 
   //@endcond
 };

@@ -11,14 +11,14 @@
                 <y>0</y>
             </velocity>
             <mass>1</mass>
+            <type>1</type>
+            <epsilon>1</epsilon>
+            <sigma>1</sigma>
             <size>
                 <x>50</x>
                 <y>14</y>
             </size>
             <distance>1.2</distance>
-            <type>1</type>
-            <epsilon>1</epsilon>
-            <sigma>1</sigma>
         </cuboid>
         <cuboid>
             <position>
@@ -30,14 +30,14 @@
                 <y>0</y>
             </velocity>
             <mass>2</mass>
+            <type>2</type>
+            <epsilon>1</epsilon>
+            <sigma>0.9412</sigma>
             <size>
                 <x>50</x>
                 <y>14</y>
             </size>
             <distance>1.2</distance>
-            <type>2</type>
-            <epsilon>1</epsilon>
-            <sigma>0.9412</sigma>
         </cuboid>
     </objects>
     <parameters>

@@ -4,7 +4,6 @@
 #include <spdlog/spdlog.h>
 #include <limits>
 #include "XMLReader.h"
-#include "inputReader/InputData.h"
 #include "container/LinkedCellContainer.h"
 #include "force/Force.h"
 #include "force/GravitationalForce.h"
@@ -14,6 +13,23 @@
 #include "body/Sphere.h"
 #include "body/Membrane.h"
 #include "inputReader/StateReader.h"
+
+ParticleData XMLReader::parseParticle(ParticleType &input) {
+    std::array<double, 3> r{input.position().x(), input.position().y(), input.position().z().present() ? input.position().z().get() : PositiveDoubleVector3::z_default_value() / 2};
+    std::array<double, 3> v{0, 0, 0};
+    if (input.velocity().present()) {
+        v[0] = input.velocity().get().x();
+        v[1] = input.velocity().get().y();
+        if (input.velocity().get().z().present()) {
+            v[2] = input.velocity().get().z().get();
+        }
+    }
+    double m = input.mass();
+    int type = input.type().present() ? input.type().get() : ParticleType::type_default_value();
+    double epsilon = input.epsilon().present() ? input.epsilon().get() : ParticleType::epsilon_default_value();
+    double sigma = input.sigma().present() ? input.sigma().get() : ParticleType::sigma_default_value();
+    return ParticleData{r, v, m, type, epsilon, sigma};
+}
 
 std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles, std::string fileName) {
     std::ifstream file(fileName);
@@ -86,19 +102,15 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
 
 
         for (auto p: input->objects().particle()) {
-            double r_z = p.position().z().present() ? p.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
-            double v_z = p.velocity().z().present() ? p.velocity().z().get() : DoubleVector3::z_default_value();
-            int type = p.type().present() ? p.type().get() : ParticleType::type_default_value();
-            double epsilon = p.epsilon().present() ? p.epsilon().get() : ParticleType::epsilon_default_value();
-            double sigma = p.sigma().present() ? p.sigma().get() : ParticleType::sigma_default_value();
+            ParticleData data = parseParticle(p);
             container->addParticle(
                     Particle(
-                        std::array<double, 3>{p.position().x(), p.position().y(), r_z},
-                        std::array<double, 3>{p.velocity().x(), p.velocity().y(), v_z},
-                        p.mass(),
-                        type,
-                        epsilon,
-                        sigma
+                        data.position,
+                        data.velocity,
+                        data.mass,
+                        data.type,
+                        data.epsilon,
+                        data.sigma
                     )
             );
         }
@@ -106,13 +118,9 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
         int dimension = static_cast<int>(input->parameters().dimension().present() ? input->parameters().dimension().get() : InputData::parameters_type::dimension_default_value());
 
         for (auto c : input->objects().cuboid()) {
-            double r_z = c.position().z().present() ? c.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
-            double v_z = c.velocity().z().present() ? c.velocity().z().get() : DoubleVector3::z_default_value();
-            unsigned int n_z = c.size().z().present() ? c.size().z().get() : PositiveIntVector3::z_default_value();
-            int type = c.type().present() ? c.type().get() : ParticleType::type_default_value();
-            double epsilon = c.epsilon().present() ? c.epsilon().get() : CuboidType::epsilon_default_value();
-            double sigma = c.sigma().present() ? c.sigma().get() : CuboidType::sigma_default_value();
 
+            ParticleData data = parseParticle(c);
+            unsigned int n_z = c.size().z().present() ? c.size().z().get() : PositiveIntVector3::z_default_value();
             double brown_vel;
             if (input->parameters().thermostat().present()) {
                 brown_vel = sqrt(input->parameters().thermostat()->initial_T() / c.mass());
@@ -123,16 +131,16 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
             }
 
             Cuboid cuboid(
-                        std::array<double, 3>{c.position().x(), c.position().y(), r_z},
-                        std::array<double, 3>{c.velocity().x(), c.velocity().y(), v_z},
+                        data.position,
+                        data.velocity,
                         std::array<unsigned int, 3>{(unsigned int) c.size().x(), (unsigned int) c.size().y(), n_z},
-                        c.mass(),
+                        data.mass,
                         c.distance(),
                         brown_vel,
                         dimension,
-                        type,
-                        epsilon,
-                        sigma
+                        data.type,
+                        data.epsilon,
+                        data.sigma
                     );
 
             container->addCluster(cuboid);
@@ -140,13 +148,9 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
         }
 
         for (auto s : input->objects().sphere()) {
-            double r_z = s.center().z().present() ? s.center().z().get() : PositiveDoubleVector3::z_default_value() / 2;
-            double v_z = s.velocity().z().present() ? s.velocity().z().get() : DoubleVector3::z_default_value();
-            int radius = static_cast<int>(s.radius());
-            int type = s.type().present() ? s.type().get() : ParticleType::type_default_value();
-            double epsilon = s.epsilon().present() ? s.epsilon().get() : SphereType::epsilon_default_value();
-            double sigma = s.sigma().present() ? s.sigma().get() : SphereType::sigma_default_value();
 
+            ParticleData data = parseParticle(s);
+            int radius = static_cast<int>(s.radius());
             double brown_vel;
             if (input->parameters().thermostat().present()) {
                 brown_vel = sqrt(input->parameters().thermostat()->initial_T() / s.mass());
@@ -157,26 +161,22 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
             }
 
             Sphere sphere(
-                        std::array<double, 3>{s.center().x(), s.center().y(), r_z},
-                        std::array<double, 3>{s.velocity().x(), s.velocity().y(), v_z},
+                        data.position,
+                        data.velocity,
                         radius,
-                        s.mass(),
+                        data.mass,
                         s.distance(),
                         brown_vel,
                         dimension,
-                        type,
-                        epsilon,
-                        sigma
+                        data.type,
+                        data.epsilon,
+                        data.sigma
                     );
             container->addCluster(sphere);
         }
 
         for (auto m : input->objects().membrane()) {
-            double r_z = m.position().z().present() ? m.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
-            double v_z = m.velocity().z().present() ? m.velocity().z().get() : DoubleVector3::z_default_value();
-            int type = m.type().present() ? m.type().get() : ParticleType::type_default_value();
-            double epsilon = m.epsilon().present() ? m.epsilon().get() : MembraneType::epsilon_default_value();
-            double sigma = m.sigma().present() ? m.sigma().get() : MembraneType::sigma_default_value();
+            ParticleData data = parseParticle(m);
             double k = m.k().present() ? m.k().get() : MembraneType::k_default_value();
             double r0 = m.r0().present() ? m.r0().get() : MembraneType::r0_default_value();
             double brown_vel;
@@ -189,16 +189,16 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
             }
 
             Membrane membrane(
-                    std::array<double, 3>{m.position().x(), m.position().y(), r_z},
-                    std::array<double, 3>{m.velocity().x(), m.velocity().y(), v_z},
+                    data.position,
+                    data.velocity,
                     std::array<unsigned int, 2>{static_cast<unsigned int>(m.size().x()), static_cast<unsigned int>(m.size().y())},
-                    m.mass(),
+                    data.mass,
                     m.distance(),
                     brown_vel,
                     dimension,
-                    type,
-                    epsilon,
-                    sigma,
+                    data.type,
+                    data.epsilon,
+                    data.sigma,
                     k,
                     r0
             );
@@ -218,22 +218,20 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
         }
 
         for (auto w : input->objects().wall()) {
-            double r_z = w.position().z().present() ? w.position().z().get() : PositiveDoubleVector3::z_default_value() / 2;
+
+            ParticleData data = parseParticle(w);
             unsigned int n_z = w.size().z().present() ? w.size().z().get() : PositiveIntVector3::z_default_value();
-            int type = w.type().present() ? w.type().get() : ParticleType::type_default_value();
-            double epsilon = w.epsilon().present() ? w.epsilon().get() : MembraneType::epsilon_default_value();
-            double sigma = w.sigma().present() ? w.sigma().get() : MembraneType::sigma_default_value();
             Cuboid wall(
-                    std::array<double, 3>{w.position().x(), w.position().y(), r_z},
-                    std::array<double, 3>{0, 0, 0},
+                    data.position,
+                    data.velocity,
                     std::array<unsigned int, 3>{static_cast<unsigned int>(w.size().x()), static_cast<unsigned int>(w.size().y()), n_z},
-                    w.mass(),
+                    data.mass,
                     w.distance(),
                     0,
                     dimension,
-                    type,
-                    epsilon,
-                    sigma,
+                    data.type,
+                    data.epsilon,
+                    data.sigma,
                     true
             );
             container->addCluster(wall);
