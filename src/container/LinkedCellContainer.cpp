@@ -101,7 +101,8 @@ void LinkedCellContainer::updateF() {
         for(unsigned long j = 0; j < pointCellParticles.size(); ++j){
             for(unsigned long k = j + 1; k < pointCellParticles.size(); ++k){
 
-                //////////////////////////////////////////////////////////
+                if (particles[pointCellParticles[j]].isStationary() && particles[pointCellParticles[k]].isStationary()) continue;
+
                 double distSquare = ArrayUtils::L2NormSquare(particles[pointCellParticles[j]].getX() - particles[pointCellParticles[k]].getX());
 
                 // if the distance is greater than the cutoff, skip the calculation
@@ -143,6 +144,8 @@ void LinkedCellContainer::updateFCells(int c1, int c2){
 
     for (int i : v1) {
         for (int j : v2) {
+
+            if (particles[i].isStationary() && particles[j].isStationary()) continue;
 
             for (std::array<double, 3> offset: offsets) {
 

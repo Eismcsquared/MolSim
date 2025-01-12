@@ -25,6 +25,7 @@ void DirectSumContainer::updateF() {
     for (unsigned long i = 0; i < particles.size(); ++i) {
         for (unsigned long j = i + 1; j < particles.size(); ++j) {
 
+            if (particles[i].isStationary() && particles[j].isStationary()) continue;
 
             std::array<double, 3> forceIJ = force->force(particles[i], particles[j]);
 
