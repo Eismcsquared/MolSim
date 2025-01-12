@@ -40,7 +40,7 @@ void DirectSumContainer::updateF() {
 void DirectSumContainer::updateX(double delta_t){
     for (auto &particle : particles) {
         particle.updateX(delta_t);
-  }
+    }
 }
 
 

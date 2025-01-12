@@ -120,3 +120,22 @@ TEST_F(CuboidTest, BrownianMotion) {
     ASSERT_FALSE(std::abs(averageSpeedSquare - 3) > 0.01) << "Cuboid - Brownian motion test failed";
     test_logger->info("Cuboid - Brownian motion test passed");
 }
+
+// Test the creation of stationary cuboids.
+TEST_F(CuboidTest, Stationary) {
+    test_logger->info("Cuboid - Stationary cuboid test");
+    Cuboid c({0, 0, 0}, {0, 0, 0}, {3, 2, 1}, 1, 1, 0, 5, 0, 5, 1, true);
+    std::vector<Particle> ps;
+    c.createParticles(ps);
+    for (int i = 0; i < 6; ++i) {
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(ps[i].getX() - std::array<double, 3>{static_cast<double>(i >> 1), static_cast<double>(i % 2), 0}), 1e-12);
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(ps[i].getV() - std::array<double, 3>{0, 0, 0}), 1e-12);
+        EXPECT_TRUE(ps[i].isStationary());
+    }
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("Cuboid - Stationary cuboid test failed");
+    } else {
+        test_logger->info("Cuboid - Stationary cuboid test passed");
+    }
+}

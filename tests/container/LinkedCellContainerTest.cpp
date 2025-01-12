@@ -419,3 +419,43 @@ TEST_F(LinkedCellContainerTest, Analytical) {
     }
 }
 
+// Test that walls do not move.
+TEST_F(LinkedCellContainerTest, Wall) {
+    test_logger->info("LinkedCellContainer - Wall test");
+    Cuboid c({1, 1, 1}, {0, 0, 0}, {10, 10, 10}, 1, 1, 0, 3, 0, 5, 1, true);
+    container3D->addCluster(c);
+    container3D->simulate(1, 1e-2, "", "", 10, false);
+    for (int i = 0; i < 1000; ++i) {
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(container3D->getParticles()[i].getX() - std::array<double, 3>{static_cast<double>(i / 100) + 1, static_cast<double>((i % 100) / 10) + 1, static_cast<double>(i % 10) + 1}), 1e-12);
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(container3D->getParticles()[i].getV() - std::array<double, 3>{0, 0, 0}), 1e-12);
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(container3D->getParticles()[i].getF() - std::array<double, 3>{0, 0, 0}), 1e-12);
+    }
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("LinkedCellContainer - Wall test failed");
+    } else {
+        test_logger->info("LinkedCellContainer - Wall test passed");
+    }
+}
+
+// Test the correctness of the force calculation in presence of stationary particles by comparing it the force calculation
+// without stationary particles.
+TEST_F(LinkedCellContainerTest, ForceCalculationStationary) {
+    test_logger->info("LinkedCellContainer - Force calculation with stationary particles test");
+    std::vector<std::array<double, 3>> positions{{1, 1, 1}, {2, 4, 3}, {3.3, 2, 1.8}, {2.5, 3.4, 1.1}, {0.3, 1.7, 1.2}, {2.6, 2.4, 2.5}, {3.6, 1.4, 1.8}, {1.1, 3, 2}};
+    for (int i = 0; i < 8; ++i) {
+        container3D->addParticle(Particle(positions[i], {0, 0, 0}, 1));
+    }
+    for (int i = 0; i < 4; ++i) {
+        container3DPeriodicX->addParticle(Particle(positions[i], {0, 0, 0}, 1));
+    }
+    for (int i = 4; i < 8; ++i) {
+        container3DPeriodicX->addParticle(Particle(positions[i], {0, 0, 0}, 1, 0, 5, 1, true));
+    }
+    for (int i = 0; i < 4; ++i) {
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[i].getF() - container3D->getParticles()[i].getF()), 1e-12);
+    }
+    for (int i = 4; i < 8; ++i) {
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[i].getF() - std::array<double, 3>{0, 0, 0}), 1e-12);
+    }
+}
