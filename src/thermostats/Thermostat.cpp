@@ -65,7 +65,7 @@ double Thermostat::temperature(std::vector<Particle> &particles, int dimension) 
     int particleNumber = 0;
     for (Particle &p: particles) {
         if (p.isInDomain() && !p.isStationary()) {
-            E_kin += ArrayUtils::L2NormSquare(p.getV() - meanVel) / (2 * p.getM());
+            E_kin += ArrayUtils::L2NormSquare(p.getV() - meanVel) / 2 * p.getM();
             particleNumber++;
         }
     }

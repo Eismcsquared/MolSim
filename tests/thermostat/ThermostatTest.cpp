@@ -28,6 +28,7 @@ protected:
         Cuboid cuboid1({10, 10, 10}, {0, 0, 0}, {100, 100, 10}, 1, pow(2, 1.0 / 6), 5, 3);
         Cuboid cuboid2({10, 150, 10}, {0, 0, 0}, {100, 100, 10}, 2, pow(2, 1.0 / 6), 5 / sqrt(2), 3);
         cuboid1.createParticles(particles2);
+        cuboid2.createParticles(particles2);
     }
 };
 
@@ -165,6 +166,58 @@ TEST_F(ThermostatTest, HoldingConstant) {
         test_logger->info("Thermostat - Holding temperature constant test failed\n\n");
     } else {
         test_logger->info("Thermostat - Holding temperature constant test passed\n\n");
+    }
+}
+
+// Add some stationary particles and test whether the effect of the thermostat stays the same.
+TEST_F(ThermostatTest, Stationary) {
+    test_logger->info("Thermostat - Including stationary particles test");
+
+    double sqrt3over2 = sqrt(3) / 2;
+    particles1.emplace_back(std::array<double, 3>{5, 0, 0}, std::array<double, 3>{0, 0, 0}, 1, 0, 5, 1, true);
+    particles1.emplace_back(std::array<double, 3>{2.5, 5 * sqrt3over2, 0}, std::array<double, 3>{0, 0, 0}, 1, 0, 5, 1, true);
+    particles1.emplace_back(std::array<double, 3>{-2.5, 5 * sqrt3over2, 0}, std::array<double, 3>{0, 0, 0}, 1, 0, 5, 1, true);
+    particles1.emplace_back(std::array<double, 3>{-5, 0, 0}, std::array<double, 3>{0, 0, 0}, 1, 0, 5, 1, true);
+    particles1.emplace_back(std::array<double, 3>{-2.5, -5 * sqrt3over2, 0}, std::array<double, 3>{0, 0, 0}, 1, 0, 5, 1, true);
+    particles1.emplace_back(std::array<double, 3>{2.5, -5 * sqrt3over2, 0}, std::array<double, 3>{0, 0, 0}, 1, 0, 5, 1, true);
+
+    Thermostat heater2D(84, 1, std::numeric_limits<double>::infinity(), 2);
+
+    EXPECT_FLOAT_EQ(21, Thermostat::temperature(particles1, 2));
+
+    heater2D.apply(particles1);
+
+    EXPECT_LE(ArrayUtils::L2Norm(particles1[0].getV() - std::array<double, 3>{10, 10, 0}), 1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(particles1[1].getV() - std::array<double, 3>{24, 10, 0}), 1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(particles1[2].getV() - std::array<double, 3>{17, 10 + 7 * sqrt(3), 0}), 1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(particles1[3].getV() - std::array<double, 3>{3, 10 + 7 * sqrt(3), 0}), 1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(particles1[4].getV() - std::array<double, 3>{-4, 10, 0}), 1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(particles1[5].getV() - std::array<double, 3>{3, 10 - 7 * sqrt(3), 0}), 1e-12);
+    EXPECT_LE(ArrayUtils::L2Norm(particles1[6].getV() - std::array<double, 3>{17, 10 - 7 * sqrt(3), 0}), 1e-12);
+
+    for (int i = 7; i < 13; ++i) {
+        EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(particles1[i].getV()));
+    }
+
+    Cuboid cuboid3({10, 290, 10}, {0, 0, 0}, {100, 100, 10}, 1, pow(2, 1.0 / 6), 0, 3, 0, 5, 1, true);
+    cuboid3.createParticles(particles2);
+
+    EXPECT_NEAR(25, Thermostat::temperature(particles2, 3), .25);
+
+    Thermostat heater3D(30, 1, 10, 3);
+
+    heater3D.apply(particles2);
+
+    EXPECT_FLOAT_EQ(30, Thermostat::temperature(particles2, 3));
+
+    for (int i = 200000; i < 300000; ++i) {
+        EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(particles2[i].getV()));
+    }
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("Thermostat - Including stationary particles test failed\n\n");
+    } else {
+        test_logger->info("Thermostat - Including stationary particles test passed\n\n");
     }
 }
 
