@@ -124,7 +124,7 @@ TEST_F(CuboidTest, BrownianMotion) {
 // Test the creation of stationary cuboids.
 TEST_F(CuboidTest, Stationary) {
     test_logger->info("Cuboid - Stationary cuboid test");
-    Cuboid c({0, 0, 0}, {0, 0, 0}, {3, 2, 1}, 1, 1, 0, 5, 0, 5, 1, true);
+    Cuboid c({0, 0, 0}, {0, 0, 0}, {3, 2, 1}, 1, 1, 0, 3, 0, 5, 1, true);
     std::vector<Particle> ps;
     c.createParticles(ps);
     for (int i = 0; i < 6; ++i) {
