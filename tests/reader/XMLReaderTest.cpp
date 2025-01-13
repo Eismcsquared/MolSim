@@ -229,7 +229,7 @@ TEST_F(XMLReaderTest, InitialTemperature) {
 
 // Test whether the checkpointing unit is correctly integrated into the xml reader and the simulation itself.
 TEST_F(XMLReaderTest, Checkpointing) {
-    test_logger->info("XMLReaderTest - checkpointing test");
+    test_logger->info("XMLReaderTest - Checkpointing test");
     inputFile = "../tests/test_cases/checkpointing.xml";
     simulation = XMLReader::readXML(particles, inputFile);
 
@@ -257,9 +257,9 @@ TEST_F(XMLReaderTest, Checkpointing) {
     std::filesystem::remove("../tests/test_cases/checkpointing_out.txt");
 
     if (::testing::Test::HasFailure()) {
-        test_logger->info("XMLReaderTest - checkpointing test failed\n\n");
+        test_logger->info("XMLReaderTest - Checkpointing test failed\n\n");
     } else {
-        test_logger->info("XMLReaderTest - checkpointing test passed\n\n");
+        test_logger->info("XMLReaderTest - Checkpointing test passed\n\n");
     }
 }
 
@@ -303,10 +303,49 @@ TEST_F(XMLReaderTest, Membrane) {
     EXPECT_FLOAT_EQ(20, ef[2].untilTime);
 
     if (::testing::Test::HasFailure()) {
-        test_logger->info("XMLReader - Membrane test failed");
+        test_logger->info("XMLReader - Membrane test failed\n\n");
     } else {
-        test_logger->info("XMLReader - Membrane test passed");
+        test_logger->info("XMLReader - Membrane test passed\n\n");
     }
 }
 
+// Test whether walls are read correctly.
+TEST_F(XMLReaderTest, Wall) {
+    test_logger->info("XMLReader - Assignment 5 input test");
+    inputFile = "../tests/test_cases/assignment5.xml";
+    simulation = XMLReader::readXML(particles, inputFile);
 
+    EXPECT_EQ(6440, simulation->getContainer()->getParticleNumber());
+
+    for (int i = 0; i < 720; ++i) {
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(simulation->getContainer()->getParticles()[i + 5000].getX() - std::array<double, 3>{
+            static_cast<double>(i / 360 + 1),
+            static_cast<double>((i % 360) / 12 + 0.5),
+            static_cast<double>(i % 12 + 0.5)
+        }), 1e-12);
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(simulation->getContainer()->getParticles()[i + 5720].getX() - std::array<double, 3>{
+                static_cast<double>(i / 360 + 27.2),
+                static_cast<double>((i % 360) / 12 + 0.5),
+                static_cast<double>(i % 12 + 0.5)
+        }), 1e-12);
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(simulation->getContainer()->getParticles()[i + 5000].getV()), 1e-12);
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(simulation->getContainer()->getParticles()[i + 5720].getV()), 1e-12);
+        EXPECT_TRUE(simulation->getContainer()->getParticles()[i + 5000].isStationary());
+        EXPECT_TRUE(simulation->getContainer()->getParticles()[i + 5720].isStationary());
+    }
+
+    for (int i = 0; i < 5000; ++i) {
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(simulation->getContainer()->getParticles()[i].getX() - std::array<double, 3>{
+                i / 250 * 1.2 + 3.2,
+                (i % 250) / 10 * 1.2 + 0.6,
+                i % 10 * 1.2 + 0.6
+        }), 1e-12);
+        EXPECT_FALSE(simulation->getContainer()->getParticles()[i].isStationary());
+    }
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("XMLReader - Assignment 5 input test failed\n\n");
+    } else {
+        test_logger->info("XMLReader - Assignment 5 input test passed\n\n");
+    }
+}
