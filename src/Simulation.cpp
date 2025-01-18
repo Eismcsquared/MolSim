@@ -7,7 +7,7 @@
 Simulation::Simulation(std::unique_ptr<ParticleContainer> &container, double endTime, double deltaT,
                        std::string outputFile, std::string outputFormat, unsigned int outputFrequency)
         : container(std::move(container)), endTime(endTime), deltaT(deltaT), outputFormat(std::move(outputFormat)), outputFile(std::move(outputFile)),
-          outputFrequency(outputFrequency), saveOutput(true) {}
+          outputFrequency(outputFrequency), saveOutput(true), statistics(nullptr) {}
 
 void Simulation::setEndTime(double endTime) {
     Simulation::endTime = endTime;
@@ -37,6 +37,9 @@ void Simulation::setCheckpointingFile(const std::string &checkpointingFile) {
     Simulation::checkpointingFile = checkpointingFile;
 }
 
+void Simulation::setStatistics(std::shared_ptr<Statistics> statistics) {
+    Simulation::statistics = statistics;
+}
 
 const std::unique_ptr<ParticleContainer> &Simulation::getContainer() const {
     return container;
@@ -70,11 +73,15 @@ std::string Simulation::getCheckpointingFile() const {
     return checkpointingFile;
 }
 
+Statistics &Simulation::getStatistics() const {
+    return *statistics;
+}
 
 void Simulation::run() {
-    container->simulate(endTime, deltaT, outputFile, outputFormat, outputFrequency, saveOutput);
+    container->simulate(endTime, deltaT, outputFile, outputFormat, outputFrequency, saveOutput, statistics);
 
     if (!checkpointingFile.empty()) {
         StateWriter::saveState(container->getParticles(), checkpointingFile);
     }
 }
+

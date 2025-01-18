@@ -636,6 +636,8 @@ class ForceType;
 class OutputFormatType;
 class LinkedCellType;
 class ThermostatsType;
+class AxisType;
+class StatisticsType;
 class SimulationParameters;
 class InputData;
 
@@ -6329,9 +6331,9 @@ class ThermostatsType: public ::xml_schema::type
   //@}
 
   /**
-   * @name periode
+   * @name period
    *
-   * @brief Accessor and modifier functions for the %periode
+   * @brief Accessor and modifier functions for the %period
    * required element.
    */
   //@{
@@ -6339,28 +6341,28 @@ class ThermostatsType: public ::xml_schema::type
   /**
    * @brief Element type.
    */
-  typedef ::xml_schema::positive_integer periode_type;
+  typedef ::xml_schema::positive_integer period_type;
 
   /**
    * @brief Element traits type.
    */
-  typedef ::xsd::cxx::tree::traits< periode_type, char > periode_traits;
+  typedef ::xsd::cxx::tree::traits< period_type, char > period_traits;
 
   /**
    * @brief Return a read-only (constant) reference to the element.
    *
    * @return A constant reference to the element.
    */
-  const periode_type&
-  periode () const;
+  const period_type&
+  period () const;
 
   /**
    * @brief Return a read-write reference to the element.
    *
    * @return A reference to the element.
    */
-  periode_type&
-  periode ();
+  period_type&
+  period ();
 
   /**
    * @brief Set the element value.
@@ -6371,7 +6373,7 @@ class ThermostatsType: public ::xml_schema::type
    * the new value of the element.
    */
   void
-  periode (const periode_type& x);
+  period (const period_type& x);
 
   //@}
 
@@ -6461,7 +6463,7 @@ class ThermostatsType: public ::xml_schema::type
    * initializers for required elements and attributes.
    */
   ThermostatsType (const initial_T_type&,
-                   const periode_type&);
+                   const period_type&);
 
   /**
    * @brief Create an instance from a DOM element.
@@ -6535,8 +6537,676 @@ class ThermostatsType: public ::xml_schema::type
   protected:
   ::xsd::cxx::tree::one< initial_T_type > initial_T_;
   target_T_optional target_T_;
-  ::xsd::cxx::tree::one< periode_type > periode_;
+  ::xsd::cxx::tree::one< period_type > period_;
   max_delta_optional max_delta_;
+
+  //@endcond
+};
+
+/**
+ * @brief Enumeration class corresponding to the %AxisType
+ * schema type.
+ */
+class AxisType: public ::xml_schema::string
+{
+  public:
+
+  /**
+   * @brief Underlying enum type.
+   */
+  enum value
+  {
+    x,
+    y,
+    z
+  };
+
+  /**
+   * @brief Create an instance from the underlying enum value.
+   *
+   * @param v A enum value.
+   */
+  AxisType (value v);
+
+  /**
+   * @brief Create an instance from a C string.
+   *
+   * @param v A string value.
+   */
+  AxisType (const char* v);
+
+  /**
+   * @brief Create an instance from a string.
+   *
+   * @param v A string value.
+   */
+  AxisType (const ::std::string& v);
+
+  /**
+   * @brief Create an instance from the base value.
+   *
+   * @param v A base value.
+   */
+  AxisType (const ::xml_schema::string& v);
+
+  /**
+   * @brief Create an instance from a DOM element.
+   *
+   * @param e A DOM element to extract the data from.
+   * @param f Flags to create the new instance with.
+   * @param c A pointer to the object that will contain the new
+   * instance.
+   */
+  AxisType (const ::xercesc::DOMElement& e,
+            ::xml_schema::flags f = 0,
+            ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Create an instance from a DOM attribute.
+   *
+   * @param a A DOM attribute to extract the data from.
+   * @param f Flags to create the new instance with.
+   * @param c A pointer to the object that will contain the new
+   * instance.
+   */
+  AxisType (const ::xercesc::DOMAttr& a,
+            ::xml_schema::flags f = 0,
+            ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Create an instance from a string fragment.
+   *
+   * @param s A string fragment to extract the data from.
+   * @param e A pointer to DOM element containing the string fragment.
+   * @param f Flags to create the new instance with.
+   * @param c A pointer to the object that will contain the new
+   * instance.
+   */
+  AxisType (const ::std::string& s,
+            const ::xercesc::DOMElement* e,
+            ::xml_schema::flags f = 0,
+            ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Copy constructor.
+   *
+   * @param x An instance to make a copy of.
+   * @param f Flags to create the copy with.
+   * @param c A pointer to the object that will contain the copy.
+   *
+   * For polymorphic object models use the @c _clone function instead.
+   */
+  AxisType (const AxisType& x,
+            ::xml_schema::flags f = 0,
+            ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Copy the instance polymorphically.
+   *
+   * @param f Flags to create the copy with.
+   * @param c A pointer to the object that will contain the copy.
+   * @return A pointer to the dynamically allocated copy.
+   *
+   * This function ensures that the dynamic type of the instance is
+   * used for copying and should be used for polymorphic object
+   * models instead of the copy constructor.
+   */
+  virtual AxisType*
+  _clone (::xml_schema::flags f = 0,
+          ::xml_schema::container* c = 0) const;
+
+  /**
+   * @brief Assign the underlying enum value.
+   *
+   * @param v A enum value.
+   * @return A reference to the instance.
+   */
+  AxisType&
+  operator= (value v);
+
+  /**
+   * @brief Implicit conversion operator to the underlying
+   * enum value.
+   *
+   * @return A enum value.
+   */
+  virtual
+  operator value () const
+  {
+    return _xsd_AxisType_convert ();
+  }
+
+  //@cond
+
+  protected:
+  value
+  _xsd_AxisType_convert () const;
+
+  public:
+  static const char* const _xsd_AxisType_literals_[3];
+  static const value _xsd_AxisType_indexes_[3];
+
+  //@endcond
+};
+
+/**
+ * @brief Class corresponding to the %StatisticsType schema type.
+ *
+ * @nosubgrouping
+ */
+class StatisticsType: public ::xml_schema::type
+{
+  public:
+  /**
+   * @name output
+   *
+   * @brief Accessor and modifier functions for the %output
+   * required element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::xml_schema::string output_type;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< output_type, char > output_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element.
+   *
+   * @return A constant reference to the element.
+   */
+  const output_type&
+  output () const;
+
+  /**
+   * @brief Return a read-write reference to the element.
+   *
+   * @return A reference to the element.
+   */
+  output_type&
+  output ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  output (const output_type& x);
+
+  /**
+   * @brief Set the element value without copying.
+   *
+   * @param p A new value to use.
+   *
+   * This function will try to use the passed value directly
+   * instead of making a copy.
+   */
+  void
+  output (::std::unique_ptr< output_type > p);
+
+  //@}
+
+  /**
+   * @name period
+   *
+   * @brief Accessor and modifier functions for the %period
+   * required element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::xml_schema::positive_integer period_type;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< period_type, char > period_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element.
+   *
+   * @return A constant reference to the element.
+   */
+  const period_type&
+  period () const;
+
+  /**
+   * @brief Return a read-write reference to the element.
+   *
+   * @return A reference to the element.
+   */
+  period_type&
+  period ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  period (const period_type& x);
+
+  //@}
+
+  /**
+   * @name from
+   *
+   * @brief Accessor and modifier functions for the %from
+   * required element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::xml_schema::double_ from_type;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< from_type, char, ::xsd::cxx::tree::schema_type::double_ > from_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element.
+   *
+   * @return A constant reference to the element.
+   */
+  const from_type&
+  from () const;
+
+  /**
+   * @brief Return a read-write reference to the element.
+   *
+   * @return A reference to the element.
+   */
+  from_type&
+  from ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  from (const from_type& x);
+
+  //@}
+
+  /**
+   * @name to
+   *
+   * @brief Accessor and modifier functions for the %to
+   * required element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::xml_schema::double_ to_type;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< to_type, char, ::xsd::cxx::tree::schema_type::double_ > to_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element.
+   *
+   * @return A constant reference to the element.
+   */
+  const to_type&
+  to () const;
+
+  /**
+   * @brief Return a read-write reference to the element.
+   *
+   * @return A reference to the element.
+   */
+  to_type&
+  to ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  to (const to_type& x);
+
+  //@}
+
+  /**
+   * @name num_bins
+   *
+   * @brief Accessor and modifier functions for the %num_bins
+   * required element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::xml_schema::positive_integer num_bins_type;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< num_bins_type, char > num_bins_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element.
+   *
+   * @return A constant reference to the element.
+   */
+  const num_bins_type&
+  num_bins () const;
+
+  /**
+   * @brief Return a read-write reference to the element.
+   *
+   * @return A reference to the element.
+   */
+  num_bins_type&
+  num_bins ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  num_bins (const num_bins_type& x);
+
+  //@}
+
+  /**
+   * @name profile_axis
+   *
+   * @brief Accessor and modifier functions for the %profile_axis
+   * optional element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::AxisType profile_axis_type;
+
+  /**
+   * @brief Element optional container type.
+   */
+  typedef ::xsd::cxx::tree::optional< profile_axis_type > profile_axis_optional;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< profile_axis_type, char > profile_axis_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element
+   * container.
+   *
+   * @return A constant reference to the optional container.
+   */
+  const profile_axis_optional&
+  profile_axis () const;
+
+  /**
+   * @brief Return a read-write reference to the element container.
+   *
+   * @return A reference to the optional container.
+   */
+  profile_axis_optional&
+  profile_axis ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  profile_axis (const profile_axis_type& x);
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x An optional container with the new value to set.
+   *
+   * If the value is present in @a x then this function makes a copy 
+   * of this value and sets it as the new value of the element.
+   * Otherwise the element container is set the 'not present' state.
+   */
+  void
+  profile_axis (const profile_axis_optional& x);
+
+  /**
+   * @brief Set the element value without copying.
+   *
+   * @param p A new value to use.
+   *
+   * This function will try to use the passed value directly instead
+   * of making a copy.
+   */
+  void
+  profile_axis (::std::unique_ptr< profile_axis_type > p);
+
+  /**
+   * @brief Return the default value for the element.
+   *
+   * @return A read-only (constant) reference to the element's
+   * default value.
+   */
+  static const profile_axis_type&
+  profile_axis_default_value ();
+
+  //@}
+
+  /**
+   * @name velocity_axis
+   *
+   * @brief Accessor and modifier functions for the %velocity_axis
+   * optional element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::AxisType velocity_axis_type;
+
+  /**
+   * @brief Element optional container type.
+   */
+  typedef ::xsd::cxx::tree::optional< velocity_axis_type > velocity_axis_optional;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< velocity_axis_type, char > velocity_axis_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element
+   * container.
+   *
+   * @return A constant reference to the optional container.
+   */
+  const velocity_axis_optional&
+  velocity_axis () const;
+
+  /**
+   * @brief Return a read-write reference to the element container.
+   *
+   * @return A reference to the optional container.
+   */
+  velocity_axis_optional&
+  velocity_axis ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  velocity_axis (const velocity_axis_type& x);
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x An optional container with the new value to set.
+   *
+   * If the value is present in @a x then this function makes a copy 
+   * of this value and sets it as the new value of the element.
+   * Otherwise the element container is set the 'not present' state.
+   */
+  void
+  velocity_axis (const velocity_axis_optional& x);
+
+  /**
+   * @brief Set the element value without copying.
+   *
+   * @param p A new value to use.
+   *
+   * This function will try to use the passed value directly instead
+   * of making a copy.
+   */
+  void
+  velocity_axis (::std::unique_ptr< velocity_axis_type > p);
+
+  /**
+   * @brief Return the default value for the element.
+   *
+   * @return A read-only (constant) reference to the element's
+   * default value.
+   */
+  static const velocity_axis_type&
+  velocity_axis_default_value ();
+
+  //@}
+
+  /**
+   * @name Constructors
+   */
+  //@{
+
+  /**
+   * @brief Create an instance from the ultimate base and
+   * initializers for required elements and attributes.
+   */
+  StatisticsType (const output_type&,
+                  const period_type&,
+                  const from_type&,
+                  const to_type&,
+                  const num_bins_type&);
+
+  /**
+   * @brief Create an instance from a DOM element.
+   *
+   * @param e A DOM element to extract the data from.
+   * @param f Flags to create the new instance with.
+   * @param c A pointer to the object that will contain the new
+   * instance.
+   */
+  StatisticsType (const ::xercesc::DOMElement& e,
+                  ::xml_schema::flags f = 0,
+                  ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Copy constructor.
+   *
+   * @param x An instance to make a copy of.
+   * @param f Flags to create the copy with.
+   * @param c A pointer to the object that will contain the copy.
+   *
+   * For polymorphic object models use the @c _clone function instead.
+   */
+  StatisticsType (const StatisticsType& x,
+                  ::xml_schema::flags f = 0,
+                  ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Copy the instance polymorphically.
+   *
+   * @param f Flags to create the copy with.
+   * @param c A pointer to the object that will contain the copy.
+   * @return A pointer to the dynamically allocated copy.
+   *
+   * This function ensures that the dynamic type of the instance is
+   * used for copying and should be used for polymorphic object
+   * models instead of the copy constructor.
+   */
+  virtual StatisticsType*
+  _clone (::xml_schema::flags f = 0,
+          ::xml_schema::container* c = 0) const;
+
+  /**
+   * @brief Copy assignment operator.
+   *
+   * @param x An instance to make a copy of.
+   * @return A reference to itself.
+   *
+   * For polymorphic object models use the @c _clone function instead.
+   */
+  StatisticsType&
+  operator= (const StatisticsType& x);
+
+  //@}
+
+  /**
+   * @brief Destructor.
+   */
+  virtual 
+  ~StatisticsType ();
+
+  // Implementation.
+  //
+
+  //@cond
+
+  protected:
+  void
+  parse (::xsd::cxx::xml::dom::parser< char >&,
+         ::xml_schema::flags);
+
+  protected:
+  ::xsd::cxx::tree::one< output_type > output_;
+  ::xsd::cxx::tree::one< period_type > period_;
+  ::xsd::cxx::tree::one< from_type > from_;
+  ::xsd::cxx::tree::one< to_type > to_;
+  ::xsd::cxx::tree::one< num_bins_type > num_bins_;
+  profile_axis_optional profile_axis_;
+  static const profile_axis_type profile_axis_default_value_;
+  velocity_axis_optional velocity_axis_;
+  static const velocity_axis_type velocity_axis_default_value_;
 
   //@endcond
 };
@@ -7525,6 +8195,82 @@ class SimulationParameters: public ::xml_schema::type
   //@}
 
   /**
+   * @name statistics
+   *
+   * @brief Accessor and modifier functions for the %statistics
+   * optional element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::StatisticsType statistics_type;
+
+  /**
+   * @brief Element optional container type.
+   */
+  typedef ::xsd::cxx::tree::optional< statistics_type > statistics_optional;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< statistics_type, char > statistics_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element
+   * container.
+   *
+   * @return A constant reference to the optional container.
+   */
+  const statistics_optional&
+  statistics () const;
+
+  /**
+   * @brief Return a read-write reference to the element container.
+   *
+   * @return A reference to the optional container.
+   */
+  statistics_optional&
+  statistics ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  statistics (const statistics_type& x);
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x An optional container with the new value to set.
+   *
+   * If the value is present in @a x then this function makes a copy 
+   * of this value and sets it as the new value of the element.
+   * Otherwise the element container is set the 'not present' state.
+   */
+  void
+  statistics (const statistics_optional& x);
+
+  /**
+   * @brief Set the element value without copying.
+   *
+   * @param p A new value to use.
+   *
+   * This function will try to use the passed value directly instead
+   * of making a copy.
+   */
+  void
+  statistics (::std::unique_ptr< statistics_type > p);
+
+  //@}
+
+  /**
    * @name Constructors
    */
   //@{
@@ -7620,6 +8366,7 @@ class SimulationParameters: public ::xml_schema::type
   thermostat_optional thermostat_;
   linked_cell_optional linked_cell_;
   store_optional store_;
+  statistics_optional statistics_;
 
   //@endcond
 };
@@ -8208,6 +8955,19 @@ operator<< (::xercesc::DOMElement&, const LinkedCellType&);
 
 void
 operator<< (::xercesc::DOMElement&, const ThermostatsType&);
+
+void
+operator<< (::xercesc::DOMElement&, const AxisType&);
+
+void
+operator<< (::xercesc::DOMAttr&, const AxisType&);
+
+void
+operator<< (::xml_schema::list_stream&,
+            const AxisType&);
+
+void
+operator<< (::xercesc::DOMElement&, const StatisticsType&);
 
 void
 operator<< (::xercesc::DOMElement&, const SimulationParameters&);

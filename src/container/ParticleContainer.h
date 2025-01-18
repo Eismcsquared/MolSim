@@ -5,6 +5,7 @@
 #include "body/Cuboid.h"
 #include "force/Force.h"
 #include "thermostats/Thermostat.h"
+#include "statistics/Statistics.h"
 
 #pragma once
 
@@ -225,10 +226,11 @@ public:
      * @param output_format The format of the output file, either "vtu" or "xyz".
      * @param output_frequency THe frequency of the output, in number of time steps.
      * @param save_output Output is activated if this flag is set.
+     * @param statistics Optional. If specified, statistics about the system is computed and stored.
      */
     void simulate(double end_time, double delta_t, const std::string& out_name,
                           const std::string& output_format, unsigned int output_frequency,
-                          bool save_output);
+                          bool save_output, std::shared_ptr<Statistics> statistics = nullptr);
 
     /**
      * Write the current state of the container to the output files.

@@ -1640,22 +1640,22 @@ target_T (::std::unique_ptr< target_T_type > x)
   this->target_T_.set (std::move (x));
 }
 
-const ThermostatsType::periode_type& ThermostatsType::
-periode () const
+const ThermostatsType::period_type& ThermostatsType::
+period () const
 {
-  return this->periode_.get ();
+  return this->period_.get ();
 }
 
-ThermostatsType::periode_type& ThermostatsType::
-periode ()
+ThermostatsType::period_type& ThermostatsType::
+period ()
 {
-  return this->periode_.get ();
+  return this->period_.get ();
 }
 
 void ThermostatsType::
-periode (const periode_type& x)
+period (const period_type& x)
 {
-  this->periode_.set (x);
+  this->period_.set (x);
 }
 
 const ThermostatsType::max_delta_optional& ThermostatsType::
@@ -1686,6 +1686,223 @@ void ThermostatsType::
 max_delta (::std::unique_ptr< max_delta_type > x)
 {
   this->max_delta_.set (std::move (x));
+}
+
+
+// AxisType
+// 
+
+AxisType::
+AxisType (value v)
+: ::xml_schema::string (_xsd_AxisType_literals_[v])
+{
+}
+
+AxisType::
+AxisType (const char* v)
+: ::xml_schema::string (v)
+{
+}
+
+AxisType::
+AxisType (const ::std::string& v)
+: ::xml_schema::string (v)
+{
+}
+
+AxisType::
+AxisType (const ::xml_schema::string& v)
+: ::xml_schema::string (v)
+{
+}
+
+AxisType::
+AxisType (const AxisType& v,
+          ::xml_schema::flags f,
+          ::xml_schema::container* c)
+: ::xml_schema::string (v, f, c)
+{
+}
+
+AxisType& AxisType::
+operator= (value v)
+{
+  static_cast< ::xml_schema::string& > (*this) = 
+  ::xml_schema::string (_xsd_AxisType_literals_[v]);
+
+  return *this;
+}
+
+
+// StatisticsType
+// 
+
+const StatisticsType::output_type& StatisticsType::
+output () const
+{
+  return this->output_.get ();
+}
+
+StatisticsType::output_type& StatisticsType::
+output ()
+{
+  return this->output_.get ();
+}
+
+void StatisticsType::
+output (const output_type& x)
+{
+  this->output_.set (x);
+}
+
+void StatisticsType::
+output (::std::unique_ptr< output_type > x)
+{
+  this->output_.set (std::move (x));
+}
+
+const StatisticsType::period_type& StatisticsType::
+period () const
+{
+  return this->period_.get ();
+}
+
+StatisticsType::period_type& StatisticsType::
+period ()
+{
+  return this->period_.get ();
+}
+
+void StatisticsType::
+period (const period_type& x)
+{
+  this->period_.set (x);
+}
+
+const StatisticsType::from_type& StatisticsType::
+from () const
+{
+  return this->from_.get ();
+}
+
+StatisticsType::from_type& StatisticsType::
+from ()
+{
+  return this->from_.get ();
+}
+
+void StatisticsType::
+from (const from_type& x)
+{
+  this->from_.set (x);
+}
+
+const StatisticsType::to_type& StatisticsType::
+to () const
+{
+  return this->to_.get ();
+}
+
+StatisticsType::to_type& StatisticsType::
+to ()
+{
+  return this->to_.get ();
+}
+
+void StatisticsType::
+to (const to_type& x)
+{
+  this->to_.set (x);
+}
+
+const StatisticsType::num_bins_type& StatisticsType::
+num_bins () const
+{
+  return this->num_bins_.get ();
+}
+
+StatisticsType::num_bins_type& StatisticsType::
+num_bins ()
+{
+  return this->num_bins_.get ();
+}
+
+void StatisticsType::
+num_bins (const num_bins_type& x)
+{
+  this->num_bins_.set (x);
+}
+
+const StatisticsType::profile_axis_optional& StatisticsType::
+profile_axis () const
+{
+  return this->profile_axis_;
+}
+
+StatisticsType::profile_axis_optional& StatisticsType::
+profile_axis ()
+{
+  return this->profile_axis_;
+}
+
+void StatisticsType::
+profile_axis (const profile_axis_type& x)
+{
+  this->profile_axis_.set (x);
+}
+
+void StatisticsType::
+profile_axis (const profile_axis_optional& x)
+{
+  this->profile_axis_ = x;
+}
+
+void StatisticsType::
+profile_axis (::std::unique_ptr< profile_axis_type > x)
+{
+  this->profile_axis_.set (std::move (x));
+}
+
+const StatisticsType::profile_axis_type& StatisticsType::
+profile_axis_default_value ()
+{
+  return profile_axis_default_value_;
+}
+
+const StatisticsType::velocity_axis_optional& StatisticsType::
+velocity_axis () const
+{
+  return this->velocity_axis_;
+}
+
+StatisticsType::velocity_axis_optional& StatisticsType::
+velocity_axis ()
+{
+  return this->velocity_axis_;
+}
+
+void StatisticsType::
+velocity_axis (const velocity_axis_type& x)
+{
+  this->velocity_axis_.set (x);
+}
+
+void StatisticsType::
+velocity_axis (const velocity_axis_optional& x)
+{
+  this->velocity_axis_ = x;
+}
+
+void StatisticsType::
+velocity_axis (::std::unique_ptr< velocity_axis_type > x)
+{
+  this->velocity_axis_.set (std::move (x));
+}
+
+const StatisticsType::velocity_axis_type& StatisticsType::
+velocity_axis_default_value ()
+{
+  return velocity_axis_default_value_;
 }
 
 
@@ -2086,6 +2303,36 @@ void SimulationParameters::
 store (::std::unique_ptr< store_type > x)
 {
   this->store_.set (std::move (x));
+}
+
+const SimulationParameters::statistics_optional& SimulationParameters::
+statistics () const
+{
+  return this->statistics_;
+}
+
+SimulationParameters::statistics_optional& SimulationParameters::
+statistics ()
+{
+  return this->statistics_;
+}
+
+void SimulationParameters::
+statistics (const statistics_type& x)
+{
+  this->statistics_.set (x);
+}
+
+void SimulationParameters::
+statistics (const statistics_optional& x)
+{
+  this->statistics_ = x;
+}
+
+void SimulationParameters::
+statistics (::std::unique_ptr< statistics_type > x)
+{
+  this->statistics_.set (std::move (x));
 }
 
 
@@ -4556,11 +4803,11 @@ LinkedCellType::
 
 ThermostatsType::
 ThermostatsType (const initial_T_type& initial_T,
-                 const periode_type& periode)
+                 const period_type& period)
 : ::xml_schema::type (),
   initial_T_ (initial_T, this),
   target_T_ (this),
-  periode_ (periode, this),
+  period_ (period, this),
   max_delta_ (this)
 {
 }
@@ -4572,7 +4819,7 @@ ThermostatsType (const ThermostatsType& x,
 : ::xml_schema::type (x, f, c),
   initial_T_ (x.initial_T_, f, this),
   target_T_ (x.target_T_, f, this),
-  periode_ (x.periode_, f, this),
+  period_ (x.period_, f, this),
   max_delta_ (x.max_delta_, f, this)
 {
 }
@@ -4584,7 +4831,7 @@ ThermostatsType (const ::xercesc::DOMElement& e,
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
   initial_T_ (this),
   target_T_ (this),
-  periode_ (this),
+  period_ (this),
   max_delta_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
@@ -4632,13 +4879,13 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // periode
+    // period
     //
-    if (n.name () == "periode" && n.namespace_ ().empty ())
+    if (n.name () == "period" && n.namespace_ ().empty ())
     {
-      if (!periode_.present ())
+      if (!period_.present ())
       {
-        this->periode_.set (periode_traits::create (i, f, this));
+        this->period_.set (period_traits::create (i, f, this));
         continue;
       }
     }
@@ -4667,10 +4914,10 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "");
   }
 
-  if (!periode_.present ())
+  if (!period_.present ())
   {
     throw ::xsd::cxx::tree::expected_element< char > (
-      "periode",
+      "period",
       "");
   }
 }
@@ -4690,7 +4937,7 @@ operator= (const ThermostatsType& x)
     static_cast< ::xml_schema::type& > (*this) = x;
     this->initial_T_ = x.initial_T_;
     this->target_T_ = x.target_T_;
-    this->periode_ = x.periode_;
+    this->period_ = x.period_;
     this->max_delta_ = x.max_delta_;
   }
 
@@ -4699,6 +4946,304 @@ operator= (const ThermostatsType& x)
 
 ThermostatsType::
 ~ThermostatsType ()
+{
+}
+
+// AxisType
+//
+
+AxisType::
+AxisType (const ::xercesc::DOMElement& e,
+          ::xml_schema::flags f,
+          ::xml_schema::container* c)
+: ::xml_schema::string (e, f, c)
+{
+  _xsd_AxisType_convert ();
+}
+
+AxisType::
+AxisType (const ::xercesc::DOMAttr& a,
+          ::xml_schema::flags f,
+          ::xml_schema::container* c)
+: ::xml_schema::string (a, f, c)
+{
+  _xsd_AxisType_convert ();
+}
+
+AxisType::
+AxisType (const ::std::string& s,
+          const ::xercesc::DOMElement* e,
+          ::xml_schema::flags f,
+          ::xml_schema::container* c)
+: ::xml_schema::string (s, e, f, c)
+{
+  _xsd_AxisType_convert ();
+}
+
+AxisType* AxisType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class AxisType (*this, f, c);
+}
+
+AxisType::value AxisType::
+_xsd_AxisType_convert () const
+{
+  ::xsd::cxx::tree::enum_comparator< char > c (_xsd_AxisType_literals_);
+  const value* i (::std::lower_bound (
+                    _xsd_AxisType_indexes_,
+                    _xsd_AxisType_indexes_ + 3,
+                    *this,
+                    c));
+
+  if (i == _xsd_AxisType_indexes_ + 3 || _xsd_AxisType_literals_[*i] != *this)
+  {
+    throw ::xsd::cxx::tree::unexpected_enumerator < char > (*this);
+  }
+
+  return *i;
+}
+
+const char* const AxisType::
+_xsd_AxisType_literals_[3] =
+{
+  "x",
+  "y",
+  "z"
+};
+
+const AxisType::value AxisType::
+_xsd_AxisType_indexes_[3] =
+{
+  ::AxisType::x,
+  ::AxisType::y,
+  ::AxisType::z
+};
+
+// StatisticsType
+//
+
+const StatisticsType::profile_axis_type StatisticsType::profile_axis_default_value_ (
+  "x");
+
+const StatisticsType::velocity_axis_type StatisticsType::velocity_axis_default_value_ (
+  "y");
+
+StatisticsType::
+StatisticsType (const output_type& output,
+                const period_type& period,
+                const from_type& from,
+                const to_type& to,
+                const num_bins_type& num_bins)
+: ::xml_schema::type (),
+  output_ (output, this),
+  period_ (period, this),
+  from_ (from, this),
+  to_ (to, this),
+  num_bins_ (num_bins, this),
+  profile_axis_ (this),
+  velocity_axis_ (this)
+{
+}
+
+StatisticsType::
+StatisticsType (const StatisticsType& x,
+                ::xml_schema::flags f,
+                ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  output_ (x.output_, f, this),
+  period_ (x.period_, f, this),
+  from_ (x.from_, f, this),
+  to_ (x.to_, f, this),
+  num_bins_ (x.num_bins_, f, this),
+  profile_axis_ (x.profile_axis_, f, this),
+  velocity_axis_ (x.velocity_axis_, f, this)
+{
+}
+
+StatisticsType::
+StatisticsType (const ::xercesc::DOMElement& e,
+                ::xml_schema::flags f,
+                ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  output_ (this),
+  period_ (this),
+  from_ (this),
+  to_ (this),
+  num_bins_ (this),
+  profile_axis_ (this),
+  velocity_axis_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+    this->parse (p, f);
+  }
+}
+
+void StatisticsType::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    // output
+    //
+    if (n.name () == "output" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< output_type > r (
+        output_traits::create (i, f, this));
+
+      if (!output_.present ())
+      {
+        this->output_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    // period
+    //
+    if (n.name () == "period" && n.namespace_ ().empty ())
+    {
+      if (!period_.present ())
+      {
+        this->period_.set (period_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // from
+    //
+    if (n.name () == "from" && n.namespace_ ().empty ())
+    {
+      if (!from_.present ())
+      {
+        this->from_.set (from_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // to
+    //
+    if (n.name () == "to" && n.namespace_ ().empty ())
+    {
+      if (!to_.present ())
+      {
+        this->to_.set (to_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // num_bins
+    //
+    if (n.name () == "num_bins" && n.namespace_ ().empty ())
+    {
+      if (!num_bins_.present ())
+      {
+        this->num_bins_.set (num_bins_traits::create (i, f, this));
+        continue;
+      }
+    }
+
+    // profile_axis
+    //
+    if (n.name () == "profile_axis" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< profile_axis_type > r (
+        profile_axis_traits::create (i, f, this));
+
+      if (!this->profile_axis_)
+      {
+        this->profile_axis_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    // velocity_axis
+    //
+    if (n.name () == "velocity_axis" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< velocity_axis_type > r (
+        velocity_axis_traits::create (i, f, this));
+
+      if (!this->velocity_axis_)
+      {
+        this->velocity_axis_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    break;
+  }
+
+  if (!output_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "output",
+      "");
+  }
+
+  if (!period_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "period",
+      "");
+  }
+
+  if (!from_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "from",
+      "");
+  }
+
+  if (!to_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "to",
+      "");
+  }
+
+  if (!num_bins_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "num_bins",
+      "");
+  }
+}
+
+StatisticsType* StatisticsType::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class StatisticsType (*this, f, c);
+}
+
+StatisticsType& StatisticsType::
+operator= (const StatisticsType& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->output_ = x.output_;
+    this->period_ = x.period_;
+    this->from_ = x.from_;
+    this->to_ = x.to_;
+    this->num_bins_ = x.num_bins_;
+    this->profile_axis_ = x.profile_axis_;
+    this->velocity_axis_ = x.velocity_axis_;
+  }
+
+  return *this;
+}
+
+StatisticsType::
+~StatisticsType ()
 {
 }
 
@@ -4728,7 +5273,8 @@ SimulationParameters ()
   dimension_ (this),
   thermostat_ (this),
   linked_cell_ (this),
-  store_ (this)
+  store_ (this),
+  statistics_ (this)
 {
 }
 
@@ -4748,7 +5294,8 @@ SimulationParameters (const SimulationParameters& x,
   dimension_ (x.dimension_, f, this),
   thermostat_ (x.thermostat_, f, this),
   linked_cell_ (x.linked_cell_, f, this),
-  store_ (x.store_, f, this)
+  store_ (x.store_, f, this),
+  statistics_ (x.statistics_, f, this)
 {
 }
 
@@ -4768,7 +5315,8 @@ SimulationParameters (const ::xercesc::DOMElement& e,
   dimension_ (this),
   thermostat_ (this),
   linked_cell_ (this),
-  store_ (this)
+  store_ (this),
+  statistics_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -4949,6 +5497,20 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // statistics
+    //
+    if (n.name () == "statistics" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< statistics_type > r (
+        statistics_traits::create (i, f, this));
+
+      if (!this->statistics_)
+      {
+        this->statistics_.set (::std::move (r));
+        continue;
+      }
+    }
+
     break;
   }
 }
@@ -4978,6 +5540,7 @@ operator= (const SimulationParameters& x)
     this->thermostat_ = x.thermostat_;
     this->linked_cell_ = x.linked_cell_;
     this->store_ = x.store_;
+    this->statistics_ = x.statistics_;
   }
 
   return *this;
@@ -6214,15 +6777,15 @@ operator<< (::xercesc::DOMElement& e, const ThermostatsType& i)
     s << *i.target_T ();
   }
 
-  // periode
+  // period
   //
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
-        "periode",
+        "period",
         e));
 
-    s << i.periode ();
+    s << i.period ();
   }
 
   // max_delta
@@ -6235,6 +6798,110 @@ operator<< (::xercesc::DOMElement& e, const ThermostatsType& i)
         e));
 
     s << *i.max_delta ();
+  }
+}
+
+void
+operator<< (::xercesc::DOMElement& e, const AxisType& i)
+{
+  e << static_cast< const ::xml_schema::string& > (i);
+}
+
+void
+operator<< (::xercesc::DOMAttr& a, const AxisType& i)
+{
+  a << static_cast< const ::xml_schema::string& > (i);
+}
+
+void
+operator<< (::xml_schema::list_stream& l,
+            const AxisType& i)
+{
+  l << static_cast< const ::xml_schema::string& > (i);
+}
+
+void
+operator<< (::xercesc::DOMElement& e, const StatisticsType& i)
+{
+  e << static_cast< const ::xml_schema::type& > (i);
+
+  // output
+  //
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "output",
+        e));
+
+    s << i.output ();
+  }
+
+  // period
+  //
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "period",
+        e));
+
+    s << i.period ();
+  }
+
+  // from
+  //
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "from",
+        e));
+
+    s << ::xml_schema::as_double(i.from ());
+  }
+
+  // to
+  //
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "to",
+        e));
+
+    s << ::xml_schema::as_double(i.to ());
+  }
+
+  // num_bins
+  //
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "num_bins",
+        e));
+
+    s << i.num_bins ();
+  }
+
+  // profile_axis
+  //
+  if (i.profile_axis ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "profile_axis",
+        e));
+
+    s << *i.profile_axis ();
+  }
+
+  // velocity_axis
+  //
+  if (i.velocity_axis ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "velocity_axis",
+        e));
+
+    s << *i.velocity_axis ();
   }
 }
 
@@ -6385,6 +7052,18 @@ operator<< (::xercesc::DOMElement& e, const SimulationParameters& i)
         e));
 
     s << *i.store ();
+  }
+
+  // statistics
+  //
+  if (i.statistics ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "statistics",
+        e));
+
+    s << *i.statistics ();
   }
 }
 

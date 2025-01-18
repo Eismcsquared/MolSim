@@ -256,7 +256,7 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
             double maxChange = ts.max_delta().present() ? static_cast<double>(ts.max_delta().get()) : std::numeric_limits<double>::infinity();
             std::unique_ptr<Thermostat> thermostat = std::make_unique<Thermostat>(
                     target_T,
-                    ts.periode(),
+                    ts.period(),
                     maxChange,
                     dimension
                 );
@@ -284,6 +284,30 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
 
         if (input->parameters().store().present()) {
             simulation->setCheckpointingFile(input->parameters().store().get());
+        }
+
+        if (input->parameters().statistics().present()) {
+            StatisticsType s = input->parameters().statistics().get();
+            auto axisMap = [](AxisType a) {
+                switch (a) {
+                    case AxisType::x: return X;
+                    case AxisType::y: return Y;
+                    case AxisType::z: return Z;
+                }
+                return X;
+            };
+            Axis profileAxis = s.profile_axis().present() ? axisMap(s.profile_axis().get()) : axisMap(StatisticsType::profile_axis_default_value());
+            Axis velocityAxis = s.velocity_axis().present() ? axisMap(s.velocity_axis().get()) : axisMap(StatisticsType::velocity_axis_default_value());
+            std::shared_ptr<Statistics> statistics = std::make_shared<Statistics>(
+                    s.output(),
+                    s.period(),
+                    s.from(),
+                    s.to(),
+                    s.num_bins(),
+                    profileAxis,
+                    velocityAxis
+            );
+            simulation->setStatistics(statistics);
         }
 
         return simulation;

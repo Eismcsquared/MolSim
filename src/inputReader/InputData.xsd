@@ -228,8 +228,28 @@
         <xs:sequence>
             <xs:element name="initial_T" type="PositiveDouble"/>
             <xs:element name="target_T" type="PositiveDouble" minOccurs="0"/>
-            <xs:element name="periode" type="xs:positiveInteger"/>
+            <xs:element name="period" type="xs:positiveInteger"/>
             <xs:element name="max_delta" type="PositiveDouble" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="AxisType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="x"/>
+            <xs:enumeration value="y"/>
+            <xs:enumeration value="z"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="StatisticsType">
+        <xs:sequence>
+            <xs:element name="output" type="xs:string"/>
+            <xs:element name="period" type="xs:positiveInteger"/>
+            <xs:element name="from" type="xs:double"/>
+            <xs:element name="to" type="xs:double"/>
+            <xs:element name="num_bins" type="xs:positiveInteger"/>
+            <xs:element name="profile_axis" type="AxisType" minOccurs="0" default="x"/>
+            <xs:element name="velocity_axis" type="AxisType" minOccurs="0" default="y"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -301,6 +321,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
+            <xs:element name="statistics" type="StatisticsType" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 

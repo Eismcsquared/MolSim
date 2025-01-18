@@ -94,7 +94,7 @@ void ParticleContainer::addExternalForce(unsigned int particleIndex, const std::
 }
 
 void ParticleContainer::simulate(double end_time, double delta_t, const std::string &out_name, const std::string &output_format,
-                                 unsigned int output_frequency, bool save_output) {
+                                 unsigned int output_frequency, bool save_output, std::shared_ptr<Statistics> statistics) {
     int start_iteration = static_cast<int>(std::round(t / delta_t));
     int end_iteration = static_cast<int>(std::round(end_time / delta_t));
 
@@ -138,6 +138,10 @@ void ParticleContainer::simulate(double end_time, double delta_t, const std::str
 
         if (iteration % output_frequency == 0 && save_output) {
             plotParticles(iteration, out_name, output_format);
+        }
+
+        if (statistics && iteration % statistics->getPeriod() == 0) {
+            statistics->saveStatistics(particles, iteration);
         }
 
         spdlog::trace("Iteration {} finished.", iteration);

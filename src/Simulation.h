@@ -45,6 +45,11 @@ class Simulation {
      */
     std::string checkpointingFile;
 
+    /**
+     * The unit for analyzing the system.
+     */
+    std::shared_ptr<Statistics> statistics;
+
 public:
 
     /**
@@ -104,6 +109,12 @@ public:
     void setCheckpointingFile(const std::string &checkpointingFile);
 
     /**
+     * Setter for the statistics.
+     * @param statistics
+     */
+    void setStatistics(std::shared_ptr<Statistics> statistics);
+
+    /**
      * Getter for the particle container.
      * @return The particle container.
      */
@@ -152,6 +163,11 @@ public:
      */
     std::string getCheckpointingFile() const;
 
+    /**
+     * Getter for the statistics.
+     * @return The statistics that is applied in the simulation.
+     */
+    Statistics &getStatistics() const;
     /**
      * Run the simulation.
      */

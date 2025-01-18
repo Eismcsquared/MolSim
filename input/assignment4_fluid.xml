@@ -29,7 +29,7 @@
         </g>
         <thermostat>
             <initial_T>0.5</initial_T>
-            <periode>1000</periode>
+            <period>1000</period>
         </thermostat>
         <linked_cell>
             <domain_size>

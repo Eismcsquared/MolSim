@@ -62,7 +62,7 @@
         <dimension>3</dimension>
         <thermostat>
             <initial_T>40</initial_T>
-            <periode>10</periode>
+            <period>10</period>
         </thermostat>
         <linked_cell>
             <domain_size>

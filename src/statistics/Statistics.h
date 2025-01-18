@@ -1,6 +1,7 @@
 #include <functional>
 #include "body/Particle.h"
 
+#pragma once
 /**
  * @brief This class computes and saves statistics for the nanoflow simulation: The density and velocity profile.
  */
@@ -64,7 +65,7 @@ public:
      * Getter for the period.
      * @return The output period in number of iterations.
      */
-    double getPeriod() const;
+    int getPeriod() const;
 
     /**
      * Aggregate particles into bins according to a given aggregation function.
