@@ -122,7 +122,7 @@ void ParticleContainer::simulate(double end_time, double delta_t, const std::str
         // Calculate the velocity
         updateV(delta_t);
 
-        if (thermostat && iteration % thermostat->getPeriode() == 0) {
+        if (thermostat && iteration % thermostat->getPeriod() == 0) {
             thermostat->apply(particles);
         }
 

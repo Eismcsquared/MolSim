@@ -161,7 +161,7 @@ TEST_F(XMLReaderTest, Assignment4Input) {
     inputFile = "../tests/test_cases/assignment4.xml";
     simulation = XMLReader::readXML(particles, inputFile);
     EXPECT_TRUE(simulation->getContainer()->getThermostat());
-    EXPECT_EQ(1000, simulation->getContainer()->getThermostat()->getPeriode());
+    EXPECT_EQ(1000, simulation->getContainer()->getThermostat()->getPeriod());
     EXPECT_FLOAT_EQ(40, simulation->getContainer()->getThermostat()->getTargetT());
     EXPECT_FLOAT_EQ(std::numeric_limits<double>::infinity(), simulation->getContainer()->getThermostat()->getMaxDelta());
     EXPECT_EQ(2, simulation->getContainer()->getThermostat()->getDimension());
@@ -196,7 +196,7 @@ TEST_F(XMLReaderTest, InitialTemperature) {
     simulation = XMLReader::readXML(particles, inputFile);
 
     EXPECT_TRUE(simulation->getContainer()->getThermostat());
-    EXPECT_EQ(1000, simulation->getContainer()->getThermostat()->getPeriode());
+    EXPECT_EQ(1000, simulation->getContainer()->getThermostat()->getPeriod());
     EXPECT_FLOAT_EQ(60, simulation->getContainer()->getThermostat()->getTargetT());
     EXPECT_FLOAT_EQ(0.95, simulation->getContainer()->getThermostat()->getMaxDelta());
     EXPECT_EQ(3, simulation->getContainer()->getThermostat()->getDimension());

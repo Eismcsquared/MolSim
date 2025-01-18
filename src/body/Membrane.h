@@ -1,5 +1,8 @@
 #include "Cuboid.h"
 
+/**
+ * @brief This class extends Cuboid represents a Membrane.
+ */
 class Membrane : public Cuboid {
 
 private:

@@ -4,7 +4,7 @@
 
 
 
-Thermostat::Thermostat(double targetT, int periode, double maxDelta, int dimension) : target_T(targetT), periode(periode),
+Thermostat::Thermostat(double targetT, int period, double maxDelta, int dimension) : target_T(targetT), period(period),
                                                                                     maxDelta(maxDelta),
                                                                                     dimension(dimension) {}
 
@@ -36,8 +36,8 @@ void Thermostat::apply(std::vector<Particle> &particles) const {
     }
 }
 
-int Thermostat::getPeriode() const {
-    return periode;
+int Thermostat::getPeriod() const {
+    return period;
 }
 
 double Thermostat::getTargetT() const {
