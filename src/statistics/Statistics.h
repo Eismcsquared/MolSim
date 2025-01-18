@@ -64,7 +64,7 @@ public:
      * Getter for the period.
      * @return The output period in number of iterations.
      */
-    double getPeriod();
+    double getPeriod() const;
 
     /**
      * Aggregate particles into bins according to a given aggregation function.

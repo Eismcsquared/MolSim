@@ -8,7 +8,7 @@
 Statistics::Statistics(std::string file, int period, double from, double to, int numberBins, Axis profileAxis, Axis velocityAxis):
 file(std::move(file)), period(period), from(from), to(to), numberBins(numberBins), profileAxis(profileAxis), velocityAxis(velocityAxis){}
 
-double Statistics::getPeriod() {
+double Statistics::getPeriod() const {
     return period;
 }
 
