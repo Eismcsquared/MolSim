@@ -8,8 +8,32 @@
 Statistics::Statistics(std::string file, int period, double from, double to, int numberBins, Axis profileAxis, Axis velocityAxis):
 file(std::move(file)), period(period), from(from), to(to), numberBins(numberBins), profileAxis(profileAxis), velocityAxis(velocityAxis){}
 
+std::string Statistics::getFile() const {
+    return file;
+}
+
 int Statistics::getPeriod() const {
     return period;
+}
+
+double Statistics::getFrom() const {
+    return from;
+}
+
+double Statistics::getTo() const {
+    return to;
+}
+
+int Statistics::getNumberBins() const {
+    return numberBins;
+}
+
+Axis Statistics::getProfileAxis() const {
+    return profileAxis;
+}
+
+Axis Statistics::getVelocityAxis() const {
+    return velocityAxis;
 }
 
 std::vector<double>

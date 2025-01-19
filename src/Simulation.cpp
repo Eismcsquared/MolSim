@@ -73,8 +73,8 @@ std::string Simulation::getCheckpointingFile() const {
     return checkpointingFile;
 }
 
-Statistics &Simulation::getStatistics() const {
-    return *statistics;
+std::shared_ptr<Statistics> Simulation::getStatistics() const {
+    return statistics;
 }
 
 void Simulation::run() {

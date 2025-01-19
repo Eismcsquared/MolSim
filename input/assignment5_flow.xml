@@ -53,8 +53,6 @@
     <parameters>
         <end_time>500</end_time>
         <delta_t>0.0005</delta_t>
-        <frequency>250</frequency>
-        <output>flow</output>
         <force>Lennard-Jones</force>
         <g>
             <y>-0.8</y>
@@ -78,5 +76,12 @@
                 <front>periodic</front>
             </boundary_condition>
         </linked_cell>
+        <statistics>
+            <output>statistics</output>
+            <period>10000</period>
+            <from>2</from>
+            <to>27.2</to>
+            <num_bins>50</num_bins>
+        </statistics>
     </parameters>
 </simulation>

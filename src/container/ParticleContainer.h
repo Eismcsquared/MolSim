@@ -230,7 +230,7 @@ public:
      */
     void simulate(double end_time, double delta_t, const std::string& out_name,
                           const std::string& output_format, unsigned int output_frequency,
-                          bool save_output, std::shared_ptr<Statistics> statistics = nullptr);
+                          bool save_output, const std::shared_ptr<Statistics>& statistics = nullptr);
 
     /**
      * Write the current state of the container to the output files.

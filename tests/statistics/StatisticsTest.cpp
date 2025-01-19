@@ -34,7 +34,8 @@ protected:
         particles.emplace_back(std::array<double, 3>{28, 34, 8}, std::array<double, 3>{-6, 0, -3}, 1);
         particles.emplace_back(std::array<double, 3>{33, 48, 6}, std::array<double, 3>{4, -6, 9}, 1);
         std::unique_ptr<Force> force = std::make_unique<LennardJonesForce>();
-        container = std::make_unique<LinkedCellContainer>(particles, force, std::array<double, 3>{50, 50, 50}, 3, std::array<BoundaryCondition, 6>{OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW});
+        container = std::make_unique<LinkedCellContainer>(particles, force, std::array<double, 3>{50, 50, 50}, 3,
+                                                          std::array<BoundaryCondition, 6>{REFLECTING, REFLECTING, REFLECTING, REFLECTING, REFLECTING, REFLECTING});
     }
 };
 
@@ -63,6 +64,7 @@ TEST_F(StatisticsTest, Computation) {
     }
 }
 
+// Test whether the statistics is correctly written into the specified output file
 TEST_F(StatisticsTest, Output) {
     test_logger->info("Statistics - Output test");
     Statistics s("s", 10, 0, 50, 10);
@@ -90,5 +92,32 @@ TEST_F(StatisticsTest, Output) {
         test_logger->info("Statistics - Output test failed\n\n");
     } else {
         test_logger->info("Statistics - Output test passed\n\n");
+    }
+}
+
+// Test whether the statistics unit is correctly integrated into the simulation.
+TEST_F(StatisticsTest, Integration) {
+    test_logger->info("Statistics - Integration test");
+
+    std::shared_ptr<Statistics> s = std::make_shared<Statistics>("s", 10, 0, 50, 10);
+    container->simulate(0.01, 1e-3, "", "", 100, true, s);
+
+    std::string fileName = "s_0010.csv";
+    std::ifstream inFile(fileName);
+    for (int i = 0; i < 10; ++i) {
+        std::string line;
+        std::getline(inFile, line);
+        std::replace(line.begin(), line.end(), ',', ' ');
+        std::istringstream dataStream(line);
+        double x;
+        dataStream >> x;
+        EXPECT_NEAR(5 * i + 2.5, x, 1e-12);
+    }
+    std::filesystem::remove(fileName);
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("Statistics - Integration test failed\n\n");
+    } else {
+        test_logger->info("Statistics - Integration test passed\n\n");
     }
 }

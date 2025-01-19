@@ -309,7 +309,7 @@ TEST_F(XMLReaderTest, Membrane) {
     }
 }
 
-// Test whether walls are read correctly.
+// Test whether walls and statistics are read correctly.
 TEST_F(XMLReaderTest, Wall) {
     test_logger->info("XMLReader - Assignment 5 input test");
     inputFile = "../tests/test_cases/assignment5.xml";
@@ -342,6 +342,16 @@ TEST_F(XMLReaderTest, Wall) {
         }), 1e-12);
         EXPECT_FALSE(simulation->getContainer()->getParticles()[i].isStationary());
     }
+
+    // Test the correct reading of statistics.
+    EXPECT_TRUE(simulation->getStatistics());
+    EXPECT_EQ("s", simulation->getStatistics()->getFile());
+    EXPECT_EQ(10, simulation->getStatistics()->getPeriod());
+    EXPECT_NEAR(2, simulation->getStatistics()->getFrom(), 1e-12);
+    EXPECT_NEAR(27.2, simulation->getStatistics()->getTo(), 1e-12);
+    EXPECT_EQ(50, simulation->getStatistics()->getNumberBins());
+    EXPECT_EQ(X, simulation->getStatistics()->getProfileAxis());
+    EXPECT_EQ(Y, simulation->getStatistics()->getVelocityAxis());
 
     if (::testing::Test::HasFailure()) {
         test_logger->info("XMLReader - Assignment 5 input test failed\n\n");

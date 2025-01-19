@@ -78,5 +78,12 @@
                 <front>periodic</front>
             </boundary_condition>
         </linked_cell>
+        <statistics>
+            <output>s</output>
+            <period>10</period>
+            <from>2</from>
+            <to>27.2</to>
+            <num_bins>50</num_bins>
+        </statistics>
     </parameters>
 </simulation>

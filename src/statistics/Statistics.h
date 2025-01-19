@@ -62,11 +62,45 @@ public:
     Statistics(std::string file, int period, double from, double to, int numberBins, Axis profileAxis = X, Axis velocityAxis = Y);
 
     /**
+     * Getter for the output file name.
+     * @return The output file name.
+     */
+    std::string getFile() const;
+    /**
      * Getter for the period.
      * @return The output period in number of iterations.
      */
     int getPeriod() const;
 
+    /**
+     * Getter for the start position.
+     * @return The start position.
+     */
+    double getFrom() const;
+
+    /**
+     * Getter for the end position.
+     * @return The end position.
+     */
+    double getTo() const;
+
+    /**
+     * Getter fir the number of bins.
+     * @return The number of bins.
+     */
+    int getNumberBins() const;
+
+    /**
+     * Getter for the profile axis.
+     * @return The profile axis.
+     */
+    Axis getProfileAxis() const;
+
+    /**
+     * Getter for the velocity axis.
+     * @return The velocity axis.
+     */
+    Axis getVelocityAxis() const;
     /**
      * Aggregate particles into bins according to a given aggregation function.
      * @param particles The particles.

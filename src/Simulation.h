@@ -167,7 +167,7 @@ public:
      * Getter for the statistics.
      * @return The statistics that is applied in the simulation.
      */
-    Statistics &getStatistics() const;
+    std::shared_ptr<Statistics> getStatistics() const;
     /**
      * Run the simulation.
      */
