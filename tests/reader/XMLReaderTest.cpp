@@ -46,7 +46,7 @@ TEST_F(XMLReaderTest, Assigment1Input) {
     EXPECT_EQ("vtu", simulation->getOutputFormat());
     EXPECT_EQ(10, simulation->getOutputFrequency());
     EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(simulation->getContainer()->getG()));
-    EXPECT_FALSE(simulation->isSaveOutput());
+    EXPECT_TRUE(simulation->isSaveOutput());
     EXPECT_FALSE(simulation->getContainer()->getThermostat());
     if(::testing::Test::HasFailure()) {
         test_logger->info("XMLReader - Assignment 1 input test failed\n\n");
