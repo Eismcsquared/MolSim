@@ -152,20 +152,17 @@ void LinkedCellContainer::updateF() {
                 }
             }
             
-            #pragma omp critical 
-            {
-                for (size_t i = 0; i < particles.size(); ++i) {
-                    //#pragma omp critical
-                    {
-                        particles[i].addForce(thread_forces[thread_id][i]);
-                    }
-                }
-            }
-
-            thread_forces[thread_id].assign(particles.size(), {0.0, 0.0, 0.0});
 
         }
     }
+
+    for(int thread_id = 0; thread_id < THREADS; thread_id++){
+        for (size_t i = 0; i < particles.size(); ++i) {
+            particles[i].addForce(thread_forces[thread_id][i]);
+        }
+        thread_forces[thread_id].assign(particles.size(), {0.0, 0.0, 0.0});
+    }
+        
 }
 
 
