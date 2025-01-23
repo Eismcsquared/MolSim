@@ -6,6 +6,7 @@
  */
 
 #pragma once
+#include <omp.h>
 #include <vector>
 #include <array>
 #include <string>
@@ -96,6 +97,11 @@ private:
      * Mark a particle as stationary (e.g. for walls)
      */
     const bool stationary;
+
+    /**
+     * The lock use to access the particle in a thread safe manner.
+     */
+    omp_lock_t monitor;
 
 public:
     explicit Particle(int type = 0);
@@ -310,7 +316,7 @@ public:
      * @param other The particle to be compared with.
      * @return True if the both particles have the same identity.
      */
-    inline bool is(const Particle &other) { return id == other.id; }
+    inline bool is(const Particle &other) const { return id == other.id; }
 
     /**
      * Provide a string representation of the particle including, its position, velocity, force and type.
@@ -346,6 +352,20 @@ public:
         if (inDomain && !stationary) {
             f = f + force;
         }
+    }
+
+    /**
+     * Acquire the lock for the particle.
+     */
+    inline void lock() {
+        omp_set_lock(&monitor);
+    }
+
+    /**
+     * Release the lock for the particle.
+     */
+    inline void unlock() {
+        omp_unset_lock(&monitor);
     }
 
 };

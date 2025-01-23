@@ -1,7 +1,8 @@
-#include "container/LinkedCellContainer.h"
-#include "spdlog/spdlog.h"
+#include <omp.h>
 #include <vector>
 #include <array>
+#include <spdlog/spdlog.h>
+#include "container/LinkedCellContainer.h"
 #include "utils/ArrayUtils.h"
 #include "cmath"
 
@@ -69,6 +70,9 @@ LinkedCellContainer::LinkedCellContainer(std::vector<Particle>& particles, std::
             particleNumber--;
         }
     }
+
+    initializePairs();
+
     spdlog::trace("LinkedCellContainer generated!");
 }
 
@@ -193,6 +197,97 @@ void LinkedCellContainer::updateX(double delta_t){
 
     }
     updateHalo(delta_t);
+}
+
+void LinkedCellContainer::initializePairs() {
+    for (int deltaZ = -1; deltaZ <= 1; ++deltaZ) {
+        for (int deltaY = -1; deltaY <= 1; ++deltaY) {
+            std::vector<Pair> pairsRight{};
+            std::vector<Pair> pairsLeft{};
+            for (int x = 0; x < nCells[0]; x += 2) {
+                for (int y = 0; y < nCells[1]; ++y) {
+                    for (int z = 0; z < nCells[2]; ++z) {
+                        int first = get1DIndex({x, y, z});
+                        std::array<int, 3> second3DRight = {x + 1, y + deltaY, z + deltaZ};
+                        std::array<int, 3> second3DLeft = {x - 1, y + deltaY, z + deltaZ};
+                        for (int i = 0; i < 3; ++i) {
+                            if (boundaryConditions[2 * i] == PERIODIC) {
+                                // in case nCell[0] is odd, avoid a pair crossing the x boundary to be considered twice.
+                                if (i) {
+                                    second3DRight[i] = (second3DRight[i] + nCells[i]) % nCells[i];
+                                }
+                                second3DLeft[i] = (second3DLeft[i] + nCells[i]) % nCells[i];
+                            }
+                        }
+                        if (second3DRight[0] >= 0 && second3DRight[0] < nCells[0] && second3DRight[1] >= 0 && second3DRight[1] < nCells[1] && second3DRight[2] >= 0 && second3DRight[2] < nCells[2]) {
+                            int secondRight = get1DIndex(second3DRight);
+                            pairsRight.push_back(Pair{first, secondRight});
+                        }
+                        if (second3DLeft[0] >= 0 && second3DLeft[0] < nCells[0] && second3DLeft[1] >= 0 && second3DLeft[1] < nCells[1] && second3DLeft[2] >= 0 && second3DLeft[2] < nCells[2]) {
+                            int secondLeft = get1DIndex(second3DLeft);
+                            pairsLeft.push_back(Pair{first, secondLeft});
+                        }
+                    }
+                }
+            }
+            cellPairs.push_back(pairsRight);
+            cellPairs.push_back(pairsLeft);
+        }
+        std::vector<Pair> pairsUp{};
+        std::vector<Pair> pairsDown{};
+        for (int y = 0; y < nCells[1]; y += 2) {
+            for (int z = 0; z < nCells[2]; ++z) {
+                for (int x = 0; x < nCells[0]; ++x) {
+                    int first = get1DIndex({x, y, z});
+                    std::array<int, 3> second3DUp = {x, y + 1, z + deltaZ};
+                    std::array<int, 3> second3DDown = {x, y - 1, z + deltaZ};
+                    for (int i = 1; i < 3; ++i) {
+                        if (boundaryConditions[2 * i] == PERIODIC) {
+                            // in case nCell[0] is odd, avoid a pair crossing the y boundary to be considered twice.
+                            if (i != 1) {
+                                second3DUp[i] = (second3DUp[i] + nCells[i]) % nCells[i];
+                            }
+                            second3DDown[i] = (second3DDown[i] + nCells[i]) % nCells[i];
+                        }
+                    }
+                    if (second3DUp[1] >= 0 && second3DUp[1] < nCells[1] && second3DUp[2] >= 0 && second3DUp[2] < nCells[2]) {
+                        int secondRight = get1DIndex(second3DUp);
+                        pairsUp.push_back(Pair{first, secondRight});
+                    }
+                    if (second3DDown[1] >= 0 && second3DDown[1] < nCells[1] && second3DDown[2] >= 0 && second3DDown[2] < nCells[2]) {
+                        int secondLeft = get1DIndex(second3DDown);
+                        pairsDown.push_back(Pair{first, secondLeft});
+                    }
+                }
+            }
+        }
+        cellPairs.push_back(pairsUp);
+        cellPairs.push_back(pairsDown);
+    }
+    std::vector<Pair> pairsFront{};
+    std::vector<Pair> pairsBack{};
+    for (int z = 0; z < nCells[2]; z += 2) {
+        for (int x = 0; x < nCells[0]; ++x) {
+            for (int y = 0; y < nCells[1]; ++y) {
+                int first = get1DIndex({x, y, z});
+                std::array<int, 3> second3DFront = {x, y, z + 1};
+                std::array<int, 3> second3DBack = {x, y, z - 1};
+                if (boundaryConditions[4] == PERIODIC) {
+                    second3DBack[2] = (second3DBack[2] + nCells[2]) % nCells[2];
+                }
+                if (second3DFront[2] >= 0 && second3DFront[2] < nCells[2]) {
+                    int secondFront = get1DIndex(second3DFront);
+                    pairsFront.push_back(Pair{first, secondFront});
+                }
+                if (second3DBack[2] >= 0 && second3DBack[2] < nCells[2]) {
+                    int secondBack = get1DIndex(second3DBack);
+                    pairsBack.push_back(Pair{first, secondBack});
+                }
+            }
+        }
+    }
+    cellPairs.push_back(pairsFront);
+    cellPairs.push_back(pairsBack);
 }
 
 // only used once in the constructor.

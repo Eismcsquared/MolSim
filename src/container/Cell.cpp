@@ -2,7 +2,18 @@
 #include "Cell.h"
 
 Cell::Cell(std::array<double, 3> position, std::array<double, 3> size, std::set<int>& neighbours):
-position(position), size(size), neighbours(neighbours) {}
+position(position), size(size), neighbours(neighbours) {
+    omp_init_lock(&monitor);
+}
+
+Cell::Cell(const Cell &other):
+        position(other.position), size(other.size), particleIndices(other.particleIndices), neighbours(other.neighbours) {
+    omp_init_lock(&monitor);
+}
+
+Cell::~Cell() {
+    omp_destroy_lock(&monitor);
+}
 
 const std::vector<int> &Cell::getParticleIndices() const {
     return particleIndices;
@@ -30,12 +41,16 @@ bool Cell::contains(std::array<double, 3> pos) {
 }
 
 void Cell::addIndex(int index) {
+    omp_set_lock(&monitor);
     particleIndices.insert(particleIndices.end(), index);
+    omp_unset_lock(&monitor);
 }
 
 void Cell::removeIndex(int index) {
+    omp_set_lock(&monitor);
     auto newEnd = std::remove(particleIndices.begin(), particleIndices.end(), index);
     particleIndices.erase(newEnd, particleIndices.end());
+    omp_unset_lock(&monitor);
 }
 
 void Cell::clear() {

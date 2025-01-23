@@ -29,6 +29,11 @@ private:
      */
     std::set<int> neighbours;
 
+    /**
+     * The lock use to access the particle indices in a thread safe manner.
+     */
+    omp_lock_t monitor;
+
 public:
    /**
     * Constructor.
@@ -36,6 +41,18 @@ public:
     * @param size The size of the cell.
     */
     Cell(std::array<double, 3> position, std::array<double, 3> size, std::set<int>& neighbours);
+
+    /**
+     * Copy constructor.
+     * @param other The cell to be copied.
+     */
+    Cell(const Cell &other);
+
+    /**
+     * Destructor.
+     */
+    ~Cell();
+
    /**
     * The getter for the position of a cell.
     * @return The position of the cell.

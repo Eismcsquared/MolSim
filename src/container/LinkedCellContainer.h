@@ -18,7 +18,16 @@ enum Direction {
  * @brief This class represents a particle container that implements the linked cell algorithm.
  */
 class LinkedCellContainer: public ParticleContainer {
+
 private:
+
+    /**
+     * Store a pair of integers.
+     */
+    struct Pair{
+        int first;
+        int second;
+    };
 
     /**
      * The cells that the domain is divided into.
@@ -57,8 +66,15 @@ private:
      */
     std::array<BoundaryCondition, 6> boundaryConditions;
 
- 
+    /**
+     * Store all pairs of neighbouring cells in vectors, in which every cell appears at most once.
+     */
+    std::vector<std::vector<Pair>> cellPairs;
 
+    /**
+     * Initialize the pairs of cells.
+     */
+    void initializePairs();
 public:
 
      /**

@@ -208,6 +208,11 @@ void LinkedCellContainer::updateFCells(int c1, int c2, int thread_id,  std::vect
                         particles[i].setX(pos);
 
                         for(int d = 0; d < 3; d++){
+                            particles[i].lock();
+                            particles[i].addForce(-1 * forceIJ);
+                            particles[i].unlock();
+
+
                             thread_forces[thread_id][i][d] += -1 * forceIJ[d];
                             thread_forces[thread_id][j][d] += forceIJ[d];
                         }
