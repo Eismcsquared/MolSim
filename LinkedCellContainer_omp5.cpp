@@ -6,12 +6,16 @@
 #include "cmath"
 #include <omp.h>
 
-#define THREADS 4
 
+#define THREADS 4
+#define InnerThreads 1
 
 LinkedCellContainer::LinkedCellContainer(std::vector<Particle>& particles, std::unique_ptr<Force> &f,
                                          std::array<double, 3> domainSize, double cutoff, std::array<BoundaryCondition, 6> boundaryConditions) :
         ParticleContainer(particles, f), cutoff(cutoff), domainSize(domainSize), boundaryConditions(boundaryConditions){
+
+    // set nested parallelism 
+    omp_set_max_active_levels(1);
 
     // number of cells in each direction, making a cell larger if the cutoff radius does not divide the domain size
     int nX = static_cast<int>(floor(domainSize[0] / cutoff));
@@ -73,8 +77,6 @@ LinkedCellContainer::LinkedCellContainer(std::vector<Particle>& particles, std::
         }
     }
     spdlog::trace("LinkedCellContainer generated!");
-    //////////////////////////////////openmp lookup tables/////////////////////////////////////
-    std::vector<std::array<double, 3>> force_lt(particles.size());
 
 
 }
@@ -82,9 +84,9 @@ LinkedCellContainer::LinkedCellContainer(std::vector<Particle>& particles, std::
 
 void LinkedCellContainer::updateV(double delta_t) {
 
-    #pragma omp parallel default(none) shared( delta_t) num_threads(THREADS)
+    #pragma omp parallel default(none) shared(particles,cells, delta_t) num_threads(THREADS)
     {
-        #pragma omp for schedule(static, 4) 
+        #pragma omp for schedule(guided, 4)
         for (int i: domainCells) {
             for (int p: cells[i].getParticleIndices()) {
                 particles[p].updateV(delta_t);
@@ -97,114 +99,80 @@ void LinkedCellContainer::updateF() {
 
     resetF();
 
+    spdlog::trace("Try to use {} threads", THREADS);
 
-    std::vector<std::array<double, 3>> thread_force(particles.size(), {0.0, 0.0, 0.0});
-
-    #pragma omp parallel default(none) shared(thread_force) num_threads(THREADS)
+    // thread local forces
+    std::vector<std::vector<std::array<double, 3>>> thread_forces(THREADS, std::vector<std::array<double, 3>>(particles.size(), {0.0, 0.0, 0.0}));
+     
+    #pragma omp parallel default(none) shared(thread_forces, particles, cells, domainCells, cutoff, force) num_threads(THREADS)
     {           
-        #pragma omp for schedule(static, 4)
+        #pragma omp for schedule(guided, 4)
         for(int i: domainCells){
+
+            // get the thread id
+            int thread_id = omp_get_thread_num();
 
             std::vector<int> pointCellParticles = cells[i].getParticleIndices();
 
             // update forces between neighbouring cells
             auto neighbors = cells[i].getNeighbours();
 
-
             std::vector<int> neighborList(neighbors.begin(), neighbors.end());
             
-            //#pragma omp for schedule (static, 4)
+            // update forces between neighboring cells
             for(int j = 0 ; j < neighborList.size(); j++){
                 if(i < neighborList[j]){
-                    ///////////////////////////////////////////////////////////p/
-                    std::vector<int> v1 = cells[i].getParticleIndices();
-                    std::vector<int> v2 = cells[neighborList[j]].getParticleIndices();
-
-                    std::array<int, 3> idx3D1 = get3DIndex(i);
-                    std::array<int, 3> idx3D2 = get3DIndex(neighborList[j]);
-
-                    // Consider periodic boundary condition in the force calculation.
-                    std::vector<std::array<double, 3>> offsets;
-
-                    for (int z = -1 * (boundaryConditions[4] == PERIODIC); z <= (boundaryConditions[5] == PERIODIC); ++z) {
-                        for (int y = -1 * (boundaryConditions[2] == PERIODIC); y <= (boundaryConditions[3] == PERIODIC); ++y) {
-                            for (int x = -1 * (boundaryConditions[0] == PERIODIC); x <= (boundaryConditions[1] == PERIODIC); ++x) {
-                                if (std::abs(idx3D1[0] + x * nCells[0] - idx3D2[0]) <= 1 &&
-                                    std::abs(idx3D1[1] + y * nCells[1] - idx3D2[1]) <= 1 &&
-                                    std::abs(idx3D1[2] + z * nCells[2] - idx3D2[2]) <= 1 ) {
-                                    offsets.push_back({x * domainSize[0], y * domainSize[1], z * domainSize[2]});
-                                }
-                            }
-                        }
-                    }
-
-                    for (int l : v1) {
-                        for (int m : v2) {
-
-                            if (particles[l].isStationary() && particles[m].isStationary()) continue;
-
-                            for (std::array<double, 3> offset: offsets) {
-
-                                double distSquare = ArrayUtils::L2NormSquare(particles[l].getX() + offset - particles[m].getX());
-                                // if the distance is greater than the cutoff, skip the calculation
-                                if(distSquare <= cutoff * cutoff) {
-
-                                    std::array<double, 3> pos = particles[l].getX();
-
-                                    particles[l].setX(pos + offset); 
-                                    std::array<double, 3> forceIJ = force->force(particles[l], particles[m]);
-                                    particles[l].setX(pos);
-
-                                    for(int d = 0; d < 3; d++){
-                                        thread_force[l][d] += -1 * forceIJ[d];
-                                        thread_force[m][d] += forceIJ[d];
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                ////////////////////////////////////////////////////////////
-            }
-
-            // update forces within a cell.
-            //#pragma omp for schedule (static, 4)
-            for(unsigned long j = 0; j < pointCellParticles.size(); ++j){
-                for(unsigned long k = j + 1; k < pointCellParticles.size(); ++k){
-
-                    if (particles[pointCellParticles[j]].isStationary() && particles[pointCellParticles[k]].isStationary()) continue;
-
-                    double distSquare = ArrayUtils::L2NormSquare(particles[pointCellParticles[j]].getX() - particles[pointCellParticles[k]].getX());
-
-                    // if the distance is greater than the cutoff, skip the calculation
-                    if(distSquare > cutoff * cutoff) continue;
-
-                    std::array<double, 3> forceIJ = force->force(particles[pointCellParticles[j]], particles[pointCellParticles[k]]);
-                    
-                    for(int d = 0; d < 3; d++){
-                        thread_force[pointCellParticles[j]][d] += -1 * forceIJ[d];
-                        thread_force[pointCellParticles[k]][d] += forceIJ[d];
-                    }
-                    
+                    updateFCells(i, neighborList[j], thread_id, thread_forces);
                 }
             }
             
-            #pragma omp critical
+
+            // update forces within a cell. if there are many particles in a cell, use openmp to parallelize the calculation
+            //default is 1 thread
+            #pragma omp parallel num_threads(InnerThreads)
             {
-                for(int i = 0; i < particles.size(); i++){
-                    particles[i].addForce(thread_force[i]);
+                for(unsigned long j = 0; j < pointCellParticles.size(); ++j){
+                    for(unsigned long k = j + 1; k < pointCellParticles.size(); ++k){
+
+                        if (particles[pointCellParticles[j]].isStationary() && particles[pointCellParticles[k]].isStationary()) continue;
+
+                        double distSquare = ArrayUtils::L2NormSquare(particles[pointCellParticles[j]].getX() - particles[pointCellParticles[k]].getX());
+
+                        // if the distance is greater than the cutoff, skip the calculation
+                        if(distSquare > cutoff * cutoff) continue;
+
+                        std::array<double, 3> forceIJ = force->force(particles[pointCellParticles[j]], particles[pointCellParticles[k]]);
+                        
+                        for(int d = 0; d < 3; d++){
+                            thread_forces[thread_id][pointCellParticles[j]][d] += -1 * forceIJ[d];
+                            thread_forces[thread_id][pointCellParticles[k]][d] += forceIJ[d];
+                        }
+                        
+                    }
                 }
             }
+            
+            #pragma omp critical 
+            {
+                for (size_t i = 0; i < particles.size(); ++i) {
+                    //#pragma omp critical
+                    {
+                        particles[i].addForce(thread_forces[thread_id][i]);
+                    }
+                }
+            }
+
+            thread_forces[thread_id].assign(particles.size(), {0.0, 0.0, 0.0});
+
         }
     }
 }
 
 
-// for openmp may not be used
-void LinkedCellContainer::updateFCells(int c1, int c2){
+void LinkedCellContainer::updateFCells(int c1, int c2, int thread_id,  std::vector<std::vector<std::array<double, 3>>>& thread_forces ) {
 
     std::vector<int> v1 = cells[c1].getParticleIndices();
-    std::vector<int> v2 = cells[c2].getParticleIndices();
+    std::vector<int> v2 = cells[c2].getParticleIndices();   
 
     std::array<int, 3> idx3D1 = get3DIndex(c1);
     std::array<int, 3> idx3D2 = get3DIndex(c2);
@@ -224,31 +192,34 @@ void LinkedCellContainer::updateFCells(int c1, int c2){
         }
     }
 
-    for (int i : v1) {
-        for (int j : v2) {
+    //#pragma omp parallel shared(v1, v2, particles, cutoff, force, offsets, thread_forces) num_threads(InnerThreads)
+    {   
+        for (int i : v1) {
+            for (int j : v2) {
+                if (particles[i].isStationary() && particles[j].isStationary()) continue;
 
-            if (particles[i].isStationary() && particles[j].isStationary()) continue;
+                for (std::array<double, 3> offset: offsets) {
 
-            for (std::array<double, 3> offset: offsets) {
+                    double distSquare = ArrayUtils::L2NormSquare(particles[i].getX() + offset - particles[j].getX());
+                    // if the distance is greater than the cutoff, skip the calculation
+                    if(distSquare <= cutoff * cutoff) {
 
-                double distSquare = ArrayUtils::L2NormSquare(particles[i].getX() + offset - particles[j].getX());
-                // if the distance is greater than the cutoff, skip the calculation
-                if(distSquare <= cutoff * cutoff) {
+                        std::array<double, 3> pos = particles[i].getX();
 
-                    std::array<double, 3> pos = particles[i].getX();
+                        particles[i].setX(pos + offset); 
+                        std::array<double, 3> forceIJ = force->force(particles[i], particles[j]);
+                        particles[i].setX(pos);
 
-                    particles[i].setX(pos + offset); 
-                    std::array<double, 3> forceIJ = force->force(particles[i], particles[j]);
-                    particles[i].setX(pos);
-
-
-                    particles[i].addForce( -1 * forceIJ);
-                    particles[j].addForce(forceIJ);
-                    
+                        for(int d = 0; d < 3; d++){
+                            thread_forces[thread_id][i][d] += -1 * forceIJ[d];
+                            thread_forces[thread_id][j][d] += forceIJ[d];
+                        }
+                    }
                 }
             }
         }
     }
+    
 }
 
 void LinkedCellContainer::updateX(double delta_t){
