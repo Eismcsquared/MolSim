@@ -8,6 +8,8 @@
 
 
 #define THREADS 4
+
+// Will compare the computation time with and without nested parallelism (maybe in linux cluster faster because it has more cores and large cache)
 #define InnerThreads 1
 
 LinkedCellContainer::LinkedCellContainer(std::vector<Particle>& particles, std::unique_ptr<Force> &f,
