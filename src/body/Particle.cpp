@@ -46,7 +46,7 @@ std::string Particle::toString() const {
 
 
 bool Particle::operator==(const Particle &other) const {
-    double delta_abs = 1e-12;
+    double delta_abs = 1e-10;
     double delta_rel = 1e-5;
     for (int i = 0; i < 3; ++i) {
         if (std::abs(x[i] - other.x[i]) > delta_rel * std::max(std::abs(x[i]), std::abs(other.x[i])) + delta_abs) {

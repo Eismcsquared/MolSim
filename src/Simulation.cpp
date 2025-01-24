@@ -5,9 +5,9 @@
 
 
 Simulation::Simulation(std::unique_ptr<ParticleContainer> &container, double endTime, double deltaT,
-                       std::string outputFile, std::string outputFormat, unsigned int outputFrequency)
+                       std::string outputFile, std::string outputFormat, unsigned int outputFrequency, int strategy)
         : container(std::move(container)), endTime(endTime), deltaT(deltaT), outputFormat(std::move(outputFormat)), outputFile(std::move(outputFile)),
-          outputFrequency(outputFrequency), saveOutput(true), statistics(nullptr) {}
+          outputFrequency(outputFrequency), saveOutput(true), strategy(strategy), statistics(nullptr) {}
 
 void Simulation::setEndTime(double endTime) {
     Simulation::endTime = endTime;
@@ -78,7 +78,7 @@ std::shared_ptr<Statistics> Simulation::getStatistics() const {
 }
 
 void Simulation::run() {
-    container->simulate(endTime, deltaT, outputFile, outputFormat, outputFrequency, saveOutput, statistics);
+    container->simulate(endTime, deltaT, outputFile, outputFormat, outputFrequency, saveOutput, strategy, statistics);
 
     if (!checkpointingFile.empty()) {
         StateWriter::saveState(container->getParticles(), checkpointingFile);

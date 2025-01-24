@@ -46,6 +46,11 @@ class Simulation {
     std::string checkpointingFile;
 
     /**
+     * The parallelization strategy.
+     */
+    int strategy;
+
+    /**
      * The unit for analyzing the system.
      */
     std::shared_ptr<Statistics> statistics;
@@ -60,9 +65,10 @@ public:
      * @param outputFormat The format of the output file.
      * @param outputFile The name of the output file.
      * @param outputFrequency The frequency of output.
+     * @param strategy The parallelization strategy.
      */
     Simulation(std::unique_ptr<ParticleContainer> &container, double endTime, double deltaT,
-               std::string outputFile, std::string outputFormat, unsigned int outputFrequency);
+               std::string outputFile, std::string outputFormat, unsigned int outputFrequency, int strategy);
 
 
 

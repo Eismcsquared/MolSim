@@ -12,7 +12,7 @@
 class LennardJonesForceTest : public ::testing::Test {
 protected:
     std::vector<Particle> particles;
-    std::unique_ptr<DirectSumContainer> pc;
+    std::unique_ptr<ParticleContainer> pc;
     std::unique_ptr<Force> f;
     std::shared_ptr<spdlog::logger> test_logger = spdlog::get("test_logger");
 

@@ -12,7 +12,7 @@ class DirectSumContainerTest : public ::testing::Test {
 protected:
     std::vector<Particle> particles;
     std::unique_ptr<Force> f ;
-    std::unique_ptr<DirectSumContainer> pc;
+    std::unique_ptr<ParticleContainer> pc;
     std::string testfile = "../tests/test_cases/two_body.txt";
     std::shared_ptr<spdlog::logger> test_logger = spdlog::get("test_logger");
 
@@ -22,7 +22,7 @@ protected:
         fileReader.readFile(particles, testfile);
         f = std::make_unique<GravitationalForce>();
         pc = std::make_unique<DirectSumContainer>(particles, f);
-        pc->updateF();
+        pc->updateF(0);
         spdlog::set_level(spdlog::level::info);
         test_logger -> info("ParticleContainer created");
     }
@@ -44,7 +44,7 @@ TEST_F(DirectSumContainerTest, ReadFile) {
     }
     std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
     DirectSumContainer reference(ref_vec, ref_f);
-    reference.updateF();
+    reference.updateF(0);
     if(*pc == reference) {
         test_logger->info("DirectSumContainer - Read file test passed");
     } else {
@@ -86,7 +86,7 @@ TEST_F(DirectSumContainerTest, AddParticle1) {
 
     std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
     DirectSumContainer reference(ref_vec, ref_f);
-    reference.updateF();
+    reference.ParticleContainer::updateF();
     if(*pc == reference) {
         test_logger->info("DirectSumContainer - Add particle test 1 passed");
     } else {
@@ -114,7 +114,7 @@ TEST_F(DirectSumContainerTest, AddParticle2) {
 
     std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
     DirectSumContainer reference(ref_vec, ref_f);
-    reference.updateF();
+    reference.ParticleContainer::updateF();
     if(*pc == reference) {
         test_logger->info("DirectSumContainer - Add particle test 2 passed");
     } else {
@@ -143,7 +143,7 @@ TEST_F(DirectSumContainerTest, Analytical) {
 
     std::unique_ptr<Force> ref_f = std::make_unique<GravitationalForce>();
     DirectSumContainer reference(ref_vec, ref_f);
-    reference.updateF();
+    reference.ParticleContainer::updateF();
     if (!(*pc == reference)) {
         test_logger->error("DirectSumContainer - Analytical solution test failed");
         test_logger->error("Expected: " + reference.toString());

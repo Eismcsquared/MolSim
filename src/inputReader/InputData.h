@@ -640,6 +640,7 @@ class AxisType;
 class StatisticsType;
 class SimulationParameters;
 class InputData;
+class strategy;
 
 #include <memory>    // ::std::unique_ptr
 #include <limits>    // std::numeric_limits
@@ -6089,6 +6090,90 @@ class LinkedCellType: public ::xml_schema::type
   //@}
 
   /**
+   * @name strategy
+   *
+   * @brief Accessor and modifier functions for the %strategy
+   * optional element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::strategy strategy_type;
+
+  /**
+   * @brief Element optional container type.
+   */
+  typedef ::xsd::cxx::tree::optional< strategy_type > strategy_optional;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< strategy_type, char > strategy_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element
+   * container.
+   *
+   * @return A constant reference to the optional container.
+   */
+  const strategy_optional&
+  strategy () const;
+
+  /**
+   * @brief Return a read-write reference to the element container.
+   *
+   * @return A reference to the optional container.
+   */
+  strategy_optional&
+  strategy ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  strategy (const strategy_type& x);
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x An optional container with the new value to set.
+   *
+   * If the value is present in @a x then this function makes a copy 
+   * of this value and sets it as the new value of the element.
+   * Otherwise the element container is set the 'not present' state.
+   */
+  void
+  strategy (const strategy_optional& x);
+
+  /**
+   * @brief Set the element value without copying.
+   *
+   * @param p A new value to use.
+   *
+   * This function will try to use the passed value directly instead
+   * of making a copy.
+   */
+  void
+  strategy (::std::unique_ptr< strategy_type > p);
+
+  /**
+   * @brief Return the default value for the element.
+   *
+   * @return The element's default value.
+   */
+  static strategy_type
+  strategy_default_value ();
+
+  //@}
+
+  /**
    * @name Constructors
    */
   //@{
@@ -6184,6 +6269,7 @@ class LinkedCellType: public ::xml_schema::type
   ::xsd::cxx::tree::one< domain_size_type > domain_size_;
   ::xsd::cxx::tree::one< cutoff_radius_type > cutoff_radius_;
   boundary_condition_optional boundary_condition_;
+  strategy_optional strategy_;
 
   //@endcond
 };
@@ -8594,6 +8680,87 @@ class InputData: public ::xml_schema::type
   //@endcond
 };
 
+/**
+ * @brief Enumeration class corresponding to the %strategy
+ * schema type.
+ */
+class strategy: public ::xsd::cxx::tree::fundamental_base< ::xml_schema::integer, char, ::xml_schema::simple_type >
+{
+  public:
+  /**
+   * @brief Create an instance from a fundamental type value.
+   *
+   * @param v A fundamental type value.
+   */
+  strategy (::xml_schema::integer v);
+
+  /**
+   * @brief Create an instance from a DOM element.
+   *
+   * @param e A DOM element to extract the data from.
+   * @param f Flags to create the new instance with.
+   * @param c A pointer to the object that will contain the new
+   * instance.
+   */
+  strategy (const ::xercesc::DOMElement& e,
+            ::xml_schema::flags f = 0,
+            ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Create an instance from a DOM attribute.
+   *
+   * @param a A DOM attribute to extract the data from.
+   * @param f Flags to create the new instance with.
+   * @param c A pointer to the object that will contain the new
+   * instance.
+   */
+  strategy (const ::xercesc::DOMAttr& a,
+            ::xml_schema::flags f = 0,
+            ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Create an instance from a string fragment.
+   *
+   * @param s A string fragment to extract the data from.
+   * @param e A pointer to DOM element containing the string fragment.
+   * @param f Flags to create the new instance with.
+   * @param c A pointer to the object that will contain the new
+   * instance.
+   */
+  strategy (const ::std::string& s,
+            const ::xercesc::DOMElement* e,
+            ::xml_schema::flags f = 0,
+            ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Copy constructor.
+   *
+   * @param x An instance to make a copy of.
+   * @param f Flags to create the copy with.
+   * @param c A pointer to the object that will contain the copy.
+   *
+   * For polymorphic object models use the @c _clone function instead.
+   */
+  strategy (const strategy& x,
+            ::xml_schema::flags f = 0,
+            ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Copy the instance polymorphically.
+   *
+   * @param f Flags to create the copy with.
+   * @param c A pointer to the object that will contain the copy.
+   * @return A pointer to the dynamically allocated copy.
+   *
+   * This function ensures that the dynamic type of the instance is
+   * used for copying and should be used for polymorphic object
+   * models instead of the copy constructor.
+   */
+  virtual strategy*
+  _clone (::xml_schema::flags f = 0,
+          ::xml_schema::container* c = 0) const;
+};
+
 #include <iosfwd>
 
 #include <xercesc/sax/InputSource.hpp>
@@ -9133,6 +9300,16 @@ simulation (const ::InputData& x,
             ::xml_schema::flags f = 0);
 
 //@}
+
+void
+operator<< (::xercesc::DOMElement&, const strategy&);
+
+void
+operator<< (::xercesc::DOMAttr&, const strategy&);
+
+void
+operator<< (::xml_schema::list_stream&,
+            const strategy&);
 
 #include <xsd/cxx/post.hxx>
 

@@ -121,8 +121,9 @@ public:
 
     /**
      * @brief Update the force between all particles.
+     * @param strategy The parallelization strategy.
      */
-    void updateF() override;
+    void updateF(int strategy) override;
 
     /**
      * @brief Update the position for all particles.

@@ -18,7 +18,7 @@ DirectSumContainer::~DirectSumContainer(){
 }
 
 
-void DirectSumContainer::updateF() {
+void DirectSumContainer::updateF(int strategy) {
 
     resetF();
 

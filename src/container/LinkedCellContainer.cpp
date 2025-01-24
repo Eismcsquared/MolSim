@@ -85,7 +85,7 @@ void LinkedCellContainer::updateV(double delta_t) {
     }
 }
 
-void LinkedCellContainer::updateF() {
+void LinkedCellContainer::updateF(int strategy) {
 
     resetF();
 
@@ -243,7 +243,7 @@ void LinkedCellContainer::initializePairs() {
                     std::array<int, 3> second3DDown = {x, y - 1, z + deltaZ};
                     for (int i = 1; i < 3; ++i) {
                         if (boundaryConditions[2 * i] == PERIODIC) {
-                            // in case nCell[0] is odd, avoid a pair crossing the y boundary to be considered twice.
+                            // in case nCell[1] is odd, avoid a pair crossing the y boundary to be considered twice.
                             if (i != 1) {
                                 second3DUp[i] = (second3DUp[i] + nCells[i]) % nCells[i];
                             }

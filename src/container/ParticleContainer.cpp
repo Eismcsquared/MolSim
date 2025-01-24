@@ -94,12 +94,12 @@ void ParticleContainer::addExternalForce(unsigned int particleIndex, const std::
 }
 
 void ParticleContainer::simulate(double end_time, double delta_t, const std::string &out_name, const std::string &output_format,
-                                 unsigned int output_frequency, bool save_output, const std::shared_ptr<Statistics>& statistics) {
+                                 unsigned int output_frequency, bool save_output, int strategy, const std::shared_ptr<Statistics>& statistics) {
     int start_iteration = static_cast<int>(std::round(t / delta_t));
     int end_iteration = static_cast<int>(std::round(end_time / delta_t));
 
     // compute initial forces.
-    updateF();
+    updateF(strategy);
     // save the initial state also.
     if (!out_name.empty() && save_output && start_iteration % output_frequency == 0) {
         plotParticles(start_iteration, out_name, output_format);
@@ -117,7 +117,7 @@ void ParticleContainer::simulate(double end_time, double delta_t, const std::str
         updateX(delta_t);
 
         // Calculate the force
-        updateF();
+        updateF(strategy);
 
         // Calculate the velocity
         updateV(delta_t);

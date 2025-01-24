@@ -221,6 +221,14 @@
             <xs:element name="domain_size" type="PositiveDoubleVector3"/>
             <xs:element name="cutoff_radius" type="PositiveDouble"/>
             <xs:element name="boundary_condition" type="BoundaryCondition3" minOccurs="0"/>
+            <xs:element name="strategy" minOccurs="0" default="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:integer">
+                        <xs:enumeration value="0"/>
+                        <xs:enumeration value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
         </xs:sequence>
     </xs:complexType>
 

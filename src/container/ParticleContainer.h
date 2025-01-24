@@ -188,10 +188,17 @@ public:
      */
     virtual void updateV(double delta_t) = 0;
 
+
+    /**
+     * @brief Update the force between all particles using the default parallelization strategy.
+     */
+    inline void updateF() {updateF(0);}
+
     /**
      * Update the force between all particles.
+     * @param strategy: The parallelization strategy.
      */
-    virtual void updateF() = 0;
+    virtual void updateF(int strategy) = 0;
 
     /**
      * Set the old force of particles to their current force and reset their force to the sum of external forces.
@@ -226,11 +233,12 @@ public:
      * @param output_format The format of the output file, either "vtu" or "xyz".
      * @param output_frequency THe frequency of the output, in number of time steps.
      * @param save_output Output is activated if this flag is set.
+     * @param strategy The parallelization strategy.
      * @param statistics Optional. If specified, statistics about the system is computed and stored.
      */
     void simulate(double end_time, double delta_t, const std::string& out_name,
                           const std::string& output_format, unsigned int output_frequency,
-                          bool save_output, const std::shared_ptr<Statistics>& statistics = nullptr);
+                          bool save_output, int strategy = 0, const std::shared_ptr<Statistics>& statistics = nullptr);
 
     /**
      * Write the current state of the container to the output files.

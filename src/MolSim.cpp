@@ -68,7 +68,7 @@ int main(int argc, char *argsv[]) {
         std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
 
         std::unique_ptr<ParticleContainer> container = std::make_unique<DirectSumContainer>(particles, f);
-        simulation = std::make_unique<Simulation>(container, end_time, delta_t, outputFile, outputFormat, frequency);
+        simulation = std::make_unique<Simulation>(container, end_time, delta_t, outputFile, outputFormat, frequency, 0);
     }
 
     std::unique_ptr<Force> f;

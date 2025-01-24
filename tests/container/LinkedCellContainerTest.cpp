@@ -133,14 +133,14 @@ TEST_F(LinkedCellContainerTest, ForceCalculation) {
     // updateF called in addParticle, test the calculation
     container3D->addParticle(Particle(pos[0], {0, 0, 0}, 1));
     container3D->addParticle(Particle(pos[1], {0, 0, 0}, 1));
-    container3D->updateF();
+    container3D->ParticleContainer::updateF();
     double expectedForce = 120 * (pow(1 / sqrt(3), 7) - 2 * pow(1 / sqrt(3), 13));
     for (int i = 0; i < 3; ++i) {
         EXPECT_FLOAT_EQ(expectedForce / sqrt(3), container3D->getParticles()[0].getF()[i]);
         EXPECT_FLOAT_EQ(-expectedForce / sqrt(3), container3D->getParticles()[1].getF()[i]);
     }
     container3D->addParticle(Particle(pos[2], {0, 0, 0}, 1));
-    container3D->updateF();
+    container3D->ParticleContainer::updateF();
     // expected no interaction between the third particle and the previous two, since they are too far away.
     for (int i = 0; i < 3; ++i) {
         EXPECT_FLOAT_EQ(expectedForce / sqrt(3), container3D->getParticles()[0].getF()[i]);
@@ -172,7 +172,7 @@ TEST_F(LinkedCellContainerTest, ForceCalculationPeriodic) {
 
     container3DPeriodicX->addParticle(Particle(pos[0], {0, 0, 0}, 1));
     container3DPeriodicX->addParticle(Particle(pos[1], {0, 0, 0}, 1));
-    container3DPeriodicX->updateF();
+    container3DPeriodicX->ParticleContainer::updateF();
 
     EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[0].getF() -
                  std::array<double, 3>{
@@ -190,7 +190,7 @@ TEST_F(LinkedCellContainerTest, ForceCalculationPeriodic) {
               1e-12);
 
     container3DPeriodicX->addParticle(Particle(pos[2], {0, 0, 0}, 1));
-    container3DPeriodicX->updateF();
+    container3DPeriodicX->ParticleContainer::updateF();
 
     EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[0].getF() -
                 std::array<double, 3>{
@@ -215,7 +215,7 @@ TEST_F(LinkedCellContainerTest, ForceCalculationPeriodic) {
               1e-12);
 
     container3DPeriodicX->addParticle(Particle(pos[3], {0, 0, 0}, 1));
-    container3DPeriodicX->updateF();
+    container3DPeriodicX->ParticleContainer::updateF();
 
     EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[0].getF() -
                 std::array<double, 3>{
@@ -249,7 +249,7 @@ TEST_F(LinkedCellContainerTest, ForceCalculationPeriodic) {
 
     container3DPeriodicX->addParticle(Particle(pos[4], {0, 0, 0}, 1));
     container3DPeriodicX->addParticle(Particle(pos[5], {0, 0, 0}, 1));
-    container3DPeriodicX->updateF();
+    container3DPeriodicX->ParticleContainer::updateF();
     EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[0].getF() -
                 std::array<double, 3>{
                     -force(2) - 2 * force(sqrt(8)) / sqrt(2),

@@ -100,7 +100,7 @@ TEST_F(StatisticsTest, Integration) {
     test_logger->info("Statistics - Integration test");
 
     std::shared_ptr<Statistics> s = std::make_shared<Statistics>("s", 10, 0, 50, 10);
-    container->simulate(0.01, 1e-3, "", "", 100, true, s);
+    container->simulate(0.01, 1e-3, "", "", 100, true, 0, s);
 
     std::string fileName = "s_0010.csv";
     std::ifstream inFile(fileName);

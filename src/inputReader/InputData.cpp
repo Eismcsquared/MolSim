@@ -1582,6 +1582,42 @@ boundary_condition (::std::unique_ptr< boundary_condition_type > x)
   this->boundary_condition_.set (std::move (x));
 }
 
+const LinkedCellType::strategy_optional& LinkedCellType::
+strategy () const
+{
+  return this->strategy_;
+}
+
+LinkedCellType::strategy_optional& LinkedCellType::
+strategy ()
+{
+  return this->strategy_;
+}
+
+void LinkedCellType::
+strategy (const strategy_type& x)
+{
+  this->strategy_.set (x);
+}
+
+void LinkedCellType::
+strategy (const strategy_optional& x)
+{
+  this->strategy_ = x;
+}
+
+void LinkedCellType::
+strategy (::std::unique_ptr< strategy_type > x)
+{
+  this->strategy_.set (std::move (x));
+}
+
+LinkedCellType::strategy_type LinkedCellType::
+strategy_default_value ()
+{
+  return strategy_type (0LL);
+}
+
 
 // ThermostatsType
 // 
@@ -2385,6 +2421,23 @@ void InputData::
 parameters (::std::unique_ptr< parameters_type > x)
 {
   this->parameters_.set (std::move (x));
+}
+
+
+// strategy
+// 
+
+strategy::
+strategy (::xml_schema::integer v): ::xsd::cxx::tree::fundamental_base< ::xml_schema::integer, char, ::xml_schema::simple_type > (v)
+{
+}
+
+strategy::
+strategy (const strategy& v,
+          ::xml_schema::flags f,
+          ::xml_schema::container* c)
+: ::xsd::cxx::tree::fundamental_base< ::xml_schema::integer, char, ::xml_schema::simple_type > (v, f, c)
+{
 }
 
 
@@ -4661,7 +4714,8 @@ LinkedCellType (const domain_size_type& domain_size,
 : ::xml_schema::type (),
   domain_size_ (domain_size, this),
   cutoff_radius_ (cutoff_radius, this),
-  boundary_condition_ (this)
+  boundary_condition_ (this),
+  strategy_ (this)
 {
 }
 
@@ -4671,7 +4725,8 @@ LinkedCellType (::std::unique_ptr< domain_size_type > domain_size,
 : ::xml_schema::type (),
   domain_size_ (std::move (domain_size), this),
   cutoff_radius_ (cutoff_radius, this),
-  boundary_condition_ (this)
+  boundary_condition_ (this),
+  strategy_ (this)
 {
 }
 
@@ -4682,7 +4737,8 @@ LinkedCellType (const LinkedCellType& x,
 : ::xml_schema::type (x, f, c),
   domain_size_ (x.domain_size_, f, this),
   cutoff_radius_ (x.cutoff_radius_, f, this),
-  boundary_condition_ (x.boundary_condition_, f, this)
+  boundary_condition_ (x.boundary_condition_, f, this),
+  strategy_ (x.strategy_, f, this)
 {
 }
 
@@ -4693,7 +4749,8 @@ LinkedCellType (const ::xercesc::DOMElement& e,
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
   domain_size_ (this),
   cutoff_radius_ (this),
-  boundary_condition_ (this)
+  boundary_condition_ (this),
+  strategy_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -4754,6 +4811,20 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // strategy
+    //
+    if (n.name () == "strategy" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< strategy_type > r (
+        strategy_traits::create (i, f, this));
+
+      if (!this->strategy_)
+      {
+        this->strategy_.set (::std::move (r));
+        continue;
+      }
+    }
+
     break;
   }
 
@@ -4788,6 +4859,7 @@ operator= (const LinkedCellType& x)
     this->domain_size_ = x.domain_size_;
     this->cutoff_radius_ = x.cutoff_radius_;
     this->boundary_condition_ = x.boundary_condition_;
+    this->strategy_ = x.strategy_;
   }
 
   return *this;
@@ -5676,6 +5748,41 @@ operator= (const InputData& x)
 InputData::
 ~InputData ()
 {
+}
+
+// strategy
+//
+
+strategy::
+strategy (const ::xercesc::DOMElement& e,
+          ::xml_schema::flags f,
+          ::xml_schema::container* c)
+: ::xsd::cxx::tree::fundamental_base< ::xml_schema::integer, char, ::xml_schema::simple_type > (e, f, c)
+{
+}
+
+strategy::
+strategy (const ::xercesc::DOMAttr& a,
+          ::xml_schema::flags f,
+          ::xml_schema::container* c)
+: ::xsd::cxx::tree::fundamental_base< ::xml_schema::integer, char, ::xml_schema::simple_type > (a, f, c)
+{
+}
+
+strategy::
+strategy (const ::std::string& s,
+          const ::xercesc::DOMElement* e,
+          ::xml_schema::flags f,
+          ::xml_schema::container* c)
+: ::xsd::cxx::tree::fundamental_base< ::xml_schema::integer, char, ::xml_schema::simple_type > (s, e, f, c)
+{
+}
+
+strategy* strategy::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class strategy (*this, f, c);
 }
 
 #include <istream>
@@ -6747,6 +6854,18 @@ operator<< (::xercesc::DOMElement& e, const LinkedCellType& i)
 
     s << *i.boundary_condition ();
   }
+
+  // strategy
+  //
+  if (i.strategy ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "strategy",
+        e));
+
+    s << *i.strategy ();
+  }
 }
 
 void
@@ -7241,6 +7360,25 @@ simulation (const ::InputData& s,
 
   ::simulation (*d, s, f);
   return d;
+}
+
+void
+operator<< (::xercesc::DOMElement& e, const strategy& i)
+{
+  e << static_cast< const ::xsd::cxx::tree::fundamental_base< ::xml_schema::integer, char, ::xml_schema::simple_type >& > (i);
+}
+
+void
+operator<< (::xercesc::DOMAttr& a, const strategy& i)
+{
+  a << static_cast< const ::xsd::cxx::tree::fundamental_base< ::xml_schema::integer, char, ::xml_schema::simple_type >& > (i);
+}
+
+void
+operator<< (::xml_schema::list_stream& l,
+            const strategy& i)
+{
+  l << static_cast< const ::xsd::cxx::tree::fundamental_base< ::xml_schema::integer, char, ::xml_schema::simple_type >& > (i);
 }
 
 #include <xsd/cxx/post.hxx>

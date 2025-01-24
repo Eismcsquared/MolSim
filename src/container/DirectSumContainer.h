@@ -25,13 +25,14 @@ class DirectSumContainer: public ParticleContainer{
    /**
     * Destructor.
     */
-   ~DirectSumContainer();
+   ~DirectSumContainer() override;
 
 
     /**
      * Update the force between all particles.
+     * @param strategy The parallelization strategy. Not supported for this class.
      */
-    void updateF() override;
+    void updateF(int strategy) override;
 
 
     /**

@@ -268,14 +268,18 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
         std::string output = input->parameters().output().present() ? input->parameters().output().get() : SimulationParameters::output_default_value();
         std::string format = input->parameters().format().present() ? input->parameters().format().get() : SimulationParameters::format_default_value();
         unsigned int frequency = input->parameters().frequency().present() ? input->parameters().frequency().get() : SimulationParameters::frequency_default_value();
-
+        int strategy = 0;
+        if (input->parameters().linked_cell().present() && input->parameters().linked_cell().get().strategy().present()) {
+            strategy = static_cast<int>(input->parameters().linked_cell().get().strategy().get());
+        }
         std::unique_ptr<Simulation> simulation =  std::make_unique<Simulation>(
                     container,
                     end_time,
                     delta_t,
                     output,
                     format,
-                    frequency
+                    frequency,
+                    strategy
                 );
 
         if (input->parameters().store().present()) {
@@ -284,7 +288,7 @@ std::unique_ptr<Simulation> XMLReader::readXML(std::vector<Particle> &particles,
 
         if (input->parameters().statistics().present()) {
             StatisticsType s = input->parameters().statistics().get();
-            auto axisMap = [](AxisType a) {
+            auto axisMap = [](const AxisType& a) {
                 switch (a) {
                     case AxisType::x: return X;
                     case AxisType::y: return Y;
