@@ -153,13 +153,6 @@ void LinkedCellContainer::updateF() {
         }
     }
 
-    // for(int thread_id = 0; thread_id < THREADS; thread_id++){
-    //     for (size_t i = 0; i < particles.size(); ++i) {
-    //         particles[i].addForce(thread_forces[thread_id][i]);
-    //     }
-    //     thread_forces[thread_id].assign(particles.size(), {0.0, 0.0, 0.0});
-    // }
-        
 }
 
 
@@ -186,7 +179,7 @@ void LinkedCellContainer::updateFCells(int c1, int c2) {
         }
     }
 
-    //#pragma omp parallel shared(v1, v2, particles, cutoff, force, offsets, thread_forces) num_threads(InnerThreads)
+    #pragma op parallel shared(v1, v2, particles, cutoff, force, offsets, thread_forces) num_threads(InnerThreads)
     {   
         for (int i : v1) {
             for (int j : v2) {
