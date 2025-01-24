@@ -47,7 +47,7 @@
         </cuboid>
     </objects>
     <parameters>
-        <end_time>1</end_time>
+        <end_time>100</end_time>
         <delta_t>0.0005</delta_t>
         <output>assignment5</output>
         <frequency>50</frequency>
