@@ -4,7 +4,7 @@
 #include <array>
 #include "utils/ArrayUtils.h"
 #include "cmath"
-#include <omp.h>
+#include <omp.h>    
 
 
 #define THREADS 4
@@ -101,16 +101,10 @@ void LinkedCellContainer::updateF() {
 
     spdlog::trace("Try to use {} threads", THREADS);
 
-    // thread local forces
-    std::vector<std::vector<std::array<double, 3>>> thread_forces(THREADS, std::vector<std::array<double, 3>>(particles.size(), {0.0, 0.0, 0.0}));
-     
-    #pragma omp parallel default(none) shared(thread_forces, particles, cells, domainCells, cutoff, force) num_threads(THREADS)
-    {           
+    #pragma omp parallel default(none) shared( particles, cells, domainCells, cutoff, force) num_threads(THREADS)
+    {
         #pragma omp for schedule(guided, 4)
         for(int i: domainCells){
-
-            // get the thread id
-            int thread_id = omp_get_thread_num();
 
             std::vector<int> pointCellParticles = cells[i].getParticleIndices();
 
@@ -122,51 +116,52 @@ void LinkedCellContainer::updateF() {
             // update forces between neighboring cells
             for(int j = 0 ; j < neighborList.size(); j++){
                 if(i < neighborList[j]){
-                    updateFCells(i, neighborList[j], thread_id, thread_forces);
+                    updateFCells(i, neighborList[j]);
                 }
             }
             
 
-            // update forces within a cell. if there are many particles in a cell, use openmp to parallelize the calculation
-            //default is 1 thread
-            #pragma omp parallel num_threads(InnerThreads)
-            {
-                for(unsigned long j = 0; j < pointCellParticles.size(); ++j){
-                    for(unsigned long k = j + 1; k < pointCellParticles.size(); ++k){
+            for(unsigned long j = 0; j < pointCellParticles.size(); ++j){
+                for(unsigned long k = j + 1; k < pointCellParticles.size(); ++k){
 
-                        if (particles[pointCellParticles[j]].isStationary() && particles[pointCellParticles[k]].isStationary()) continue;
+                    if (particles[pointCellParticles[j]].isStationary() && particles[pointCellParticles[k]].isStationary()) continue;
 
-                        double distSquare = ArrayUtils::L2NormSquare(particles[pointCellParticles[j]].getX() - particles[pointCellParticles[k]].getX());
+                    double distSquare = ArrayUtils::L2NormSquare(particles[pointCellParticles[j]].getX() - particles[pointCellParticles[k]].getX());
 
-                        // if the distance is greater than the cutoff, skip the calculation
-                        if(distSquare > cutoff * cutoff) continue;
+                    // if the distance is greater than the cutoff, skip the calculation
+                    if(distSquare > cutoff * cutoff) continue;
 
-                        std::array<double, 3> forceIJ = force->force(particles[pointCellParticles[j]], particles[pointCellParticles[k]]);
-                        
-                        for(int d = 0; d < 3; d++){
-                            thread_forces[thread_id][pointCellParticles[j]][d] += -1 * forceIJ[d];
-                            thread_forces[thread_id][pointCellParticles[k]][d] += forceIJ[d];
-                        }
-                        
-                    }
+                    std::array<double, 3> forceIJ = force->force(particles[pointCellParticles[j]], particles[pointCellParticles[k]]);
+                    
+
+                    particles[pointCellParticles[j]].lock();
+                    particles[pointCellParticles[j]].addForce(-1 * forceIJ);
+                    particles[pointCellParticles[j]].unlock();
+
+                    particles[pointCellParticles[k]].lock();
+                    particles[pointCellParticles[k]].addForce(forceIJ);
+                    particles[pointCellParticles[k]].unlock();
+
+                    
                 }
             }
+            
             
 
         }
     }
 
-    for(int thread_id = 0; thread_id < THREADS; thread_id++){
-        for (size_t i = 0; i < particles.size(); ++i) {
-            particles[i].addForce(thread_forces[thread_id][i]);
-        }
-        thread_forces[thread_id].assign(particles.size(), {0.0, 0.0, 0.0});
-    }
+    // for(int thread_id = 0; thread_id < THREADS; thread_id++){
+    //     for (size_t i = 0; i < particles.size(); ++i) {
+    //         particles[i].addForce(thread_forces[thread_id][i]);
+    //     }
+    //     thread_forces[thread_id].assign(particles.size(), {0.0, 0.0, 0.0});
+    // }
         
 }
 
 
-void LinkedCellContainer::updateFCells(int c1, int c2, int thread_id,  std::vector<std::vector<std::array<double, 3>>>& thread_forces ) {
+void LinkedCellContainer::updateFCells(int c1, int c2) {
 
     std::vector<int> v1 = cells[c1].getParticleIndices();
     std::vector<int> v2 = cells[c2].getParticleIndices();   
@@ -203,19 +198,17 @@ void LinkedCellContainer::updateFCells(int c1, int c2, int thread_id,  std::vect
 
                         std::array<double, 3> pos = particles[i].getX();
 
+                        particles[i].lock();
                         particles[i].setX(pos + offset); 
                         std::array<double, 3> forceIJ = force->force(particles[i], particles[j]);
                         particles[i].setX(pos);
 
-                        for(int d = 0; d < 3; d++){
-                            particles[i].lock();
-                            particles[i].addForce(-1 * forceIJ);
-                            particles[i].unlock();
+                        particles[i].addForce(-1 * forceIJ);
+                        particles[i].unlock();
 
-
-                            thread_forces[thread_id][i][d] += -1 * forceIJ[d];
-                            thread_forces[thread_id][j][d] += forceIJ[d];
-                        }
+                        particles[j].lock();
+                        particles[j].addForce(forceIJ);
+                        particles[j].unlock();
                     }
                 }
             }
