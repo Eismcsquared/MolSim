@@ -89,19 +89,29 @@ void LinkedCellContainer::updateF(int strategy) {
 
     resetF();
 
-    for(int i: domainCells){
-        std::vector<int> pointCellParticles = cells[i].getParticleIndices();
-
-        // update forces between neighbouring cells
-        auto neighbors = cells[i].getNeighbours();
-        for(auto & neighbor : neighbors){
-            // make sure every pair of cells is only considered once
-            if (i < neighbor) {
-                updateFCells(neighbor, i);
+    // update forces between neighbouring cells
+    if (!strategy) {
+        for(int i: domainCells) {
+            auto neighbors = cells[i].getNeighbours();
+            for (auto &neighbor: neighbors) {
+                // make sure every pair of cells is only considered once
+                if (i < neighbor) {
+                    updateFCells(neighbor, i);
+                }
             }
         }
+    } else {
+        for (const std::vector<Pair>& pairs : cellPairs) {
+            for (const Pair &pair : pairs) {
+                updateFCells(pair.first, pair.second);
+            }
+        }
+    }
 
-        // update forces within a cell.
+    // update forces within a cell.
+    for (int i : domainCells) {
+        std::vector<int> pointCellParticles = cells[i].getParticleIndices();
+
         for(unsigned long j = 0; j < pointCellParticles.size(); ++j){
             for(unsigned long k = j + 1; k < pointCellParticles.size(); ++k){
 
