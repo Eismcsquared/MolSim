@@ -78,6 +78,7 @@ LinkedCellContainer::LinkedCellContainer(std::vector<Particle>& particles, std::
 
 
 void LinkedCellContainer::updateV(double delta_t) {
+    #pragma omp parallel for schedule(dynamic) default(none) shared(particles, cells, delta_t)
     for (int i: domainCells) {
         for (int p: cells[i].getParticleIndices()) {
             particles[p].updateV(delta_t);
@@ -91,12 +92,16 @@ void LinkedCellContainer::updateF(int strategy) {
 
     // update forces between neighbouring cells
     if (!strategy) {
-        for(int i: domainCells) {
-            auto neighbors = cells[i].getNeighbours();
-            for (auto &neighbor: neighbors) {
-                // make sure every pair of cells is only considered once
-                if (i < neighbor) {
-                    updateFCells(neighbor, i);
+        #pragma omp parallel default(none) shared( particles, cells, domainCells, cutoff, force)
+        {
+            #pragma omp for schedule(guided, 4)
+            for (int i: domainCells) {
+                auto neighbors = cells[i].getNeighbours();
+                for (auto &neighbor: neighbors) {
+                    // make sure every pair of cells is only considered once
+                    if (i < neighbor) {
+                        updateFCells(neighbor, i, true);
+                    }
                 }
             }
         }
@@ -109,32 +114,40 @@ void LinkedCellContainer::updateF(int strategy) {
         }
     }
 
-    // update forces within a cell.
-    for (int i : domainCells) {
-        std::vector<int> pointCellParticles = cells[i].getParticleIndices();
+    #pragma omp parallel default(none) shared( particles, cells, domainCells, cutoff, force)
+    {
+        #pragma omp for schedule(guided, 4)
+        // update forces within a cell.
+        for (int i: domainCells) {
+            std::vector<int> pointCellParticles = cells[i].getParticleIndices();
 
-        for(unsigned long j = 0; j < pointCellParticles.size(); ++j){
-            for(unsigned long k = j + 1; k < pointCellParticles.size(); ++k){
+            for (unsigned long j = 0; j < pointCellParticles.size(); ++j) {
+                for (unsigned long k = j + 1; k < pointCellParticles.size(); ++k) {
 
-                if (particles[pointCellParticles[j]].isStationary() && particles[pointCellParticles[k]].isStationary()) continue;
+                    if (particles[pointCellParticles[j]].isStationary() &&
+                        particles[pointCellParticles[k]].isStationary())
+                        continue;
 
-                double distSquare = ArrayUtils::L2NormSquare(particles[pointCellParticles[j]].getX() - particles[pointCellParticles[k]].getX());
+                    double distSquare = ArrayUtils::L2NormSquare(
+                            particles[pointCellParticles[j]].getX() - particles[pointCellParticles[k]].getX());
 
-                // if the distance is greater than the cutoff, skip the calculation
-                if(distSquare > cutoff * cutoff) continue;
+                    // if the distance is greater than the cutoff, skip the calculation
+                    if (distSquare > cutoff * cutoff) continue;
 
-                std::array<double, 3> forceIJ = force->force(particles[pointCellParticles[j]], particles[pointCellParticles[k]]);
+                    std::array<double, 3> forceIJ = force->force(particles[pointCellParticles[j]],
+                                                                 particles[pointCellParticles[k]]);
 
-                particles[pointCellParticles[j]].addForce(-1 * forceIJ);
-                particles[pointCellParticles[k]].addForce(forceIJ);
+                    particles[pointCellParticles[j]].addForce(-1 * forceIJ);
+                    particles[pointCellParticles[k]].addForce(forceIJ);
+                }
             }
+
         }
-        
     }
 
 }
 
-void LinkedCellContainer::updateFCells(int c1, int c2){
+void LinkedCellContainer::updateFCells(int c1, int c2, bool synchronized){
 
     std::vector<int> v1 = cells[c1].getParticleIndices();
     std::vector<int> v2 = cells[c2].getParticleIndices();
@@ -143,16 +156,27 @@ void LinkedCellContainer::updateFCells(int c1, int c2){
     std::array<int, 3> idx3D2 = get3DIndex(c2);
 
     // Consider periodic boundary condition in the force calculation.
-    std::vector<std::array<double, 3>> offsets;
+    std::vector<std::array<double, 3>> offsets{};
+    std::array<std::vector<double>, 3> offsetsDirection{};
 
-    for (int z = -1 * (boundaryConditions[4] == PERIODIC); z <= (boundaryConditions[5] == PERIODIC); ++z) {
-        for (int y = -1 * (boundaryConditions[2] == PERIODIC); y <= (boundaryConditions[3] == PERIODIC); ++y) {
-            for (int x = -1 * (boundaryConditions[0] == PERIODIC); x <= (boundaryConditions[1] == PERIODIC); ++x) {
-                if (std::abs(idx3D1[0] + x * nCells[0] - idx3D2[0]) <= 1 &&
-                    std::abs(idx3D1[1] + y * nCells[1] - idx3D2[1]) <= 1 &&
-                    std::abs(idx3D1[2] + z * nCells[2] - idx3D2[2]) <= 1 ) {
-                    offsets.push_back({x * domainSize[0], y * domainSize[1], z * domainSize[2]});
-                }
+    for (int i = 0; i < 3; ++i) {
+        if (std::abs(idx3D1[i] - idx3D2[i]) <= 1) {
+            offsetsDirection[i].push_back(0);
+        }
+        if (std::abs(idx3D1[i] - idx3D2[i]) == nCells[i] - 1 && boundaryConditions[2 * i] == PERIODIC) {
+            if (idx3D1[i] >= idx3D2[i]) {
+                offsetsDirection[i].push_back(-domainSize[i]);
+            }
+            if (idx3D1[i] <= idx3D2[i]) {
+                offsetsDirection[i].push_back(domainSize[i]);
+            }
+        }
+    }
+
+    for (double offsetX: offsetsDirection[0]) {
+        for (double offsetY: offsetsDirection[1]) {
+            for (double offsetZ: offsetsDirection[2]) {
+                offsets.push_back({offsetX, offsetY, offsetZ});
             }
         }
     }
@@ -169,13 +193,22 @@ void LinkedCellContainer::updateFCells(int c1, int c2){
                 if(distSquare <= cutoff * cutoff) {
 
                     std::array<double, 3> pos = particles[i].getX();
+                    Particle mock(particles[i]);
+                    mock.setX(pos + offset);
+                    std::array<double, 3> forceIJ = force->force(mock, particles[j]);
 
-                    particles[i].setX(pos + offset);
-                    std::array<double, 3> forceIJ = force->force(particles[i], particles[j]);
-                    particles[i].setX(pos);
-
+                    if (synchronized) {
+                        particles[i].lock();
+                    }
                     particles[i].addForce( -1 * forceIJ);
+                    if (synchronized) {
+                        particles[i].unlock();
+                        particles[j].lock();
+                    }
                     particles[j].addForce(forceIJ);
+                    if (synchronized) {
+                        particles[j].unlock();
+                    }
                 }
             }
         }
@@ -184,6 +217,7 @@ void LinkedCellContainer::updateFCells(int c1, int c2){
 
 void LinkedCellContainer::updateX(double delta_t){
 
+    #pragma omp parallel for schedule(dynamic)
     for (int i = 0; i < particles.size(); i++) {
 
         if (particles[i].isInDomain()) {
@@ -201,7 +235,11 @@ void LinkedCellContainer::updateX(double delta_t){
                     cells[cellidx_after].addIndex(i);
                 } else {
                     particles[i].removeFromDomain();
-                    particleNumber--;
+                    #pragma omp critical
+                    {
+                        particleNumber--;
+                    }
+
                 }
             }
         }
@@ -213,135 +251,116 @@ void LinkedCellContainer::updateX(double delta_t){
 void LinkedCellContainer::initializePairs() {
     for (int deltaZ = -1; deltaZ <= 1; ++deltaZ) {
         for (int deltaY = -1; deltaY <= 1; ++deltaY) {
-            std::vector<Pair> pairsRight{};
-            std::vector<Pair> pairsLeft{};
+            std::vector<Pair> pairsRight1{};
+            std::vector<Pair> pairsRight2{};
 
-            for (int x = 0; x < nCells[0]; x += 2) {
+            for (int x = 0; x < nCells[0] - 1; x += 2) {
                 for (int y = 0; y < nCells[1]; ++y) {
                     for (int z = 0; z < nCells[2]; ++z) {
-                        int first = get1DIndex({x, y, z});
-                        std::array<int, 3> second3DRight = {x + 1, y + deltaY, z + deltaZ};
-                        std::array<int, 3> second3DLeft = {x - 1, y + deltaY, z + deltaZ};
-                        for (int i = 0; i < 3; ++i) {
-                            if (boundaryConditions[2 * i] == PERIODIC && (i != 0 || nCells[0] % 2 == 0)) {
-                                second3DRight[i] = (second3DRight[i] + nCells[i]) % nCells[i];
-                                second3DLeft[i] = (second3DLeft[i] + nCells[i]) % nCells[i];
-                            }
+                        int first1 = get1DIndex({x, y, z});
+                        int second1 = get1DIndex(moduloCellNumber({x + 1, y + deltaY, z + deltaZ}));
+                        int first2 = get1DIndex({x + 1, y, z});
+                        int second2 = get1DIndex(moduloCellNumber({x + 2, y + deltaY, z + deltaZ}));
+                        if (isDomainCell(second1)) {
+                            pairsRight1.push_back(Pair{first1, second1});
                         }
-                        if (second3DRight[0] >= 0 && second3DRight[0] < nCells[0] && second3DRight[1] >= 0 && second3DRight[1] < nCells[1] && second3DRight[2] >= 0 && second3DRight[2] < nCells[2]) {
-                            int secondRight = get1DIndex(second3DRight);
-                            pairsRight.push_back(Pair{first, secondRight});
-                        }
-                        if (second3DLeft[0] >= 0 && second3DLeft[0] < nCells[0] && second3DLeft[1] >= 0 && second3DLeft[1] < nCells[1] && second3DLeft[2] >= 0 && second3DLeft[2] < nCells[2]) {
-                            int secondLeft = get1DIndex(second3DLeft);
-                            pairsLeft.push_back(Pair{first, secondLeft});
+                        if (isDomainCell(second2)) {
+                            pairsRight2.push_back(Pair{first2, second2});
                         }
                     }
                 }
             }
+            cellPairs.push_back(pairsRight1);
+            cellPairs.push_back(pairsRight2);
+
             if (boundaryConditions[0] == PERIODIC && nCells[0] % 2 == 1) {
                 std::vector<Pair> pairsBoundary{};
                 for (int y = 0; y < nCells[1]; ++y) {
                     for (int z = 0; z < nCells[2]; ++z) {
-                        int first = get1DIndex({0, y, z});
-                        std::array<int, 3> second3D = {nCells[0] - 1, y + deltaY, z + deltaZ};
-                        for (int i = 1; i < 3; ++i) {
-                            if (boundaryConditions[2 * i] == PERIODIC) {
-                                second3D[i] = (second3D[i] + nCells[i]) % nCells[i];
-                            }
-                        }
-                        if (second3D[1] >= 0 && second3D[1] < nCells[1] && second3D[2] >= 0 && second3D[2] < nCells[2]) {
-                            int second = get1DIndex(second3D);
+                        int first = get1DIndex({nCells[0] - 1, y, z});
+                        int second = get1DIndex(moduloCellNumber({0, y + deltaY, z + deltaZ}));
+                        if (isDomainCell(second)) {
                             pairsBoundary.push_back(Pair{first, second});
                         }
                     }
                 }
                 cellPairs.push_back(pairsBoundary);
             }
-            cellPairs.push_back(pairsRight);
-            cellPairs.push_back(pairsLeft);
         }
-        std::vector<Pair> pairsUp{};
-        std::vector<Pair> pairsDown{};
-        for (int y = 0; y < nCells[1]; y += 2) {
+
+        std::vector<Pair> pairsUp1;
+        std::vector<Pair> pairsUp2;
+
+        for (int y = 0; y < nCells[1] - 1; y += 2) {
             for (int z = 0; z < nCells[2]; ++z) {
                 for (int x = 0; x < nCells[0]; ++x) {
-                    int first = get1DIndex({x, y, z});
-                    std::array<int, 3> second3DUp = {x, y + 1, z + deltaZ};
-                    std::array<int, 3> second3DDown = {x, y - 1, z + deltaZ};
-                    for (int i = 1; i < 3; ++i) {
-                        if (boundaryConditions[2 * i] == PERIODIC && (i != 1 || nCells[1] % 2 == 0)) {
-                            second3DUp[i] = (second3DUp[i] + nCells[i]) % nCells[i];
-                            second3DDown[i] = (second3DDown[i] + nCells[i]) % nCells[i];
-                        }
+                    int first1 = get1DIndex({x, y, z});
+                    int second1 = get1DIndex(moduloCellNumber({x, y + 1, z + deltaZ}));
+                    int first2 = get1DIndex({x, y + 1, z});
+                    int second2 = get1DIndex(moduloCellNumber({x, y + 2, z + deltaZ}));
+                    if (isDomainCell(second1)) {
+                        pairsUp1.push_back(Pair{first1, second1});
                     }
-                    if (second3DUp[1] >= 0 && second3DUp[1] < nCells[1] && second3DUp[2] >= 0 && second3DUp[2] < nCells[2]) {
-                        int secondRight = get1DIndex(second3DUp);
-                        pairsUp.push_back(Pair{first, secondRight});
-                    }
-                    if (second3DDown[1] >= 0 && second3DDown[1] < nCells[1] && second3DDown[2] >= 0 && second3DDown[2] < nCells[2]) {
-                        int secondLeft = get1DIndex(second3DDown);
-                        pairsDown.push_back(Pair{first, secondLeft});
+                    if (isDomainCell(second2)) {
+                        pairsUp2.push_back(Pair{first2, second2});
                     }
                 }
             }
         }
+
+        cellPairs.push_back(pairsUp1);
+        cellPairs.push_back(pairsUp2);
+
         if (boundaryConditions[2] == PERIODIC && nCells[1] % 2 == 1) {
             std::vector<Pair> pairsBoundary{};
             for (int x = 0; x < nCells[0]; ++x) {
                 for (int z = 0; z < nCells[2]; ++z) {
-                    int first = get1DIndex({x, 0, z});
-                    std::array<int, 3> second3D = {x, nCells[1] - 1, z + deltaZ};
-                    if (boundaryConditions[4] == PERIODIC) {
-                        second3D[2] = (second3D[2] + nCells[2]) % nCells[2];
-                    }
-                    if (second3D[2] >= 0 && second3D[2] < nCells[2]) {
-                        int second = get1DIndex(second3D);
+                    int first = get1DIndex({x, nCells[1] - 1, z});
+                    int second = get1DIndex(moduloCellNumber({x, 0, z + deltaZ}));
+                    if (isDomainCell(second)) {
                         pairsBoundary.push_back(Pair{first, second});
                     }
                 }
             }
             cellPairs.push_back(pairsBoundary);
         }
-        cellPairs.push_back(pairsUp);
-        cellPairs.push_back(pairsDown);
     }
-    std::vector<Pair> pairsFront{};
-    std::vector<Pair> pairsBack{};
-    for (int z = 0; z < nCells[2]; z += 2) {
+    std::vector<Pair> pairsFront1{};
+    std::vector<Pair> pairsFront2{};
+
+    for (int z = 0; z < nCells[2] - 1; z += 2) {
         for (int x = 0; x < nCells[0]; ++x) {
             for (int y = 0; y < nCells[1]; ++y) {
-                int first = get1DIndex({x, y, z});
-                std::array<int, 3> second3DFront = {x, y, z + 1};
-                std::array<int, 3> second3DBack = {x, y, z - 1};
-                if (boundaryConditions[4] == PERIODIC && nCells[2] % 2 == 0) {
-                    second3DBack[2] = (second3DBack[2] + nCells[2]) % nCells[2];
+                int first1 = get1DIndex({x, y, z});
+                int second1 = get1DIndex(moduloCellNumber({x, y, z + 1}));
+                int first2 = get1DIndex({x, y, z + 1});
+                int second2 = get1DIndex(moduloCellNumber({x, y, z + 2}));
+                if (isDomainCell(second1)) {
+                    pairsFront1.push_back(Pair{first1, second1});
                 }
-                if (second3DFront[2] >= 0 && second3DFront[2] < nCells[2]) {
-                    int secondFront = get1DIndex(second3DFront);
-                    pairsFront.push_back(Pair{first, secondFront});
-                }
-                if (second3DBack[2] >= 0 && second3DBack[2] < nCells[2]) {
-                    int secondBack = get1DIndex(second3DBack);
-                    pairsBack.push_back(Pair{first, secondBack});
+                if (isDomainCell(second2)) {
+                    pairsFront2.push_back(Pair{first2, second2});
                 }
             }
         }
     }
+
+    cellPairs.push_back(pairsFront1);
+    cellPairs.push_back(pairsFront2);
+
     if (boundaryConditions[4] == PERIODIC && nCells[2] % 2 == 1) {
         std::vector<Pair> pairsBoundary{};
         for (int x = 0; x < nCells[0]; ++x) {
             for (int y = 0; y < nCells[1]; ++y) {
-                int first = get1DIndex({x, y, 0});
-                std::array<int, 3> second3D = {x, y, nCells[2] - 1};
-                int second = get1DIndex(second3D);
-                pairsBoundary.push_back(Pair{first, second});
+                int first = get1DIndex({x, y, nCells[2] - 1});
+                int second = get1DIndex(moduloCellNumber({x, y, 0}));
+                if (isDomainCell(second)) {
+                    pairsBoundary.push_back(Pair{first, second});
+                }
             }
         }
         cellPairs.push_back(pairsBoundary);
     }
-    cellPairs.push_back(pairsFront);
-    cellPairs.push_back(pairsBack);
 }
 
 // only used once in the constructor.
@@ -376,6 +395,9 @@ std::set<int> LinkedCellContainer::getNeighborCells(int cellIndex) {
 
 
 int LinkedCellContainer::get1DIndex(std::array<int, 3> index3D) {
+    if (index3D[0] < -1 || index3D[0] > nCells[0] || index3D[1] < -1 || index3D[1] > nCells[1] || index3D[2] < -1 || index3D[2] > nCells[2]) {
+        return -1;
+    }
     return (index3D[2] + 1) * (nCells[0] + 2) * (nCells[1] + 2) + (index3D[1] + 1) * (nCells[0] + 2) + index3D[0] + 1;
 }
 
@@ -468,6 +490,7 @@ void LinkedCellContainer::removeFromHalo(Direction direction) {
 }
 
 void LinkedCellContainer::updateHalo(Direction direction, BoundaryCondition boundaryCondition, double deltaT) {
+    #pragma omp parallel for schedule(dynamic)
     for(int i : haloCells[direction]) {
         for (int p : cells[i].getParticleIndices()) {
             std::array<double, 3> pos = particles[p].getX();

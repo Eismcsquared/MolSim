@@ -65,13 +65,10 @@ TEST_F(MembraneTest, CreateParticle) {
                 EXPECT_FALSE(particles[i].isDiagonalNeighbour(particles[j]));
             }
         }
-
-        if (::testing::Test::HasFailure()) {
-            test_logger->info("Membrane - Create particles test failed\n\n");
-        } else {
-            test_logger->info("Membrane - Create particles test passed\n\n");
-        }
     }
-
-
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("Membrane - Create particles test failed\n\n");
+    } else {
+        test_logger->info("Membrane - Create particles test passed\n\n");
+    }
 }

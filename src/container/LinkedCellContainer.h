@@ -81,6 +81,20 @@ private:
      * Initialize the pairs of cells.
      */
     void initializePairs();
+
+    /**
+     * Helper function, which takes modulo domain cell number of a given 3d cell index component-wise, if the boundary condition in
+     * the corresponding direction is periodic.
+     * @param index3D The 3D cell index.
+     * @return component-wise modulo of the 3D index with respect to the domain cell number, which is only applied to directions with periodic boundary condition
+     */
+    inline std::array<int, 3> moduloCellNumber(const std::array<int, 3> &index3D) {
+        return std::array<int, 3>{
+            boundaryConditions[0] == PERIODIC ? (index3D[0] % nCells[0] + nCells[0]) % nCells[0] : index3D[0],
+            boundaryConditions[2] == PERIODIC ? (index3D[1] % nCells[1] + nCells[1]) % nCells[1] : index3D[1],
+            boundaryConditions[4] == PERIODIC ? (index3D[2] % nCells[2] + nCells[2]) % nCells[2] : index3D[2]
+        };
+    }
 public:
 
      /**
@@ -195,8 +209,9 @@ public:
      * @brief Update the forces between particles in two cells.
      * @param c1 The index of the first cell.
      * @param v2 The index of the second cell.
+     * @param synchronized Specifies whether the force computation should be synchronized.
      */
-    void updateFCells(int c1, int c2);
+    void updateFCells(int c1, int c2, bool synchronized = false);
 
     /**
      * Check whether a cell is a boundary cell.

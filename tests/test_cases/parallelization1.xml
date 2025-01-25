@@ -46,7 +46,7 @@
     </objects>
     <parameters>
         <end_time>0.5</end_time>
-        <delta_t>0.005</delta_t>
+        <delta_t>0.0005</delta_t>
         <force>Lennard-Jones</force>
         <g>
             <z>-12.44</z>

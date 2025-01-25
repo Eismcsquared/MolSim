@@ -474,39 +474,49 @@ TEST_F(LinkedCellContainerTest, ForceCalculationStationary) {
 TEST_F(LinkedCellContainerTest, CellPairs) {
     std::string testName = "LinkedCellContainer - Cell pairs test";
     test_logger->info(testName);
-    std::vector<Particle> p;
-    std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
-    LinkedCellContainer container(p, f, {15, 15, 12}, 3, {PERIODIC, PERIODIC, OUTFLOW, OUTFLOW, REFLECTING, REFLECTING});
-    std::vector<std::vector<Pair>> cellPairs = container.getCellPairs();
+    std::vector<Particle> p1;
+    std::unique_ptr<Force> f1 = std::make_unique<LennardJonesForce>();
+    LinkedCellContainer container1(p1, f1, {15, 15, 12}, 3, {PERIODIC, PERIODIC, OUTFLOW, OUTFLOW, REFLECTING, REFLECTING});
 
-    unsigned long pairCount = 0;
-    std::vector<Pair> allPairs{};
-    for (const auto &pairs: cellPairs) {
-        std::set<int> cellSet{};
-        for (const Pair &pair: pairs) {
-            std::set<int> firstNeighbours = container.getCells()[pair.first].getNeighbours();
+    test_logger->info(testName);
+    std::vector<Particle> p2;
+    std::unique_ptr<Force> f2 = std::make_unique<LennardJonesForce>();
+    LinkedCellContainer container2(p2, f2, {10, 18, 12}, 3, {PERIODIC, PERIODIC, PERIODIC, PERIODIC, PERIODIC, PERIODIC});
 
-            // check each pair is neighbouring.
-            EXPECT_TRUE(firstNeighbours.count(pair.second) > 0);
+    auto test = [](LinkedCellContainer& container, unsigned long count) {
+        unsigned long pairCount = 0;
+        std::vector<Pair> allPairs{};
+        std::vector<std::vector<Pair>> cellPairs = container.getCellPairs();
+        for (const auto &pairs: cellPairs) {
+            std::set<int> cellSet{};
+            for (const Pair &pair: pairs) {
+                std::set<int> firstNeighbours = container.getCells()[pair.first].getNeighbours();
 
-            cellSet.insert(pair.first);
-            cellSet.insert(pair.second);
+                // check each pair is neighbouring.
+                EXPECT_TRUE(firstNeighbours.count(pair.second) > 0);
 
-            allPairs.push_back(pair);
+                cellSet.insert(pair.first);
+                cellSet.insert(pair.second);
+
+                allPairs.push_back(pair);
+            }
+            // check that no cell appear twice in a partition.
+            EXPECT_EQ(pairs.size() * 2, cellSet.size());
+
+            pairCount += pairs.size();
         }
-        // check that no cell appear twice in a partition.
-        EXPECT_EQ(pairs.size() * 2, cellSet.size());
 
-        pairCount += pairs.size();
-    }
+        // Check that all pairs are present.
+        EXPECT_EQ(count, pairCount);
 
-    // Check that all pairs are present.
-    EXPECT_EQ(925, pairCount);
+        for (const Pair &pair: allPairs) {
+            // Check that every pair appear exactly once.
+            EXPECT_EQ(1, std::count(allPairs.begin(), allPairs.end(), pair));
+        }
+    };
 
-    for (const Pair &pair: allPairs) {
-        // Check that every pair appear exactly once.
-        EXPECT_EQ(1, std::count(allPairs.begin(), allPairs.end(), pair));
-    }
+    test(container1, 925);
+    test(container2, 936);
 
     if (::testing::Test::HasFailure()) {
         test_logger->info(testName + " failed");

@@ -63,15 +63,19 @@ void ParticleContainer::setT(double t) {
 }
 
 void ParticleContainer::resetF() {
+    #pragma omp parallel for schedule(dynamic)
     for (Particle &particle: particles) {
         if (particle.isInDomain()) {
             particle.setOldF(particle.getF());
             particle.setF(particle.getM() * g);
         }
     }
+    #pragma omp parallel for schedule(dynamic)
     for (auto externalForce: externalForces) {
         if (t < externalForce.untilTime && particles[externalForce.particleIndex].isInDomain()) {
+            particles[externalForce.particleIndex].lock();
             particles[externalForce.particleIndex].addForce(externalForce.f);
+            particles[externalForce.particleIndex].unlock();
         }
     }
 }

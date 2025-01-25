@@ -54,5 +54,7 @@ void Cell::removeIndex(int index) {
 }
 
 void Cell::clear() {
+    omp_set_lock(&monitor);
     particleIndices.clear();
+    omp_unset_lock(&monitor);
 }
