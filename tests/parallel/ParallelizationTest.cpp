@@ -28,9 +28,23 @@ TEST_F(ParallelizationTest, Simulation) {
     // parallelization strategy 0
     std::vector<Particle> p1{};
     std::unique_ptr<Simulation> simulation1 = XMLReader::readXML(p1, input1);
-    simulation1->run();
+    // parallelization strategy 1
+    std::vector<Particle> p2{};
+    std::unique_ptr<Simulation> simulation2 = XMLReader::readXML(p2, input2);
 
     EXPECT_EQ(648, simulation1->getContainer()->getParticleNumber());
+    EXPECT_EQ(648, simulation2->getContainer()->getParticleNumber());
+
+    simulation1->getContainer()->updateF(0);
+    simulation2->getContainer()->updateF(1);
+
+    for (int i = 0; i < 648; ++i) {
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(simulation1->getContainer()->getParticles()[i].getF() - simulation2->getContainer()->getParticles()[i].getF()), 1e-10);
+    }
+
+    simulation1->run();
+    simulation2->run();
+
     for (int i = 0; i < 648; ++i) {
         EXPECT_NEAR(0, ArrayUtils::L2Norm(ref[i].getX() - simulation1->getContainer()->getParticles()[i].getX()), 1e-10);
         EXPECT_NEAR(0, ArrayUtils::L2Norm(ref[i].getV() - simulation1->getContainer()->getParticles()[i].getV()), 1e-10);
@@ -39,12 +53,7 @@ TEST_F(ParallelizationTest, Simulation) {
         EXPECT_NEAR(ref[i].getSigma(), simulation1->getContainer()->getParticles()[i].getSigma(), 1e-10);
     }
 
-    // parallelization strategy 1
-    std::vector<Particle> p2{};
-    std::unique_ptr<Simulation> simulation2 = XMLReader::readXML(p2, input2);
-    simulation2->run();
 
-    EXPECT_EQ(648, simulation2->getContainer()->getParticleNumber());
     for (int i = 0; i < 648; ++i) {
         EXPECT_NEAR(0, ArrayUtils::L2Norm(ref[i].getX() - simulation2->getContainer()->getParticles()[i].getX()), 1e-10);
         EXPECT_NEAR(0, ArrayUtils::L2Norm(ref[i].getV() - simulation2->getContainer()->getParticles()[i].getV()), 1e-10);

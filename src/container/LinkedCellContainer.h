@@ -14,6 +14,19 @@ enum Direction {
     BACK, //negative z-direction
     FRONT // positive z-direction
 };
+
+/**
+ * @brief Store a pair of integers.
+ */
+struct Pair{
+    int first;
+    int second;
+
+    bool operator==(const Pair& other) const {
+        return first == other.first && second == other.second;
+    }
+};
+
 /**
  * @brief This class represents a particle container that implements the linked cell algorithm.
  */
@@ -21,13 +34,6 @@ class LinkedCellContainer: public ParticleContainer {
 
 private:
 
-    /**
-     * Store a pair of integers.
-     */
-    struct Pair{
-        int first;
-        int second;
-    };
 
     /**
      * The cells that the domain is divided into.
@@ -118,6 +124,8 @@ public:
      * @return The boundary conditions.
      */
     const std::array<BoundaryCondition, 6> &getBoundaryConditions() const;
+
+    const std::vector<std::vector<Pair>> &getCellPairs() const;
 
     /**
      * @brief Update the force between all particles.

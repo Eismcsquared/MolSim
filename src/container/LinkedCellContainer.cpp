@@ -102,6 +102,7 @@ void LinkedCellContainer::updateF(int strategy) {
         }
     } else {
         for (const std::vector<Pair>& pairs : cellPairs) {
+            #pragma omp parallel for schedule(dynamic)
             for (const Pair &pair : pairs) {
                 updateFCells(pair.first, pair.second);
             }
@@ -214,6 +215,7 @@ void LinkedCellContainer::initializePairs() {
         for (int deltaY = -1; deltaY <= 1; ++deltaY) {
             std::vector<Pair> pairsRight{};
             std::vector<Pair> pairsLeft{};
+
             for (int x = 0; x < nCells[0]; x += 2) {
                 for (int y = 0; y < nCells[1]; ++y) {
                     for (int z = 0; z < nCells[2]; ++z) {
@@ -221,11 +223,8 @@ void LinkedCellContainer::initializePairs() {
                         std::array<int, 3> second3DRight = {x + 1, y + deltaY, z + deltaZ};
                         std::array<int, 3> second3DLeft = {x - 1, y + deltaY, z + deltaZ};
                         for (int i = 0; i < 3; ++i) {
-                            if (boundaryConditions[2 * i] == PERIODIC) {
-                                // in case nCell[0] is odd, avoid a pair crossing the x boundary to be considered twice.
-                                if (i) {
-                                    second3DRight[i] = (second3DRight[i] + nCells[i]) % nCells[i];
-                                }
+                            if (boundaryConditions[2 * i] == PERIODIC && (i != 0 || nCells[0] % 2 == 0)) {
+                                second3DRight[i] = (second3DRight[i] + nCells[i]) % nCells[i];
                                 second3DLeft[i] = (second3DLeft[i] + nCells[i]) % nCells[i];
                             }
                         }
@@ -240,6 +239,25 @@ void LinkedCellContainer::initializePairs() {
                     }
                 }
             }
+            if (boundaryConditions[0] == PERIODIC && nCells[0] % 2 == 1) {
+                std::vector<Pair> pairsBoundary{};
+                for (int y = 0; y < nCells[1]; ++y) {
+                    for (int z = 0; z < nCells[2]; ++z) {
+                        int first = get1DIndex({0, y, z});
+                        std::array<int, 3> second3D = {nCells[0] - 1, y + deltaY, z + deltaZ};
+                        for (int i = 1; i < 3; ++i) {
+                            if (boundaryConditions[2 * i] == PERIODIC) {
+                                second3D[i] = (second3D[i] + nCells[i]) % nCells[i];
+                            }
+                        }
+                        if (second3D[1] >= 0 && second3D[1] < nCells[1] && second3D[2] >= 0 && second3D[2] < nCells[2]) {
+                            int second = get1DIndex(second3D);
+                            pairsBoundary.push_back(Pair{first, second});
+                        }
+                    }
+                }
+                cellPairs.push_back(pairsBoundary);
+            }
             cellPairs.push_back(pairsRight);
             cellPairs.push_back(pairsLeft);
         }
@@ -252,11 +270,8 @@ void LinkedCellContainer::initializePairs() {
                     std::array<int, 3> second3DUp = {x, y + 1, z + deltaZ};
                     std::array<int, 3> second3DDown = {x, y - 1, z + deltaZ};
                     for (int i = 1; i < 3; ++i) {
-                        if (boundaryConditions[2 * i] == PERIODIC) {
-                            // in case nCell[1] is odd, avoid a pair crossing the y boundary to be considered twice.
-                            if (i != 1) {
-                                second3DUp[i] = (second3DUp[i] + nCells[i]) % nCells[i];
-                            }
+                        if (boundaryConditions[2 * i] == PERIODIC && (i != 1 || nCells[1] % 2 == 0)) {
+                            second3DUp[i] = (second3DUp[i] + nCells[i]) % nCells[i];
                             second3DDown[i] = (second3DDown[i] + nCells[i]) % nCells[i];
                         }
                     }
@@ -271,6 +286,23 @@ void LinkedCellContainer::initializePairs() {
                 }
             }
         }
+        if (boundaryConditions[2] == PERIODIC && nCells[1] % 2 == 1) {
+            std::vector<Pair> pairsBoundary{};
+            for (int x = 0; x < nCells[0]; ++x) {
+                for (int z = 0; z < nCells[2]; ++z) {
+                    int first = get1DIndex({x, 0, z});
+                    std::array<int, 3> second3D = {x, nCells[1] - 1, z + deltaZ};
+                    if (boundaryConditions[4] == PERIODIC) {
+                        second3D[2] = (second3D[2] + nCells[2]) % nCells[2];
+                    }
+                    if (second3D[2] >= 0 && second3D[2] < nCells[2]) {
+                        int second = get1DIndex(second3D);
+                        pairsBoundary.push_back(Pair{first, second});
+                    }
+                }
+            }
+            cellPairs.push_back(pairsBoundary);
+        }
         cellPairs.push_back(pairsUp);
         cellPairs.push_back(pairsDown);
     }
@@ -282,7 +314,7 @@ void LinkedCellContainer::initializePairs() {
                 int first = get1DIndex({x, y, z});
                 std::array<int, 3> second3DFront = {x, y, z + 1};
                 std::array<int, 3> second3DBack = {x, y, z - 1};
-                if (boundaryConditions[4] == PERIODIC) {
+                if (boundaryConditions[4] == PERIODIC && nCells[2] % 2 == 0) {
                     second3DBack[2] = (second3DBack[2] + nCells[2]) % nCells[2];
                 }
                 if (second3DFront[2] >= 0 && second3DFront[2] < nCells[2]) {
@@ -295,6 +327,18 @@ void LinkedCellContainer::initializePairs() {
                 }
             }
         }
+    }
+    if (boundaryConditions[4] == PERIODIC && nCells[2] % 2 == 1) {
+        std::vector<Pair> pairsBoundary{};
+        for (int x = 0; x < nCells[0]; ++x) {
+            for (int y = 0; y < nCells[1]; ++y) {
+                int first = get1DIndex({x, y, 0});
+                std::array<int, 3> second3D = {x, y, nCells[2] - 1};
+                int second = get1DIndex(second3D);
+                pairsBoundary.push_back(Pair{first, second});
+            }
+        }
+        cellPairs.push_back(pairsBoundary);
     }
     cellPairs.push_back(pairsFront);
     cellPairs.push_back(pairsBack);
@@ -489,6 +533,10 @@ const std::array<int, 3> &LinkedCellContainer::getNCells() const {
 
 const std::array<BoundaryCondition, 6> &LinkedCellContainer::getBoundaryConditions() const {
     return boundaryConditions;
+}
+
+const std::vector<std::vector<Pair>> &LinkedCellContainer::getCellPairs() const {
+    return cellPairs;
 }
 
 std::string LinkedCellContainer::toString() {

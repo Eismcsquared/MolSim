@@ -458,4 +458,59 @@ TEST_F(LinkedCellContainerTest, ForceCalculationStationary) {
     for (int i = 4; i < 8; ++i) {
         EXPECT_NEAR(0, ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[i].getF() - std::array<double, 3>{0, 0, 0}), 1e-12);
     }
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("LinkedCellContainer - Force calculation with stationary particles test failed");
+    } else {
+        test_logger->info("LinkedCellContainer - Force calculation with stationary particles test passed");
+    }
+}
+
+// Test the pre-computation of cell pairs. They satisfy the following properties:
+// 1. Every pair of cells are neighbouring.
+// 2. Every neighbouring cell pair appears exactly once.
+// 3. In each partition, every cell appears in at most one pair.
+// These properties should be tested.
+TEST_F(LinkedCellContainerTest, CellPairs) {
+    std::string testName = "LinkedCellContainer - Cell pairs test";
+    test_logger->info(testName);
+    std::vector<Particle> p;
+    std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
+    LinkedCellContainer container(p, f, {15, 15, 12}, 3, {PERIODIC, PERIODIC, OUTFLOW, OUTFLOW, REFLECTING, REFLECTING});
+    std::vector<std::vector<Pair>> cellPairs = container.getCellPairs();
+
+    unsigned long pairCount = 0;
+    std::vector<Pair> allPairs{};
+    for (const auto &pairs: cellPairs) {
+        std::set<int> cellSet{};
+        for (const Pair &pair: pairs) {
+            std::set<int> firstNeighbours = container.getCells()[pair.first].getNeighbours();
+
+            // check each pair is neighbouring.
+            EXPECT_TRUE(firstNeighbours.count(pair.second) > 0);
+
+            cellSet.insert(pair.first);
+            cellSet.insert(pair.second);
+
+            allPairs.push_back(pair);
+        }
+        // check that no cell appear twice in a partition.
+        EXPECT_EQ(pairs.size() * 2, cellSet.size());
+
+        pairCount += pairs.size();
+    }
+
+    // Check that all pairs are present.
+    EXPECT_EQ(925, pairCount);
+
+    for (const Pair &pair: allPairs) {
+        // Check that every pair appear exactly once.
+        EXPECT_EQ(1, std::count(allPairs.begin(), allPairs.end(), pair));
+    }
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info(testName + " failed");
+    } else {
+        test_logger->info(testName + " passed");
+    }
 }
