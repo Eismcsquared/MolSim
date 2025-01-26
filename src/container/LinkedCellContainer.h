@@ -73,7 +73,7 @@ private:
     std::array<BoundaryCondition, 6> boundaryConditions;
 
     /**
-     * Store all pairs of neighbouring cells in vectors, in which every cell appears at most once.
+     * Store all pairs of neighbouring cells in partitions, in which every cell appears at most once.
      */
     std::vector<std::vector<Pair>> cellPairs;
 

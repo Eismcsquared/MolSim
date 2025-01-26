@@ -194,10 +194,27 @@ void LinkedCellContainer::updateFCells(int c1, int c2, bool synchronized){
                 // if the distance is greater than the cutoff, skip the calculation
                 if(distSquare <= cutoff * cutoff) {
 
+                    std::array<double, 3> forceIJ{};
+
                     std::array<double, 3> pos = particles[i].getX();
-                    Particle mock(particles[i]);
-                    mock.setX(pos + offset);
-                    std::array<double, 3> forceIJ = force->force(mock, particles[j]);
+
+                    // in most cases, offset is 0. Hence, this logic avoids copying/moving particle if this is the case.
+                    if(offset[0] == 0 && offset[1] == 0 && offset[2] == 0) {
+                        forceIJ = force->force(particles[i], particles[j]);
+                    } else {
+                        // If synchronization is required, then copying can't be avoided, since moving particle might lead to race
+                        // conditions, or otherwise the computation of the force must be executed exclusively as well.
+                        // In case no synchronization is needed, moving instead of copying causes less overhead.
+                        if (synchronized) {
+                            Particle mock(particles[i]);
+                            mock.setX(pos + offset);
+                            forceIJ = force->force(mock, particles[j]);
+                        } else {
+                            particles[i].setX(pos + offset);
+                            forceIJ = force->force(particles[i], particles[j]);
+                            particles[i].setX(pos);
+                        }
+                    }
 #ifdef _OPENMP
                     if (synchronized) {
                         particles[i].lock();
