@@ -98,10 +98,12 @@ private:
      */
     const bool stationary;
 
+#ifdef _OPENMP
     /**
      * The lock use to access the particle in a thread safe manner.
      */
     omp_lock_t monitor;
+#endif
 
 public:
     explicit Particle(int type = 0);
@@ -358,14 +360,18 @@ public:
      * Acquire the lock for the particle.
      */
     inline void lock() {
+#ifdef _OPENMP
         omp_set_lock(&monitor);
+#endif
     }
 
     /**
      * Release the lock for the particle.
      */
     inline void unlock() {
+#ifdef _OPENMP
         omp_unset_lock(&monitor);
+#endif
     }
 
 };

@@ -29,10 +29,14 @@ private:
      */
     std::set<int> neighbours;
 
+
+#ifdef _OPENMP
     /**
      * The lock use to access the particle indices in a thread safe manner.
      */
     omp_lock_t monitor;
+
+#endif
 
 public:
    /**

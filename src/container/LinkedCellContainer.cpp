@@ -78,7 +78,9 @@ LinkedCellContainer::LinkedCellContainer(std::vector<Particle>& particles, std::
 
 
 void LinkedCellContainer::updateV(double delta_t) {
+#ifdef _OPENMP
     #pragma omp parallel for schedule(dynamic) default(none) shared(particles, cells, delta_t)
+#endif
     for (int i: domainCells) {
         for (int p: cells[i].getParticleIndices()) {
             particles[p].updateV(delta_t);
@@ -92,59 +94,59 @@ void LinkedCellContainer::updateF(int strategy) {
 
     // update forces between neighbouring cells
     if (!strategy) {
-        #pragma omp parallel default(none) shared( particles, cells, domainCells, cutoff, force)
-        {
-            #pragma omp for schedule(guided, 4)
-            for (int i: domainCells) {
-                auto neighbors = cells[i].getNeighbours();
-                for (auto &neighbor: neighbors) {
-                    // make sure every pair of cells is only considered once
-                    if (i < neighbor) {
-                        updateFCells(neighbor, i, true);
-                    }
+#ifdef _OPENMP
+        #pragma omp parallel for schedule(guided, 4) default(none) shared(particles, cells, domainCells, cutoff, force)
+#endif
+        for (int i: domainCells) {
+            auto neighbors = cells[i].getNeighbours();
+            for (auto &neighbor: neighbors) {
+                // make sure every pair of cells is only considered once
+                if (i < neighbor) {
+                    updateFCells(neighbor, i, true);
                 }
             }
         }
+
     } else {
         for (const std::vector<Pair>& pairs : cellPairs) {
+#ifdef _OPENMP
             #pragma omp parallel for schedule(dynamic)
+#endif
             for (const Pair &pair : pairs) {
                 updateFCells(pair.first, pair.second);
             }
         }
     }
 
-    #pragma omp parallel default(none) shared( particles, cells, domainCells, cutoff, force)
-    {
-        #pragma omp for schedule(guided, 4)
+#ifdef _OPENMP
+    #pragma omp parallel for schedule(guided, 4) default(none) shared(particles, cells, domainCells, cutoff, force)
+#endif
         // update forces within a cell.
-        for (int i: domainCells) {
-            std::vector<int> pointCellParticles = cells[i].getParticleIndices();
+    for (int i: domainCells) {
+        std::vector<int> pointCellParticles = cells[i].getParticleIndices();
 
-            for (unsigned long j = 0; j < pointCellParticles.size(); ++j) {
-                for (unsigned long k = j + 1; k < pointCellParticles.size(); ++k) {
+        for (unsigned long j = 0; j < pointCellParticles.size(); ++j) {
+            for (unsigned long k = j + 1; k < pointCellParticles.size(); ++k) {
 
-                    if (particles[pointCellParticles[j]].isStationary() &&
-                        particles[pointCellParticles[k]].isStationary())
-                        continue;
+                if (particles[pointCellParticles[j]].isStationary() &&
+                    particles[pointCellParticles[k]].isStationary())
+                    continue;
 
-                    double distSquare = ArrayUtils::L2NormSquare(
-                            particles[pointCellParticles[j]].getX() - particles[pointCellParticles[k]].getX());
+                double distSquare = ArrayUtils::L2NormSquare(
+                        particles[pointCellParticles[j]].getX() - particles[pointCellParticles[k]].getX());
 
-                    // if the distance is greater than the cutoff, skip the calculation
-                    if (distSquare > cutoff * cutoff) continue;
+                // if the distance is greater than the cutoff, skip the calculation
+                if (distSquare > cutoff * cutoff) continue;
 
-                    std::array<double, 3> forceIJ = force->force(particles[pointCellParticles[j]],
-                                                                 particles[pointCellParticles[k]]);
+                std::array<double, 3> forceIJ = force->force(particles[pointCellParticles[j]],
+                                                             particles[pointCellParticles[k]]);
 
-                    particles[pointCellParticles[j]].addForce(-1 * forceIJ);
-                    particles[pointCellParticles[k]].addForce(forceIJ);
-                }
+                particles[pointCellParticles[j]].addForce(-1 * forceIJ);
+                particles[pointCellParticles[k]].addForce(forceIJ);
             }
-
         }
-    }
 
+    }
 }
 
 void LinkedCellContainer::updateFCells(int c1, int c2, bool synchronized){
@@ -196,7 +198,7 @@ void LinkedCellContainer::updateFCells(int c1, int c2, bool synchronized){
                     Particle mock(particles[i]);
                     mock.setX(pos + offset);
                     std::array<double, 3> forceIJ = force->force(mock, particles[j]);
-
+#ifdef _OPENMP
                     if (synchronized) {
                         particles[i].lock();
                     }
@@ -209,6 +211,10 @@ void LinkedCellContainer::updateFCells(int c1, int c2, bool synchronized){
                     if (synchronized) {
                         particles[j].unlock();
                     }
+#else
+                    particles[i].addForce( -1 * forceIJ);
+                    particles[j].addForce(forceIJ);
+#endif
                 }
             }
         }
@@ -216,8 +222,9 @@ void LinkedCellContainer::updateFCells(int c1, int c2, bool synchronized){
 }
 
 void LinkedCellContainer::updateX(double delta_t){
-
+#ifdef _OPENMP
     #pragma omp parallel for schedule(dynamic)
+#endif
     for (int i = 0; i < particles.size(); i++) {
 
         if (particles[i].isInDomain()) {
@@ -235,7 +242,9 @@ void LinkedCellContainer::updateX(double delta_t){
                     cells[cellidx_after].addIndex(i);
                 } else {
                     particles[i].removeFromDomain();
+#ifdef _OPENMP
                     #pragma omp critical
+#endif
                     {
                         particleNumber--;
                     }
@@ -490,7 +499,9 @@ void LinkedCellContainer::removeFromHalo(Direction direction) {
 }
 
 void LinkedCellContainer::updateHalo(Direction direction, BoundaryCondition boundaryCondition, double deltaT) {
+#ifdef _OPENMP
     #pragma omp parallel for schedule(dynamic)
+#endif
     for(int i : haloCells[direction]) {
         for (int p : cells[i].getParticleIndices()) {
             std::array<double, 3> pos = particles[p].getX();
@@ -499,7 +510,12 @@ void LinkedCellContainer::updateHalo(Direction direction, BoundaryCondition boun
                 case OUTFLOW:
                     if (particles[p].isInDomain()) {
                         particles[p].removeFromDomain();
-                        particleNumber--;
+#ifdef _OPENMP
+                        #pragma omp critical
+#endif
+                        {
+                            particleNumber--;
+                        }
                     }
                     break;
                 case REFLECTING:
