@@ -9,6 +9,10 @@ jobs :
     build :
         runs-on : ubuntu-latest
 
+        strategy:
+          matrix:
+            openmp: [ON, OFF]
+
         steps : 
             - name : Checkout code
               uses : actions/checkout@v4
@@ -21,18 +25,18 @@ jobs :
               run :  sudo apt-get install libxerces-c-dev
 
             - name : Create build directory
-              run : mkdir build
+              run : mkdir build-${{matrix.openmp}}
             
             - name : Configure Cmake with AdressSanitizer
-              run : cmake -B build -DCMAKE_CXX_FLAGS="-fsanitize=address" -DCMAKE_BUILD_TYPE=Debug
+              run : cmake -B build-${{matrix.openmp}} -DCMAKE_CXX_FLAGS="-fsanitize=address" -DCMAKE_BUILD_TYPE=Debug -DOPENMP=${{matrix.openmp}}
             
             - name : Build project 
-              run : cmake --build ${{github.workspace}}/build
+              run : cmake --build ${{github.workspace}}/build-${{matrix.openmp}}
             
             - name : Compiler check
               run : g++ --version
                 
             - name: Run tests
               run: |
-                cd build
+                cd build-${{matrix.openmp}}
                 ctest -V
