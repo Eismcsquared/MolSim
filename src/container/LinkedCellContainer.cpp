@@ -67,7 +67,7 @@ LinkedCellContainer::LinkedCellContainer(std::vector<Particle>& particles, std::
             cells[idx].addIndex(i);
         } else if (particles[i].isInDomain()) {
             (this->particles)[i].removeFromDomain();
-            particleNumber--;
+            particleNumber.fetch_sub(1, std::memory_order_relaxed);
         }
     }
 
@@ -259,13 +259,7 @@ void LinkedCellContainer::updateX(double delta_t){
                     cells[cellidx_after].addIndex(i);
                 } else {
                     particles[i].removeFromDomain();
-#ifdef _OPENMP
-                    #pragma omp critical
-#endif
-                    {
-                        particleNumber--;
-                    }
-
+                    particleNumber.fetch_sub(1, std::memory_order_relaxed);
                 }
             }
         }
@@ -527,12 +521,7 @@ void LinkedCellContainer::updateHalo(Direction direction, BoundaryCondition boun
                 case OUTFLOW:
                     if (particles[p].isInDomain()) {
                         particles[p].removeFromDomain();
-#ifdef _OPENMP
-                        #pragma omp critical
-#endif
-                        {
-                            particleNumber--;
-                        }
+                        particleNumber.fetch_sub(1, std::memory_order_relaxed);
                     }
                     break;
                 case REFLECTING:

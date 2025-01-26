@@ -1,6 +1,7 @@
 #include <string>
 #include <memory>
 #include <spdlog/spdlog.h>
+#include <atomic>
 #include "body/Particle.h"
 #include "body/Cuboid.h"
 #include "force/Force.h"
@@ -77,7 +78,7 @@ protected:
      /**
       * The number of particles in domain.
       */
-    unsigned long particleNumber;
+    std::atomic<unsigned long> particleNumber;
 
      /**
       * The thermostat that adjusts the temperature of the system.
