@@ -38,7 +38,6 @@ target_include_directories(MolSim
 target_link_libraries(MolSim
         # stuff that is used in headers and source files
         PUBLIC
-            xerces-c
             spdlog::spdlog
             fmt::fmt
             XercesC::XercesC
