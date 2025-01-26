@@ -6,8 +6,9 @@ project(PSEMolDyn_GroupD VERSION 0.0.1)
 # let ccmake and cmake-gui offer the default build type options
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug;Release;RelWithDebInfo;MinSizeRel")
 
-# set Release as the default build type if it is not yet set.
+find_package(XercesC REQUIRED)
 
+# set Release as the default build type if it is not yet set.
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING
         "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE)
 
@@ -40,6 +41,7 @@ target_link_libraries(MolSim
             xerces-c
             spdlog::spdlog
             fmt::fmt
+            XercesC::XercesC
 )   
 
 # activate all compiler warnings. Clean up your code :P
