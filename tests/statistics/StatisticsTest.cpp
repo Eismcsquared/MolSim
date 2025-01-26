@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 #include <spdlog/spdlog.h>
 #include <fstream>
-#include <filesystem>
 #include <algorithm>
 #include "statistics/Statistics.h"
 #include "container/LinkedCellContainer.h"
@@ -86,7 +85,7 @@ TEST_F(StatisticsTest, Output) {
         EXPECT_NEAR(density[i], rho, 1e-12);
         EXPECT_NEAR(velocity[i], v, 1e-12);
     }
-    std::filesystem::remove(fileName);
+    std::remove(fileName.c_str());
 
     if (::testing::Test::HasFailure()) {
         test_logger->info("Statistics - Output test failed\n\n");
@@ -113,7 +112,7 @@ TEST_F(StatisticsTest, Integration) {
         dataStream >> x;
         EXPECT_NEAR(5 * i + 2.5, x, 1e-12);
     }
-    std::filesystem::remove(fileName);
+    std::remove(fileName.c_str());
 
     if (::testing::Test::HasFailure()) {
         test_logger->info("Statistics - Integration test failed\n\n");

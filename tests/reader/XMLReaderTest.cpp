@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include <string>
-#include <filesystem>
 #include "inputReader/XMLReader.h"
 #include "inputReader/StateReader.h"
 #include "force/GravitationalForce.h"
@@ -235,6 +234,7 @@ TEST_F(XMLReaderTest, Checkpointing) {
 
     EXPECT_EQ(2, simulation->getContainer()->getParticleNumber());
 
+    std::string outputFile = "../tests/test_cases/checkpointing_out.txt";
 
     std::vector<Particle> ref;
     ref.emplace_back(std::array<double, 3>{7, 8, 3}, std::array<double, 3>{1, 0.5, 0.5}, 3.5, 2, 4, 1.1);
@@ -242,19 +242,19 @@ TEST_F(XMLReaderTest, Checkpointing) {
 
     EXPECT_EQ(ref[0], particles[0]);
     EXPECT_EQ(ref[1], particles[1]);
-    EXPECT_EQ("../tests/test_cases/checkpointing_out.txt", simulation->getCheckpointingFile());
+    EXPECT_EQ(outputFile, simulation->getCheckpointingFile());
 
     simulation->run();
 
     std::vector<Particle> loadedParticles;
 
-    StateReader::loadState(loadedParticles, "../tests/test_cases/checkpointing_out.txt");
+    StateReader::loadState(loadedParticles, outputFile);
 
     EXPECT_EQ(2, loadedParticles.size());
     EXPECT_EQ(ref[0], loadedParticles[0]);
     EXPECT_EQ(ref[1], loadedParticles[1]);
 
-    std::filesystem::remove("../tests/test_cases/checkpointing_out.txt");
+    std::remove(outputFile.c_str());
 
     if (::testing::Test::HasFailure()) {
         test_logger->info("XMLReaderTest - Checkpointing test failed\n\n");

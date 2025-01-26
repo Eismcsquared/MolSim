@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include <spdlog/spdlog.h>
-#include <filesystem>
 #include "outputWriter/StateWriter.h"
 #include "inputReader/StateReader.h"
 #include "body/Cuboid.h"
@@ -25,7 +24,7 @@ protected:
 TEST_F(StateReaderTest, ReloadState) {
     test_logger->info("StateReader - Reload states test");
 
-    std::filesystem::remove(fileName);
+    std::remove(fileName.c_str());
     StateWriter::saveState(particles, fileName);
     std::vector<Particle> loadedParticles;
     StateReader::loadState(loadedParticles, fileName);
@@ -34,7 +33,7 @@ TEST_F(StateReaderTest, ReloadState) {
     for (int i = 0; i < 2000; ++i) {
         EXPECT_EQ(particles[i], loadedParticles[i]);
     }
-    std::filesystem::remove(fileName);
+    std::remove(fileName.c_str());
     if (::testing::Test::HasFailure()) {
         test_logger->info("StateReader - Reload states test failed\n\n");
     } else {

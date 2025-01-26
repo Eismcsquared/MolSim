@@ -68,3 +68,36 @@ TEST_F(ParallelizationTest, Simulation) {
         test_logger->info("Parallelization - Simulation test passed\n\n");
     }
 }
+
+// Test whether the attribute particleNumber is synchronized correctly when particles are leaving the domain.
+TEST_F(ParallelizationTest, Outflow) {
+    test_logger->info("Parallelization - Outflow test");
+    std::vector<Particle> p1{};
+    std::unique_ptr<Force> f1 = std::make_unique<LennardJonesForce>();
+    LinkedCellContainer container1(p1, f1, std::array<double, 3>{10, 10, 1}, 1,
+                                  std::array<BoundaryCondition, 6>{OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW});
+
+    std::vector<Particle> p2{};
+    std::unique_ptr<Force> f2 = std::make_unique<LennardJonesForce>();
+    LinkedCellContainer container2(p2, f2, std::array<double, 3>{10, 10, 1}, 1,
+                                   std::array<BoundaryCondition, 6>{OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW});
+
+
+    Cuboid c({0.1, 0.1, 0.1}, {0, 0, -1}, {50, 50, 5}, 1, 0.2, 0, 3, 0, 0, 0.1);
+    container1.addCluster(c);
+    container2.addCluster(c);
+
+    for (int i = 1; i < 6; ++i) {
+        container1.simulate(i * 0.2, 0.05, "", "", 10, false, 0);
+        container2.simulate(i * 0.2, 0.05, "", "", 10, false, 1);
+
+        EXPECT_EQ((5 - i) * 2500, container1.getParticleNumber());
+        EXPECT_EQ((5 - i) * 2500, container2.getParticleNumber());
+    }
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("Parallelization - Outflow test failed\n\n");
+    } else {
+        test_logger->info("Parallelization - Outflow test passed\n\n");
+    }
+}
