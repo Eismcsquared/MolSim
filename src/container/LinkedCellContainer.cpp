@@ -101,8 +101,8 @@ void LinkedCellContainer::updateF(int strategy) {
             auto neighbors = cells[domainCells[i]].getNeighbours();
             for (auto &neighbor: neighbors) {
                 // make sure every pair of cells is only considered once
-                if (i < neighbor) {
-                    updateFCells(neighbor, i, true);
+                if (domainCells[i] < neighbor) {
+                    updateFCells(neighbor, domainCells[i], true);
                 }
             }
         }
