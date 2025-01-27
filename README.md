@@ -93,3 +93,5 @@ Comparison: Linked cell algorithm vs. Direct sum algorithm for different number 
 Comparison: Run time and molecular updates per second before and after optimizations. The measurements are based on the input assignment4.xml and run on Linux cluster.
 ![](src/images/assignment4_task2.png)
 
+Comparison: Weak Scaling by Varying Thread Numbers.
+The weak scaling test was performed by changing the thread count to 1, 2, 4, 8, 14, 16, 28, and 56 over 1000 iterations. The measurements were based on the input file assignment5.xml and run on the Linux cluster cm4_tiny. ![](src/images/assignment5_task2.png)
