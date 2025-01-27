@@ -79,7 +79,7 @@ LinkedCellContainer::LinkedCellContainer(std::vector<Particle>& particles, std::
 
 void LinkedCellContainer::updateV(double delta_t) {
 #ifdef _OPENMP
-    #pragma omp parallel for schedule(dynamic) default(none) shared(particles, cells, delta_t)
+    #pragma omp parallel for schedule(dynamic)
 #endif
     for (int i = 0; i < domainCells.size(); i++) {
         for (int p: cells[domainCells[i]].getParticleIndices()) {
@@ -95,7 +95,7 @@ void LinkedCellContainer::updateF(int strategy) {
     // update forces between neighbouring cells
     if (!strategy) {
 #ifdef _OPENMP
-        #pragma omp parallel for schedule(guided, 4) default(none) shared(particles, cells, domainCells, cutoff, force)
+        #pragma omp parallel for schedule(guided, 4)
 #endif
         for (int i = 0; i < domainCells.size(); i++) {
             auto neighbors = cells[domainCells[i]].getNeighbours();
@@ -119,7 +119,7 @@ void LinkedCellContainer::updateF(int strategy) {
     }
 
 #ifdef _OPENMP
-    #pragma omp parallel for schedule(guided, 4) default(none) shared(particles, cells, domainCells, cutoff, force)
+    #pragma omp parallel for schedule(guided, 4)
 #endif
         // update forces within a cell.
     for (int i = 0; i < domainCells.size(); i++) {
