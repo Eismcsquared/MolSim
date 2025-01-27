@@ -154,7 +154,6 @@ TEST_F(XMLReaderTest, BrownianMotion) {
 }
 
 // Test whether the xml reader read the thermostat and gravitational acceleration correctly
-
 TEST_F(XMLReaderTest, Assignment4Input) {
     test_logger->info("XMLReader - Assignment 4 input test");
     inputFile = "../tests/test_cases/assignment4.xml";
@@ -162,7 +161,7 @@ TEST_F(XMLReaderTest, Assignment4Input) {
     EXPECT_TRUE(simulation->getContainer()->getThermostat());
     EXPECT_EQ(1000, simulation->getContainer()->getThermostat()->getPeriod());
     EXPECT_FLOAT_EQ(40, simulation->getContainer()->getThermostat()->getTargetT());
-    EXPECT_FLOAT_EQ(std::numeric_limits<double>::infinity(), simulation->getContainer()->getThermostat()->getMaxDelta());
+    EXPECT_TRUE(std::isinf(simulation->getContainer()->getThermostat()->getMaxDelta()) && simulation->getContainer()->getThermostat()->getMaxDelta() > 0);
     EXPECT_EQ(2, simulation->getContainer()->getThermostat()->getDimension());
     EXPECT_FLOAT_EQ(-12.44, simulation->getContainer()->getG()[1]);
     EXPECT_FLOAT_EQ(12.44, ArrayUtils::L2Norm(simulation->getContainer()->getG()));
