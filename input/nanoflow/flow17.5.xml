@@ -8,7 +8,7 @@
                 <z>0.5</z>
             </position>
             <mass>1</mass>
-            <epsilon>10</epsilon>
+            <epsilon>17.5</epsilon>
             <sigma>1</sigma>
             <size>
                 <x>2</x>
@@ -24,7 +24,7 @@
                 <z>0.5</z>
             </position>
             <mass>1</mass>
-            <epsilon>10</epsilon>
+            <epsilon>17.5</epsilon>
             <sigma>1</sigma>
             <size>
                 <x>2</x>
@@ -40,7 +40,7 @@
                 <z>1</z>
             </position>
             <mass>1</mass>
-            <epsilon>10</epsilon>
+            <epsilon>17.5</epsilon>
             <sigma>1</sigma>
             <size>
                 <x>20</x>
@@ -53,8 +53,6 @@
     <parameters>
         <end_time>500</end_time>
         <delta_t>0.0005</delta_t>
-        <frequency>250</frequency>
-        <output>f10</output>
         <force>Lennard-Jones</force>
         <g>
             <y>-0.8</y>
@@ -77,9 +75,10 @@
                 <back>periodic</back>
                 <front>periodic</front>
             </boundary_condition>
+            <strategy>1</strategy>
         </linked_cell>
         <statistics>
-            <output>s10</output>
+            <output>s17.5</output>
             <period>10000</period>
             <from>2.5</from>
             <to>22.5</to>

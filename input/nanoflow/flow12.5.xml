@@ -8,7 +8,7 @@
                 <z>0.5</z>
             </position>
             <mass>1</mass>
-            <epsilon>15</epsilon>
+            <epsilon>12.5</epsilon>
             <sigma>1</sigma>
             <size>
                 <x>2</x>
@@ -24,7 +24,7 @@
                 <z>0.5</z>
             </position>
             <mass>1</mass>
-            <epsilon>15</epsilon>
+            <epsilon>12.5</epsilon>
             <sigma>1</sigma>
             <size>
                 <x>2</x>
@@ -40,7 +40,7 @@
                 <z>1</z>
             </position>
             <mass>1</mass>
-            <epsilon>15</epsilon>
+            <epsilon>12.5</epsilon>
             <sigma>1</sigma>
             <size>
                 <x>20</x>
@@ -75,9 +75,10 @@
                 <back>periodic</back>
                 <front>periodic</front>
             </boundary_condition>
+            <strategy>1</strategy>
         </linked_cell>
         <statistics>
-            <output>s15</output>
+            <output>s12.5</output>
             <period>10000</period>
             <from>2.5</from>
             <to>22.5</to>
