@@ -13,7 +13,7 @@ cmake version 3.28.3, g++ 13.2.0, doxygen 1.12.0, clang version 18.1.3
 
 `mkdir build`<br>
 `cd build`<br>
-`cmake .. [-DBUILD_DOCUMENTATION=ON|OFF]`<br>
+`cmake .. [-DBUILD_DOCUMENTATION=ON|OFF] [-DOPENMP=ON|OFF]`<br>
 `make`<br>
 `./Molsim <input-file>` #Example : `./Molsim ../input/eingabe-sonne.txt`
 
@@ -68,6 +68,12 @@ Note: Only possible if the project was built with the option
 
 ### Run tests
 `ctest` or `./tests`
+
+### Parallelization
+`cmake -DOPENMP=ON ..`<br>
+`make`<br>
+`[OMP_NUM_THREADS=<number-of-threads>] ./MolSim <input-file>`
+
 ### Assignments
 
 For simulations required in the individuell work sheets, run the following commands.<br>
@@ -85,13 +91,19 @@ For simulations required in the individuell work sheets, run the following comma
 - Assignment 4 - Falling drop:
   `./MolSim ../input/assignment4_fluid.xml` followed by
   `./MolSim ../input/assignment4_falling_drop.xml`
+- Assignment 5 - Membrane:
+  `./MolSim ../input/assignment5_membrane.xml`
+- Assignment 5 - Rayleigh-Taylor instability:
+  `./MolSim ../input/assignment5.xml`
+- Assignment 5 - Nano-scale Flow:
+  `./MolSim ../input/assignment5_flow.xml`
 
 ### Benchmark
 Comparison: Linked cell algorithm vs. Direct sum algorithm for different number of particles. 
-![](src/images/ds_vs_lc.png)
+![](images/ds_vs_lc.png)
 
 Comparison: Run time and molecular updates per second before and after optimizations. The measurements are based on the input assignment4.xml and run on Linux cluster.
-![](src/images/assignment4_task2.png)
+![](images/assignment4_task2.png)
 
-Comparison: Weak Scaling by Varying Thread Numbers.
-The weak scaling test was performed by changing the thread count to 1, 2, 4, 8, 14, 16, 28, and 56 over 1000 iterations. The measurements were based on the input file assignment5.xml and run on the Linux cluster cm4_tiny. ![](src/images/assignment5_task2.png)
+Comparison: Strong Scaling by Varying Thread Numbers.
+The strong scaling test was performed for the thread count 1, 2, 4, 8, 14, 16, 28, and 56 over 1000 iterations. The measurements were based on the input file assignment5.xml and run on the Linux cluster cm4_tiny. ![](images/Speadup_gcc.png)
