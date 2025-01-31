@@ -593,4 +593,3 @@ std::string LinkedCellContainer::toString() {
     return buf.str();
 }
 
-
