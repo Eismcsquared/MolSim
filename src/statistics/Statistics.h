@@ -9,6 +9,9 @@ enum Axis {
     X, Y, Z
 };
 
+/**
+ * @brief This class is the unit for the computation and output of density and velocity profiles.
+ */
 class Statistics {
 private:
 

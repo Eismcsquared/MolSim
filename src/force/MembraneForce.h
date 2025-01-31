@@ -1,6 +1,9 @@
 #include "Force.h"
 #include "utils/ArrayUtils.h"
 
+/**
+ * @brief This class computes interactions between particles within a membrane, which is harmonic for neighbouring particles and repulsive Lennard-Jones otherwise.
+ */
 class MembraneForce: public Force {
 
     /**
