@@ -2,24 +2,25 @@
 #include <gtest/gtest.h>
 #include <spdlog/spdlog.h>
 #include "container/Cell.h"
-#include "Logger.h"
 
 class CellTest: public ::testing::Test {
 protected:
-    Cell cell = Cell(std::array<double, 3>{5, 10, 0}, std::array<double, 3>{3, 1, 1});
+    std::set<int> neighbours;
+    Cell cell = Cell(std::array<double, 3>{5, 10, 0}, std::array<double, 3>{3, 1, 1}, neighbours);
+    std::shared_ptr<spdlog::logger> test_logger = spdlog::get("test_logger");
 };
 
 // Test whether adding and removing indices from a cell works correctly.
 TEST_F(CellTest, AddAndRemove) {
     test_logger->info("Cell - Add and remove test");
-    for(unsigned int i = 0; i < 10; ++i) {
+    for(int i = 0; i < 10; ++i) {
         cell.addIndex(i);
     }
     cell.removeIndex(0);
     cell.removeIndex(9);
     cell.removeIndex(3);
     cell.removeIndex(7);
-    // remove indicis that are not in the cell
+    // remove indices that are not in the cell
     cell.removeIndex(-1);
     cell.removeIndex(10);
     EXPECT_EQ(6, cell.getParticleIndices().size());
@@ -27,9 +28,9 @@ TEST_F(CellTest, AddAndRemove) {
     std::set<unsigned int> indexSet(cell.getParticleIndices().begin(), cell.getParticleIndices().end());
     EXPECT_EQ(ref, indexSet);
     if (::testing::Test::HasFailure()) {
-        test_logger->info("Cell - Add and remove test failed");
+        test_logger->info("Cell - Add and remove test failed\n\n");
     } else {
-        test_logger->info("Cell - Add and remove test passed");
+        test_logger->info("Cell - Add and remove test passed\n\n");
     }
 }
 
@@ -50,9 +51,9 @@ TEST_F(CellTest, Contains) {
     EXPECT_FALSE(cell.contains(std::array<double, 3>{6, 10.5, -1}));
     EXPECT_FALSE(cell.contains(std::array<double, 3>{6, 10.5, 3}));
     if (::testing::Test::HasFailure()) {
-        test_logger->info("Cell - contains test failed");
+        test_logger->info("Cell - contains test failed\n\n");
     } else {
-        test_logger->info("Cell - contains test passed");
+        test_logger->info("Cell - contains test passed\n\n");
     }
 }
 

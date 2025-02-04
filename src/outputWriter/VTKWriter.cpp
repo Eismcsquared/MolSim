@@ -96,9 +96,9 @@ VTKFile_t VTKWriter::initializeOutput(int numParticles) {
     dataIterator->push_back(p.getV()[2]);
 
     dataIterator++;
-    dataIterator->push_back(p.getOldF()[0]);
-    dataIterator->push_back(p.getOldF()[1]);
-    dataIterator->push_back(p.getOldF()[2]);
+    dataIterator->push_back(p.getF()[0]);
+    dataIterator->push_back(p.getF()[1]);
+    dataIterator->push_back(p.getF()[2]);
 
     dataIterator++;
     dataIterator->push_back(p.getType());

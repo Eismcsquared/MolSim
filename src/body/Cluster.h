@@ -37,13 +37,34 @@ protected:
      */
      int dimension;
 
+     /**
+      * The type of particles.
+      */
+     int type;
+
+     /**
+      * Parameter epsilon of the Lennard-Jones potential.
+      */
+     double epsilon;
+
+    /**
+     * Parameter sigma of the Lennard-Jones potential.
+     */
+     double sigma;
+
 public:
+
+    /**
+     * Constructor that initializes all the attributes, epsilon is set to 5 and sigma is set to 1 by default.
+     */
+    Cluster(const std::array<double, 3> &x, const std::array<double, 3> &v,
+           double m, double distance, double avgVelocityBrownian, int dimension);
 
     /**
      * Constructor that initializes all the attributes.
      */
     Cluster(const std::array<double, 3> &x, const std::array<double, 3> &v,
-           double m, double distance, double avgVelocityBrownian, int dimension);
+            double m, double distance, double avgVelocityBrownian, int dimension, int type, double epsilon, double sigma);
 
     /**
      * Create particles that belong to the cuboid and insert them into the given vector.

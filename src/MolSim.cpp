@@ -9,12 +9,12 @@
 #include <getopt.h>
 #include <cstdlib>
 #include <vector>
-#include <chrono>
 #include <memory>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include "inputReader/FileReader.h"
 #include "inputReader/XMLReader.h"
+#include "inputReader/StateReader.h"
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
 #include "container/DirectSumContainer.h"
@@ -32,6 +32,10 @@ void printHelp();
 
 
 int main(int argc, char *argsv[]) {
+
+    std::ios::sync_with_stdio(false);
+    std::cout.tie(nullptr);
+
     spdlog::set_level(spdlog::level::info);
     spdlog::stdout_color_mt("console"); // Create color multithreaded logger
 
@@ -45,9 +49,10 @@ int main(int argc, char *argsv[]) {
 
     std::string inputFile= std::string (argsv[1]);
     std::unique_ptr<Simulation> simulation;
+    std::vector<Particle> particles;
 
     if (inputFile.size() >= 4 && inputFile.compare(inputFile.size() - 4, 4, ".xml") == 0) {
-        simulation = XMLReader::readXML(inputFile);
+        simulation = XMLReader::readXML(particles, inputFile);
     } else {
         // default values when using .txt as input
         double start_time = 0;
@@ -57,10 +62,11 @@ int main(int argc, char *argsv[]) {
         std::string outputFile("MD_vtk");
         std::string outputFormat = "vtu";
 
-        std::unique_ptr<std::vector<Particle>> particles = std::make_unique<std::vector<Particle>>();
         FileReader fileReader;
-        fileReader.readFile(*particles, inputFile);
+        fileReader.readFile(particles, inputFile);
+
         std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
+
         std::unique_ptr<ParticleContainer> container = std::make_unique<DirectSumContainer>(particles, f);
         simulation = std::make_unique<Simulation>(container, end_time, delta_t, outputFile, outputFormat, frequency);
     }
@@ -75,12 +81,12 @@ int main(int argc, char *argsv[]) {
             {"output", required_argument, nullptr, 'o'},
             {"spdlog_level", required_argument, nullptr, 's'},
             {"benchmark", no_argument, nullptr, 'b'},
-            {"newton3 ", no_argument, nullptr, 'n'},
             {"gravitation", no_argument, nullptr, 'g'},
-            {"Lennard_Jones", no_argument, nullptr, 'l'},
+            {"checkpoint", required_argument, nullptr, 'c'},
+            {"load", required_argument, nullptr, 'l'},
             {nullptr, 0, nullptr, 0} 
     };
-    while ((opt = getopt_long(argc, argsv, "hd:e:f:o:s:glbn", long_options, nullptr)) != -1) {
+    while ((opt = getopt_long(argc, argsv, "hd:e:f:o:s:gc:l:b", long_options, nullptr)) != -1) {
         switch (opt) {
             case 'd':
                 simulation->setDeltaT(std::atof(optarg));
@@ -114,7 +120,7 @@ int main(int argc, char *argsv[]) {
                     }
                 } else {  
                     if(optarg == nullptr){
-                        spdlog::error("No log levasel specified for -s option.");
+                        spdlog::error("No log level specified for -s option.");
                         return 1;
                     }
                     spdlog::error("No log level specified for -s option.");
@@ -125,16 +131,17 @@ int main(int argc, char *argsv[]) {
                 simulation->setSaveOutput(false);
                 spdlog::set_level(spdlog::level::off);
                 break;
-            case 'n':
-                simulation->setNewton3(false);
-                break;
             case 'g':
                 f = std::make_unique<GravitationalForce>();
                 simulation->getContainer()->setF(f);
                 break;
+            case 'c':
+                simulation->setCheckpointingFile(optarg);
+                simulation->setSaveOutput(false);
+                break;
             case 'l':
-                f = std::make_unique<LennardJonesForce>();
-                simulation->getContainer()->setF(f);
+                StateReader::loadState(simulation->getContainer()->getParticles(), optarg);
+                simulation->getContainer()->updateF();
                 break;
             case '?':
                 spdlog::error("Invalid option!");
@@ -149,25 +156,14 @@ int main(int argc, char *argsv[]) {
 
   // Inform the user about the input parameters
     spdlog::info("Input file name: {}", inputFile);
-    spdlog::info("Start Time: {}", 0);
-    spdlog::info("Time End: {}", simulation->getEndTime());
-    spdlog::info("Delta Time: {}", simulation->getDeltaT());
+    spdlog::info("Start time: {}", simulation->getStartTime());
+    spdlog::info("End time: {}", simulation->getEndTime());
+    spdlog::info("Time step: {}", simulation->getDeltaT());
     spdlog::info("Output file name: {}", simulation->getOutputFile());
     spdlog::info("Output format: {}", simulation->getOutputFormat());
 
-    auto start = std::chrono::high_resolution_clock::now();
     // run simulation
     simulation->run();
-    // Stop the timer
-    auto end = std::chrono::high_resolution_clock::now();
-    // Calculate the duration
-    std::chrono::duration<double> duration = end - start;
-
-
-    spdlog::info("output written. Terminating...");
-    spdlog::set_level(spdlog::level::info);
-
-    spdlog::info("Duration: {}s", duration.count());
 
     return 0;
 }
@@ -176,7 +172,7 @@ int main(int argc, char *argsv[]) {
 void printHelp() {
     std::cout << "MolSim for PSE" << "\n";
     std::cout << "Usage:" << "\n";
-    std::cout << "  ./MolSim <input-file> [-d <time-step>] [-e <duration>] [-f <output-format>] [-o <output-file>] [-l|-g] [-s <log-level>]" << "\n";
+    std::cout << "  ./MolSim <input-file> [-d <time-step>] [-e <duration>] [-force <output-format>] [-o <output-file>] [-l|-g] [-s <log-level>]" << "\n";
     std::cout << "Options:" << "\n";
     std::cout << "  -d or --delta_t <time-step>    = The length of each time step of the simulation (Default: 0.0002)." << "\n";
     std::cout << "  -e or --end_time <duration>    = The total duration of the simulation (Default = 5)." << "\n";
@@ -184,8 +180,8 @@ void printHelp() {
     std::cout << "  -o or --output <output-file>   = The name of files that data should be written to (Default: MD_vtk)." << "\n";
     std::cout << "  -s or --spdlog_level <level>   = Set spdlog level (trace -1, debug -2, info -3, warn -4, error -5, critical -6).\n";
     std::cout << "  -b or --benchmark              = If specified, the benchmark mode is activated." << "\n";
-    std::cout << "  -n or --newton3                = If specified, the Newton's third law is not applied." << "\n";
-    std::cout << "  -g or --gravitation            = The simulation of gravitational force (with G = 1) between objects (Default)." << "\n";
-    std::cout << "  -l or --Lennard_Jones          = If specified, the Lennard Jones potential (with epsilon = 5 and sigma = 1) is simulated." << "\n";
+    std::cout << "  -g or --gravitation            = If specified, The gravitation (with G = 1) is taken to be the force between objects. Otherwise, the Lennard-Jones force is assumed." << "\n";
+    std::cout << "  -c or --checkpoint <file>      = If specified, the final state is stored to the given file and the output of simulation data is deactivated." << "\n";
+    std::cout << "  -l or --load <file>            = If specified, additional particles are loaded from the given file." << "\n";
     std::cout << "  -h or --help                   = Print help message." << "\n";
 }

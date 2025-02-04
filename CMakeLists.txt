@@ -12,14 +12,12 @@ if(NOT CMAKE_BUILD_TYPE)
             "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
 
-# collect all cpp files
+
 file(GLOB_RECURSE MY_SRC
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
     # header don't need to be included but this might be necessary for some IDEs
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
 )
-
-# create make target
 add_executable(MolSim ${MY_SRC})
 
 # set c++ standard to c++20
@@ -43,16 +41,32 @@ target_link_libraries(MolSim
             xerces-c
             spdlog::spdlog
             fmt::fmt
-)
+)   
 
 # activate all compiler warnings. Clean up your code :P
 # depending on the compiler different flags are used
 target_compile_options(MolSim
         PRIVATE
             # disable some spam warnings for icpc...
-            $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
+            $<$<CXX_COMPILER_ID:Intel>:-w3 -O3 -ip -ipo -fast -wd383,981,1418,1572,2259>
 
 )
+
+
+# set the build type
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -g")  
+
+#set the build type to release -O3 flag is used for optimization
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -march=native -flto")
+set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -march=native -flto")
+
+# Optionally add separate Debug and Release settings to avoid overwriting them
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    message(STATUS "Building in Release mode ")
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    message(STATUS "Building in Debug mode ")
+endif()
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 

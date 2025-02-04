@@ -19,7 +19,7 @@ class DirectSumContainer: public ParticleContainer{
     * @param particles: The particles to store.
     * @param f: The force object that defines the force between two particles.
     */
-   DirectSumContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f);
+   DirectSumContainer(std::vector<Particle>& particles, std::unique_ptr<Force> &f);
 
 
    /**
@@ -31,7 +31,7 @@ class DirectSumContainer: public ParticleContainer{
     /**
      * Update the force between all particles.
      */
-    void updateF(bool newton3) override;
+    void updateF() override;
 
 
     /**

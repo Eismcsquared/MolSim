@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include <memory>
-#include "Logger.h"
 #include "inputReader/FileReader.h"
 #include "body/Particle.h"
 #include "container/DirectSumContainer.h"
@@ -8,16 +7,16 @@
 
 class IteratorTest: public ::testing::Test {
 protected:
-    std::unique_ptr<std::vector<Particle>> particles;
+    std::vector<Particle> particles;
     std::unique_ptr<DirectSumContainer> pc;
     std::unique_ptr<Force> f;
-    char* testfile = const_cast<char*>("../tests/test_cases/assignment1.txt");
-
+    std::string testfile = "../tests/test_cases/assignment1.txt";
+    std::shared_ptr<spdlog::logger> test_logger = spdlog::get("test_logger");
 
     void SetUp() override {
         FileReader fileReader;
-        particles = std::make_unique<std::vector<Particle>>();
-        fileReader.readFile(*particles, testfile);
+        fileReader.readFile(particles, testfile);
+
         f = std::make_unique<LennardJonesForce>();
         pc = std::make_unique<DirectSumContainer>(particles, f);
         spdlog::set_level(spdlog::level::info);

@@ -42,6 +42,16 @@ private:
     std::array<int, 3> nCells;
 
     /**
+     * The indices of halo cells in each direction. Each vector represents a direction, following the order of the enum Direction.
+     */
+    std::array<std::vector<int>, 6> haloCells;
+
+    /**
+     * The indices of domain cells.
+     */
+    std::vector<int> domainCells;
+
+    /**
      * The boundary condition of the domain, stored in the order: left, right, down, up, back, front
      * where: left->right is the x-direction, down->up is the y-direction, back->front is the z-direction.
      */
@@ -51,13 +61,17 @@ private:
 
 public:
 
-    /**
-    * Construct a linked cell container.
-    * @param particles: The particles to store.
-    * @param f: The force object that defines the force between two particles.
-    */
-    LinkedCellContainer(std::unique_ptr<std::vector<Particle>>& particles, std::unique_ptr<Force>& f,
-                        std::array<double, 3> domainSize,double cutoff, std::array<BoundaryCondition, 6> boundaryConditions);
+     /**
+     * Construct a linked cell container.
+     * @param particles: The particles to store.
+     * @param f: The force object that defines the force between two particles.
+     * @param domainSize: The size of the domain.
+     * @param cutoff: The cutoff radius.
+     * @param boundaryConditions: The boundary conditions on different boundaries.
+     */
+     LinkedCellContainer(std::vector<Particle>& particles, std::unique_ptr<Force> &f,
+                         std::array<double, 3> domainSize, double cutoff, std::array<BoundaryCondition, 6> boundaryConditions);
+
 
     /**
      * Getter for the cells.
@@ -90,10 +104,9 @@ public:
     const std::array<BoundaryCondition, 6> &getBoundaryConditions() const;
 
     /**
-     *  @brief Update the force between all particles.
-     * @param newton3 The Newton's third law is applied if this flag is set.
+     * @brief Update the force between all particles.
      */
-    void updateF(bool newton3) override;
+    void updateF() override;
 
     /**
      * @brief Update the position for all particles.
@@ -112,14 +125,31 @@ public:
      * @param cellIndex The index of the cell.
      * @return The indices of the neighbor cells.
      */
-    std::vector<int> getNeighborCells(int cellIndex);
+    std::set<int> getNeighborCells(int cellIndex);
 
     /**
      * @brief Get the index of a cell that contains a given position.
      * @param positions The position that should be tested.
      * @return The index of the cell that contains the given position.
      */
-    int getCellIndex(std::array<double, 3> positions);
+    inline int getCellIndex(std::array<double, 3> positions) {
+
+        std::array<double, 3> cellSize = cells[0].getSize();
+        // Check if the position is within the domain + halo region
+        if(positions[0] < -cellSize[0] || positions[0] >= domainSize[0] + cellSize[0] || positions[1] < -cellSize[1] ||
+           positions[1] >= domainSize[1] + cellSize[1] || positions[2] < -cellSize[2] || positions[2] >= domainSize[2] + cellSize[2]){
+            return -1;
+        }
+
+        int idxX = std::floor(positions[0] / cellSize[0]);
+        int idxY = std::floor(positions[1] / cellSize[1]);
+        int idxZ = std::floor(positions[2] / cellSize[2]);
+
+        // Calculate the linear cell index
+        int cellIndex = get1DIndex({idxX, idxY, idxZ});
+
+        return cellIndex;
+    }
 
     /**
      * @brief Convert 3D cell index to 1D cell index.
@@ -138,10 +168,10 @@ public:
 
     /**
      * @brief Update the forces between particles in two cells.
-     * @param v1 The indices of particles in the first cell.
-     * @param v2 The indices of particles in the second cell.
+     * @param c1 The index of the first cell.
+     * @param v2 The index of the second cell.
      */
-    void updateCellF(const std::vector<int> &v1, const std::vector<int> &v2, bool newton3);
+    void updateFCells(int c1, int c2);
 
     /**
      * Check whether a cell is a boundary cell.
@@ -158,11 +188,11 @@ public:
     bool isHaloCell(int index);
 
     /**
-     * Compute the indices of all halo cells
-     * @param direction: The direction of the boundary, e.g. for LEFT: Indices of all halo cells with x < 0 are returned
-     * @return The indices of halo cells in a vector
+     * Check whether a cell is in domain.
+     * @param index The linear index of the cell.
+     * @return True if the cell is in domain.
      */
-    std::vector<int> getAllHaloIndices(Direction direction);
+    bool isDomainCell(int index);
 
     /**
      * Remove particles from halo cells.
@@ -176,17 +206,19 @@ public:
      * For REFLECTING boundary condition: the corresponding component of the velocity is inverted.
      * @param direction The direction of the halo cells
      * @param boundaryCondition The boundary condition.
+     * @param deltaT The time step.
      */
-    void updateHalo(Direction direction, BoundaryCondition boundaryCondition);
+    void updateHalo(Direction direction, BoundaryCondition boundaryCondition, double deltaT);
 
     /**
      * Handle particles in the halo cells according to the boundary condition.
      */
-     void updateHalo();
+     void updateHalo(double deltaT);
 
     /**
      * Add a particle to the linked cell container
      * @param particle: The particle to add to the container
+     * @param deltaT The time step.
      */
     void addParticle(const Particle& particle) override;
 
@@ -195,6 +227,12 @@ public:
      * @param cluster: The cluster to add to the container
      */
     void addCluster(const Cluster &cluster) override;
+
+    /**
+     * Provide a string representation of the linked cell container.
+     * @return A string representation of the container.
+     */
+    std::string toString() override;
 
     bool operator==(const LinkedCellContainer &other) const;
 };

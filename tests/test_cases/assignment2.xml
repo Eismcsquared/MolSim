@@ -16,8 +16,6 @@
                 <y>8</y>
             </size>
             <distance>1.122462048309373</distance>
-            <brownVelocity>0</brownVelocity>
-            <brownDimension>2</brownDimension>
         </cuboid>
         <cuboid>
             <position>
@@ -34,8 +32,7 @@
                 <y>8</y>
             </size>
             <distance>1.122462048309373</distance>
-            <brownVelocity>0</brownVelocity>
-            <brownDimension>2</brownDimension>
+            <brown_velocity>0</brown_velocity>
         </cuboid>
     </objects>
     <parameters>
@@ -44,6 +41,5 @@
         <output>a2</output>
         <format>xyz</format>
         <frequency>15</frequency>
-        <Lennard-Jones/>
     </parameters>
 </simulation>

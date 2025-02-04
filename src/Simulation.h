@@ -10,6 +10,12 @@ class Simulation {
      * The objects in the simulation
      */
     std::unique_ptr<ParticleContainer> container;
+
+    /**
+     * The start time of the simulation.
+     */
+    double startTime;
+
     /**
      * The end time of the simulation.
      */
@@ -33,14 +39,17 @@ class Simulation {
      * The frequency of the output.
      */
     unsigned int outputFrequency;
+
     /**
      * Represents whether output should be activated, useful for benchmarking.
      */
     bool saveOutput;
+
     /**
-     * represents whether the Newton's third law should be applied in the force calculations.
+     * The name of the file which the final tate of the system is stored to, checkpointing is deactivated by default.
      */
-    bool newton3;
+    std::string checkpointingFile;
+
 public:
 
     /**
@@ -56,6 +65,25 @@ public:
                std::string outputFile, std::string outputFormat, unsigned int outputFrequency);
 
     /**
+     * Constructor.
+     * @param container The container that contains the particles for the simulation.
+     * @param startTime The start time of the simulation.
+     * @param endTime The end time of the simulation.
+     * @param deltaT The time step of the simulation.
+     * @param outputFormat The format of the output file.
+     * @param outputFile The name of the output file.
+     * @param outputFrequency The frequency of output.
+     */
+    Simulation(std::unique_ptr<ParticleContainer> &container, double startTime, double endTime, double deltaT,
+               std::string outputFile, std::string outputFormat, unsigned int outputFrequency);
+
+    /**
+     * Setter for the start time.
+     * @param startTime The new start time.
+     */
+    void setStartTime(double startTime);
+
+    /**
      * Setter for the end time.
      * @param endTime The new end time.
      */
@@ -63,13 +91,13 @@ public:
 
     /**
      * Setter for the time step.
-     * @param endTime The new time step.
+     * @param deltaT The new time step.
      */
     void setDeltaT(double deltaT);
 
     /**
      * Setter for the format of the output.
-     * @param endTime The new output format, either "vtu" or "xyz".
+     * @param outputFormat The new output format, either "vtu" or "xyz".
      */
     void setOutputFormat(const std::string &outputFormat);
 
@@ -87,15 +115,15 @@ public:
 
     /**
      * Setter for the flag of saving output.
-     * @param saveOutput The new flag.
+     * @param saveOutput
      */
     void setSaveOutput(bool saveOutput);
 
     /**
-     * Setter for the flag of applying the Newton's third law.
-     * @param newton3 The new flag.
+     * Setter for the checkpointing file name.
+     * @param checkpointingFile
      */
-    void setNewton3(bool newton3);
+    void setCheckpointingFile(const std::string &checkpointingFile);
 
     /**
      * Getter for the particle container.
@@ -104,7 +132,13 @@ public:
     const std::unique_ptr<ParticleContainer> &getContainer() const;
 
     /**
-     * Getter for the simulation duration.
+     * Getter for the start time.
+     * @return The start time of the simulation.
+     */
+    double getStartTime() const;
+
+    /**
+     * Getter for the end time.
      * @return The end time of the simulation.
      */
     double getEndTime() const;
@@ -140,10 +174,10 @@ public:
     bool isSaveOutput() const;
 
     /**
-     * Getter for the flag for applying the Newton's third law.
-     * @return The flag whether the Newton's third law is applied.
+     * Getter for the checkpointing output file.
+     * @return output file name for checkpointing.
      */
-    bool isNewton3() const;
+    std::string getCheckpointingFile() const;
 
     /**
      * Run the simulation.

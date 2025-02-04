@@ -5,18 +5,7 @@
  * @brief Class for calculation of the force between two particles assuming a Lennard-Jones potential.
  */
 class LennardJonesForce: public Force {
-private:
-    /**
-     * @brief The parameter epsilon in the Lennard-Jones potential. Default: 5.
-     */
-    double epsilon;
-    /**
-     * @brief The parameter sigma in the Lennard-Jones potential. Default: 1.
-     */
-    double sigma;
 public:
-    LennardJonesForce(double epsilon, double sigma);
-    LennardJonesForce();
 
     /**
      * @brief simulate the Lennard-Jones force between two particles.

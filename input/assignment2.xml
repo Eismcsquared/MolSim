@@ -16,8 +16,7 @@
                 <y>8</y>
             </size>
             <distance>1.122462048309373</distance>
-            <brownVelocity>0.1</brownVelocity>
-            <brownDimension>2</brownDimension>
+            <brown_velocity>0.1</brown_velocity>
         </cuboid>
         <cuboid>
             <position>
@@ -34,13 +33,12 @@
                 <y>8</y>
             </size>
             <distance>1.122462048309373</distance>
-            <brownVelocity>0.1</brownVelocity>
-            <brownDimension>2</brownDimension>
+            <brown_velocity>0.1</brown_velocity>
         </cuboid>
     </objects>
     <parameters>
         <end_time>5</end_time>
         <delta_t>0.0002</delta_t>
-        <Lennard-Jones/>
+        <output>assignment2</output>
     </parameters>
 </simulation>
