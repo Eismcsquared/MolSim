@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <vector>
 #include <functional>
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 #include "container/DirectSumContainer.h"
 #include "container/LinkedCellContainer.h"
 #include "force/GravitationalForce.h"
@@ -24,37 +24,37 @@ protected:
         directSum = std::make_unique<DirectSumContainer>(particles1, g);
         linkedCell = std::make_unique<LinkedCellContainer>(particles2, l, std::array<double, 3>{15, 15, 1}, 3,
                                                            std::array<BoundaryCondition, 6>{REFLECTING, REFLECTING, REFLECTING, REFLECTING, REFLECTING, REFLECTING});
-        directSum->setG(-10);
-        linkedCell->setG(-10);
+        directSum->setG({0, -10, 0});
+        linkedCell->setG({0, -10, 0});
     }
 };
 
 // Test whether the motion of a single particle in the gravitation field corresponds to a parable.
 TEST_F(GravityTest, OneParticle) {
-    test_logger->info("GravityTest - One particle test");
+    test_logger->info("Gravity - One particle test");
 
     directSum->addParticle(Particle({1, 1, 0.5}, {2, 3, 0}, 1));
-    directSum->simulate(0, 0.5, 1e-5, "", "vtu", 10, false);
+    directSum->simulate(0.5, 1e-5, "", "vtu", 10, false);
 
     EXPECT_LE(ArrayUtils::L2Norm(directSum->getParticles()[0].getX() - std::array<double, 3>{2, 1.25, 0.5}), 1e-5);
     EXPECT_LE(ArrayUtils::L2Norm(directSum->getParticles()[0].getV() - std::array<double, 3>{2, -2, 0}), 1e-5);
 
     linkedCell->addParticle(Particle({1, 1, 0.5}, {2, 3, 0}, 1));
-    linkedCell->simulate(0, 0.5, 1e-5, "", "vtu", 10, false);
+    linkedCell->simulate(0.5, 1e-5, "", "vtu", 10, false);
 
     EXPECT_LE(ArrayUtils::L2Norm(linkedCell->getParticles()[0].getX() - std::array<double, 3>{2, 1.25, 0.5}), 1e-5);
     EXPECT_LE(ArrayUtils::L2Norm(linkedCell->getParticles()[0].getV() - std::array<double, 3>{2, -2, 0}), 1e-5);
 
     if (::testing::Test::HasFailure()) {
-        test_logger->info("GravityTest - One particle test failed\n\n");
+        test_logger->info("Gravity - One particle test failed\n\n");
     } else {
-        test_logger->info("GravityTest - One particle test passed\n\n");
+        test_logger->info("Gravity - One particle test passed\n\n");
     }
 }
 
 // Test the gravity in presence of interaction between particles. Since the exact motion is hard to predict, the test is based on energy conservation.
 TEST_F(GravityTest, ManyBody) {
-    test_logger->info("GravityTest - Many body test");
+    test_logger->info("Gravity - Many body test");
 
     auto potentialEnergy = [](std::vector<Particle> &particles, std::function<double(Particle &p1, Particle &p2)> &potential) {
         double E_pot = 0;
@@ -103,7 +103,7 @@ TEST_F(GravityTest, ManyBody) {
     double energyBefore = potentialEnergy(directSum->getParticles(), gravitation) + kineticEnergy(directSum->getParticles()) +
             gravitationalPotential(directSum->getParticles(), -10);
 
-    directSum->simulate(0, 1, 1e-4, "", "vtu", 10, false);
+    directSum->simulate(1, 1e-4, "", "vtu", 10, false);
 
     double energyAfter = potentialEnergy(directSum->getParticles(), gravitation) + kineticEnergy(directSum->getParticles()) +
                           gravitationalPotential(directSum->getParticles(), -10);
@@ -120,15 +120,15 @@ TEST_F(GravityTest, ManyBody) {
     energyBefore = potentialEnergy(linkedCell->getParticles(), LennardJonesCutoff) + kineticEnergy(linkedCell->getParticles()) +
                           gravitationalPotential(linkedCell->getParticles(), -10);
 
-    linkedCell->simulate(0, 1, 1e-5, "", "vtu", 10, false);
+    linkedCell->simulate(1, 1e-5, "", "vtu", 10, false);
 
     energyAfter = potentialEnergy(linkedCell->getParticles(), LennardJonesCutoff) + kineticEnergy(linkedCell->getParticles()) +
                          gravitationalPotential(linkedCell->getParticles(), -10);
     EXPECT_NEAR(energyBefore, energyAfter, 1e-5);
 
     if (::testing::Test::HasFailure()) {
-        test_logger->info("GravityTest - Many body test failed\n\n");
+        test_logger->info("Gravity - Many body test failed\n\n");
     } else {
-        test_logger->info("GravityTest - Many body test passed\n\n");
+        test_logger->info("Gravity - Many body test passed\n\n");
     }
 }

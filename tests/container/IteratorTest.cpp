@@ -30,18 +30,18 @@ protected:
 
 //Test whether the iterator of the particle container works correctly
 TEST_F(IteratorTest, ParticleContainerIter) {
-    test_logger->info("Particle container iterator test");
+    test_logger->info("Iterator - Particle container iterator test");
     std::unique_ptr<Iterator> cur = pc->iterator();
     for (int i = 0; i < pc->getParticleNumber(); ++i) {
         Particle current = cur->next();
         if (!(pc->getParticles()[i] == current)) {
-            test_logger->error("Particle container iterator test failed");
+            test_logger->error("Iterator - Particle container iterator test failed");
         }
         EXPECT_EQ(pc->getParticles()[i], current);
     }
     if (cur->hasNext()) {
-        test_logger->error("Particle container iterator test failed");
+        test_logger->error("Iterator - Particle container iterator test failed");
     }
     ASSERT_FALSE(cur->hasNext());
-    test_logger->info("Particle container iterator test passed");
+    test_logger->info("Iterator - Particle container iterator test passed");
 }

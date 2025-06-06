@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <vector>
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 #include "container/LinkedCellContainer.h"
 #include "force/LennardJonesForce.h"
 
@@ -133,14 +133,14 @@ TEST_F(LinkedCellContainerTest, ForceCalculation) {
     // updateF called in addParticle, test the calculation
     container3D->addParticle(Particle(pos[0], {0, 0, 0}, 1));
     container3D->addParticle(Particle(pos[1], {0, 0, 0}, 1));
-    container3D->updateF();
+    container3D->ParticleContainer::updateF();
     double expectedForce = 120 * (pow(1 / sqrt(3), 7) - 2 * pow(1 / sqrt(3), 13));
     for (int i = 0; i < 3; ++i) {
         EXPECT_FLOAT_EQ(expectedForce / sqrt(3), container3D->getParticles()[0].getF()[i]);
         EXPECT_FLOAT_EQ(-expectedForce / sqrt(3), container3D->getParticles()[1].getF()[i]);
     }
     container3D->addParticle(Particle(pos[2], {0, 0, 0}, 1));
-    container3D->updateF();
+    container3D->ParticleContainer::updateF();
     // expected no interaction between the third particle and the previous two, since they are too far away.
     for (int i = 0; i < 3; ++i) {
         EXPECT_FLOAT_EQ(expectedForce / sqrt(3), container3D->getParticles()[0].getF()[i]);
@@ -172,7 +172,7 @@ TEST_F(LinkedCellContainerTest, ForceCalculationPeriodic) {
 
     container3DPeriodicX->addParticle(Particle(pos[0], {0, 0, 0}, 1));
     container3DPeriodicX->addParticle(Particle(pos[1], {0, 0, 0}, 1));
-    container3DPeriodicX->updateF();
+    container3DPeriodicX->ParticleContainer::updateF();
 
     EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[0].getF() -
                  std::array<double, 3>{
@@ -190,7 +190,7 @@ TEST_F(LinkedCellContainerTest, ForceCalculationPeriodic) {
               1e-12);
 
     container3DPeriodicX->addParticle(Particle(pos[2], {0, 0, 0}, 1));
-    container3DPeriodicX->updateF();
+    container3DPeriodicX->ParticleContainer::updateF();
 
     EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[0].getF() -
                 std::array<double, 3>{
@@ -215,7 +215,7 @@ TEST_F(LinkedCellContainerTest, ForceCalculationPeriodic) {
               1e-12);
 
     container3DPeriodicX->addParticle(Particle(pos[3], {0, 0, 0}, 1));
-    container3DPeriodicX->updateF();
+    container3DPeriodicX->ParticleContainer::updateF();
 
     EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[0].getF() -
                 std::array<double, 3>{
@@ -249,7 +249,7 @@ TEST_F(LinkedCellContainerTest, ForceCalculationPeriodic) {
 
     container3DPeriodicX->addParticle(Particle(pos[4], {0, 0, 0}, 1));
     container3DPeriodicX->addParticle(Particle(pos[5], {0, 0, 0}, 1));
-    container3DPeriodicX->updateF();
+    container3DPeriodicX->ParticleContainer::updateF();
     EXPECT_LE(ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[0].getF() -
                 std::array<double, 3>{
                     -force(2) - 2 * force(sqrt(8)) / sqrt(2),
@@ -309,17 +309,17 @@ TEST_F(LinkedCellContainerTest, Outflow) {
     container2D->addParticle(Particle({13, 13, 0.5}, {0, 1, 0}, 1)); // outflow at t=2
     container2D->addParticle(Particle({13, 1, 0.5}, {sqrt(2), sqrt(2), 0}, 1)); // outflow at t=sqrt(2)
     EXPECT_EQ(3, container2D->getParticleNumber());
-    container2D->simulate(0, 0.99, 1e-3, "", "", 10, false);
+    container2D->simulate(0.99, 1e-3, "", "", 10, false);
     EXPECT_EQ(3, container2D->getParticleNumber());
-    container2D->simulate(0.99, 1.01, 1e-3, "", "", 10, false);
+    container2D->simulate(1.01, 1e-3, "", "", 10, false);
     EXPECT_EQ(2, container2D->getParticleNumber());
-    container2D->simulate(1.01, 1.41, 1e-3, "", "", 10, false);
+    container2D->simulate(1.41, 1e-3, "", "", 10, false);
     EXPECT_EQ(2, container2D->getParticleNumber());
-    container2D->simulate(1.41, 1.42, 1e-3, "", "", 10, false);
+    container2D->simulate(1.42, 1e-3, "", "", 10, false);
     EXPECT_EQ(1, container2D->getParticleNumber());
-    container2D->simulate(1.42, 1.99, 1e-3, "", "", 10, false);
+    container2D->simulate(1.99, 1e-3, "", "", 10, false);
     EXPECT_EQ(1, container2D->getParticleNumber());
-    container2D->simulate(1.99, 2.01, 1e-3, "", "", 10, false);
+    container2D->simulate(2.01, 1e-3, "", "", 10, false);
     EXPECT_EQ(0, container2D->getParticleNumber());
     if (::testing::Test::HasFailure()) {
         test_logger->info("LinkedCellContainer - Outflow boundary test failed");
@@ -334,14 +334,14 @@ TEST_F(LinkedCellContainerTest, Reflecting) {
     container3D->addParticle(Particle({1, 1, 10}, {-1, 0, 0}, 1)); //reflected at t=1
     container3D->addParticle(Particle({98, 98, 10}, {1, 1, 0}, 1)); //reflected at t=2
     container3D->addParticle(Particle({50, 1, 48}, {2, -1, 1}, 1)); //reflect at t=1, outflow at t=2
-    container3D->simulate(0, 1.5, 1e-1, "", "", 10, false);
+    container3D->simulate(1.5, 1e-1, "", "", 10, false);
 
     EXPECT_EQ(3, container3D->getParticleNumber());
     EXPECT_EQ(Particle({0.5, 1, 10}, {1, 0, 0}, 1), container3D->getParticles()[0]);
     EXPECT_EQ(Particle({99.5, 99.5, 10}, {1, 1, 0}, 1), container3D->getParticles()[1]);
     EXPECT_EQ(Particle({53, 0.5, 49.5}, {2, 1, 1}, 1), container3D->getParticles()[2]);
 
-    container3D->simulate(1.5, 2.5, 1e-1, "", "", 10, false);
+    container3D->simulate(2.5, 1e-1, "", "", 10, false);
 
     EXPECT_EQ(2, container3D->getParticleNumber());
     EXPECT_FALSE(container3D->getParticles()[2].isInDomain());
@@ -362,12 +362,12 @@ TEST_F(LinkedCellContainerTest, Periodic) {
     container3DPeriodicX->addParticle(Particle({98, 98, 10}, {1, 1, 0}, 1)); // periodic + reflecting at t=2
     container3DPeriodicX->addParticle(Particle({1, 1, 48}, {-1, 0, 2}, 1)); // periodic + outflow at t=1
 
-    container3DPeriodicX->simulate(0, 1.5, 1e-1, "", "", 10, false);
+    container3DPeriodicX->simulate(1.5, 1e-1, "", "", 10, false);
     EXPECT_EQ(2, container3DPeriodicX->getParticleNumber());
     EXPECT_FALSE(container3DPeriodicX->getParticles()[2].isInDomain());
     EXPECT_EQ(Particle({99.5, 1, 10}, {-1, 0, 0}, 1), container3DPeriodicX->getParticles()[0]);
     EXPECT_EQ(Particle({99.5, 99.5, 10}, {1, 1, 0}, 1), container3DPeriodicX->getParticles()[1]);
-    container3DPeriodicX->simulate(1.5, 2.5, 1e-1, "", "", 10, false);
+    container3DPeriodicX->simulate(2.5, 1e-1, "", "", 10, false);
     EXPECT_EQ(2, container3DPeriodicX->getParticleNumber());
     EXPECT_EQ(Particle({98.5, 1, 10}, {-1, 0, 0}, 1), container3DPeriodicX->getParticles()[0]);
     EXPECT_EQ(Particle({0.5, 99.5, 10}, {1, -1, 0}, 1), container3DPeriodicX->getParticles()[1]);
@@ -375,7 +375,7 @@ TEST_F(LinkedCellContainerTest, Periodic) {
     // What happens at "periodic corners"?
 
     container3DPeriodicAll->addParticle(Particle({1, 1, 1}, {-1, -1, -1}, 1));
-    container3DPeriodicAll->simulate(0, 2, 1e-1, "", "", 10, false);
+    container3DPeriodicAll->simulate(2, 1e-1, "", "", 10, false);
     EXPECT_EQ(Particle({99, 99, 49}, {-1, -1, -1}, 1), container3DPeriodicAll->getParticles()[0]);
 
     if (::testing::Test::HasFailure()) {
@@ -392,7 +392,7 @@ TEST_F(LinkedCellContainerTest, Analytical) {
     test_logger->info("LinkedCellContainer - Two body analytical test");
     container2D->addParticle(Particle(std::array<double, 3>{7, 7.5, 0.5}, std::array<double, 3>{0, 0, 0}, 1, 0, 0.25, 1));
     container2D->addParticle(Particle(std::array<double, 3>{8, 7.5, 0.5}, std::array<double, 3>{0, 0, 0}, 1, 0, 0.25, 1));
-    container2D->simulate(0, 25, 1e-3, "", "", 10, false);
+    container2D->simulate(25, 1e-3, "", "", 10, false);
     double expectedVel = sqrt((pow(1.0 / 3, 6) - pow(1.0 / 3, 12)));
     EXPECT_TRUE(ArrayUtils::L2Norm(container2D->getParticles()[0].getX() - container2D->getParticles()[1].getX()) > 3);
 
@@ -419,3 +419,108 @@ TEST_F(LinkedCellContainerTest, Analytical) {
     }
 }
 
+// Test that walls do not move.
+TEST_F(LinkedCellContainerTest, Wall) {
+    test_logger->info("LinkedCellContainer - Wall test");
+    Cuboid c({1, 1, 1}, {0, 0, 0}, {10, 10, 10}, 1, 1, 0, 3, 0, 5, 1, true);
+    container3D->addCluster(c);
+    container3D->simulate(1, 1e-2, "", "", 10, false);
+    for (int i = 0; i < 1000; ++i) {
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(container3D->getParticles()[i].getX() - std::array<double, 3>{static_cast<double>(i / 100) + 1, static_cast<double>((i % 100) / 10) + 1, static_cast<double>(i % 10) + 1}), 1e-12);
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(container3D->getParticles()[i].getV() - std::array<double, 3>{0, 0, 0}), 1e-12);
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(container3D->getParticles()[i].getF() - std::array<double, 3>{0, 0, 0}), 1e-12);
+    }
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("LinkedCellContainer - Wall test failed");
+    } else {
+        test_logger->info("LinkedCellContainer - Wall test passed");
+    }
+}
+
+// Test the correctness of the force calculation in presence of stationary particles by comparing it the force calculation
+// without stationary particles.
+TEST_F(LinkedCellContainerTest, ForceCalculationStationary) {
+    test_logger->info("LinkedCellContainer - Force calculation with stationary particles test");
+    std::vector<std::array<double, 3>> positions{{1, 1, 1}, {2, 4, 3}, {3.3, 2, 1.8}, {2.5, 3.4, 1.1}, {0.3, 1.7, 1.2}, {2.6, 2.4, 2.5}, {3.6, 1.4, 1.8}, {1.1, 3, 2}};
+    for (int i = 0; i < 8; ++i) {
+        container3D->addParticle(Particle(positions[i], {0, 0, 0}, 1));
+    }
+    for (int i = 0; i < 4; ++i) {
+        container3DPeriodicX->addParticle(Particle(positions[i], {0, 0, 0}, 1));
+    }
+    for (int i = 4; i < 8; ++i) {
+        container3DPeriodicX->addParticle(Particle(positions[i], {0, 0, 0}, 1, 0, 5, 1, true));
+    }
+    for (int i = 0; i < 4; ++i) {
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[i].getF() - container3D->getParticles()[i].getF()), 1e-12);
+    }
+    for (int i = 4; i < 8; ++i) {
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(container3DPeriodicX->getParticles()[i].getF() - std::array<double, 3>{0, 0, 0}), 1e-12);
+    }
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("LinkedCellContainer - Force calculation with stationary particles test failed");
+    } else {
+        test_logger->info("LinkedCellContainer - Force calculation with stationary particles test passed");
+    }
+}
+
+// Test the pre-computation of cell pairs. They satisfy the following properties:
+// 1. Every pair of cells are neighbouring.
+// 2. Every neighbouring cell pair appears exactly once.
+// 3. In each partition, every cell appears in at most one pair.
+// These properties should be tested.
+TEST_F(LinkedCellContainerTest, CellPairs) {
+    std::string testName = "LinkedCellContainer - Cell pairs test";
+    test_logger->info(testName);
+    std::vector<Particle> p1;
+    std::unique_ptr<Force> f1 = std::make_unique<LennardJonesForce>();
+    LinkedCellContainer container1(p1, f1, {15, 15, 12}, 3, {PERIODIC, PERIODIC, OUTFLOW, OUTFLOW, REFLECTING, REFLECTING});
+
+    test_logger->info(testName);
+    std::vector<Particle> p2;
+    std::unique_ptr<Force> f2 = std::make_unique<LennardJonesForce>();
+    LinkedCellContainer container2(p2, f2, {10, 18, 12}, 3, {PERIODIC, PERIODIC, PERIODIC, PERIODIC, PERIODIC, PERIODIC});
+
+    auto test = [](LinkedCellContainer& container, unsigned long count) {
+        unsigned long pairCount = 0;
+        std::vector<Pair> allPairs{};
+        std::vector<std::vector<Pair>> cellPairs = container.getCellPairs();
+        for (const auto &pairs: cellPairs) {
+            std::set<int> cellSet{};
+            for (const Pair &pair: pairs) {
+                std::set<int> firstNeighbours = container.getCells()[pair.first].getNeighbours();
+
+                // check each pair is neighbouring.
+                EXPECT_TRUE(firstNeighbours.count(pair.second) > 0);
+
+                cellSet.insert(pair.first);
+                cellSet.insert(pair.second);
+
+                allPairs.push_back(pair);
+            }
+            // check that no cell appear twice in a partition.
+            EXPECT_EQ(pairs.size() * 2, cellSet.size());
+
+            pairCount += pairs.size();
+        }
+
+        // Check that all pairs are present.
+        EXPECT_EQ(count, pairCount);
+
+        for (const Pair &pair: allPairs) {
+            // Check that every pair appear exactly once.
+            EXPECT_EQ(1, std::count(allPairs.begin(), allPairs.end(), pair));
+        }
+    };
+
+    test(container1, 925);
+    test(container2, 936);
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info(testName + " failed");
+    } else {
+        test_logger->info(testName + " passed");
+    }
+}

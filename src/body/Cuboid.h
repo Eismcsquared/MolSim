@@ -1,3 +1,5 @@
+#pragma once
+
 #include <array>
 #include <vector>
 #include "Particle.h"
@@ -7,11 +9,16 @@
  * @brief This class represents a cuboid consisting of particles.
  */
 class Cuboid : public Cluster {
-private:
+protected:
     /**
      * The number of particles in x, y and z direction.
      */
     std::array<unsigned int, 3> N;
+
+    /**
+     * Marks the cuboid as stationary (i.e. wall)
+     */
+    bool stationary;
 
 public:
     /**
@@ -36,11 +43,14 @@ public:
      * @param distance The distance between neighbouring particles.
      * @param avgVelocityBrownian The average velocity of the Brownian motion.
      * @param dimension The dimension of the Brownian motion.
+     * @param type The type of the particles.
      * @param epsilon The parameter epsilon of the Lennard-Jones potential.
      * @param sigma The parameter sigma of the Lennard-Jones potential.
+     * @param stationary The flag that determines whether the cuboid is a wall.
      */
     Cuboid(const std::array<double, 3> &x, const std::array<double, 3> &v, const std::array<unsigned int, 3> &n,
-           double m, double distance, double avgVelocityBrownian, int dimension, int type, double epsilon, double sigma);
+           double m, double distance, double avgVelocityBrownian, int dimension, int type, double epsilon, double sigma,
+           bool stationary = false);
 
     /**
      * Create particles that belong to the cuboid and insert them into the given vector.

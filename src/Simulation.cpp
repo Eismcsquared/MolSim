@@ -2,18 +2,12 @@
 #include "Simulation.h"
 #include "outputWriter/StateWriter.h"
 
+
+
 Simulation::Simulation(std::unique_ptr<ParticleContainer> &container, double endTime, double deltaT,
-                       std::string outputFile, std::string outputFormat, unsigned int outputFrequency)
-        : Simulation(container, 0, endTime, deltaT, std::move(outputFile), std::move(outputFormat), outputFrequency) {}
-
-Simulation::Simulation(std::unique_ptr<ParticleContainer> &container, double startTime, double endTime, double deltaT,
-                       std::string outputFile, std::string outputFormat, unsigned int outputFrequency)
-        : container(std::move(container)), startTime(startTime), endTime(endTime), deltaT(deltaT), outputFormat(std::move(outputFormat)), outputFile(std::move(outputFile)),
-          outputFrequency(outputFrequency), saveOutput(true) {}
-
-void Simulation::setStartTime(double startTime) {
-    Simulation::startTime = startTime;
-}
+                       std::string outputFile, std::string outputFormat, unsigned int outputFrequency, int strategy)
+        : container(std::move(container)), endTime(endTime), deltaT(deltaT), outputFormat(std::move(outputFormat)), outputFile(std::move(outputFile)),
+          outputFrequency(outputFrequency), saveOutput(true), strategy(strategy), statistics(nullptr) {}
 
 void Simulation::setEndTime(double endTime) {
     Simulation::endTime = endTime;
@@ -43,13 +37,12 @@ void Simulation::setCheckpointingFile(const std::string &checkpointingFile) {
     Simulation::checkpointingFile = checkpointingFile;
 }
 
+void Simulation::setStatistics(std::shared_ptr<Statistics> statistics) {
+    Simulation::statistics = statistics;
+}
 
 const std::unique_ptr<ParticleContainer> &Simulation::getContainer() const {
     return container;
-}
-
-double Simulation::getStartTime() const {
-    return startTime;
 }
 
 double Simulation::getEndTime() const {
@@ -80,11 +73,15 @@ std::string Simulation::getCheckpointingFile() const {
     return checkpointingFile;
 }
 
+std::shared_ptr<Statistics> Simulation::getStatistics() const {
+    return statistics;
+}
 
 void Simulation::run() {
-    container->simulate(startTime, endTime, deltaT, outputFile, outputFormat, outputFrequency, saveOutput);
+    container->simulate(endTime, deltaT, outputFile, outputFormat, outputFrequency, saveOutput, strategy, statistics);
 
     if (!checkpointingFile.empty()) {
         StateWriter::saveState(container->getParticles(), checkpointingFile);
     }
 }
+

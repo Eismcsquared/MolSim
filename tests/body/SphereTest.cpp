@@ -1,4 +1,4 @@
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 #include <gtest/gtest.h>
 #include <vector>
 #include "body/Sphere.h"

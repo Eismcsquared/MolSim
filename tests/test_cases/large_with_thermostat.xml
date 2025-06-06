@@ -42,12 +42,14 @@
         <end_time>25</end_time>
         <delta_t>0.0005</delta_t>
         <force>Lennard-Jones</force>
-        <g>-12.44</g>
+        <g>
+            <y>-12.44</y>
+        </g>
         <dimension>3</dimension>
         <thermostat>
             <initial_T>40</initial_T>
             <target_T>60</target_T>
-            <periode>1000</periode>
+            <period>1000</period>
             <max_delta>0.95</max_delta>
         </thermostat>
         <linked_cell>

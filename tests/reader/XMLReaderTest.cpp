@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 #include <string>
-#include <filesystem>
 #include "inputReader/XMLReader.h"
 #include "inputReader/StateReader.h"
 #include "force/GravitationalForce.h"
 #include "force/LennardJonesForce.h"
+#include "force/MembraneForce.h"
 #include "container/DirectSumContainer.h"
 #include "container/LinkedCellContainer.h"
 #include "body/Sphere.h"
@@ -38,14 +38,14 @@ TEST_F(XMLReaderTest, Assigment1Input) {
 
     DirectSumContainer ref(ref_p, f);
     EXPECT_EQ(ref, *(simulation->getContainer()));
-    EXPECT_FLOAT_EQ(100, simulation->getStartTime());
+    EXPECT_FLOAT_EQ(100, simulation->getContainer()->getT());
     EXPECT_FLOAT_EQ(1000, simulation->getEndTime());
     EXPECT_FLOAT_EQ(0.014, simulation->getDeltaT());
     EXPECT_EQ("", simulation->getOutputFile());
     EXPECT_EQ("vtu", simulation->getOutputFormat());
     EXPECT_EQ(10, simulation->getOutputFrequency());
-    EXPECT_FLOAT_EQ(0, simulation->getContainer()->getG());
-    EXPECT_FALSE(simulation->isSaveOutput());
+    EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(simulation->getContainer()->getG()));
+    EXPECT_TRUE(simulation->isSaveOutput());
     EXPECT_FALSE(simulation->getContainer()->getThermostat());
     if(::testing::Test::HasFailure()) {
         test_logger->info("XMLReader - Assignment 1 input test failed\n\n");
@@ -68,13 +68,13 @@ TEST_F(XMLReaderTest, Assigment2Input) {
     std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
     DirectSumContainer ref(ref_p, f);
     EXPECT_EQ(ref, *(simulation->getContainer()));
-    EXPECT_FLOAT_EQ(0, simulation->getStartTime());
+    EXPECT_FLOAT_EQ(0, simulation->getContainer()->getT());
     EXPECT_FLOAT_EQ(5, simulation->getEndTime());
     EXPECT_FLOAT_EQ(0.0002, simulation->getDeltaT());
     EXPECT_EQ("a2", simulation->getOutputFile());
     EXPECT_EQ("xyz", simulation->getOutputFormat());
     EXPECT_EQ(15, simulation->getOutputFrequency());
-    EXPECT_FLOAT_EQ(0, simulation->getContainer()->getG());
+    EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(simulation->getContainer()->getG()));
     EXPECT_TRUE(simulation->isSaveOutput());
     EXPECT_FALSE(simulation->getContainer()->getThermostat());
     if(::testing::Test::HasFailure()) {
@@ -154,17 +154,17 @@ TEST_F(XMLReaderTest, BrownianMotion) {
 }
 
 // Test whether the xml reader read the thermostat and gravitational acceleration correctly
-
 TEST_F(XMLReaderTest, Assignment4Input) {
     test_logger->info("XMLReader - Assignment 4 input test");
     inputFile = "../tests/test_cases/assignment4.xml";
     simulation = XMLReader::readXML(particles, inputFile);
     EXPECT_TRUE(simulation->getContainer()->getThermostat());
-    EXPECT_EQ(1000, simulation->getContainer()->getThermostat()->getPeriode());
+    EXPECT_EQ(1000, simulation->getContainer()->getThermostat()->getPeriod());
     EXPECT_FLOAT_EQ(40, simulation->getContainer()->getThermostat()->getTargetT());
-    EXPECT_FLOAT_EQ(std::numeric_limits<double>::infinity(), simulation->getContainer()->getThermostat()->getMaxDelta());
+    EXPECT_TRUE(std::isinf(simulation->getContainer()->getThermostat()->getMaxDelta()) && simulation->getContainer()->getThermostat()->getMaxDelta() > 0);
     EXPECT_EQ(2, simulation->getContainer()->getThermostat()->getDimension());
-    EXPECT_FLOAT_EQ(-12.44, simulation->getContainer()->getG());
+    EXPECT_FLOAT_EQ(-12.44, simulation->getContainer()->getG()[1]);
+    EXPECT_FLOAT_EQ(12.44, ArrayUtils::L2Norm(simulation->getContainer()->getG()));
 
     // Test whether the parameters epsilon, sigma and the type of particles are read correcly as well.
     for (Particle &p: particles) {
@@ -194,7 +194,7 @@ TEST_F(XMLReaderTest, InitialTemperature) {
     simulation = XMLReader::readXML(particles, inputFile);
 
     EXPECT_TRUE(simulation->getContainer()->getThermostat());
-    EXPECT_EQ(1000, simulation->getContainer()->getThermostat()->getPeriode());
+    EXPECT_EQ(1000, simulation->getContainer()->getThermostat()->getPeriod());
     EXPECT_FLOAT_EQ(60, simulation->getContainer()->getThermostat()->getTargetT());
     EXPECT_FLOAT_EQ(0.95, simulation->getContainer()->getThermostat()->getMaxDelta());
     EXPECT_EQ(3, simulation->getContainer()->getThermostat()->getDimension());
@@ -227,38 +227,134 @@ TEST_F(XMLReaderTest, InitialTemperature) {
 
 // Test whether the checkpointing unit is correctly integrated into the xml reader and the simulation itself.
 TEST_F(XMLReaderTest, Checkpointing) {
-    test_logger->info("XMLReaderTest - checkpointing test");
+    test_logger->info("XMLReaderTest - Checkpointing test");
     inputFile = "../tests/test_cases/checkpointing.xml";
     simulation = XMLReader::readXML(particles, inputFile);
 
     EXPECT_EQ(2, simulation->getContainer()->getParticleNumber());
 
+    std::string outputFile = "../tests/test_cases/checkpointing_out.txt";
 
     std::vector<Particle> ref;
-    ref.emplace_back(std::array<double, 3>{7, 7, 3}, std::array<double, 3>{-1, 2, 0.5}, 1, 1, 5, 1.2);
     ref.emplace_back(std::array<double, 3>{7, 8, 3}, std::array<double, 3>{1, 0.5, 0.5}, 3.5, 2, 4, 1.1);
+    ref.emplace_back(std::array<double, 3>{7, 7, 3}, std::array<double, 3>{-1, 2, 0.5}, 1, 1, 5, 1.2);
 
     EXPECT_EQ(ref[0], particles[0]);
     EXPECT_EQ(ref[1], particles[1]);
-    EXPECT_EQ("../tests/test_cases/checkpointing_out.txt", simulation->getCheckpointingFile());
+    EXPECT_EQ(outputFile, simulation->getCheckpointingFile());
 
     simulation->run();
 
     std::vector<Particle> loadedParticles;
 
-    StateReader::loadState(loadedParticles, "../tests/test_cases/checkpointing_out.txt");
+    StateReader::loadState(loadedParticles, outputFile);
 
     EXPECT_EQ(2, loadedParticles.size());
     EXPECT_EQ(ref[0], loadedParticles[0]);
     EXPECT_EQ(ref[1], loadedParticles[1]);
 
-    std::filesystem::remove("../tests/test_cases/checkpointing_out.txt");
+    std::remove(outputFile.c_str());
 
     if (::testing::Test::HasFailure()) {
-        test_logger->info("XMLReaderTest - checkpointing test failed\n\n");
+        test_logger->info("XMLReaderTest - Checkpointing test failed\n\n");
     } else {
-        test_logger->info("XMLReaderTest - checkpointing test passed\n\n");
+        test_logger->info("XMLReaderTest - Checkpointing test passed\n\n");
     }
 }
 
+// Test whether membranes and external forces are read correctly.
+TEST_F(XMLReaderTest, Membrane) {
+    test_logger->info("XMLReader - Membrane test");
+    inputFile = "../tests/test_cases/membrane.xml";
+    simulation = XMLReader::readXML(particles, inputFile);
 
+    EXPECT_EQ(100, simulation->getContainer()->getParticleNumber());
+    EXPECT_NO_THROW(dynamic_cast<MembraneForce&>(simulation->getContainer()->getForce()));
+    for (Particle &particle1 : simulation->getContainer()->getParticles()) {
+        EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(particle1.getV() - std::array<double, 3>{0, 2, 0}));
+        EXPECT_FLOAT_EQ(2, particle1.getM());
+        EXPECT_FLOAT_EQ(3, particle1.getEpsilon());
+        EXPECT_FLOAT_EQ(1.2, particle1.getSigma());
+        EXPECT_FLOAT_EQ(100, particle1.getK());
+        EXPECT_FLOAT_EQ(1, particle1.getR0());
+        for (Particle &particle2 : simulation->getContainer()->getParticles()) {
+            if (std::abs(ArrayUtils::L2NormSquare(particle1.getX() - particle2.getX()) - 25) < 1e-12) {
+                EXPECT_TRUE(particle1.isNeighbour(particle2));
+            } else {
+                EXPECT_FALSE(particle1.isNeighbour(particle2));
+            }
+            if (std::abs(ArrayUtils::L2NormSquare(particle1.getX() - particle2.getX()) - 50) < 1e-12) {
+                EXPECT_TRUE(particle1.isDiagonalNeighbour(particle2));
+            } else {
+                EXPECT_FALSE(particle1.isDiagonalNeighbour(particle2));
+            }
+        }
+    }
+    auto ef = simulation->getContainer()->getExternalForces();
+    EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(simulation->getContainer()->getParticles()[ef[0].particleIndex].getX() - std::array<double, 3>{3, 0, 1}));
+    EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(ef[0].f - std::array<double, 3>{3, 2, 1}));
+    EXPECT_FLOAT_EQ(15, ef[0].untilTime);
+    EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(simulation->getContainer()->getParticles()[ef[1].particleIndex].getX() - std::array<double, 3>{23, 10, 1}));
+    EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(ef[1].f - std::array<double, 3>{3, 2, 1}));
+    EXPECT_FLOAT_EQ(15, ef[1].untilTime);
+    EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(simulation->getContainer()->getParticles()[ef[2].particleIndex].getX() - std::array<double, 3>{48, 45, 1}));
+    EXPECT_FLOAT_EQ(0, ArrayUtils::L2Norm(ef[2].f - std::array<double, 3>{0, 1, 2}));
+    EXPECT_FLOAT_EQ(20, ef[2].untilTime);
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("XMLReader - Membrane test failed\n\n");
+    } else {
+        test_logger->info("XMLReader - Membrane test passed\n\n");
+    }
+}
+
+// Test whether walls and statistics are read correctly.
+TEST_F(XMLReaderTest, Wall) {
+    test_logger->info("XMLReader - Assignment 5 input test");
+    inputFile = "../tests/test_cases/assignment5.xml";
+    simulation = XMLReader::readXML(particles, inputFile);
+
+    EXPECT_EQ(6440, simulation->getContainer()->getParticleNumber());
+
+    for (int i = 0; i < 720; ++i) {
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(simulation->getContainer()->getParticles()[i + 5000].getX() - std::array<double, 3>{
+            static_cast<double>(i / 360 + 1),
+            static_cast<double>((i % 360) / 12 + 0.5),
+            static_cast<double>(i % 12 + 0.5)
+        }), 1e-12);
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(simulation->getContainer()->getParticles()[i + 5720].getX() - std::array<double, 3>{
+                static_cast<double>(i / 360 + 27.2),
+                static_cast<double>((i % 360) / 12 + 0.5),
+                static_cast<double>(i % 12 + 0.5)
+        }), 1e-12);
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(simulation->getContainer()->getParticles()[i + 5000].getV()), 1e-12);
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(simulation->getContainer()->getParticles()[i + 5720].getV()), 1e-12);
+        EXPECT_TRUE(simulation->getContainer()->getParticles()[i + 5000].isStationary());
+        EXPECT_TRUE(simulation->getContainer()->getParticles()[i + 5720].isStationary());
+    }
+
+    for (int i = 0; i < 5000; ++i) {
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(simulation->getContainer()->getParticles()[i].getX() - std::array<double, 3>{
+                i / 250 * 1.2 + 3.2,
+                (i % 250) / 10 * 1.2 + 0.6,
+                i % 10 * 1.2 + 0.6
+        }), 1e-12);
+        EXPECT_FALSE(simulation->getContainer()->getParticles()[i].isStationary());
+    }
+
+    // Test the correct reading of statistics.
+    EXPECT_TRUE(simulation->getStatistics());
+    EXPECT_EQ("s", simulation->getStatistics()->getFile());
+    EXPECT_EQ(10, simulation->getStatistics()->getPeriod());
+    EXPECT_NEAR(2, simulation->getStatistics()->getFrom(), 1e-12);
+    EXPECT_NEAR(27.2, simulation->getStatistics()->getTo(), 1e-12);
+    EXPECT_EQ(50, simulation->getStatistics()->getNumberBins());
+    EXPECT_EQ(X, simulation->getStatistics()->getProfileAxis());
+    EXPECT_EQ(Y, simulation->getStatistics()->getVelocityAxis());
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("XMLReader - Assignment 5 input test failed\n\n");
+    } else {
+        test_logger->info("XMLReader - Assignment 5 input test passed\n\n");
+    }
+}

@@ -4,7 +4,7 @@
 
 
 
-Thermostat::Thermostat(double targetT, int periode, double maxDelta, int dimension) : target_T(targetT), periode(periode),
+Thermostat::Thermostat(double targetT, int period, double maxDelta, int dimension) : target_T(targetT), period(period),
                                                                                     maxDelta(maxDelta),
                                                                                     dimension(dimension) {}
 
@@ -29,15 +29,15 @@ void Thermostat::apply(std::vector<Particle> &particles) const {
     std::array<double, 3> meanVel = meanVelocity(particles);
     double beta = sqrt(TNew / T);
     for (Particle &p: particles) {
-        if (p.isInDomain()) {
+        if (p.isInDomain() && !p.isStationary()) {
             std::array<double, 3> newV = meanVel + beta * (p.getV() - meanVel);
             p.setV(newV);
         }
     }
 }
 
-int Thermostat::getPeriode() const {
-    return periode;
+int Thermostat::getPeriod() const {
+    return period;
 }
 
 double Thermostat::getTargetT() const {
@@ -64,8 +64,8 @@ double Thermostat::temperature(std::vector<Particle> &particles, int dimension) 
     double E_kin = 0;
     int particleNumber = 0;
     for (Particle &p: particles) {
-        if (p.isInDomain()) {
-            E_kin += ArrayUtils::L2NormSquare(p.getV() - meanVel) / (2 * p.getM());
+        if (p.isInDomain() && !p.isStationary()) {
+            E_kin += ArrayUtils::L2NormSquare(p.getV() - meanVel) / 2 * p.getM();
             particleNumber++;
         }
     }
@@ -79,7 +79,7 @@ std::array<double, 3> Thermostat::meanVelocity(std::vector<Particle> &particles)
     std::array<double, 3> meanVelocity = {0, 0, 0};
     int particleNumber = 0;
     for (Particle &p: particles) {
-        if (p.isInDomain()) {
+        if (p.isInDomain() && !p.isStationary()) {
             meanVelocity = meanVelocity + p.getV();
             particleNumber++;
         }

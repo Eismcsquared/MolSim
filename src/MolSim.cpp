@@ -68,7 +68,7 @@ int main(int argc, char *argsv[]) {
         std::unique_ptr<Force> f = std::make_unique<LennardJonesForce>();
 
         std::unique_ptr<ParticleContainer> container = std::make_unique<DirectSumContainer>(particles, f);
-        simulation = std::make_unique<Simulation>(container, end_time, delta_t, outputFile, outputFormat, frequency);
+        simulation = std::make_unique<Simulation>(container, end_time, delta_t, outputFile, outputFormat, frequency, 0);
     }
 
     std::unique_ptr<Force> f;
@@ -133,7 +133,7 @@ int main(int argc, char *argsv[]) {
                 break;
             case 'g':
                 f = std::make_unique<GravitationalForce>();
-                simulation->getContainer()->setF(f);
+                simulation->getContainer()->setForce(f);
                 break;
             case 'c':
                 simulation->setCheckpointingFile(optarg);
@@ -156,7 +156,7 @@ int main(int argc, char *argsv[]) {
 
   // Inform the user about the input parameters
     spdlog::info("Input file name: {}", inputFile);
-    spdlog::info("Start time: {}", simulation->getStartTime());
+    spdlog::info("Start time: {}", simulation->getContainer()->getT());
     spdlog::info("End time: {}", simulation->getEndTime());
     spdlog::info("Time step: {}", simulation->getDeltaT());
     spdlog::info("Output file name: {}", simulation->getOutputFile());

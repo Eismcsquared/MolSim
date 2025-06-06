@@ -11,14 +11,14 @@
                 <y>0</y>
             </velocity>
             <mass>1</mass>
+            <type>1</type>
+            <epsilon>1</epsilon>
+            <sigma>1</sigma>
             <size>
                 <x>50</x>
                 <y>14</y>
             </size>
             <distance>1.2</distance>
-            <type>1</type>
-            <epsilon>1</epsilon>
-            <sigma>1</sigma>
         </cuboid>
         <cuboid>
             <position>
@@ -30,24 +30,26 @@
                 <y>0</y>
             </velocity>
             <mass>2</mass>
+            <type>2</type>
+            <epsilon>1</epsilon>
+            <sigma>0.9412</sigma>
             <size>
                 <x>50</x>
                 <y>14</y>
             </size>
             <distance>1.2</distance>
-            <type>2</type>
-            <epsilon>1</epsilon>
-            <sigma>0.9412</sigma>
         </cuboid>
     </objects>
     <parameters>
         <end_time>25</end_time>
         <delta_t>0.0005</delta_t>
         <force>Lennard-Jones</force>
-        <g>-12.44</g>
+        <g>
+            <y>-12.44</y>
+        </g>
         <thermostat>
             <initial_T>40</initial_T>
-            <periode>1000</periode>
+            <period>1000</period>
         </thermostat>
         <linked_cell>
             <domain_size>

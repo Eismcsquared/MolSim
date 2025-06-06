@@ -1,10 +1,12 @@
 #include <string>
 #include <memory>
 #include <spdlog/spdlog.h>
+#include <atomic>
 #include "body/Particle.h"
 #include "body/Cuboid.h"
 #include "force/Force.h"
 #include "thermostats/Thermostat.h"
+#include "statistics/Statistics.h"
 
 #pragma once
 
@@ -44,6 +46,15 @@ public:
 };
 
 /**
+ * @brief Represents external forces acting on single particles until a certain time.
+ */
+struct ConstantForce{
+    unsigned int particleIndex;
+    std::array<double, 3> f;
+    double untilTime;
+};
+
+/**
  * @brief The abstract class that represents a container for particles. Subclasses implement the concrete way to manage particles.
  */
 class ParticleContainer {
@@ -60,19 +71,30 @@ protected:
     std::unique_ptr<Force> force;
 
     /**
-     * The gravitational acceleration (in y-direction) acting on all particles.
+     * The gravitational acceleration acting on all particles.
      */
-     double g;
+    std::array<double, 3> g;
 
      /**
       * The number of particles in domain.
       */
-     unsigned long particleNumber;
+    std::atomic<unsigned long> particleNumber;
 
      /**
       * The thermostat that adjusts the temperature of the system.
       */
-     std::unique_ptr<Thermostat> thermostat;
+    std::unique_ptr<Thermostat> thermostat;
+
+    /**
+     * The current time.
+     */
+    double t;
+
+    /**
+     * External forces acting on single particles until a certain time.
+     */
+    std::vector<ConstantForce> externalForces;
+
 public:
     /**
     * Construct a particle container.
@@ -85,9 +107,9 @@ public:
     * Construct a particle container.
     * @param particles: The particles to store.
     * @param f_ptr: The force objects that defines the force between two particles.
-    * @param g: The gravitational acceleration (applied in the y-direction).
+    * @param g: The gravitational acceleration.
     */
-    ParticleContainer(std::vector<Particle> &particles, std::unique_ptr<Force> &f_ptr, double g);
+    ParticleContainer(std::vector<Particle> &particles, std::unique_ptr<Force> &f_ptr, std::array<double, 3> g);
 
     virtual ~ParticleContainer() = default;
 
@@ -98,44 +120,16 @@ public:
     std::vector<Particle>& getParticles() const;
 
     /**
-     * Setter for the force.
-     * @param f
+     *
+     * @return
      */
-    void setF(std::unique_ptr<Force> &f);
-
-    /**
-     * Setter for the gravitational acceleration.
-     * @param g
-     */
-    void setG(double g);
-
-    /**
-     * Setter for the thermostat.
-     * @param thermostat A unique pointer to the thermostat.
-     */
-    void setThermostat(std::unique_ptr<Thermostat> &thermostat);
-
-    /**
-     * Update the position of particles by a time step.
-     * @param delta_t The length of a time step.
-     */
-    virtual void updateX(double delta_t) = 0;
-    /**
-     * Update the velocity of particles by a time step.
-     * @param delta_t The length of a time step.
-     */
-    virtual void updateV(double delta_t) = 0;
-
-    /**
-     * Update the force between all particles with the Newton's third law applied.
-     */
-    virtual void updateF() = 0;
+    Force &getForce() const;
 
     /**
      * Getter for the gravitational acceleration.
      * @return The value of g.
      */
-    double getG() const;
+    std::array<double, 3> getG() const;
 
     /**
      * Getter for the thermostat.
@@ -150,6 +144,69 @@ public:
     unsigned long getParticleNumber() const;
 
     /**
+     * The getter for the current time.
+     * @return The current time.
+     */
+    double getT() const;
+
+    /**
+     * The getter for the external forces.
+     * @return The external forces.
+     */
+    const std::vector<ConstantForce> &getExternalForces() const;
+    /**
+     * Setter for the force.
+     * @param f
+     */
+    void setForce(std::unique_ptr<Force> &f);
+
+    /**
+     * Setter for the gravitational acceleration.
+     * @param g
+     */
+    void setG(std::array<double, 3> g);
+
+    /**
+     * Setter for the thermostat.
+     * @param thermostat A unique pointer to the thermostat.
+     */
+    void setThermostat(std::unique_ptr<Thermostat> &thermostat);
+
+    /**
+     * Setter for the time.
+     * @param t The new time.
+     */
+    void setT(double t);
+
+    /**
+     * Update the position of particles by a time step.
+     * @param delta_t The length of a time step.
+     */
+    virtual void updateX(double delta_t) = 0;
+    /**
+     * Update the velocity of particles by a time step.
+     * @param delta_t The length of a time step.
+     */
+    virtual void updateV(double delta_t) = 0;
+
+
+    /**
+     * @brief Update the force between all particles using the default parallelization strategy.
+     */
+    inline void updateF() {updateF(0);}
+
+    /**
+     * Update the force between all particles.
+     * @param strategy: The parallelization strategy.
+     */
+    virtual void updateF(int strategy) = 0;
+
+    /**
+     * Set the old force of particles to their current force and reset their force to the sum of external forces.
+     */
+    void resetF();
+
+    /**
      * Add a particle to the container
      * @param particle: The particle to add to the container
      */
@@ -161,20 +218,28 @@ public:
      */
     virtual void addCluster(const Cluster &cluster);
 
+    /**
+     * Add an external force on a specific particle.
+     * @param particleIndex The index of the particle the force should be applied on.
+     * @param f The force as an array.
+     * @param until The time until which the force is applied.
+     */
+    void addExternalForce(unsigned int particleIndex, const std::array<double, 3> f, double until);
 
     /**
      * Simulate the system of particles.
-     * @param start_time The start time of the simulation.
      * @param end_time The duration of the simulation.
      * @param delta_t The time step of the simulation.
      * @param out_name The name of the output file.
      * @param output_format The format of the output file, either "vtu" or "xyz".
      * @param output_frequency THe frequency of the output, in number of time steps.
      * @param save_output Output is activated if this flag is set.
+     * @param strategy The parallelization strategy.
+     * @param statistics Optional. If specified, statistics about the system is computed and stored.
      */
-    void simulate(double start_time, double end_time, double delta_t, const std::string& out_name,
+    void simulate(double end_time, double delta_t, const std::string& out_name,
                           const std::string& output_format, unsigned int output_frequency,
-                          bool save_output);
+                          bool save_output, int strategy = 0, const std::shared_ptr<Statistics>& statistics = nullptr);
 
     /**
      * Write the current state of the container to the output files.

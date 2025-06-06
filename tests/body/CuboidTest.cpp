@@ -1,7 +1,7 @@
 #include <vector>
 #include <gtest/gtest.h>
-#include "spdlog/spdlog.h"
-#include "spdlog/sinks/basic_file_sink.h"
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/basic_file_sink.h>
 #include "inputReader/FileReader.h"
 #include "utils/ArrayUtils.h"
 #include "body/Particle.h"
@@ -33,7 +33,7 @@ protected:
 
 // Test whether the createParticle method of Cuboid create the correct particles that are contained in the cuboid.
 TEST_F(CuboidTest, CreateParticle) {
-    test_logger->info("Cuboid - create particles test");
+    test_logger->info("Cuboid - Create particles test");
     std::vector<Particle> ps;
     cuboid.createParticles(ps);
     for (int i = 0; i < 2; ++i) {
@@ -44,12 +44,12 @@ TEST_F(CuboidTest, CreateParticle) {
             }
         }
     }
-    test_logger->info("Cuboid - create particles test passed");
+    test_logger->info("Cuboid - Create particles test passed");
 }
 
 // Test whether the extended input format is recognized correctly.
 TEST_F(CuboidTest, ReadCuboids) {
-    test_logger->info("Cuboid - read file test");
+    test_logger->info("Cuboid - Read file test");
     std::vector<Particle> ps;
     std::array<double, 3> x = {0, 0, 0};
     std::array<double, 3> v = {0, 0, 0};
@@ -66,13 +66,13 @@ TEST_F(CuboidTest, ReadCuboids) {
 
     std::unique_ptr<Force> ref_f = std::make_unique<LennardJonesForce>();
     DirectSumContainer reference(ps, ref_f);
-    ASSERT_EQ(reference, *pc) << "Cuboid - read file test failed";
-    test_logger->info("Cuboid - read file test passed");
+    ASSERT_EQ(reference, *pc) << "Cuboid - Read file test failed";
+    test_logger->info("Cuboid - Read file test passed");
 }
 
 // Test whether the method addCuboid correctly adds a cuboid to the container
 TEST_F(CuboidTest, AddCuboid) {
-    test_logger->info("Cuboid - add cuboid test");
+    test_logger->info("Cuboid - Add cuboid test");
     std::vector<Particle> ps;
     pc->addCluster(cuboid);
     std::array<double, 3> x = {0, 0, 0};
@@ -98,8 +98,8 @@ TEST_F(CuboidTest, AddCuboid) {
     }
     std::unique_ptr<Force> ref_f = std::make_unique<LennardJonesForce>();
     DirectSumContainer reference(ps, ref_f);
-    ASSERT_EQ(reference, *pc) << "Cuboid - read file test failed";
-    test_logger->info("Cuboid - read file test filed");
+    ASSERT_EQ(reference, *pc) << "Cuboid - Read file test failed";
+    test_logger->info("Cuboid - Read file test filed");
 }
 
 // Test whether the method createParticle of Cuboid generate particles with Brownian motion with the specified average speed
@@ -119,4 +119,23 @@ TEST_F(CuboidTest, BrownianMotion) {
     averageSpeedSquare /= 1000000;
     ASSERT_FALSE(std::abs(averageSpeedSquare - 3) > 0.01) << "Cuboid - Brownian motion test failed";
     test_logger->info("Cuboid - Brownian motion test passed");
+}
+
+// Test the creation of stationary cuboids.
+TEST_F(CuboidTest, Stationary) {
+    test_logger->info("Cuboid - Stationary cuboid test");
+    Cuboid c({0, 0, 0}, {0, 0, 0}, {3, 2, 1}, 1, 1, 0, 3, 0, 5, 1, true);
+    std::vector<Particle> ps;
+    c.createParticles(ps);
+    for (int i = 0; i < 6; ++i) {
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(ps[i].getX() - std::array<double, 3>{static_cast<double>(i >> 1), static_cast<double>(i % 2), 0}), 1e-12);
+        EXPECT_NEAR(0, ArrayUtils::L2Norm(ps[i].getV() - std::array<double, 3>{0, 0, 0}), 1e-12);
+        EXPECT_TRUE(ps[i].isStationary());
+    }
+
+    if (::testing::Test::HasFailure()) {
+        test_logger->info("Cuboid - Stationary cuboid test failed");
+    } else {
+        test_logger->info("Cuboid - Stationary cuboid test passed");
+    }
 }

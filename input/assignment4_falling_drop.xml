@@ -2,20 +2,20 @@
 <simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <objects>
         <sphere>
-            <center>
+            <position>
                 <x>150</x>
                 <y>150</y>
-            </center>
+            </position>
             <velocity>
                 <x>0</x>
                 <y>0</y>
             </velocity>
             <mass>1</mass>
+            <epsilon>1</epsilon>
+            <sigma>1.2</sigma>
             <radius>20</radius>
             <distance>1.2</distance>
             <brown_velocity>0.70710678</brown_velocity>
-            <epsilon>1</epsilon>
-            <sigma>1.2</sigma>
         </sphere>
         <load>../input/basin.txt</load>
     </objects>
@@ -24,7 +24,9 @@
         <delta_t>0.0005</delta_t>
         <output>fd4</output>
         <frequency>20</frequency>
-        <g>-12.44</g>
+        <g>
+            <y>-12.44</y>
+        </g>
         <linked_cell>
             <domain_size>
                 <x>303</x>

@@ -12,11 +12,6 @@ class Simulation {
     std::unique_ptr<ParticleContainer> container;
 
     /**
-     * The start time of the simulation.
-     */
-    double startTime;
-
-    /**
      * The end time of the simulation.
      */
     double endTime;
@@ -50,6 +45,16 @@ class Simulation {
      */
     std::string checkpointingFile;
 
+    /**
+     * The parallelization strategy.
+     */
+    int strategy;
+
+    /**
+     * The unit for analyzing the system.
+     */
+    std::shared_ptr<Statistics> statistics;
+
 public:
 
     /**
@@ -60,28 +65,12 @@ public:
      * @param outputFormat The format of the output file.
      * @param outputFile The name of the output file.
      * @param outputFrequency The frequency of output.
+     * @param strategy The parallelization strategy.
      */
     Simulation(std::unique_ptr<ParticleContainer> &container, double endTime, double deltaT,
-               std::string outputFile, std::string outputFormat, unsigned int outputFrequency);
+               std::string outputFile, std::string outputFormat, unsigned int outputFrequency, int strategy);
 
-    /**
-     * Constructor.
-     * @param container The container that contains the particles for the simulation.
-     * @param startTime The start time of the simulation.
-     * @param endTime The end time of the simulation.
-     * @param deltaT The time step of the simulation.
-     * @param outputFormat The format of the output file.
-     * @param outputFile The name of the output file.
-     * @param outputFrequency The frequency of output.
-     */
-    Simulation(std::unique_ptr<ParticleContainer> &container, double startTime, double endTime, double deltaT,
-               std::string outputFile, std::string outputFormat, unsigned int outputFrequency);
 
-    /**
-     * Setter for the start time.
-     * @param startTime The new start time.
-     */
-    void setStartTime(double startTime);
 
     /**
      * Setter for the end time.
@@ -126,16 +115,17 @@ public:
     void setCheckpointingFile(const std::string &checkpointingFile);
 
     /**
+     * Setter for the statistics.
+     * @param statistics
+     */
+    void setStatistics(std::shared_ptr<Statistics> statistics);
+
+    /**
      * Getter for the particle container.
      * @return The particle container.
      */
     const std::unique_ptr<ParticleContainer> &getContainer() const;
 
-    /**
-     * Getter for the start time.
-     * @return The start time of the simulation.
-     */
-    double getStartTime() const;
 
     /**
      * Getter for the end time.
@@ -179,6 +169,11 @@ public:
      */
     std::string getCheckpointingFile() const;
 
+    /**
+     * Getter for the statistics.
+     * @return The statistics that is applied in the simulation.
+     */
+    std::shared_ptr<Statistics> getStatistics() const;
     /**
      * Run the simulation.
      */

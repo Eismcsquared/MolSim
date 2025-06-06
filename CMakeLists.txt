@@ -3,14 +3,18 @@ cmake_minimum_required(VERSION 3.10)
 # define project name, version
 project(PSEMolDyn_GroupD VERSION 0.0.1)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)  # Ensure compiler-specific features work
+
 # let ccmake and cmake-gui offer the default build type options
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug;Release;RelWithDebInfo;MinSizeRel")
 
+find_package(XercesC REQUIRED)
+
 # set Release as the default build type if it is not yet set.
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Release" CACHE STRING
-            "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE)
-endif(NOT CMAKE_BUILD_TYPE)
+set(CMAKE_BUILD_TYPE "Release" CACHE STRING
+        "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE)
 
 
 file(GLOB_RECURSE MY_SRC
@@ -38,9 +42,9 @@ target_include_directories(MolSim
 target_link_libraries(MolSim
         # stuff that is used in headers and source files
         PUBLIC
-            xerces-c
             spdlog::spdlog
             fmt::fmt
+            XercesC::XercesC
 )   
 
 # activate all compiler warnings. Clean up your code :P
@@ -55,11 +59,11 @@ target_compile_options(MolSim
 
 # set the build type
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
-set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -g")  
+set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -g")
 
 #set the build type to release -O3 flag is used for optimization
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -march=native -flto")
-set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -march=native -flto")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -march=native")
+set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -march=native")
 
 # Optionally add separate Debug and Release settings to avoid overwriting them
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
@@ -75,7 +79,9 @@ include(spdlog)
 include(gtest)
 include (fmt)
 include(xsd)
+include(openmp)
 include(GoogleTest)
+
 
 #testfiles 
 file(GLOB_RECURSE MY_TESTS

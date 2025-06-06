@@ -5,6 +5,7 @@
  * @brief This class represents a sphere consisting of particles
  */
 class Sphere : public Cluster {
+protected:
     /**
      * The radius of the sphere in terms of number of particles along the radius.
      */

@@ -2,11 +2,11 @@
 <simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <objects>
         <sphere>
-            <center>
+            <position>
                 <x>60</x>
                 <y>25</y>
                 <z>0.5</z>
-            </center>
+            </position>
             <velocity>
                 <x>0</x>
                 <y>-10</y>

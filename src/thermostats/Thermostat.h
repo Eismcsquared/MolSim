@@ -15,7 +15,7 @@ private:
     /**
      * The application period of the thermostat in terms of iteration number.
      */
-    int periode;
+    int period;
 
     /**
      * The maximal change of the temperature in one step.
@@ -55,7 +55,7 @@ public:
      * Getter for the application periode.
      * @return The application periode.
      */
-    int getPeriode() const;
+    int getPeriod() const;
 
     /**
      * Getter for the target temperature.

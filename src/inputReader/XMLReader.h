@@ -1,5 +1,19 @@
 #include <string>
 #include "Simulation.h"
+#include "InputData.h"
+
+/**
+ * @brief Represents data contains in a particle for parsing.
+ */
+struct ParticleData {
+    std::array<double, 3> position;
+    std::array<double, 3> velocity;
+    double mass;
+    int type;
+    double epsilon;
+    double sigma;
+};
+
 
 /**
  * @brief The class provides the functionality to parse xml input files.
@@ -14,5 +28,13 @@ public:
      */
     static std::unique_ptr<Simulation> readXML(std::vector<Particle> &particles, std::string fileName);
 
+    /**
+     * Helper function that parse common data of all objects (Particle, Cuboid, Sphere, Membrane, Wall).
+     * @param input Object that is read from the xml input file.
+     * @return A struct that contains the data: position, velocity, mass, type, epsilon, sigma.
+     */
+    static ParticleData parseParticle(ParticleType& input);
+
 };
+
 

@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include <vector>
-#include "spdlog/spdlog.h"
-#include "spdlog/sinks/basic_file_sink.h"
-#include "spdlog/fmt/ostr.h"
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/fmt/ostr.h>
 #include "force/LennardJonesForce.h"
 #include "force/Force.h"
 #include "body/Particle.h"
@@ -12,7 +12,7 @@
 class LennardJonesForceTest : public ::testing::Test {
 protected:
     std::vector<Particle> particles;
-    std::unique_ptr<DirectSumContainer> pc;
+    std::unique_ptr<ParticleContainer> pc;
     std::unique_ptr<Force> f;
     std::shared_ptr<spdlog::logger> test_logger = spdlog::get("test_logger");
 
